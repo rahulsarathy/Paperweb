@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'polls.apps.PollsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -77,7 +78,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'pulp_db',
-        'USER': 'rahul',
+        'USER': 'pulp_admin',
         'PASSWORD': 'orchard',
         'HOST': 'localhost',
         'PORT': '5432'
