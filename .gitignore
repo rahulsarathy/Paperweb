@@ -1,3 +1,4 @@
 virtualenv/
 pulp/mysite/__pychache__/
 *.pyc
+*.pyc
