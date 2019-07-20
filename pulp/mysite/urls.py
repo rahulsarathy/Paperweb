@@ -21,5 +21,6 @@ from mysite import views
 urlpatterns = [
     path('polls/', include('polls.urls')),
     path('admin/', admin.site.urls),
-    path('', views.index, name='index')
+    path('', views.index, name='index'),
+    path('auth/', include('django.contrib.auth.urls')),
 ]

@@ -1,4 +1,4 @@
 virtualenv/
 pulp/mysite/__pychache__/
-*.pyc
+pulp/static/js/node_modules/
 *.pyc
