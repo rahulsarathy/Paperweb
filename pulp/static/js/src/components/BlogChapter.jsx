@@ -8,7 +8,12 @@ export default class BlogChapter extends React.Component {
 		super(props);
 		
 		this.state = {
-            line_style: {}
+            line_style: {
+
+            },
+            color_style: {
+                borderBottom: '2px solid' + this.props.color
+            }
 		};
 	}
 
@@ -37,7 +42,7 @@ export default class BlogChapter extends React.Component {
     return (
         <div className="blog-chapter">
             <p id="blogname" className="blog-name">{this.props.blog}</p>
-            <div style={this.state.line_style} className="underline"></div>
+            <div style={Object.assign(this.state.line_style, this.state.color_style)} className="underline"></div>
             <p className="blog-title">{this.props.title}</p>
         </div>
     	);
