@@ -2,7 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: path.join(__dirname, 'src', 'components', 'App.js'),
+  entry: path.join(__dirname, 'src', 'index.jsx'),
   output: {
     path: path.join(__dirname, 'build'),
     filename: 'bundle.js'
@@ -13,6 +13,10 @@ module.exports = {
         test: /\.jsx?$/,
         exclude: /node_modules/,
         use: 'babel-loader'
+      },
+      {
+        test:/\.css$/,
+        use: ['style-loader', 'css-loader']
       },
       {
         test: /\.scss$/,
