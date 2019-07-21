@@ -7,7 +7,7 @@
   height: 520px;
   // transform: scale(0.8);
   border-width: 1px;
-  border-radius: 3px;
+  border-radius: 1px;
   box-shadow: 0px 2px 4px #000000;  
   background-color: #F3F3F3;
   position: absolute;
@@ -23,7 +23,7 @@
   }
 
   .content {
-    margin-left: 45px;
+    margin-left: 50px;
 
     .magazine-title {
       font-weight: bold;
@@ -34,6 +34,21 @@
       font-weight: bold;
     }
 
+    .blog-chapter {
+
+      width: 260px;
+      font-size: 14px;
+
+      .blog-name {
+        font-weight: bold;
+        line-height: 0px;
+      }
+
+      .blog-title {
+        line-height: 20px;
+      }
+
+    }
   }
 
 }
