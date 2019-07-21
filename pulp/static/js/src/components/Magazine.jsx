@@ -5,19 +5,23 @@ import {BlogChapter} from './Components.jsx'
 var BlogChapters = [
 {
     "blog": "Econlib",
-    "title": "Historically Hollow: The Cries of Populism"
+    "title": "Historically Hollow: The Cries of Populism",
+    "color": "#0E1534"
 },
 {
     "blog": "Ribbonfarm",
-    "title": "Pleasure as an Organizing Principle" 
+    "title": "Pleasure as an Organizing Principle",
+    "color": "#7ECDFC"
 },
 {
     "blog": "Chaos Monkeys",
-    "title": "Slouching toward Bethlehem to be born" 
+    "title": "Slouching toward Bethlehem to be born",
+    "color": "#E62D29"
 },
 {
     "blog": "Kortina",
-    "title": "Speech is Free, Distribution is Not // A Tax on the Purchase of Human Attention and Political Power"
+    "title": "Speech is Free, Distribution is Not // A Tax on the Purchase of Human Attention and Political Power",
+    "color": "#438BCA"
 }
 
 ];
@@ -37,7 +41,7 @@ export default class Magazine extends React.Component {
         var to_return = [];
 
         to_return = BlogChapters.map((blog_chapter) => 
-            <BlogChapter key={blog_chapter.blog} blog={blog_chapter.blog} title={blog_chapter.title}/>
+            <BlogChapter key={blog_chapter.blog} color={blog_chapter.color} blog={blog_chapter.blog} title={blog_chapter.title}/>
             );
 
         return to_return;

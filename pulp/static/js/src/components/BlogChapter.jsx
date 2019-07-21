@@ -8,14 +8,36 @@ export default class BlogChapter extends React.Component {
 		super(props);
 		
 		this.state = {
-
+            line_style: {}
 		};
 	}
+
+    componentDidMount() {
+        this.measureLength();
+    }
+
+    measureLength() {
+        var measuringSpan = document.createElement("span");
+        measuringSpan.innerText = this.props.blog;
+        measuringSpan.style.display = 'none';
+        $('#blogname')[0].appendChild(measuringSpan);
+        var theWidthYouWant = $(measuringSpan).width();
+
+        var to_style = {
+            width: theWidthYouWant + 50 + 'px'
+        }
+
+        this.setState(
+            {
+                line_style: to_style
+            });
+    }
 
 	render () {
     return (
         <div className="blog-chapter">
-            <p className="blog-name">{this.props.blog}</p>
+            <p id="blogname" className="blog-name">{this.props.blog}</p>
+            <div style={this.state.line_style} className="underline"></div>
             <p className="blog-title">{this.props.title}</p>
         </div>
     	);
