@@ -13,15 +13,18 @@ git remote add upstream git@github.com:rahulsarathy/Pulp.git
 git fetch upstream
 ```
 
-Retrieve hidden files from the administrator and copy them into the root directory:
-```
-.flaskenv
-.env
-```
-
 <h2>To run</h2>
+
+<h3>Start up webserver</h3>
 
 ```
 source venv/bin/activate
-flask run
+cd pulp
+python manage.py runserver
+```
+<h3>Start up webpack server (for live js change updates)</h3>
+```
+cd static/js
+npm i
+npm start
 ```
