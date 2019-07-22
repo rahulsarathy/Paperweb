@@ -2,3 +2,10 @@ virtualenv/
 pulp/mysite/__pychache__/
 pulp/static/js/node_modules/
 *.pyc
+
+# Cached files
+polls/*.py~
+siteconfig/*.py~
+
+# Directory metadata
+.idea
