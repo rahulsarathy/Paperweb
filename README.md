@@ -19,7 +19,6 @@ git fetch upstream
 
 ```
 source venv/bin/activate
-cd pulp
 python manage.py runserver
 ```
 <h3>Start up webpack server (for live js change updates)</h3>
