@@ -29,15 +29,12 @@ export default class BlogChapter extends React.Component {
     }
 
     measureHeight() {
-        // const height = $('#blogchapter' + this.props.index).height();
-        // console.log(height);
 
         var height = this.calculateDifference();
-        console.log(height);
 
         var gradient_style = {
             height: height + 'px',
-            top:  28 + 'px',
+            top:  8 + 'px',
             backgroundColor: this.props.color
         }
         this.setState(
@@ -49,18 +46,11 @@ export default class BlogChapter extends React.Component {
     calculateDifference() {
         var div1 = $('#underline' + this.props.index).offset().top
 
-        if (this.props.index == 0)
-        {
-            var new_index = this.props.index + 1
-            var div2 = $('#underline' + new_index).offset().top
-
-            return (div2 - div1)
-        }
-
         if (this.props.index == 4)
         {
             console.log("index 4 is at " + div1);
-            return div1 - 520;
+            var bottom = $('.magazine').offset().top + 520;
+            return bottom - div1;
         }
 
         var new_index = this.props.index + 1
