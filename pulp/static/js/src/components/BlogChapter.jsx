@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import $ from 'jquery';
 
 
@@ -13,23 +14,76 @@ export default class BlogChapter extends React.Component {
             },
             color_style: {
                 borderBottom: '2px solid' + this.props.color
+            },
+            gradient_style: {
+                height: '0px',
+                top: '0px'
             }
 		};
 	}
 
     componentDidMount() {
         this.measureLength();
+        this.measureHeight();
+        if (!this.props.manual)
+        {
+            this.calculateDifference();
+        }
+    }
+
+    measureHeight() {
+        const height = $('#blogchapter' + this.props.index).height();
+        // console.log(height);
+
+        var top = height;
+
+        var gradient_style = {
+            height: height + 'px',
+            top: '-' + top + 'px'
+        }
+        this.setState(
+            {
+                gradient_style: gradient_style
+            });
+    }
+
+    calculateDifference() {
+        var div1 = $('#underline' + this.props.index).offset().top
+
+        if (this.props.index == 0)
+        {
+            var new_index = this.props.index + 1
+            var div2 = $('#underline' + new_index).offset().top
+            // console.log(div1 + (div2 - div1))
+            return (div1 + (div2 - div1))
+        }
+
+        if (this.props.index == 3)
+        {
+            // console.log(520 - div1);
+            return 520 - div1;
+        }
+
+        var new_index = this.props.index + 1
+        var div2 = $('#underline' + new_index).offset().top
+
+        // console.log(div2 - div1);
+        return div2 - div1;
     }
 
     measureLength() {
         var measuringSpan = document.createElement("span");
         measuringSpan.innerText = this.props.blog;
         measuringSpan.style.display = 'none';
-        $('#blogname')[0].appendChild(measuringSpan);
+        $('#blogname' + this.props.index)[0].appendChild(measuringSpan);
         var theWidthYouWant = $(measuringSpan).width();
 
+        // var to_style = {
+        //     width: theWidthYouWant + 50 + 'px'
+        // }
+
         var to_style = {
-            width: theWidthYouWant + 50 + 'px'
+            width: '400px'
         }
 
         this.setState(
@@ -40,10 +94,14 @@ export default class BlogChapter extends React.Component {
 
 	render () {
     return (
-        <div className="blog-chapter">
-            <p id="blogname" className="blog-name">{this.props.blog}</p>
-            <div style={Object.assign(this.state.line_style, this.state.color_style)} className="underline"></div>
-            <p className="blog-title">{this.props.title}</p>
+        <div>
+            <div id={"blogchapter" + this.props.index} className="blog-chapter">
+                <p id={"blogname" + this.props.index} className="blog-name">{this.props.blog}</p>
+                <div id={"underline" + this.props.index} style={Object.assign(this.state.line_style, this.state.color_style)} className="underline"></div>
+                <p className="blog-title">{this.props.title}</p>
+                <div className="gradient" style={this.state.gradient_style}></div>
+            </div>
+
         </div>
     	);
   }
