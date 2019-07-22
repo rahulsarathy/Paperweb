@@ -44,7 +44,6 @@ export default class Magazine extends React.Component {
     createGarnish(){
         var top_gradient = $('#underline0').offset().top
         var top_magazine = $('.magazine').offset().top
-        console.log(top_gradient - top_magazine)
 
         this.setState(
             {
@@ -62,6 +61,8 @@ export default class Magazine extends React.Component {
         to_return = BlogChapters.map((blog_chapter, index) => 
             <BlogChapter key={blog_chapter.blog} index={index} color={blog_chapter.color} blog={blog_chapter.blog} title={blog_chapter.title}/>
             );
+
+        to_return.push(<BlogChapter key="bottombc" index={4} blog="And 12 More Posts" color="#B3AB9D" />);
 
         return to_return;
     }
@@ -86,7 +87,6 @@ export default class Magazine extends React.Component {
                 <div className="blog-chapters">
                     <div className="gradient2" style={this.state.top_gradient}></div>
                     {blog_chapters}
-                    <BlogChapter key="bottombc" index={4} blog="And 12 More Posts" color="#B3AB9D" />
                 </div>
             </div>
     	</div>
