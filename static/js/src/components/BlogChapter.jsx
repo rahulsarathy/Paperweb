@@ -25,25 +25,24 @@ export default class BlogChapter extends React.Component {
     componentDidMount() {
         this.measureLength();
         this.measureHeight();
-        if (!this.props.manual)
-        {
-            this.calculateDifference();
-        }
+      
     }
 
     measureHeight() {
-        const height = $('#blogchapter' + this.props.index).height();
+        // const height = $('#blogchapter' + this.props.index).height();
         // console.log(height);
 
-        var top = height;
+        var height = this.calculateDifference();
+        console.log(height);
 
         var gradient_style = {
             height: height + 'px',
-            top: '-' + top + 'px'
+            top:  28 + 'px',
+            backgroundColor: this.props.color
         }
         this.setState(
             {
-                gradient_style: gradient_style
+                gradient_style: gradient_style,
             });
     }
 
@@ -54,20 +53,19 @@ export default class BlogChapter extends React.Component {
         {
             var new_index = this.props.index + 1
             var div2 = $('#underline' + new_index).offset().top
-            // console.log(div1 + (div2 - div1))
-            return (div1 + (div2 - div1))
+
+            return (div2 - div1)
         }
 
-        if (this.props.index == 3)
+        if (this.props.index == 4)
         {
-            // console.log(520 - div1);
+            console.log("index 4 is at " + div1);
             return 520 - div1;
         }
 
         var new_index = this.props.index + 1
         var div2 = $('#underline' + new_index).offset().top
 
-        // console.log(div2 - div1);
         return div2 - div1;
     }
 
@@ -78,13 +76,13 @@ export default class BlogChapter extends React.Component {
         $('#blogname' + this.props.index)[0].appendChild(measuringSpan);
         var theWidthYouWant = $(measuringSpan).width();
 
-        // var to_style = {
-        //     width: theWidthYouWant + 50 + 'px'
-        // }
-
         var to_style = {
-            width: '400px'
+            width: theWidthYouWant + 50 + 'px'
         }
+
+        // var to_style = {
+        //     width: '400px'
+        // }
 
         this.setState(
             {

@@ -86,7 +86,7 @@ export default class Magazine extends React.Component {
                 <div className="blog-chapters">
                     <div className="gradient2" style={this.state.top_gradient}></div>
                     {blog_chapters}
-                    <BlogChapter key="bottombc" index='4' blog="And 12 More Posts" color="#B3AB9D" manual="true"/>
+                    <BlogChapter key="bottombc" index={4} blog="And 12 More Posts" color="#B3AB9D" />
                 </div>
             </div>
     	</div>
