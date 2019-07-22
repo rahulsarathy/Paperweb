@@ -32,11 +32,28 @@ export default class BlogChapter extends React.Component {
 
         var height = this.calculateDifference();
 
+        var previous_color;
+        if (this.props.index == 0 ) {
+            previous_color = '#B3AB9D'
+        }
+        else {
+
+            var previous_index = this.props.index - 1;
+
+            var previous_color_string = $('#underline' + previous_index);
+
+            var color_array = previous_color_string.css("border-bottom").split("solid ");
+
+            previous_color = color_array[1];
+        }
+
         var gradient_style = {
             height: height + 'px',
             top:  8 + 'px',
-            backgroundColor: this.props.color
+            backgroundImage: 'linear-gradient(' + previous_color + ', ' + this.props.color + ')'
+            // backgroundColor: this.props.color
         }
+
         this.setState(
             {
                 gradient_style: gradient_style,
@@ -48,7 +65,6 @@ export default class BlogChapter extends React.Component {
 
         if (this.props.index == 4)
         {
-            console.log("index 4 is at " + div1);
             var bottom = $('.magazine').offset().top + 520;
             return bottom - div1;
         }
@@ -71,9 +87,9 @@ export default class BlogChapter extends React.Component {
         }
 
         this.setState(
-            {
-                line_style: to_style
-            });
+        {
+            line_style: to_style
+        });
     }
 
 	render () {
