@@ -60,7 +60,7 @@ export default class BlogChapter extends React.Component {
         if (this.props.index == 4)
         {
             console.log("index 4 is at " + div1);
-            return 520 - div1;
+            return div1 - 520;
         }
 
         var new_index = this.props.index + 1
@@ -79,10 +79,6 @@ export default class BlogChapter extends React.Component {
         var to_style = {
             width: theWidthYouWant + 50 + 'px'
         }
-
-        // var to_style = {
-        //     width: '400px'
-        // }
 
         this.setState(
             {
