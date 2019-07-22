@@ -45,11 +45,16 @@ export default class Magazine extends React.Component {
         var top_gradient = $('#underline0').offset().top
         var top_magazine = $('.magazine').offset().top
 
+        var next_color = $('#underline0').css("border-bottom").split("solid ")[1];
+
+        console.log(next_color);
+
         this.setState(
             {
                 top_gradient: {
                     top: '0px',
-                    height: (top_gradient - top_magazine) + 'px'
+                    height: (top_gradient - top_magazine) + 'px',
+                    backgroundImage: 'linear-gradient(#B3AB9D, ' + next_color + ')'
                 }
             });
     }

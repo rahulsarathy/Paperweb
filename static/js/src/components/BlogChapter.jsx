@@ -32,25 +32,25 @@ export default class BlogChapter extends React.Component {
 
         var height = this.calculateDifference();
 
-        var previous_color;
-        if (this.props.index == 0 ) {
-            previous_color = '#B3AB9D'
+        var next_color;
+        if (this.props.index == 4 ) {
+            next_color = '#B3AB9D'
         }
         else {
 
-            var previous_index = this.props.index - 1;
+            var next_index = this.props.index + 1;
 
-            var previous_color_string = $('#underline' + previous_index);
+            var next_color_string = $('#underline' + next_index);
 
-            var color_array = previous_color_string.css("border-bottom").split("solid ");
+            var color_array = next_color_string.css("border-bottom").split("solid ");
 
-            previous_color = color_array[1];
+            next_color = color_array[1];
         }
 
         var gradient_style = {
             height: height + 'px',
             top:  8 + 'px',
-            backgroundImage: 'linear-gradient(' + previous_color + ', ' + this.props.color + ')'
+            backgroundImage: 'linear-gradient(' + this.props.color + ', ' + next_color + ')'
             // backgroundColor: this.props.color
         }
 
