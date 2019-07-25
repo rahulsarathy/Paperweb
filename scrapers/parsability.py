@@ -13,6 +13,10 @@ class ParsabilityType(Enum):
 
     NOT_IMPLEMENTED = "NOT_IMPLEMENTED"
 
+    WORDPRESS = "WORDPRESS"
+
+    MEDIUM = "MEDIUM"
+
 class Scraper(object):
 
     def __init__(self, name, parsability_type=ParsabilityType.NOT_IMPLEMENTED, rss_url="", home_url=""):
@@ -23,17 +27,20 @@ class Scraper(object):
         self.last_polled_time = self.get_last_polled_time()
         self.home_url = home_url
 
-    def poll(self):
+    def poll(self, *args, **kwargs):
 
         if not (datetime.utcnow() - self.last_polled_time > timedelta(days=1)):
             return
 
-        self._poll()
+        self._poll(*args, **kwargs)
 
         #continue polling
         pass
 
-    def _poll(self, **kwargs):
+    def get_all_posts(self, page):
+        raise Exception('Not Implemented')
+
+    def _poll(self, page):
         raise Exception('Not Implemented')
 
     def parse(self):
