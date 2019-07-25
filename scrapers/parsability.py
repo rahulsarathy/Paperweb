@@ -19,7 +19,7 @@ class ParsabilityType(Enum):
 
 class Scraper(object):
 
-    def __init__(self, name, parsability_type=ParsabilityType.NOT_IMPLEMENTED, rss_url="", home_url=""):
+    def __init__(self, name, parsability_type=ParsabilityType.NOT_IMPLEMENTED, rss_url="", home_url="",):
 
         self.name = name
         self.parsability_type = parsability_type
@@ -53,3 +53,30 @@ class Scraper(object):
 
     def get_last_polled_time(self):
         return datetime.now() - timedelta(days=4)
+
+
+class Article(object):
+
+    def __init__(self, name=None, date_published=None, author=None, author_bio=None, author_profile_image=None,
+                 comments=[],):
+
+        self.name = name
+        self.date_published = date_published
+        self.author = author
+        self.author_bio = author_bio
+        self.author_profile_image = author_profile_image
+        self.comments = comments
+
+    def add_comment(self, comment):
+
+        self.comments.append(comment)
+        return self.comments
+
+
+class Comment(object):
+    def __init__(self, author="", content="", date_published=None, parent_comment=None):
+
+        self.author = author
+        self.content = content
+        self.date_published = date_published
+        self.parent_comment = parent_comment

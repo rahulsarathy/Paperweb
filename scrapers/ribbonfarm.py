@@ -36,11 +36,14 @@ class RibbonfarmScraper(Scraper):
 
         soup = BeautifulSoup(html, 'lxml')
 
-        first = soup.find('guid')
+        first = soup.find('guid').text
 
-        print(first.text)
+        toSend = req(url=first, headers=headers)
 
+        with vcr.use_cassette('dump/ribbonfarm/xml/first_article_{}.yaml'.format(first)):
+            html = urlopen(toSend).read()
 
+        soup = BeautifulSoup(html, 'lxml')
 
 
     def get_all_posts(self, page):
