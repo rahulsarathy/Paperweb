@@ -1,8 +1,10 @@
-from scrapers.parsability import Scraper, ParsabilityType
+from scrapers.parsability import Scraper, ParsabilityType, Article, Comment
 from urllib.request import urlopen, Request as req
 import vcr
 from datetime import datetime
+from time import mktime
 from bs4 import BeautifulSoup, CData
+import feedparser
 
 
 def is_last_page(soup):
@@ -32,18 +34,29 @@ class RibbonfarmScraper(Scraper):
         toSend = req(url=self.rss_url, headers=headers)
 
         with vcr.use_cassette('dump/ribbonfarm/xml/ribbonfarm_xml.yaml'):
+            xml = feedparser.parse(self.rss_url)
+
+        unparsed_article = xml.entries[0]
+
+        title = unparsed_article.title
+
+        permalink = unparsed_article.link
+
+        author = unparsed_article.author
+
+        unparsed_date = unparsed_article.published_parsed
+        parsed_date = datetime.fromtimestamp(mktime(unparsed_date))
+
+        toSend = req(url=permalink, headers=headers)
+
+        with vcr.use_cassette('dump/ribbonfarm/xml/first_article_{}.yaml'.format(permalink)):
             html = urlopen(toSend).read()
 
         soup = BeautifulSoup(html, 'lxml')
 
-        first = soup.find('guid').text
+        # article = soup.find('')
 
-        toSend = req(url=first, headers=headers)
-
-        with vcr.use_cassette('dump/ribbonfarm/xml/first_article_{}.yaml'.format(first)):
-            html = urlopen(toSend).read()
-
-        soup = BeautifulSoup(html, 'lxml')
+        return Article(name=title, date_published=parsed_date, author=author, permalink=permalink)
 
 
     def get_all_posts(self, page):
