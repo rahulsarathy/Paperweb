@@ -43,12 +43,11 @@ class SlateStarCodex(Scraper):
         unparsed_date = unparsed_article.published_parsed
         date_published = datetime.fromtimestamp(mktime(unparsed_date))
 
-        article = unparsed_article.content
+        article = unparsed_article.content[0].get('value', '')
 
         f = open('dump/slatestarcodex/slatestarcodex_single_article.html', 'w+')
         f.write(str(article))
         f.close()
-
 
         return Article(title=title, author=author, permalink=permalink,
                        date_published=date_published)
