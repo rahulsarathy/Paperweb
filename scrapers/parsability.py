@@ -57,10 +57,10 @@ class Scraper(object):
 
 class Article(object):
 
-    def __init__(self, name=None, date_published=None, author=None, author_bio=None, author_profile_image=None,
+    def __init__(self, title=None, date_published=None, author=None, author_bio=None, author_profile_image=None,
                  comments=[], permalink=None, content_link=None):
 
-        self.name = name
+        self.title = title
         self.date_published = date_published
         self.author = author
         self.author_bio = author_bio
@@ -76,7 +76,7 @@ class Article(object):
 
     def to_json(self):
         return {
-            'name': self.name,
+            'name': self.title,
             'date_published': self.date_published,
             'author': self.author,
             'author_bio': self.author_bio,

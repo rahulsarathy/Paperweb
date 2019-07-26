@@ -3,7 +3,7 @@ from urllib.request import urlopen, Request as req
 import vcr
 from datetime import datetime
 from time import mktime
-from bs4 import BeautifulSoup, CData
+from bs4 import BeautifulSoup
 import feedparser
 
 
@@ -31,8 +31,6 @@ class RibbonfarmScraper(Scraper):
         headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) '
                                  'Chrome/41.0.2228.0 Safari/537.3'}
 
-        toSend = req(url=self.rss_url, headers=headers)
-
         with vcr.use_cassette('dump/ribbonfarm/xml/ribbonfarm_xml.yaml'):
             xml = feedparser.parse(self.rss_url)
 
@@ -52,11 +50,18 @@ class RibbonfarmScraper(Scraper):
         with vcr.use_cassette('dump/ribbonfarm/xml/first_article_{}.yaml'.format(permalink)):
             html = urlopen(toSend).read()
 
-        soup = BeautifulSoup(html, 'lxml')
+        soup = BeautifulSoup(html, 'html.parser')
 
-        # article = soup.find('')
+        article = soup.find('div', attrs={"class": "entry-content"})
 
-        return Article(name=title, date_published=parsed_date, author=author, permalink=permalink)
+        article.find('fieldset').decompose()
+        article.find('div', attrs={"class": "sharedaddy"}).decompose()
+
+        f = open("dump/ribbonfarm/ribbonfarm_single_article.html", "w+")
+        f.write(str(article))
+        f.close()
+
+        return Article(title=title, date_published=parsed_date, author=author, permalink=permalink)
 
 
     def get_all_posts(self, page):
