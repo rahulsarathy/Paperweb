@@ -1,9 +1,7 @@
-from scrapers.parsability import Scraper, ParsabilityType, Article, Comment
-from urllib.request import urlopen, Request as req
+from scrapers.parsability import Scraper, Article
 import vcr
 from datetime import datetime
 from time import mktime
-from bs4 import BeautifulSoup
 import feedparser
 
 
@@ -21,8 +19,6 @@ class MeltingAsphalt(Scraper):
 
 
     def _poll(self):
-        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) '
-                                 'Chrome/41.0.2228.0 Safari/537.3'}
 
         with vcr.use_cassette('dump/melting_asphalt/xml/melting_asphalt.yaml'):
             xml = feedparser.parse(self.rss_url)
