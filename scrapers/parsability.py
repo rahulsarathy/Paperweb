@@ -19,13 +19,14 @@ class ParsabilityType(Enum):
 
 class Scraper(object):
 
-    def __init__(self, name, parsability_type=ParsabilityType.NOT_IMPLEMENTED, rss_url="", home_url="",):
+    def __init__(self, name, parsability_type=ParsabilityType.NOT_IMPLEMENTED, rss_url="", home_url="", username=""):
 
         self.name = name
         self.parsability_type = parsability_type
         self.rss_url = rss_url
         self.last_polled_time = self.get_last_polled_time()
         self.home_url = home_url
+        self.username = username
 
     def poll(self, *args, **kwargs):
 

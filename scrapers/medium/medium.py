@@ -14,20 +14,25 @@ def is_last_page(soup):
 
 class MediumScraper(Scraper):
     def __init__(self,
-                name="Medium",
-                rss_url="https://medium.com/feed/@{}",
-                home_url="https://medium.com/",
-                username=""):
+                 name="Medium",
+                 rss_url="https://medium.com/feed/@{}",
+                 home_url="https://medium.com/",
+                 username=None):
 
-        super().__init__(name=name, rss_url=rss_url, home_url=home_url)
+        super(MediumScraper, self).__init__(name=name, rss_url=rss_url, home_url=home_url, username=username)
 
-        self.username = username
+        if not self.username:
+            raise TypeError(
+                "Medium scraper requires a valid username"
+            )
+
+        self.rss_url = rss_url.format(self.username)
 
 
     def _poll(self):
 
         with vcr.use_cassette('dump/medium/xml/medium.yaml'):
-            xml = feedparser.parse(self.rss_url.format(self.username))
+            xml = feedparser.parse(self.rss_url)
 
         unparsed_article = xml.entries[1]
 
