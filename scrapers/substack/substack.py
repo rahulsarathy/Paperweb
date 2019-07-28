@@ -41,6 +41,12 @@ class SubstackScraper(Scraper):
 
         unparsed_date = soup.find('td', attrs={"class": "post-meta-item"}).text
 
+        # take out top sharesheet
+        article.find('table', attrs={"class": "post-meta big"}).decompose()
+
+        # take out bottom sharesheet
+        article.find('td', attrs={"class": "post-meta-item"}).parent.decompose()
+
         # if len has date,
         if len(unparsed_date) > 6:
                 parsed_date = datetime.strptime(unparsed_date, '%b %d, %Y')
