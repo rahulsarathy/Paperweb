@@ -1,9 +1,8 @@
-from scrapers.parsability import Scraper
+from scrapers.parsability import Scraper, Article
 from urllib.request import urlopen, Request as req
 import vcr
 from bs4 import BeautifulSoup
 from datetime import datetime
-from newspaper import Article
 
 headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) '
                          'Chrome/41.0.2228.0 Safari/537.3'}
@@ -12,10 +11,11 @@ class SubstackScraper(Scraper):
     def __init__(self,
                  name="Substack",
                  home_url="https://{}.substack.com",
-                 username=None
+                 username=None,
+                 author=None
                  ):
 
-        super().__init__(name=name, home_url=home_url, username=username)
+        super().__init__(name=name, home_url=home_url, username=username, author=author)
 
         if not self.username:
             raise TypeError(
@@ -26,13 +26,14 @@ class SubstackScraper(Scraper):
 
 
     def _poll(self):
-
         toSend = req(url=self.home_url, headers=headers)
 
         with vcr.use_cassette('dump/substack/xml/first_article_{}.yaml'.format(self.home_url)):
             html = urlopen(toSend).read()
 
         soup = BeautifulSoup(html, 'html.parser')
+
+        permalink = soup.find('a', attrs={"class"})
 
         article = soup.find('article', attrs={"class": "post"})
 
@@ -44,6 +45,8 @@ class SubstackScraper(Scraper):
         if len(unparsed_date) > 6:
                 parsed_date = datetime.strptime(unparsed_date, '%b %d, %Y')
 
+        else:
+            parsed_date = datetime.strptime(unparsed_date, '%b %d')
 
         if parsed_date.year == 1900:
             parsed_date = datetime(datetime.today().year, parsed_date.month, parsed_date.day)
@@ -52,7 +55,7 @@ class SubstackScraper(Scraper):
         f.write(str(article))
         f.close()
 
-        #return Article(title=title, date_published=parsed_date, author=author, permalink=permalink)
+        return Article(title=title, date_published=parsed_date, author=self.author, permalink=permalink)
 
 
     def get_all_posts(self, page):
