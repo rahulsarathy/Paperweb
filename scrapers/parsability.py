@@ -1,29 +1,12 @@
 from enum import Enum
 from datetime import datetime, timedelta
 
-class ParsabilityType(Enum):
-
-    RSS = "RSS"
-
-    DIV_NAME = "DIV_NAME"
-
-    CDATA = "CDATA"
-
-    CUSTOM = "CUSTOM"
-
-    NOT_IMPLEMENTED = "NOT_IMPLEMENTED"
-
-    WORDPRESS = "WORDPRESS"
-
-    MEDIUM = "MEDIUM"
-
 class Scraper(object):
 
-    def __init__(self, name, parsability_type=ParsabilityType.NOT_IMPLEMENTED, rss_url="", home_url="", username="",
+    def __init__(self, name, rss_url="", home_url="", username="",
                  author=""):
 
         self.name = name
-        self.parsability_type = parsability_type
         self.rss_url = rss_url
         self.last_polled_time = self.get_last_polled_time()
         self.home_url = home_url

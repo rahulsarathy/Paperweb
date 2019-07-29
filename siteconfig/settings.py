@@ -37,6 +37,8 @@ INSTALLED_APPS = [
   'django.contrib.sessions',
   'django.contrib.messages',
   'django.contrib.staticfiles',
+    'blogs.apps.BlogsConfig',
+    'payments.apps.PaymentsConfig'
 ]
 
 MIDDLEWARE = [
@@ -103,6 +105,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = 'auth.User'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
@@ -113,7 +117,8 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = 'index'
+LOGOUT_REDIRECT_URL = 'index'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
