@@ -78,9 +78,9 @@ WSGI_APPLICATION = 'siteconfig.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'pulp_db',
+        'NAME': 'pulp',
         'USER': 'pulp_admin',
-        'PASSWORD': 'orchard',
+        'PASSWORD': 'cat',
         'HOST': 'localhost',
         'PORT': '5432'
     }

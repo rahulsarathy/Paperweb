@@ -1,10 +1,9 @@
-import datetime
 
 from django.db import models
-from django.utils import timezone
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.base_user import BaseUserManager
-from payments.models import, BillingInfo
+from payments.models import BillingInfo
+from django.utils.translation import gettext as _
 
 
 class User(AbstractBaseUser):
