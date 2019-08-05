@@ -1,4 +1,4 @@
-from scrapers.parsability import Scraper, ParsabilityType, Article, Comment
+from blogs.parsability import Scraper, Article
 from urllib.request import urlopen, Request as req
 import vcr
 from datetime import datetime

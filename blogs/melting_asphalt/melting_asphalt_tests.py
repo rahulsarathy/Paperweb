@@ -1,4 +1,4 @@
-from scrapers.melting_asphalt import MeltingAsphalt
+from blogs.melting_asphalt import MeltingAsphalt
 
 if __name__ == "__main__":
     scraper = MeltingAsphalt()

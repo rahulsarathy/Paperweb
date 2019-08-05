@@ -1,9 +1,7 @@
-from scrapers.parsability import Scraper, Article
-from urllib.request import urlopen, Request as req
+from blogs.parsability import Scraper, Article
 import vcr
 from datetime import datetime
 from time import mktime
-from bs4 import BeautifulSoup
 import feedparser
 
 
