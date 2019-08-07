@@ -1,4 +1,4 @@
-from blogs.medium.medium import MediumScraper
+from apps.blogs import MediumScraper
 
 if __name__ == "__main__":
     scraper = MediumScraper(username="nntaleb")

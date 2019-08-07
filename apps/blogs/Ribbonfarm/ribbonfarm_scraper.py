@@ -1,4 +1,4 @@
-from blogs.parsability import Scraper, Article
+from apps.blogs import Scraper, Article
 from urllib.request import urlopen, Request as req
 import vcr
 from datetime import datetime
@@ -20,8 +20,8 @@ def is_last_page(soup):
 
 class RibbonfarmScraper(Scraper):
     def __init__(self,
-                name="ribbonfarm",
-                rss_url="https://www.ribbonfarm.com/feed/",
+                 name="ribbonfarm",
+                 rss_url="https://www.ribbonfarm.com/feed/",
                  home_url="https://www.ribbonfarm.com"):
 
         super().__init__(name=name, rss_url=rss_url, home_url=home_url)

@@ -1,4 +1,4 @@
-from blogs.parsability import Scraper, Article
+from apps.blogs import Scraper, Article
 from urllib.request import urlopen, Request as req
 import vcr
 from bs4 import BeautifulSoup

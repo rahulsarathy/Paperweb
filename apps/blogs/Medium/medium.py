@@ -1,4 +1,4 @@
-from blogs.parsability import Scraper, Article
+from apps.blogs import Scraper, Article
 import vcr
 from datetime import datetime
 from time import mktime

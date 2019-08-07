@@ -1,4 +1,4 @@
-from blogs.substack.substack import SubstackScraper
+from apps.blogs.substack import SubstackScraper
 
 if __name__ == "__main__":
     scraper = SubstackScraper(username="antonio", author="Antonio Garcia")

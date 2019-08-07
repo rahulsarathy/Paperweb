@@ -2,7 +2,7 @@
 from django.db import models
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.base_user import BaseUserManager
-from payments.models import BillingInfo
+from apps.payments import BillingInfo
 from django.utils.translation import gettext as _
 
 

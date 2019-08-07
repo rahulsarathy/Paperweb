@@ -1,28 +1,24 @@
-from blogs.parsability import Scraper, Article
+from apps.blogs import Scraper, Article
 import vcr
 from datetime import datetime
 from time import mktime
-import feedparser
 
 
 def is_last_page(soup):
 
     return False
 
-class SlateStarCodex(Scraper):
+class MeltingAsphalt(Scraper):
     def __init__(self,
-                 name="SlateStarCodex",
-                 rss_url="https://slatestarcodex.com/feed",
-                 home_url="https://slatestarcodex.com/"):
+                 name="Melting Asphalt",
+                 rss_url="https://meltingasphalt.com/feed",
+                 home_url="https://meltingasphalt.com/"):
 
         super().__init__(name=name, rss_url=rss_url, home_url=home_url)
 
-
     def _poll(self):
-        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) '
-                                 'Chrome/41.0.2228.0 Safari/537.3'}
 
-        with vcr.use_cassette('dump/slatestarcodex/xml/slatestarcodex_xml.yaml'):
+        with vcr.use_cassette('dump/melting_asphalt/xml/melting_asphalt.yaml'):
             xml = feedparser.parse(self.rss_url)
 
         unparsed_article = xml.entries[0]
@@ -36,7 +32,7 @@ class SlateStarCodex(Scraper):
 
         article = unparsed_article.content[0].get('value', '')
 
-        f = open('dump/slatestarcodex/slatestarcodex_single_article.html', 'w+')
+        f = open('dump/melting_asphalt/melting_asphalt_single_article.html', 'w+')
         f.write(str(article))
         f.close()
 
