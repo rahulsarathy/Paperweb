@@ -38,8 +38,10 @@ INSTALLED_APPS = [
   'django.contrib.sessions',
   'django.contrib.messages',
   'django.contrib.staticfiles',
-    'apps.blogs.apps.BlogsConfig',
-    'apps.payments.apps.PaymentsConfig',
+    'blogs.apps.BlogsConfig',
+    'payments.apps.PaymentsConfig',
+    'api.apps.ApiConfig',
+    'users.apps.UsersConfig',
     'rest_framework',
 ]
 
@@ -107,7 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MODEL = 'auth.User'
+AUTH_USER_MODEL = 'users.CustomUser'
 
 
 # Internationalization
@@ -129,6 +131,3 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "../../static"),
 ]
-
-PROJECT_ROOT = os.path.dirname(__file__)
-sys.path.insert(0, os.path.join(PROJECT_ROOT, 'apps'))

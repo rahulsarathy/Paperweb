@@ -8,4 +8,5 @@ urlpatterns = [
   path('', views.index, name='index'),
   path('dashboard/', views.dashboard, name='dashboard'),
   path('auth/', include('django.contrib.auth.urls')),
+  path('api/', include('api.urls')),
 ]
