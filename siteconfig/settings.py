@@ -40,7 +40,6 @@ INSTALLED_APPS = [
   'django.contrib.staticfiles',
     'blogs.apps.BlogsConfig',
     'payments.apps.PaymentsConfig',
-    'api.apps.ApiConfig',
     'users.apps.UsersConfig',
     'rest_framework',
 ]
@@ -54,6 +53,13 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ]
+}
 
 ROOT_URLCONF = 'siteconfig.urls'
 

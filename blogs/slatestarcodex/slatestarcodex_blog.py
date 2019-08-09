@@ -1,0 +1,22 @@
+from blogs.BlogInformation import Blog
+
+description = "Welcome to Slate Star Codex, a blog about science, medicine, philosophy, politics, and futurism."
+
+AUTHORS = [
+    {
+        "name": "Scott Alexander",
+        "bio": "SSC is the project of Scott Alexander, a psychiatrist on the US West Coast. You can email him at "
+               "scott[at]slatestarcodex[dot]com. Note that emailing bloggers who say they are psychiatrists is a bad "
+               "way to deal with your psychiatric emergencies, and you might wish to consider talking to your doctor "
+               "or going to a hospital instead.",
+        "link": "https://slatestarcodex.com/about/"
+    },
+]
+
+class SlateStarCodexBlog(Blog):
+
+    def __init__(self, name="SlateStarCodex", about=description, about_link="https://slatestarcodex.com/about/",
+                 authors=AUTHORS,):
+
+        super().__init__(name=name, about=about, about_link=about_link, authors=authors,)
+

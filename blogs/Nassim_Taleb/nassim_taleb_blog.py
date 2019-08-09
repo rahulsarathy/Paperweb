@@ -1,4 +1,4 @@
-from blogs import Blog
+from blogs.BlogInformation import Blog
 
 description = "Nassim Taleb's Medium blog where he blogs about probability (philosophy), probability (mathematics), " \
               "probability (logic),probability (reallife), deadlifts, Phoenician wine, dead languages"
@@ -18,5 +18,6 @@ class NassimTalebBlog(Blog):
     def __init__(self, name="", about=description, about_link="https://medium.com/@nntaleb",
                  authors=AUTHORS,):
 
-        super().__init__(name=name, about=about, about_link=about_link, authors=authors,)
+        super().__init__(name=name, about=about, about_link=about_link, authors=authors, recent_posts=None,
+                         frequency=None, color=None, font=None, scraper=None, image=None, categories=None)
 

@@ -1,4 +1,4 @@
-from blogs import Blog
+from blogs.BlogInformation import Blog
 
 description = "Bryan Caplan writes on topical economics of interest to them, illuminating subjects from politics and " \
               "finance, to recent films and cultural observations, to history and literature. EconLog aims to educate, " \
@@ -14,10 +14,11 @@ AUTHORS = [
     },
 ]
 
-class BryanCaplanEconLog(Blog):
+class BryanCaplanBlog(Blog):
 
-    def __init__(self, name="", about=description, about_link="https://www.ribbonfarm.com/about/",
+    def __init__(self, name="Bryan Caplan", about=description, about_link="https://www.ribbonfarm.com/about/",
                  authors=AUTHORS,):
 
-        super().__init__(name=name, about=about, about_link=about_link, authors=authors,)
+        super().__init__(name=name, about=about, about_link=about_link, authors=authors, recent_posts=None,
+                         frequency=None, color=None, font=None, scraper=None, image=None, categories=None)
 

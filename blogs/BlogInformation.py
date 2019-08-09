@@ -2,7 +2,7 @@
 class Blog(object):
 
     def __init__(self, name, about, about_link, authors, recent_posts, frequency, color,
-                 font, scraper, image):
+                 font, scraper, image, categories):
 
         self.name = name
         self.about = about
@@ -14,6 +14,7 @@ class Blog(object):
         self.font = font
         self.scraper = scraper
         self.image = image
+        self.categories = categories
 
     def to_json(self):
 
@@ -23,9 +24,7 @@ class Blog(object):
             'about_link': self.about_link,
             'authors': self.authors,
             'recent_posts': self.recent_posts,
-            'frequency': self.frequency,
-            'color': self.color,
-            'font': self.font,
-            'scraper': self.scraper,
-            'image': self.image
+            'image': self.image,
+            'categories': self.categories
         }
+

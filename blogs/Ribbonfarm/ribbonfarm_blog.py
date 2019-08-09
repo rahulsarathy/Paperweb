@@ -1,4 +1,4 @@
-from blogs import Blog
+from blogs.BlogInformation import Blog
 
 description = "Ribbonfarm is a longform blog devoted to unusual takes on both familiar and new themes. " \
               "What they call “refactored perception. Venkatesh Rao serves as Editor-in-Chief. Sarah Perry serves as " \
@@ -33,5 +33,6 @@ class RibbonfarmBlog(Blog):
     def __init__(self, name="ribbonfarm", about=description, about_link="https://www.ribbonfarm.com/about/",
                  authors=AUTHORS,):
 
-        super().__init__(name=name, about=about, about_link=about_link, authors=authors,)
+        super().__init__(name=name, about=about, about_link=about_link, authors=authors, recent_posts=None,
+                         frequency=None, color=None, font=None, scraper=None, image=None, categories=None)
 
