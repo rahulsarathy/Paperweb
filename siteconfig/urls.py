@@ -9,5 +9,5 @@ urlpatterns = [
   path('dashboard/', views.dashboard, name='dashboard'),
   path('auth/', include('django.contrib.auth.urls')),
   path('api/users/', include('users.urls')),
-  path('blogs/', include('blogs.urls')),
+  path('api/blogs/', include('blogs.urls')),
 ]
