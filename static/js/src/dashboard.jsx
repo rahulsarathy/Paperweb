@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import $ from 'jquery';
+import shortid from 'shortid';
 
-import {BlogCard} from './components/Components.jsx'
+import {Category} from './components/Components.jsx'
 
 
 export default class Dashboard extends React.Component {
@@ -13,7 +14,7 @@ export default class Dashboard extends React.Component {
 		super(props);
 		
 		this.state = {
-
+			data: {}
 		};
 	}
 
@@ -28,41 +29,31 @@ export default class Dashboard extends React.Component {
     			type: 'GET',
     			success: function(data)
     			{
+    				console.log(data);
+    				var blogs = data.blogs;
+    				var categories = Object.keys(data);
     				this.setState(
     					{
-    						blogs: data
+    						data: data
     					});
     			}.bind(this)
 
     		});
     }
 
-    createBlogCards() {
-    	if (!this.state.blogs){
-    		return;
-    	}
-    	var blog_cards = [];
-    	this.state.blogs.forEach( blog => {
-    		console.log(blog);
-
-    		var name = blog.name;
-    		var about = blog.about;
-    		var about_link = blog.about_link;
-    		var authors = blog.authors;
-    		var image = blog.image;
-
-    		var blog_card = <BlogCard name={name} key={name} about={about} about_link={about_link} authors={authors} image={image}/>
-    		blog_cards.push(blog_card);
-    	}); 
-    	return blog_cards;
+    jsUcfirst(string) 
+    {
+    	return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
 	render () {
-		var blog_cards = this.createBlogCards();
-
-    return (
-    	<div>
-    	{blog_cards}
+		return (
+    	<div className="dashboard">
+    	{
+    		Object.keys(this.state.data).map((category) =>
+    			<Category key={shortid.generate()} category={this.jsUcfirst(category)} blogs={this.state.data[category]}/>
+    			)
+    	}
     	</div>
     	);
   }

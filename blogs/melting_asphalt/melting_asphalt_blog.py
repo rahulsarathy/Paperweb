@@ -27,8 +27,8 @@ AUTHORS = [
 class MeltingAsphaltBlog(Blog):
 
     def __init__(self, name="Melting Asphalt", about=description, about_link="https://meltingasphalt.com/about/",
-                 authors=AUTHORS,):
+                 authors=AUTHORS, image="melting_asphalt", categories=["rationality"]):
 
         super().__init__(name=name, about=about, about_link=about_link, authors=authors, recent_posts=None,
-                         frequency=None, color=None, font=None, scraper=None, image=None, categories=None)
+                         frequency=None, color=None, font=None, scraper=None, image=image, categories=categories)
 

@@ -14,6 +14,10 @@ from blogs.melting_asphalt.melting_asphalt_blog import MeltingAsphaltBlog
 from blogs.Nassim_Taleb.nassim_taleb_blog import NassimTalebBlog
 from blogs.Ribbonfarm.ribbonfarm_blog import RibbonfarmBlog
 from blogs.kwokchain.kwokchain_blog import KwokChainBlog
+from blogs.slatestarcodex.slatestarcodex_blog import SlateStarCodexBlog
+from blogs.mercatus_center.mercatus_center import MercatusCenterBlog
+
+CATEGORIES = ["Rationality", "Economics", "Technology"]
 
 BLOGS = (
     BryanCaplanBlog,
@@ -21,6 +25,8 @@ BLOGS = (
     # NassimTalebBlog,
     RibbonfarmBlog,
     KwokChainBlog,
+    SlateStarCodexBlog,
+    MercatusCenterBlog,
 )
 
 
@@ -35,8 +41,17 @@ class BlogViewSet(viewsets.ViewSet):
 
 @api_view(['GET'])
 def get_blogs(request):
-    blog_json = []
+
+    final_json = {}
     for blog in BLOGS:
         new_blog = blog()
-        blog_json.append(new_blog.to_json())
-    return JsonResponse(blog_json, safe=False)
+        categories = new_blog.categories
+
+        if categories:
+            for category in categories:
+                if category not in final_json:
+                    final_json[category] = [new_blog.to_json()]
+                else:
+                    final_json[category].append(new_blog.to_json())
+
+    return JsonResponse(final_json, safe=False)

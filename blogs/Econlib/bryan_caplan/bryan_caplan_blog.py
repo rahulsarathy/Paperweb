@@ -17,8 +17,8 @@ AUTHORS = [
 class BryanCaplanBlog(Blog):
 
     def __init__(self, name="Bryan Caplan", about=description, about_link="https://www.ribbonfarm.com/about/",
-                 authors=AUTHORS, image="bryancaplan"):
+                 authors=AUTHORS, image="bryancaplan", categories=["economics"]):
 
         super().__init__(name=name, about=about, about_link=about_link, authors=authors, recent_posts=None,
-                         frequency=None, color=None, font=None, scraper=None, image=image, categories=None)
+                         frequency=None, color=None, font=None, scraper=None, image=image, categories=categories)
 

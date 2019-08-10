@@ -18,8 +18,8 @@ AUTHORS = [
 class KwokChainBlog(Blog):
 
     def __init__(self, name="Kevin Kwok", about=description, about_link="https://kwokchain.com/about/",
-                 authors=AUTHORS, image='kwokchain',):
+                 authors=AUTHORS, image='kwokchain', categories=["technology"]):
 
         super().__init__(name=name, about=about, about_link=about_link, authors=authors, recent_posts=None,
-                         frequency=None, color=None, font=None, scraper=None, image=image, categories=None)
+                         frequency=None, color=None, font=None, scraper=None, image=image, categories=categories)
 
