@@ -30,9 +30,9 @@ AUTHORS = [
 
 class RibbonfarmBlog(Blog):
 
-    def __init__(self, name="ribbonfarm", about=description, about_link="https://www.ribbonfarm.com/about/",
-                 authors=AUTHORS,):
+    def __init__(self, name="Ribbonfarm", about=description, about_link="https://www.ribbonfarm.com/about/",
+                 authors=AUTHORS, image="ribbonfarm"):
 
         super().__init__(name=name, about=about, about_link=about_link, authors=authors, recent_posts=None,
-                         frequency=None, color=None, font=None, scraper=None, image=None, categories=None)
+                         frequency=None, color=None, font=None, scraper=None, image=image, categories=None)
 

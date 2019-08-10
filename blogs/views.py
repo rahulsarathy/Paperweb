@@ -13,12 +13,14 @@ from blogs.Econlib.bryan_caplan.bryan_caplan_blog import BryanCaplanBlog
 from blogs.melting_asphalt.melting_asphalt_blog import MeltingAsphaltBlog
 from blogs.Nassim_Taleb.nassim_taleb_blog import NassimTalebBlog
 from blogs.Ribbonfarm.ribbonfarm_blog import RibbonfarmBlog
+from blogs.kwokchain.kwokchain_blog import KwokChainBlog
 
 BLOGS = (
     BryanCaplanBlog,
     MeltingAsphaltBlog,
-    NassimTalebBlog,
-    RibbonfarmBlog
+    # NassimTalebBlog,
+    RibbonfarmBlog,
+    KwokChainBlog,
 )
 
 

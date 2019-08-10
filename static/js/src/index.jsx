@@ -1,20 +1,50 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Landing from "./Pages/Landing.jsx";
-import Dashboard from "./Pages/Dashboard.jsx"
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
-
 import $ from 'jquery';
 
-const landing = document.getElementById('landing') !== null;
-console.log("landing is " + landing)
-if (landing) {
-	ReactDOM.render(< Landing/>, document.getElementById('landing'))
+import {Magazine} from './components/Components.jsx'
+
+
+export default class Landing extends React.Component {
+
+	constructor(props) {
+		super(props);
+		
+		this.state = {
+
+		};
+	}
+
+    componentDidMount() {
+
+    }
+
+	render () {
+    return (
+    	<div>
+    		<div className="container">
+    			<div className="row">
+    				<div className="col-sm">
+    			    	<h1>What if the internet published a magazine?</h1>
+    				</div>
+    			</div>
+    			<div className="row">
+    				<div className="col-sm-6">
+    					<Magazine />
+    				</div>
+    				<div className="col-sm-6">
+    					<p>Pulp is a monthly custom print magazine delivered to your doorstep made up of your favorite blogs and newsletters that you choose.</p>
+    					<input></input>
+    					<button>Get Started</button>
+    				</div>
+    			</div>
+    		</div>
+    	</div>
+    	);
+  }
 }
 
-const dashboard = document.getElementById('dashboard') !== null;
-console.log("dashboard is " + dashboard)
-if (dashboard) {
-	ReactDOM.render(< dashboard/>, document.getElementById('dashboard'))
-}
+ReactDOM.render(<Landing/>, document.getElementById('landing'))
+

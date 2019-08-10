@@ -15,7 +15,7 @@ AUTHORS = [
 
 class NassimTalebBlog(Blog):
 
-    def __init__(self, name="", about=description, about_link="https://medium.com/@nntaleb",
+    def __init__(self, name="Nassim Taleb", about=description, about_link="https://medium.com/@nntaleb",
                  authors=AUTHORS,):
 
         super().__init__(name=name, about=about, about_link=about_link, authors=authors, recent_posts=None,
