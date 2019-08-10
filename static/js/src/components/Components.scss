@@ -98,6 +98,9 @@
     margin : 0;
     margin-bottom: 5px;
   }
+
+  margin-left: 20px;
+
 }
 
 .dashboard {
@@ -129,8 +132,7 @@
 .blogcard {
   height: 120px;
   width: 240px;
-  margin-left: 5px;
-  margin-right: 5px;
+  margin-right: 20px;
   margin-bottom: 30px;
   display: inline-block;
   vertical-align: top;
@@ -139,12 +141,15 @@
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
   background-size: cover;
   background-color: white;
+  transition: all .2s ease-in-out;
 }
 
 .blogcard:hover {
-  border-style: solid;
-  border-width: 1px;
-  border-color: #0ABAFF;
+  // outline-style: solid;
+  outline-width: 1px;
+  outline-color: #0ABAFF;
+  transform: scale(1.1);
+  transition: all .2s ease-in-out;
 };
 
 

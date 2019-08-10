@@ -15,7 +15,8 @@ from blogs.Nassim_Taleb.nassim_taleb_blog import NassimTalebBlog
 from blogs.Ribbonfarm.ribbonfarm_blog import RibbonfarmBlog
 from blogs.kwokchain.kwokchain_blog import KwokChainBlog
 from blogs.slatestarcodex.slatestarcodex_blog import SlateStarCodexBlog
-from blogs.mercatus_center.mercatus_center import MercatusCenterBlog
+from blogs.mercatus_center.mercatus_center_blog import MercatusCenterBlog
+from blogs.marginal_revolution.marginal_revolution_blog import MarginalRevolutionBlog
 
 CATEGORIES = ["Rationality", "Economics", "Technology"]
 
@@ -27,6 +28,7 @@ BLOGS = (
     KwokChainBlog,
     SlateStarCodexBlog,
     MercatusCenterBlog,
+    MarginalRevolutionBlog,
 )
 
 
