@@ -19,7 +19,8 @@ AUTHORS = [
         but — what can I say? — I'm a restless millennial with other itches to scratch. I've since published a 
         book on social psychology (coauthored with Robin Hanson) and joined a very promising biotech startup.
         """,
-        "link": "https://meltingasphalt.com/about/"
+        "link": "https://meltingasphalt.com/about/",
+        "profile": "https://buster.wiki/images/people/kevin-simler.jpg",
     },
 ]
 

@@ -11,13 +11,14 @@ AUTHORS = [
         "bio": "\"I formerly worked at Greylock Partners investing in marketplaces, autonomous vehicles, "
                "bottoms up productivity tools, and more. I also have a twitter, where I talk more and "
                "people understand me less.\"",
-        "link": "https://twitter.com/kevinakwok"
+        "link": "https://twitter.com/kevinakwok",
+        "profile": "https://pbs.twimg.com/profile_images/487472769764847616/28Bio5kX.jpeg",
     },
 ]
 
 class KwokChainBlog(Blog):
 
-    def __init__(self, name="Kevin Kwok", about=description, about_link="https://kwokchain.com/about/",
+    def __init__(self, name="kwokchain", about=description, about_link="https://kwokchain.com/about/",
                  authors=AUTHORS, image='kwokchain', categories=["technology"]):
 
         super().__init__(name=name, about=about, about_link=about_link, authors=authors, recent_posts=None,

@@ -17,22 +17,24 @@ AUTHORS = [
                "decision-making, and two ebooks, Be Slightly Evil and The Gervais Principle. He is also the creator "
                "of the Breaking Smart binge-reading site and email newsletter. His writing can also be found at Aeon "
                "magazine, The Atlantic, Information Week and Forbes. He lives in Seattle.",
-        "link": "https://en.wikipedia.org/wiki/Venkatesh_Rao_(writer)"
+        "link": "https://en.wikipedia.org/wiki/Venkatesh_Rao_(writer)",
+        "profile": "https://206hwf3fj4w52u3br03fi242-wpengine.netdna-ssl.com/wp-content/uploads/2006/12/venkatProfilePicPanama-300x270.jpg",
     },
     {
         "name": "Sarah Perry",
         "bio": "Sarah began contributing to Ribbonfarm in 2015, and serves as Contributing Editor. She also blogs at "
                "The View from Hell. She is also the author of Every Cradle is a Grave, a book about the ethics of "
                "birth and suicide. She is based in Reno. ",
-        "link": "https://twitter.com/sarahdoingthing?lang=en"
+        "link": "https://twitter.com/sarahdoingthing?lang=en",
+        "profile": "https://206hwf3fj4w52u3br03fi242-wpengine.netdna-ssl.com/wp-content/uploads/2006/12/sarahperry-225x300.jpg",
     }
 ]
 
 class RibbonfarmBlog(Blog):
 
     def __init__(self, name="Ribbonfarm", about=description, about_link="https://www.ribbonfarm.com/about/",
-                 authors=AUTHORS, image="ribbonfarm"):
+                 authors=AUTHORS, image="ribbonfarm", categories=["rationality"],):
 
         super().__init__(name=name, about=about, about_link=about_link, authors=authors, recent_posts=None,
-                         frequency=None, color=None, font=None, scraper=None, image=image, categories=None)
+                         frequency=None, color=None, font=None, scraper=None, image=image, categories=categories)
 

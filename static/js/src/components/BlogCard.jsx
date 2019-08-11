@@ -3,14 +3,16 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 
 
-export default class BlogChapter extends React.Component {
+export default class BlogCard extends React.Component {
 
 	constructor(props) {
 		super(props);
 
-        this.handleClick = this.handleClick.bind(this);
+        this.handleMouseOut = this.handleMouseOut.bind(this);
+        this.handleMouseOver = this.handleMouseOver.bind(this);
 		
 		this.state = {
+            hover: false
 		};
 	}
 
@@ -19,9 +21,21 @@ export default class BlogChapter extends React.Component {
       
     }
 
-    handleClick() {
-        console.log("Fired");
+    handleMouseOver() {
+        this.setState(
+            {
+                hover: true
+            });
     }
+
+    handleMouseOut() {
+        this.setState(
+            {
+                hover: false
+            });
+    }
+
+
 
 	render () {
         var blog = this.props.blog;
@@ -31,7 +45,12 @@ export default class BlogChapter extends React.Component {
             backgroundImage: `url(${Background})`
         } 
     return (
-        <div className="blogcard" style={background_image} onClick={this.handleClick}>
+        <div className="blogcard-wrapper">
+            <div className="blogcard" style={background_image} onClick={this.props.onClick} onMouseOver={this.handleMouseOver} onMouseOut={this.handleMouseOut}>
+                <div className="layer"> 
+                </div>
+            </div>
+            <div className="blogcard-overlay"></div>
         </div>
     	);
   }

@@ -55,5 +55,4 @@ def get_blogs(request):
                     final_json[category] = [new_blog.to_json()]
                 else:
                     final_json[category].append(new_blog.to_json())
-
     return JsonResponse(final_json, safe=False)

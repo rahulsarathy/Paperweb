@@ -25,6 +25,8 @@ class Blog(object):
             'authors': self.authors,
             'recent_posts': self.recent_posts,
             'image': self.image,
-            'categories': self.categories
+            'categories': self.categories,
+            'color': self.color,
+            'font': self.font,
         }
 

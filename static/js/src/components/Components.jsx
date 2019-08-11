@@ -3,11 +3,17 @@ import Magazine from './Magazine.jsx';
 import BlogChapter from './BlogChapter.jsx';
 import BlogCard from './BlogCard.jsx';
 import Category from './Category.jsx';
+import AboutCard from './AboutCard.jsx';
+import Authors from './Authors.jsx';
+import AuthorCard from './AuthorCard.jsx';
 
 
 export {
 	Magazine,
 	BlogChapter,
 	BlogCard,
-	Category
+	Category,
+	AboutCard,
+	Authors,
+	AuthorCard
 }
