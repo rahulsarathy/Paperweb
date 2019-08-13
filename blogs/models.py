@@ -10,7 +10,7 @@ class Blog(models.Model):
     last_polled_time = models.DateTimeField(_('Last Polled Time'), max_length=8)
     home_url = models.CharField(_('Home URL'), max_length=100)
     rss_url = models.CharField(_('RSS URL'), max_length=100)
-    scraped_old_posts = models.BooleanField(_('Scraped Old Posts'))
+    scraped_old_posts = models.BooleanField(_('Scraped Old Posts'), default=False)
 
 class Article(models.Model):
     title = models.CharField(_('Article Title'), max_length=100)

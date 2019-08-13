@@ -56,13 +56,13 @@ class RibbonfarmScraper(Scraper):
         article.find('fieldset').decompose()
         article.find('div', attrs={"class": "sharedaddy"}).decompose()
 
-        path = "dump/ribbonfarm/{}.html".format(permalink)
+        path = "dump/ribbonfarm/{}.html".format(id)
 
         f = open(path, "w+")
         f.write(str(article))
         f.close()
 
-        put_object(dest_bucket_name=BUCKET_NAME, dest_object_name='ribbonfarm/{}.html'.format(permalink),
+        put_object(dest_bucket_name=BUCKET_NAME, dest_object_name='ribbonfarm/{}.html'.format(id),
                    src_data=path)
 
         location = get_location(BUCKET_NAME)['LocationConstraint']
@@ -70,7 +70,7 @@ class RibbonfarmScraper(Scraper):
         object_url = "https://s3-{bucket_location}.amazonaws.com/{bucket_name}/{path}".format(
             bucket_location=location,
             bucket_name=BUCKET_NAME,
-            path='ribbonfarm/{}.html'.format(permalink))
+            path='ribbonfarm/{}.html'.format(id))
 
         try:
             Blog.objects.get(name="Ribbon Farm")
@@ -87,11 +87,24 @@ class RibbonfarmScraper(Scraper):
 
         return
 
-    def parse_permalink(self, permalink):
+    def check_blog(self):
+        try:
+            current_blog = Blog.objects.get(name="Ribbon Farm")
+        except:
+            current_blog = Blog(name="Ribbon Farm",
+                                last_polled_time=datetime.now(),
+                                home_url="https://www.ribbonfarm.com/",
+                                rss_url="https://www.ribbonfarm.com/feed/"
+                                )
+            current_blog.save()
+        return current_blog
 
+
+    def parse_permalink(self, permalink):
 
         try:
             Article.objects.get(permalink=permalink)
+            return
         except ObjectDoesNotExist:
             pass
 
@@ -99,43 +112,38 @@ class RibbonfarmScraper(Scraper):
         html = urlopen(toSend).read()
         soup = BeautifulSoup(html, 'html.parser')
 
-        author = soup.find('a', attrs={"rel": "author"})
+        author = soup.find('a', attrs={"rel": "author"}).text
         unparsed_date = soup.find('span', attrs={"class": "date published time"}).get('title', None)
         parsed_date = datetime.fromisoformat(unparsed_date)
+        title = soup.find('title').text
         article = soup.find('div', attrs={"class": "entry-content"})
         article.find('fieldset').decompose()
         article.find('div', attrs={"class": "sharedaddy"}).decompose()
+        id = hash(permalink)
 
-        path = "dump/ribbonfarm/{}.html".format(permalink)
-        #
-        # f = open(path, "w+")
-        # f.write(str(article))
-        # f.close()
-        #
-        # put_object(dest_bucket_name=BUCKET_NAME, dest_object_name='ribbonfarm/{}.html'.format(permalink),
-        #            src_data=path)
-        #
-        # location = get_location(BUCKET_NAME)['LocationConstraint']
-        #
-        # object_url = "https://s3-{bucket_location}.amazonaws.com/{bucket_name}/{path}".format(
-        #     bucket_location=location,
-        #     bucket_name=BUCKET_NAME,
-        #     path='ribbonfarm/{}.html'.format(permalink))
-        #
-        # try:
-        #     Blog.objects.get(name="Ribbon Farm")
-        # except:
-        #     current_blog = Blog(name="Ribbon Farm",
-        #                         last_polled_time=datetime.now(),
-        #                         home_url="https://www.ribbonfarm.com/",
-        #                         rss_url="https://www.ribbonfarm.com/feed/"
-        #                         )
-        #     current_blog.save()
-        #
-        # Article(title=title, date_published=parsed_date, author=author, permalink=permalink,
-        #         file_link=object_url, blog=current_blog).save()
-        #
-        # return
+
+        path = "dump/ribbonfarm/{}.html".format(id)
+
+        f = open(path, "w+")
+        f.write(str(article))
+        f.close()
+
+        put_object(dest_bucket_name=BUCKET_NAME, dest_object_name='ribbonfarm/{}.html'.format(id),
+                   src_data=path)
+
+        location = get_location(BUCKET_NAME)['LocationConstraint']
+
+        object_url = "https://s3-{bucket_location}.amazonaws.com/{bucket_name}/{path}".format(
+            bucket_location=location,
+            bucket_name=BUCKET_NAME,
+            path='ribbonfarm/{}.html'.format(id))
+
+        current_blog = self.check_blog()
+
+        Article(title=title, date_published=parsed_date, author=author, permalink=permalink,
+                file_link=object_url, blog=current_blog).save()
+
+        return
 
 
     def get_all_posts(self, page):
@@ -151,21 +159,14 @@ class RibbonfarmScraper(Scraper):
         html = urlopen(toSend).read()
         soup = BeautifulSoup(html, 'html.parser')
         if is_last_page(soup):
+            current_blog = self.check_blog()
+            current_blog.scraped_old_posts = True
+            current_blog.save()
             return
         posts = soup.findAll('a', attrs={"class": "entry-title-link"})
-        if page == 0:
-            f = open("dump/ribbonfarm/ribbonfarm_links.txt", "w+")
-        else:
-            f = open("dump/ribbonfarm/ribbonfarm_links.txt", "a")
 
         for index, post in enumerate(posts):
             permalink = str(post.get('href', None))
             self.parse_permalink(permalink)
-            print(str(post.get('href', None)))
-            f.write(str(post.get('href', None)) + '\n')
-
-        f.close()
 
         self.get_all_posts(page + 1)
-
-
