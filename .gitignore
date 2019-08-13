@@ -9,7 +9,7 @@ siteconfig/*.py~
 dump
 
 # JS Build
-static/js/build
+static/js/build/
 
 # Directory metadata
 .idea
