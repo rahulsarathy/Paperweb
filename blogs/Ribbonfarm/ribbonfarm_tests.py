@@ -1,4 +1,5 @@
-from blogs.Ribbonfarm import RibbonfarmScraper
+from blogs.Ribbonfarm.ribbonfarm_scraper import RibbonfarmScraper
+
 
 if __name__ == "__main__":
     scraper = RibbonfarmScraper()
