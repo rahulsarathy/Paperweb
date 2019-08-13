@@ -1,10 +1,12 @@
-from blogs import Scraper, Article
+from blogs.parsability import Scraper
+from blogs.models import Article
 from urllib.request import urlopen, Request as req
 import vcr
 from datetime import datetime
 from time import mktime
 from bs4 import BeautifulSoup
 import feedparser
+from s3_utils.utils import get_object, put_object, upload_file, get_location, BUCKET_NAME
 
 
 def is_last_page(soup):
@@ -40,6 +42,11 @@ class RibbonfarmScraper(Scraper):
 
         permalink = unparsed_article.link
 
+        check_article = Article.objects.get(permalink=permalink)
+        if check_article:
+            print("already parsed article!")
+            return False
+
         author = unparsed_article.author
 
         unparsed_date = unparsed_article.published_parsed
@@ -57,12 +64,29 @@ class RibbonfarmScraper(Scraper):
         article.find('fieldset').decompose()
         article.find('div', attrs={"class": "sharedaddy"}).decompose()
 
-        f = open("dump/ribbonfarm/ribbonfarm_single_article.html", "w+")
+        path = "dump/ribbonfarm/ribbonfarm_single_article.html"
+
+        f = open(path, "w+")
         f.write(str(article))
         f.close()
 
-        return Article(title=title, date_published=parsed_date, author=author, permalink=permalink)
+        # try:
+        #     get_article = Article.get(permalink=permalink)
+        # except Article.DoesNotExist:
+        put_object(dest_bucket_name=BUCKET_NAME, dest_object_name='ribbonfarm/ribbonfarm_single_article.html', src_data=path)
 
+        my_object = get_object(bucket_name=BUCKET_NAME, object_name='ribbonfarm/ribbonfarm_single_article.html')
+        location = get_location(BUCKET_NAME)['LocationConstraint']
+
+        object_url = "https://s3-{bucket_location}.amazonaws.com/{bucket_name}/{path}".format(
+            bucket_location=location,
+            bucket_name=BUCKET_NAME,
+            path='ribbonfarm/ribbonfarm_single_article.html')
+
+        Article(title=title, date_published=parsed_date, author=author, permalink=permalink,
+                              file_link=object_url).save()
+
+        return
 
     def get_all_posts(self, page):
         headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) '

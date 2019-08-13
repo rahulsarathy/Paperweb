@@ -6,3 +6,6 @@ if __name__ == "__main__":
     scraper.poll()
     # scraper.get_all_posts(0)
 
+def run_scraper():
+    scraper = RibbonfarmScraper()
+    scraper.poll()
