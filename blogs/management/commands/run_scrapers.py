@@ -5,7 +5,7 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         # Positional arguments
-        parser.add_argument('poll_ids', nargs='+', type=int)
+        parser.add_argument('individual_scraper', nargs='+', type=str)
 
         # Named (optional) arguments
         parser.add_argument(
@@ -15,7 +15,7 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
-        # ...
-        if options['delete']:
-            poll.delete()
-        # ...
+        for scraper in options['individual_scraper']:
+            print(scraper)
+            a = scraper()
+            a.poll()
