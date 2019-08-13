@@ -1,14 +1,13 @@
-from blogs import Scraper, Article
 import vcr
 from datetime import datetime
 from time import mktime
-
+from blogs.parsability import Scraper
 
 def is_last_page(soup):
 
     return False
 
-class MeltingAsphalt(Scraper):
+class MeltingAsphaltScraper(Scraper):
     def __init__(self,
                  name="Melting Asphalt",
                  rss_url="https://meltingasphalt.com/feed",
@@ -36,6 +35,6 @@ class MeltingAsphalt(Scraper):
         f.write(str(article))
         f.close()
 
-        return Article(title=title, author=author, permalink=permalink,
-                       date_published=date_published)
-
+        # return Article(title=title, author=author, permalink=permalink,
+        #                date_published=date_published)
+        #

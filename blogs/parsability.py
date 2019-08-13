@@ -23,6 +23,9 @@ class Scraper(object):
         #continue polling
         pass
 
+    def parse_permalink(self, permalink):
+        raise Exception('Not Implemented')
+
     def get_all_posts(self, page):
         raise Exception('Not Implemented')
 

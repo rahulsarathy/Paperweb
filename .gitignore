@@ -8,5 +8,8 @@ polls/*.py~
 siteconfig/*.py~
 dump
 
+# JS Build
+static/js/build
+
 # Directory metadata
 .idea

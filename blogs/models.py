@@ -6,10 +6,11 @@ from django.utils.translation import ugettext_lazy as _
 # Create your models here.
 
 class Blog(models.Model):
-    name = models.CharField(_('Blog Name'), max_length=100)
+    name = models.CharField(_('Blog Name'), max_length=100, unique=True)
     last_polled_time = models.DateTimeField(_('Last Polled Time'), max_length=8)
     home_url = models.CharField(_('Home URL'), max_length=100)
     rss_url = models.CharField(_('RSS URL'), max_length=100)
+    scraped_old_posts = models.BooleanField(_('Scraped Old Posts'))
 
 class Article(models.Model):
     title = models.CharField(_('Article Title'), max_length=100)
@@ -27,7 +28,6 @@ class Comment(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
 
 class Subscription(models.Model):
-
     subscriber = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     date_subscribed = models.DateTimeField(_('Date Subscribed'))
     blog = models.OneToOneField(Blog, on_delete=models.CASCADE)
