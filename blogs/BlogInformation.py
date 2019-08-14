@@ -29,4 +29,3 @@ class Blog(object):
             'color': self.color,
             'font': self.font,
         }
-

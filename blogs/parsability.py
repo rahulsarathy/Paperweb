@@ -1,5 +1,6 @@
 from enum import Enum
 from datetime import datetime, timedelta
+from blogs.models import Blog as BlogModel
 
 class Scraper(object):
 
@@ -41,7 +42,12 @@ class Scraper(object):
         }
 
     def get_last_polled_time(self):
-        return datetime.now() - timedelta(days=4)
+        try:
+            check_blog = BlogModel.objects.get(name=self.name)
+            last_polled_time = check_blog.last_polled_time
+            return last_polled_time
+        except:
+            return datetime.now() - timedelta(days=4)
 
 
 class Article(object):
