@@ -47,6 +47,7 @@ INSTALLED_APPS = [
   'django.contrib.messages',
   'django.contrib.staticfiles',
     'blogs.apps.BlogsConfig',
+    'magazine.apps.MagazineConfig',
     'payments.apps.PaymentsConfig',
     'users.apps.UsersConfig',
     'rest_framework',
