@@ -1,0 +1,59 @@
+.magazine {
+	padding: 10px;
+}
+
+.blog-title {
+	text-align: left;
+	width: 100%;
+	font-family: lato;
+	font-weight: normal; 
+/*	text-align: justify
+*/}
+
+.author {
+	font-family: lato;
+	font-size: 18px;
+}
+
+.half {
+	width: 50%;
+}
+
+.article {
+	width: 50%;
+	column-count: 2;
+	height: 500px;
+}
+
+.blog-post {
+	font-size: 11pt;
+	line-height: 1.5;
+	font-family: OFL Sorts Mill Goudy TT;
+	column-count: 2;
+}
+
+.header {
+	width: 100%;
+	background-color: '#0F1534';
+}
+
+blockquote {
+	background-color: #e7e7d0;
+	color: #1d2b5a;
+	border-top: 1px solid #1d2b5a;
+	border-bottom: 1px solid #1d2b5a;
+	margin: 0;
+}
+
+h1 {
+	font-family: lato;
+	font-weight: normal;
+}
+
+
+@page {
+    size: A4;
+    margin: 2mm;
+}
+
+

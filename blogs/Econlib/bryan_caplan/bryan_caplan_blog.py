@@ -17,7 +17,7 @@ AUTHORS = [
 
 class BryanCaplanBlog(Blog):
 
-    def __init__(self, name="Bryan Caplan", about=description, about_link="https://www.ribbonfarm.com/about/",
+    def __init__(self, name="Bryan Caplan", about=description, about_link="https://www.econlib.org/library/About.html",
                  authors=AUTHORS, image="bryancaplan", categories=["economics"], color="#0F1534",
                  font="Adobe Garamond Pro"):
 
