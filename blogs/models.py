@@ -7,7 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 
 class Blog(models.Model):
     name = models.CharField(_('Blog Name'), max_length=100, unique=True)
-    last_polled_time = models.DateTimeField(_('Last Polled Time'), max_length=8)
+    last_polled_time = models.DateTimeField(_('Last Polled Time'), max_length=8, null=True)
     home_url = models.CharField(_('Home URL'), max_length=100)
     rss_url = models.CharField(_('RSS URL'), max_length=100)
     scraped_old_posts = models.BooleanField(_('Scraped Old Posts'), default=False)

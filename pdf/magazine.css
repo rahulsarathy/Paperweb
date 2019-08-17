@@ -7,12 +7,15 @@
 	width: 100%;
 	font-family: lato;
 	font-weight: normal; 
+	line-height: 1px;
 /*	text-align: justify
 */}
 
 .author {
 	font-family: lato;
 	font-size: 18px;
+	font-weight: normal;
+	color: #4a4a4a;
 }
 
 .half {
@@ -27,14 +30,35 @@
 
 .blog-post {
 	font-size: 11pt;
-	line-height: 1.5;
+	line-height: 1.2;
 	font-family: OFL Sorts Mill Goudy TT;
 	column-count: 2;
 }
 
-.header {
+.stripe {
 	width: 100%;
-	background-color: '#0F1534';
+	background-color: black;
+	color: white;
+	height: 28px;
+	margin: 0;
+	padding: 2mm;
+	margin-bottom: 15px;
+}
+
+.stripe-title {
+	font-family: EBGaramond;
+	color: #DBECF1;
+	font-size: 20px;
+}
+
+.logo {
+	width: 23px;
+	height: 23px;
+	background-image: url('https://3ijp5i2qkzo4hq4yrxfteqh-wpengine.netdna-ssl.com/wp-content/themes/econlib/assets/icons/torch-icon.svg');
+	background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    object-fit: contain;
 }
 
 blockquote {
@@ -43,6 +67,7 @@ blockquote {
 	border-top: 1px solid #1d2b5a;
 	border-bottom: 1px solid #1d2b5a;
 	margin: 0;
+	padding: 0px;
 }
 
 h1 {
@@ -53,7 +78,7 @@ h1 {
 
 @page {
     size: A4;
-    margin: 2mm;
+    margin: 0mm;
 }
 
 

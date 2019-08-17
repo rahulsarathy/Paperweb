@@ -35,7 +35,6 @@ class BryanCaplanEconlibScraper(Scraper):
             current_blog = Blog.objects.get(self.name)
         except:
             current_blog = Blog(name=self.name,
-                                last_polled_time=datetime.now(),
                                 home_url=self.home_url,
                                 rss_url=self.rss_url
                                 )
@@ -75,7 +74,7 @@ class BryanCaplanEconlibScraper(Scraper):
         object_url = "https://s3-{bucket_location}.amazonaws.com/{bucket_name}/{path}".format(
             bucket_location=location,
             bucket_name=BUCKET_NAME,
-            path='ribbonfarm/{}.html'.format(id))
+            path='bryan_caplan_econlib/{}.html'.format(id))
 
         current_blog = self.check_blog()
 
