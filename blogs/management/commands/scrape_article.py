@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand, CommandError
 from blogs.Ribbonfarm.ribbonfarm_scraper import RibbonfarmScraper
 from blogs.melting_asphalt.melting_asphalt_scraper import MeltingAsphaltScraper
 from blogs.Econlib.bryan_caplan.bryan_caplan_scraper import BryanCaplanEconlibScraper
+from blogs.serializers import ArticleSerializer
 
 SCRAPERS = (
     RibbonfarmScraper,
@@ -19,7 +20,9 @@ class Command(BaseCommand):
 
         for blog_name in options['blog_name']:
             correct_scraper = find_scraper(blog_name)
-            correct_scraper.parse_permalink(blog_name)
+            article = correct_scraper.parse_permalink(blog_name)
+            serializer = ArticleSerializer(article)
+            print(serializer.data)
 
         # for scraper in SCRAPERS:
         #     current_scraper = scraper()

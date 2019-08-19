@@ -32,26 +32,29 @@ class BryanCaplanEconlibScraper(Scraper):
 
     def check_blog(self):
         try:
-            current_blog = Blog.objects.get(self.name)
-        except:
             current_blog = Blog(name=self.name,
                                 home_url=self.home_url,
                                 rss_url=self.rss_url
                                 )
             current_blog.save()
+        except:
+            current_blog = Blog.objects.get(name=self.name)
+
         return current_blog
 
 
     def parse_permalink(self, permalink):
 
         try:
-            Article.objects.get(permalink=permalink)
-            return
+            article = Article.objects.get(permalink=permalink)
+            return article
         except ObjectDoesNotExist:
             pass
 
         toSend = req(url=permalink, headers=HEADERS)
+
         html = urlopen(toSend).read()
+
         soup = BeautifulSoup(html, 'html.parser')
 
         by_author = soup.find('h5', attrs={'class': 'post-author'}).text
@@ -78,13 +81,14 @@ class BryanCaplanEconlibScraper(Scraper):
 
         current_blog = self.check_blog()
 
-        Article(title=title, date_published=parsed_date, author=author, permalink=permalink,
-                file_link=object_url, blog=current_blog).save()
+        to_save = Article(title=title, date_published=parsed_date, author=author, permalink=permalink,
+                file_link=object_url, blog=current_blog)
+        to_save.save()
 
-        put_object(dest_bucket_name=BUCKET_NAME, dest_object_name='ribbonfarm/{}.html'.format(id),
+        put_object(dest_bucket_name=BUCKET_NAME, dest_object_name='bryan_caplan_econlib/{}.html'.format(id),
                    src_data=path)
 
-        return
+        return to_save
 
 
     def get_all_posts(self, page, year):

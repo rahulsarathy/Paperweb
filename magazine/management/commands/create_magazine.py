@@ -2,28 +2,15 @@ from fpdf import FPDF, HTMLMixin
 from django.core.management.base import BaseCommand
 from blogs.models import Article, Blog
 from magazine.html_template import template
+from users.models import CustomUser as User
 
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-        # pdf = FPDF()
-        # pdf.add_page()
-        # pdf.set_font("Arial", size=12)
-        # pdf.cell(200, 10, txt="Welcome to Python!", ln=1, align="C")
-        # pdf.output("simple_demo.pdf")
-        html2pdf()
+        pass
 
-def html2pdf():
-    # html = '''<h1 align="center">PyFPDF HTML Demo</h1>
-    # <p>This is regular text</p>
-    # <p>You can also <b>bold</b>, <i>italicize</i> or <u>underline</u>
-    # '''
-    html = template
+    def create_magazines(self):
 
-    pdf = HTML2PDF()
-    pdf.add_page()
-    pdf.write_html(html)
-    pdf.output('html2pdf.pdf')
+        # for each blog create a magazine block of articles from start date to end date
+        # for each user add that block in to their magazine
 
-class HTML2PDF(FPDF, HTMLMixin):
-    pass

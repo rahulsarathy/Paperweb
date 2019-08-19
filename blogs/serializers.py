@@ -1,4 +1,4 @@
-from blogs.models import Blog
+from blogs.models import Blog, Article
 import json
 
 
@@ -21,6 +21,26 @@ class BlogSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         return Blog(**validated_data)
+
+    def update(self, instance, validated_data):
+        for field, value in validated_data.items():
+            setattr(instance, field, value)
+        return instance
+
+
+class ArticleSerializer(serializers.ModelSerializer):
+    title = serializers.CharField(max_length=100)
+    permalink = serializers.URLField()
+    date_published = serializers.DateTimeField()
+    author = serializers.CharField()
+    file_link = serializers.URLField()
+
+    class Meta:
+        model = Article
+        fields = ['title', 'permalink', 'date_published', 'author', 'file_link']
+
+    def create(self, validated_data):
+        return Article(**validated_data)
 
     def update(self, instance, validated_data):
         for field, value in validated_data.items():
