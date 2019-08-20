@@ -11,12 +11,19 @@ class Magazine(models.Model):
     date_end = models.DateTimeField()
     file_link = models.URLField(_('S3 File Link'), primary_key=True)
 
+
 class Blog(models.Model):
     name = models.CharField(_('Blog Name'), max_length=100, unique=True)
     last_polled_time = models.DateTimeField(_('Last Polled Time'), max_length=8, null=True)
-    home_url = models.CharField(_('Home URL'), max_length=100)
-    rss_url = models.CharField(_('RSS URL'), max_length=100)
+    home_url = models.URLField(_('Home URL'))
+    rss_url = models.URLField(_('RSS URL'))
     scraped_old_posts = models.BooleanField(_('Scraped Old Posts'), default=False)
+
+class BlogBlock(models.Model):
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
+    file_link = models.URLField(_('S3 File Link'), primary_key=True)
+    date_start = models.DateTimeField()
+    date_end = models.DateTimeField()
 
 class Article(models.Model):
     title = models.CharField(_('Article Title'), max_length=100)
