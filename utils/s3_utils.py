@@ -34,6 +34,7 @@ def get_object(bucket_name, object_name):
         logging.error(e)
         return None
     # Return an open StreamingBody object
+    print(response)
     return response['Body']
 
 def put_object(dest_bucket_name, dest_object_name, src_data):
@@ -105,3 +106,7 @@ def get_location(bucket_name):
 
     bucket_location = boto3.client('s3').get_bucket_location(Bucket=bucket_name)
     return bucket_location
+
+def download_link(s3_file_path, output_file_path):
+    s3 = boto3.client('s3')
+    s3.download_file('pulpscrapedarticles', s3_file_path, output_file_path)

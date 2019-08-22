@@ -7,6 +7,8 @@ from blogs.all_blogs import BLOGS
 import datetime
 import os
 from pyPDF2 import PdfMileMerger
+from utils.s3_utils import download_link
+from bs4 import BeautifulSoup
 
 class Command(BaseCommand):
 
@@ -34,15 +36,33 @@ def create_block(blog):
     articles = Article.objects.filter(blog=blog_orm).filter(date__range=[start_date_string, end_date_string])
 
     for article in articles:
+        author = article.author
+        title = article.title
+
         s3_url = article.file_link
+        s3_file_path = s3_url.split('pulpscrapedarticles')[1]
+        output_file_path = 'dump/downloads/{}'.format(s3_file_path)
+
+        #stores in /download folder
+        download_link(s3_file_path, output_file_path)
+        blog_soup = BeautifulSoup(open(output_file_path))
+
+        #grab template for blog
+        soup = BeautifulSoup(open("magazine/blog_templates/{}".format(blog.name), "html.parser"))
+
+        #inject html into template
+        title_tag = soup.find('div', attrs={"class": "blog-title"})
+        author_tag = soup.find('div', attrs={"class": "author"})
+        article_tag = soup.find('div', attrs={"class": "blog-post"})
+        title_tag.string = title
+        author_tag.string = author
+        article_tag.string = blog_soup
 
 
-
-        #grab html and store in /downloads
 
         #run princexml on downloaded path (/pdf)
 
-        cmd = 'prince {pathname} -o {outputpath}'
+        cmd = 'prince {pathname} -o {outputpath}'.format(pathname=)
         os.system(cmd)
 
     # join all the pdfs

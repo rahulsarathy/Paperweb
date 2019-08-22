@@ -6,7 +6,7 @@ from datetime import datetime
 from time import mktime
 from bs4 import BeautifulSoup
 import feedparser
-from s3_utils.utils import get_object, put_object, upload_file, get_location, BUCKET_NAME
+from utils.s3_utils import get_object, put_object, upload_file, get_location, BUCKET_NAME
 from django.core.exceptions import ObjectDoesNotExist
 
 HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) '
