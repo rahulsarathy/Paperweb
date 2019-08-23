@@ -12,13 +12,14 @@ from django.core.exceptions import ObjectDoesNotExist
 HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) '
                          'Chrome/41.0.2228.0 Safari/537.3'}
 
+
 class BryanCaplanEconlibScraper(Scraper):
     def __init__(self,
-                 name="Bryan Caplan Econlib",
+                 name_id="bryan_caplan_econlib",
                  rss_url="http://www.econlib.org/feed/indexCaplan_xml",
                  home_url="https://www.econlib.org/author/bcaplan/"):
 
-        super().__init__(name=name, rss_url=rss_url, home_url=home_url)
+        super().__init__(name_id=name_id, rss_url=rss_url, home_url=home_url)
 
 
     def _poll(self):
@@ -32,13 +33,13 @@ class BryanCaplanEconlibScraper(Scraper):
 
     def check_blog(self):
         try:
-            current_blog = Blog(name=self.name,
+            current_blog = Blog(name=self.name_id,
                                 home_url=self.home_url,
                                 rss_url=self.rss_url
                                 )
             current_blog.save()
         except:
-            current_blog = Blog.objects.get(name=self.name)
+            current_blog = Blog.objects.get(name=self.name_id)
 
         return current_blog
 

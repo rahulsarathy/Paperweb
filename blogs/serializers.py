@@ -19,6 +19,10 @@ class BlogSerializer(serializers.Serializer):
         child=serializers.CharField(max_length=256)
     )
 
+    class Meta:
+        model = Blog
+        fields = ['name']
+
     def create(self, validated_data):
         return Blog(**validated_data)
 

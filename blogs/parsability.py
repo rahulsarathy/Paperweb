@@ -4,10 +4,10 @@ from blogs.models import Blog as BlogModel
 
 class Scraper(object):
 
-    def __init__(self, name, rss_url="", home_url="", username="",
+    def __init__(self, name_id, rss_url="", home_url="", username="",
                  author=""):
 
-        self.name = name
+        self.name_id = name_id
         self.rss_url = rss_url
         self.last_polled_time = self.get_last_polled_time()
         self.home_url = home_url
