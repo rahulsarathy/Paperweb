@@ -7,6 +7,8 @@ from blogs.slatestarcodex.slatestarcodex_blog import SlateStarCodexBlog
 from blogs.mercatus_center.mercatus_center_blog import MercatusCenterBlog
 from blogs.marginal_revolution.marginal_revolution_blog import MarginalRevolutionBlog
 
+from blogs.melting_asphalt.melting_asphalt_scraper import MeltingAsphaltScraper
+
 CATEGORIES = ["Rationality", "Economics", "Technology"]
 
 BLOGS = (
@@ -18,4 +20,8 @@ BLOGS = (
     SlateStarCodexBlog,
     MercatusCenterBlog,
     MarginalRevolutionBlog,
+)
+
+SCRAPERS = (
+    MeltingAsphaltScraper
 )

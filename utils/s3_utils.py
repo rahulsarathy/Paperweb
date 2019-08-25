@@ -110,3 +110,15 @@ def get_location(bucket_name):
 def download_link(s3_file_path, output_file_path):
     s3 = boto3.client('s3')
     s3.download_file('pulpscrapedarticles', s3_file_path, output_file_path)
+
+def create_article_url(blog_name, article_id):
+    location = get_location(BUCKET_NAME)['LocationConstraint']
+
+    object_url = "https://s3-{bucket_location}.amazonaws.com/{bucket_name}/{blog_name}/{article_id}.html".format(
+        bucket_location=location,
+        bucket_name=BUCKET_NAME,
+        blog_name=blog_name,
+        article_id=article_id
+    )
+
+    return object_url

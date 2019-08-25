@@ -1,6 +1,8 @@
 from enum import Enum
-from datetime import datetime, timedelta
-from blogs.models import Blog as BlogModel
+from datetime import datetime, timedelta, timezone
+from blogs.models import Blog as BlogModel, Article as ArticleModel
+from django.core.exceptions import ObjectDoesNotExist
+from django.utils.timezone import make_aware
 
 class Scraper(object):
 
@@ -15,14 +17,40 @@ class Scraper(object):
         self.author = author
 
     def poll(self, *args, **kwargs):
+        print("polling..")
+        print("last polled time is ", self.last_polled_time)
 
-        if not (datetime.utcnow() - self.last_polled_time > timedelta(days=1)):
+        now = make_aware(datetime.now())
+
+        if not (now - self.last_polled_time > timedelta(days=1)):
+            print("Scraper polled too recently!")
             return
 
         self._poll(*args, **kwargs)
 
         #continue polling
         pass
+
+    def check_blog(self):
+        try:
+            current_blog = BlogModel(name=self.name_id,
+                                last_polled_time=make_aware(datetime.now()),
+                                home_url=self.home_url,
+                                rss_url=self.rss_url
+                                )
+            current_blog.save()
+        except:
+            current_blog = BlogModel.objects.get(name=self.name_id)
+
+        return current_blog
+
+    def check_article(self, permalink):
+        try:
+            ArticleModel.objects.get(permalink=permalink)
+            return
+        except ObjectDoesNotExist:
+            pass
+
 
     def parse_permalink(self, permalink):
         raise Exception('Not Implemented')
@@ -43,12 +71,11 @@ class Scraper(object):
 
     def get_last_polled_time(self):
         try:
-            check_blog = BlogModel.objects.get(name=self.name)
+            check_blog = BlogModel.objects.get(name=self.name_id)
             last_polled_time = check_blog.last_polled_time
             return last_polled_time
         except:
-            return datetime.now() - timedelta(days=4)
-
+            return make_aware(datetime.now() - timedelta(days=4))
 
 class Article(object):
 
@@ -80,7 +107,6 @@ class Article(object):
             'permalink': self.permalink,
             'content_link': self.content_link
         }
-
 
 class Comment(object):
     def __init__(self, author="", content="", date_published=None, parent_comment=None):

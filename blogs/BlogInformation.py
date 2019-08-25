@@ -20,7 +20,7 @@ class Blog(object):
     def to_json(self):
 
         return {
-            'name': self.display_name,
+            'display_name': self.display_name,
             'name_id': self.name_id,
             'about': self.about,
             'about_link': self.about_link,

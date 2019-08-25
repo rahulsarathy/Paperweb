@@ -16,9 +16,9 @@ AUTHORS = [
 
 class MercatusCenterBlog(Blog):
 
-    def __init__(self, name="Mercatus Center", about=description, about_link="https://www.mercatus.org/about",
+    def __init__(self, display_name="Mercatus Center", name_id="mercatus_center", about=description, about_link="https://www.mercatus.org/about",
                  authors=AUTHORS, image="mercatus_center", categories=["economics"]):
 
-        super().__init__(name=name, about=about, about_link=about_link, authors=authors, recent_posts=None,
+        super().__init__(display_name=display_name, name_id=name_id, about=about, about_link=about_link, authors=authors, recent_posts=None,
                          frequency=None, color=None, font=None, scraper=None, image=image, categories=categories)
 

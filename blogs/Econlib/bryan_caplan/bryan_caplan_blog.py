@@ -21,6 +21,6 @@ class BryanCaplanBlog(Blog):
                  authors=AUTHORS, image="bryancaplan", categories=["economics"], color="#0F1534",
                  font="Adobe Garamond Pro"):
 
-        super().__init__(display_name=display_name, name_id=name_id, about=about, about_link=about_link, authors=authors, recent_posts=None,
-                         frequency=None, color=color, font=font, scraper=None, image=image, categories=categories)
-
+        super().__init__(display_name=display_name, name_id=name_id, about=about, about_link=about_link, authors=authors,
+                         recent_posts=None, frequency=None, color=color, font=font, scraper=None, image=image,
+                         categories=categories)

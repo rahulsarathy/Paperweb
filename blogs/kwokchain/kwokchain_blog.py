@@ -18,9 +18,9 @@ AUTHORS = [
 
 class KwokChainBlog(Blog):
 
-    def __init__(self, name="kwokchain", about=description, about_link="https://kwokchain.com/about/",
+    def __init__(self, display_name="Kwokchain", name_id="kwokchain", about=description, about_link="https://kwokchain.com/about/",
                  authors=AUTHORS, image='kwokchain', categories=["technology"]):
 
-        super().__init__(name=name, about=about, about_link=about_link, authors=authors, recent_posts=None,
+        super().__init__(display_name=display_name, name_id=name_id, about=about, about_link=about_link, authors=authors, recent_posts=None,
                          frequency=None, color=None, font=None, scraper=None, image=image, categories=categories)
 

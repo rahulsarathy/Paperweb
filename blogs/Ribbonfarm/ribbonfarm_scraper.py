@@ -64,8 +64,8 @@ class RibbonfarmScraper(Scraper):
         except ObjectDoesNotExist:
             pass
 
-        toSend = req(url=permalink, headers=HEADERS)
-        html = urlopen(toSend).read()
+        to_send = req(url=permalink, headers=HEADERS)
+        html = urlopen(to_send).read()
         soup = BeautifulSoup(html, 'html.parser')
 
         author = soup.find('a', attrs={"rel": "author"}).text
