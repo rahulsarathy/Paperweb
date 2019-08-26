@@ -70,20 +70,10 @@ class Scraper(object):
 
         current_blog = self.check_blog()
 
-        try:
-            upload_article(blog_name=self.name_id, article_id=article_id, content=content)
-        except Exception as e:
-            print(e)
-            print("failed to upload article")
-            traceback.print_exc()
-            return
+        upload_article(blog_name=self.name_id, article_id=article_id, content=content)
 
-        try:
-            to_save = ArticleModel(title=title, date_published=date_published, author=author, permalink=permalink,
+        to_save = ArticleModel(title=title, date_published=date_published, author=author, permalink=permalink,
                           file_link=s3_link, blog=current_blog).save()
-        except:
-            print("article failed to save!")
-            return
 
         to_save = self.check_blog()
         to_save.save()
