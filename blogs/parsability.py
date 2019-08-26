@@ -78,6 +78,8 @@ class Scraper(object):
         to_save = self.check_blog()
         to_save.save()
 
+        print("uploaded and saved")
+
         return to_save
 
     def parse_permalink(self, permalink):
