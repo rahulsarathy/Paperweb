@@ -38,6 +38,7 @@ class KwokchainScraper(Scraper):
 
         if self.check_article(permalink):
             print("Article already exists, exit polling")
+            return
 
         current_blog = self.check_blog()
 

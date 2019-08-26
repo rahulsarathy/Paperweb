@@ -10,6 +10,7 @@ from blogs.marginal_revolution.marginal_revolution_blog import MarginalRevolutio
 from blogs.melting_asphalt.melting_asphalt_scraper import MeltingAsphaltScraper
 from blogs.kwokchain.kwokchain_scraper import KwokchainScraper
 from blogs.marginal_revolution.marginal_revolution_scraper import MarginalRevolutionScraper
+from blogs.Ribbonfarm.ribbonfarm_scraper import RibbonfarmScraper
 
 CATEGORIES = ["Rationality", "Economics", "Technology"]
 
@@ -27,5 +28,6 @@ BLOGS = (
 SCRAPERS = (
     MeltingAsphaltScraper,
     KwokchainScraper,
-    MarginalRevolutionScraper
+    MarginalRevolutionScraper,
+    RibbonfarmScraper
 )

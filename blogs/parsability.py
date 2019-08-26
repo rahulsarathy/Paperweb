@@ -3,6 +3,8 @@ from datetime import datetime, timedelta, timezone
 from blogs.models import Blog as BlogModel, Article as ArticleModel
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.timezone import make_aware
+from utils.s3_utils import upload_article, create_article_url
+import traceback
 
 class Scraper(object):
 
@@ -22,13 +24,20 @@ class Scraper(object):
 
         now = make_aware(datetime.now())
 
+        to_save = self.check_blog()
+        to_save.save()
+
         if not (now - self.last_polled_time > timedelta(days=1)):
             print("Scraper polled too recently!")
             return
 
-        self._poll(*args, **kwargs)
+        try:
+            self._poll(*args, **kwargs)
+        except:
+            "failed to poll"
+            return
 
-        to_save = self.check_blog()
+        to_save.last_polled_time = now
         to_save.save()
 
         #continue polling
@@ -36,11 +45,8 @@ class Scraper(object):
 
     def check_blog(self):
         try:
-            current_blog = BlogModel(name=self.name_id,
-                                last_polled_time=make_aware(datetime.now()),
-                                home_url=self.home_url,
-                                rss_url=self.rss_url
-                                )
+            current_blog = BlogModel(name=self.name_id, last_polled_time=make_aware(datetime.now() - timedelta(days=4)),
+                                     home_url=self.home_url, rss_url=self.rss_url)
             current_blog.save()
         except:
             current_blog = BlogModel.objects.get(name=self.name_id)
@@ -54,6 +60,35 @@ class Scraper(object):
         except ObjectDoesNotExist:
             return False
 
+    def handle_s3(self, title, permalink, date_published, author, content):
+        article_id = hash(permalink)
+        s3_link = create_article_url(blog_name=self.name_id, article_id=article_id)
+
+        if self.check_article(permalink):
+            print("Article already exists, exit polling")
+            return
+
+        current_blog = self.check_blog()
+
+        try:
+            upload_article(blog_name=self.name_id, article_id=article_id, content=content)
+        except Exception as e:
+            print(e)
+            print("failed to upload article")
+            traceback.print_exc()
+            return
+
+        try:
+            to_save = ArticleModel(title=title, date_published=date_published, author=author, permalink=permalink,
+                          file_link=s3_link, blog=current_blog).save()
+        except:
+            print("article failed to save!")
+            return
+
+        to_save = self.check_blog()
+        to_save.save()
+
+        return to_save
 
     def parse_permalink(self, permalink):
         raise Exception('Not Implemented')

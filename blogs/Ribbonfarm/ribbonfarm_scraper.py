@@ -6,8 +6,9 @@ from datetime import datetime
 from time import mktime
 from bs4 import BeautifulSoup
 import feedparser
-from utils.s3_utils import get_object, put_object, upload_file, get_location, BUCKET_NAME
+from utils.s3_utils import upload_article, create_article_url
 from django.core.exceptions import ObjectDoesNotExist
+import traceback
 
 HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) '
                          'Chrome/41.0.2228.0 Safari/537.3'}
@@ -25,11 +26,11 @@ def is_last_page(soup):
 
 class RibbonfarmScraper(Scraper):
     def __init__(self,
-                 name="ribbonfarm",
+                 name_id="ribbonfarm",
                  rss_url="https://www.ribbonfarm.com/feed/",
                  home_url="https://www.ribbonfarm.com"):
 
-        super().__init__(name=name, rss_url=rss_url, home_url=home_url)
+        super().__init__(name_id=name_id, rss_url=rss_url, home_url=home_url)
 
 
     def _poll(self):
@@ -38,23 +39,9 @@ class RibbonfarmScraper(Scraper):
         xml = feedparser.parse(self.rss_url)
         unparsed_article = xml.entries[0]
         permalink = unparsed_article.link
+        print(permalink)
 
         self.parse_permalink(permalink)
-
-
-    def check_blog(self):
-        try:
-            current_blog = Blog(name="Ribbon Farm",
-                                last_polled_time=datetime.now(),
-                                home_url="https://www.ribbonfarm.com/",
-                                rss_url="https://www.ribbonfarm.com/feed/"
-                                )
-            current_blog.save()
-        except:
-            current_blog = Blog.objects.get(name="Ribbon Farm")
-
-        return current_blog
-
 
     def parse_permalink(self, permalink):
 
@@ -73,32 +60,10 @@ class RibbonfarmScraper(Scraper):
         parsed_date = datetime.fromisoformat(unparsed_date)
         title = soup.find('title').text
         article = soup.find('div', attrs={"class": "entry-content"})
-        article.find('fieldset').decompose()
         article.find('div', attrs={"class": "sharedaddy"}).decompose()
-        id = hash(permalink)
+        content = article
 
-        path = "dump/ribbonfarm/{}.html".format(id)
-
-        f = open(path, "w+")
-        f.write(str(article))
-        f.close()
-
-        location = get_location(BUCKET_NAME)['LocationConstraint']
-
-        object_url = "https://s3-{bucket_location}.amazonaws.com/{bucket_name}/{path}".format(
-            bucket_location=location,
-            bucket_name=BUCKET_NAME,
-            path='ribbonfarm/{}.html'.format(id))
-
-        current_blog = self.check_blog()
-
-        Article(title=title, date_published=parsed_date, author=author, permalink=permalink,
-                file_link=object_url, blog=current_blog).save()
-
-        put_object(dest_bucket_name=BUCKET_NAME, dest_object_name='ribbonfarm/{}.html'.format(id),
-                   src_data=path)
-
-        return
+        self.handle_s3(title=title, permalink=permalink, date_published=parsed_date, author=author, content=content)
 
     # USE WITH PROXY FLEET TO PREVENT RATE LIMITS
     def get_all_posts(self, page):

@@ -126,6 +126,7 @@ def create_article_url(blog_name, article_id):
 
 def upload_article(blog_name, article_id, content):
     id_path = '{}.html'.format(article_id)
+    os.mkdir(os.path.join('dump', blog_name))
     local_path = os.path.join('dump', blog_name, id_path)
 
     with open(local_path, 'w') as f:
