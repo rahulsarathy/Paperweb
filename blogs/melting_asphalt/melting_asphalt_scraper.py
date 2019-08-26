@@ -62,7 +62,9 @@ class MeltingAsphaltScraper(Scraper):
 
         path = '{blog_name}/{id}.html'.format(blog_name=self.name_id, id=id)
 
-        self.check_article(permalink)
+        if self.check_article(permalink):
+            return
+
         Article(title=title, author=author, date_published=aware_date, permalink=permalink, file_link=s3_url,
                 blog=current_blog).save()
         put_object(dest_bucket_name='pulpscrapedarticles', dest_object_name=path, src_data=local_path)

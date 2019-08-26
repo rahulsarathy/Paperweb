@@ -28,6 +28,9 @@ class Scraper(object):
 
         self._poll(*args, **kwargs)
 
+        to_save = self.check_blog()
+        to_save.save()
+
         #continue polling
         pass
 
@@ -47,9 +50,9 @@ class Scraper(object):
     def check_article(self, permalink):
         try:
             ArticleModel.objects.get(permalink=permalink)
-            return
+            return True
         except ObjectDoesNotExist:
-            pass
+            return False
 
 
     def parse_permalink(self, permalink):

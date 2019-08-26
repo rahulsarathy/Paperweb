@@ -1,9 +1,10 @@
 
 from django.core.management.base import BaseCommand
-from blogs.all_blogs import MeltingAsphaltScraper
+from blogs.all_blogs import MeltingAsphaltScraper, KwokchainScraper
 
 scraper_map = {
-    'melting_asphalt': MeltingAsphaltScraper
+    'melting_asphalt': MeltingAsphaltScraper,
+    'kwokchain': KwokchainScraper
 }
 
 class Command(BaseCommand):

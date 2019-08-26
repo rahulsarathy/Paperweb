@@ -13,6 +13,7 @@
 import logging
 import boto3
 from botocore.exceptions import ClientError
+import os
 
 BUCKET_NAME = 'pulpscrapedarticles'
 
@@ -122,3 +123,13 @@ def create_article_url(blog_name, article_id):
     )
 
     return object_url
+
+def upload_article(blog_name, article_id, content):
+    id_path = '{}.html'.format(article_id)
+    local_path = os.path.join('dump', blog_name, id_path)
+
+    with open(local_path, 'w') as f:
+        f.write(str(content))
+    f.close()
+
+    put_object(dest_bucket_name=BUCKET_NAME, dest_object_name=os.path.join(blog_name, id_path), src_data=local_path)

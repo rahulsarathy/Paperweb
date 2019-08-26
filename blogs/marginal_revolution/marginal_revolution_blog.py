@@ -34,6 +34,7 @@ class MarginalRevolutionBlog(Blog):
     def __init__(self, display_name="Marginal Revolution", name_id="marginal_revolution", about=description, about_link="https://marginalrevolution.com/about",
                  authors=AUTHORS, image="marginal_revolution", categories=["economics"]):
 
-        super().__init__(display_name=display_name, name_id=name_id, about=about, about_link=about_link, authors=authors, recent_posts=None,
-                         frequency=None, color=None, font=None, scraper=None, image=image, categories=categories)
+        super().__init__(display_name=display_name, name_id=name_id, about=about, about_link=about_link,
+                         authors=authors, recent_posts=None, frequency=None, color=None, font=None, scraper=None,
+                         image=image, categories=categories)
 
