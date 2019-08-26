@@ -6,7 +6,7 @@ from datetime import datetime
 from time import mktime
 from bs4 import BeautifulSoup
 import feedparser
-from utils.s3_utils import get_object, put_object, upload_file, get_location, BUCKET_NAME, upload_article, create_article_url
+from utils.s3_utils import put_object, get_location, BUCKET_NAME, upload_article, create_article_url
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.timezone import make_aware
 
@@ -24,9 +24,7 @@ class KwokchainScraper(Scraper):
 
 
     def _poll(self):
-        with vcr.use_cassette('dump/kwokchain/all.yaml'):
-            xml = feedparser.parse(self.rss_url)
-
+        xml = feedparser.parse(self.rss_url)
         latest_entry = xml['entries'][0]
 
         title = latest_entry['title']
