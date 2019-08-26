@@ -3,8 +3,9 @@ from datetime import datetime, timedelta, timezone
 from blogs.models import Blog as BlogModel, Article as ArticleModel
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.timezone import make_aware
-from utils.s3_utils import upload_article, create_article_url
+from utils.s3_utils import upload_article, create_article_url, check_file
 import traceback
+import os
 
 class Scraper(object):
 
@@ -71,6 +72,10 @@ class Scraper(object):
         current_blog = self.check_blog()
 
         upload_article(blog_name=self.name_id, article_id=article_id, content=content)
+
+        if not check_file(os.path.join(current_blog.name, '{}.html'.format(article_id))):
+            raise Exception('Uploading to s3 failed. Not committing to DB')
+            return
 
         to_save = ArticleModel(title=title, date_published=date_published, author=author, permalink=permalink,
                           file_link=s3_link, blog=current_blog).save()

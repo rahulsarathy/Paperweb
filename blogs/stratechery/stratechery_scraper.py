@@ -42,8 +42,6 @@ class StratecheryScraper(Scraper):
         author = latest_entry['author']
         content = latest_entry['content'][0]['value']
 
-        print(title, permalink, date_published, author)
-
         self.handle_s3(title=title, permalink=permalink, date_published=date_published, author=author, content=content)
 
 

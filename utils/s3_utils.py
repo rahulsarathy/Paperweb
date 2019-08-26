@@ -137,3 +137,18 @@ def upload_article(blog_name, article_id, content):
     f.close()
 
     put_object(dest_bucket_name=BUCKET_NAME, dest_object_name=os.path.join(blog_name, id_path), src_data=local_path)
+
+def check_file(path):
+    s3 = boto3.resource('s3')
+
+    try:
+        s3.Object(BUCKET_NAME, path).load()
+        return True
+    except ClientError as e:
+        if e.response['Error']['Code'] == "404":
+            return False
+
+def delete_file(path):
+
+    s3 = boto3.resource('s3')
+    s3.Object(BUCKET_NAME, path).delete()
