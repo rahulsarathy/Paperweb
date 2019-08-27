@@ -1,4 +1,4 @@
-from blogs import Scraper, Article
+from blogs.parsability import Scraper
 import vcr
 from datetime import datetime
 from time import mktime
@@ -12,25 +12,27 @@ def is_last_page(soup):
 
 class MediumScraper(Scraper):
     def __init__(self,
-                 name="Medium",
-                 rss_url="https://medium.com/feed/@{}",
-                 home_url="https://medium.com/",
-                 username=None):
+                 name_id=None,
+                 rss_url="https://medium.com/feed/@{username}",
+                 home_url="https://medium.com/@{username}"):
 
-        super(MediumScraper, self).__init__(name=name, rss_url=rss_url, home_url=home_url, username=username)
+        rss_url = rss_url.format(username=name_id)
+        home_url = home_url.format(username=name_id)
 
-        if not self.username:
+        super().__init__(name_id=name_id, rss_url=rss_url, home_url=home_url)
+
+        if not self.name_id:
             raise TypeError(
                 "Medium scraper requires a valid username"
             )
 
-        self.rss_url = rss_url.format(self.username)
-
 
     def _poll(self):
 
-        with vcr.use_cassette('dump/medium/xml/medium.yaml'):
+        with vcr.use_cassette('dump/medium/{}.yaml'.format(self.name_id)):
             xml = feedparser.parse(self.rss_url)
+
+        print(xml)
 
         unparsed_article = xml.entries[1]
 
@@ -44,13 +46,6 @@ class MediumScraper(Scraper):
 
         unparsed_date = unparsed_article.published_parsed
         parsed_date = datetime.fromtimestamp(mktime(unparsed_date))
-
-        f = open("dump/medium/medium_single_article.html", "w+")
-        f.write(str(article))
-        f.close()
-
-        return Article(title=title, date_published=parsed_date, author=author, permalink=permalink)
-
 
     def get_all_posts(self, page):
        pass

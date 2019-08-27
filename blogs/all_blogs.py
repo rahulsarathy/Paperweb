@@ -6,12 +6,14 @@ from blogs.kwokchain.kwokchain_blog import KwokChainBlog
 from blogs.slatestarcodex.slatestarcodex_blog import SlateStarCodexBlog
 from blogs.mercatus_center.mercatus_center_blog import MercatusCenterBlog
 from blogs.marginal_revolution.marginal_revolution_blog import MarginalRevolutionBlog
+from blogs.stratechery.stratechery_blog import StratecheryBlog
 
 from blogs.melting_asphalt.melting_asphalt_scraper import MeltingAsphaltScraper
 from blogs.kwokchain.kwokchain_scraper import KwokchainScraper
 from blogs.marginal_revolution.marginal_revolution_scraper import MarginalRevolutionScraper
 from blogs.Ribbonfarm.ribbonfarm_scraper import RibbonfarmScraper
 from blogs.stratechery.stratechery_scraper import StratecheryScraper
+from blogs.Nassim_Taleb.nassim_taleb_scraper import NassimTalebScraper
 
 CATEGORIES = ["Rationality", "Economics", "Technology"]
 
@@ -24,6 +26,7 @@ BLOGS = (
     SlateStarCodexBlog,
     MercatusCenterBlog,
     MarginalRevolutionBlog,
+    StratecheryBlog
 )
 
 SCRAPERS = (
@@ -31,5 +34,6 @@ SCRAPERS = (
     KwokchainScraper,
     MarginalRevolutionScraper,
     RibbonfarmScraper,
-    StratecheryScraper
+    StratecheryScraper,
+    # NassimTalebScraper
 )

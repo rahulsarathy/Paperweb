@@ -78,7 +78,8 @@ class Scraper(object):
             return
 
         to_save = ArticleModel(title=title, date_published=date_published, author=author, permalink=permalink,
-                          file_link=s3_link, blog=current_blog).save()
+                          file_link=s3_link, blog=current_blog)
+        to_save.save()
 
         to_save = self.check_blog()
         to_save.save()
@@ -86,6 +87,9 @@ class Scraper(object):
         print("uploaded and saved")
 
         return to_save
+
+    def filter_short(self, content):
+        pass
 
     def parse_permalink(self, permalink):
         raise Exception('Not Implemented')

@@ -20,4 +20,3 @@ class NassimTalebBlog(Blog):
 
         super().__init__(name=name, about=about, about_link=about_link, authors=authors, recent_posts=None,
                          frequency=None, color=None, font=None, scraper=None, image=None, categories=None)
-
