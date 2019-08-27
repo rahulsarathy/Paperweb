@@ -14,6 +14,7 @@ from blogs.marginal_revolution.marginal_revolution_scraper import MarginalRevolu
 from blogs.Ribbonfarm.ribbonfarm_scraper import RibbonfarmScraper
 from blogs.stratechery.stratechery_scraper import StratecheryScraper
 from blogs.Nassim_Taleb.nassim_taleb_scraper import NassimTalebScraper
+from blogs.slatestarcodex.slatestarcodex_scraper import SlateStarCodexScraper
 
 CATEGORIES = ["Rationality", "Economics", "Technology"]
 
@@ -26,7 +27,8 @@ BLOGS = (
     SlateStarCodexBlog,
     MercatusCenterBlog,
     MarginalRevolutionBlog,
-    StratecheryBlog
+    StratecheryBlog,
+    SlateStarCodexBlog
 )
 
 SCRAPERS = (
@@ -35,5 +37,6 @@ SCRAPERS = (
     MarginalRevolutionScraper,
     RibbonfarmScraper,
     StratecheryScraper,
-    # NassimTalebScraper
+    # NassimTalebScraper,
+    SlateStarCodexScraper
 )
