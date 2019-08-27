@@ -26,37 +26,13 @@ class KwokchainScraper(Scraper):
     def _poll(self):
         xml = feedparser.parse(self.rss_url)
         latest_entry = xml['entries'][0]
-
         title = latest_entry['title']
-        permalink = latest_entry['links'][0]['href']
-        time_struct = latest_entry['published_parsed']
-        date_published = make_aware(datetime.fromtimestamp(mktime(time_struct)))
+        permalink = latest_entry['link']
+        date_published = make_aware(datetime.fromtimestamp(mktime(latest_entry['published_parsed'])))
         author = "Kevin Kwok"
         content = latest_entry['content'][0]['value']
-        article_id = id(permalink)
-        s3_link = create_article_url(blog_name=self.name_id, article_id=article_id)
 
-        if self.check_article(permalink):
-            print("Article already exists, exit polling")
-            return
-
-        current_blog = self.check_blog()
-
-        try:
-            upload_article(blog_name=self.name_id, article_id=article_id, content=content)
-        except Exception as e:
-            print(e)
-            print("failed to upload article")
-            return
-
-        try:
-            to_save = Article(title=title, date_published=date_published, author=author, permalink=permalink,
-                          file_link=s3_link, blog=current_blog).save()
-        except:
-            print("article failed to save!")
-            return
-
-        return to_save
+        self.handle_s3(title=title, permalink=permalink, date_published=date_published, author=author, content=content)
 
     def parse_permalink(self, permalink):
 

@@ -91,8 +91,6 @@ class Scraper(object):
 
     def standard_rss_poll(self):
         xml = feedparser.parse(self.rss_url)
-
-        xml = feedparser.parse(self.rss_url)
         latest_entry = xml['entries'][0]
         title = latest_entry['title']
         permalink = latest_entry['link']
