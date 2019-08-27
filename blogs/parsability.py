@@ -7,6 +7,7 @@ from utils.s3_utils import upload_article, create_article_url, check_file
 import traceback
 import feedparser
 import os
+from time import mktime
 
 class Scraper(object):
 
@@ -26,9 +27,6 @@ class Scraper(object):
 
         now = make_aware(datetime.now())
 
-        to_save = self.check_blog()
-        to_save.save()
-
         if not (now - self.last_polled_time > timedelta(days=1)):
             print("Scraper polled too recently!")
             return
@@ -38,6 +36,8 @@ class Scraper(object):
         except:
             "failed to poll"
             return
+
+        to_save = self.check_blog()
 
         to_save.last_polled_time = now
         to_save.save()

@@ -34,40 +34,7 @@ class MarginalRevolutionScraper(Scraper):
 
 
     def _poll(self):
-        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) '
-                                 'Chrome/41.0.2228.0 Safari/537.3'}
-
-        xml = feedparser.parse(self.rss_url)
-        latest_entry = xml['entries'][0]
-        title = latest_entry['title']
-        author = latest_entry['author']
-        date_published = make_aware(datetime.fromtimestamp(mktime(latest_entry['published_parsed'])))
-        permalink = latest_entry['links'][0]['href']
-        article_id = id(permalink)
-        s3_link = create_article_url(self.name_id, article_id)
-        content = latest_entry['content'][0]['value']
-
-        if self.check_article(permalink):
-            print("Article already exists, exit polling")
-
-        current_blog = self.check_blog()
-
-        try:
-            upload_article(blog_name=self.name_id, article_id=article_id, content=content)
-        except Exception as e:
-            print(e)
-            print("failed to upload article")
-            return
-
-        try:
-            to_save = Article(title=title, date_published=date_published, author=author, permalink=permalink,
-                          file_link=s3_link, blog=current_blog).save()
-        except:
-            print("article failed to save!")
-            return
-
-        return to_save
-
+        self.standard_rss_poll()
 
     def parse_permalink(self, permalink):
 

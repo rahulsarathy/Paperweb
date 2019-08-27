@@ -34,16 +34,7 @@ class StratecheryScraper(Scraper):
 
 
     def _poll(self):
-        xml = feedparser.parse(self.rss_url)
-        latest_entry = xml['entries'][0]
-        title = latest_entry['title']
-        permalink = latest_entry['link']
-        date_published = make_aware(datetime.fromtimestamp(mktime(latest_entry['published_parsed'])))
-        author = latest_entry['author']
-        content = latest_entry['content'][0]['value']
-
-        self.handle_s3(title=title, permalink=permalink, date_published=date_published, author=author, content=content)
-
+        self.standard_rss_poll()
 
     # USE WITH PROXY FLEET TO PREVENT RATE LIMITS
     def get_all_posts(self, page):
