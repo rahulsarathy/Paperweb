@@ -33,6 +33,7 @@ class Article(models.Model):
     file_link = models.URLField(_('S3 File Link'), )
     blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
     magazine = models.ManyToManyField(Magazine)
+    pdf_link = models.URLField(_('S3 PDF Link'), default=None, null=True)
 
 class Comment(models.Model):
     author = models.CharField(_('Author'), max_length=100)

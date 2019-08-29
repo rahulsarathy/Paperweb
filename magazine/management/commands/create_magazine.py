@@ -7,6 +7,7 @@ from blogs.all_blogs import BLOGS
 from datetime import datetime
 import os
 from utils.s3_utils import download_link
+import utils.s3_utils as s3_utils
 from bs4 import BeautifulSoup
 from shutil import copyfile, rmtree, copytree
 from blogs.serializers import BlogSerializer
@@ -93,15 +94,25 @@ def create_block(blog):
         cmd = 'prince {inputpath} -o {outputpath}'.format(inputpath=staging_path, outputpath=final_file_path)
         os.system(cmd)
 
-        # cleanup
-        # rmtree(os.path.join('dump', 'downloads', s3_file_path_trunc))
+        upload_pdf(final_file_path, article, blog_name)
 
-        # for root, dirs, files in os.walk('dump'):
-        #     for f in files:
-        #         os.unlink(os.path.join(root, f))
-        #     for d in dirs:
-        #         rmtree(os.path.join(root, d))
+def upload_pdf(src_path, article, blog_name):
 
+    old_pdf_link = None
+    if article.pdf_link:
+        old_pdf_link = article.pdf_link
+
+
+    article_id = hash(article)
+    s3_path = os.path.join(blog_name, '{}.pdf'.format(article_id))
+    s3_utils.put_object('pulppdfs', s3_path, src_path)
+    new_url = s3_utils.create_pdf_url('pulppdfs', blog_name, article_id)
+    article.pdf_link = new_url
+    article.save()
+
+    if old_pdf_link:
+        path = old_pdf_link.split('pulppdfs/')[1]
+        s3_utils.delete_file('pulppdfs', path)
 
     # join all the pdfs
     # store final pdf in s3

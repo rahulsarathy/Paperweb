@@ -100,7 +100,6 @@ class Scraper(object):
 
         self.handle_s3(title=title, permalink=permalink, date_published=date_published, author=author, content=content)
 
-
     def filter_short(self, content):
         pass
 

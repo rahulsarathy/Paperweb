@@ -5,9 +5,10 @@
 .blog-title {
 	text-align: left;
 	width: 100%;
-	font-family: lato;
+	font-family: Arial;
 	font-weight: normal; 
 	line-height: 1px;
+	color: #42213a;
 /*	text-align: justify
 */}
 
@@ -18,26 +19,21 @@
 	color: #4a4a4a;
 }
 
-.half {
-	width: 50%;
-}
-
 .article {
 	width: 50%;
-	column-count: 2;
 	height: 500px;
 }
 
 .blog-post {
-	font-size: 11pt;
+	font-size: 8pt;
 	line-height: 1.2;
-	font-family: OFL Sorts Mill Goudy TT;
-	column-count: 2;
+	font-family: Palatino;
+	color: #414254;
+    column-count: 3;
 }
 
 .stripe {
 	width: 100%;
-	background-color: black;
 	color: white;
 	height: 28px;
 	margin: 0;
@@ -52,13 +48,21 @@
 }
 
 .logo {
-	width: 23px;
-	height: 23px;
+	width: 500px;
 	background-image: url('https://206hwf3fj4w52u3br03fi242-wpengine.netdna-ssl.com/wp-content/uploads/2019/03/bluemastheadribbon.png');
 	background-position: center;
     background-size: contain;
     background-repeat: no-repeat;
     object-fit: contain;
+}
+
+img {
+	width: 90%;
+	height: auto;
+}
+
+figure {
+	column-span: all;
 }
 
 blockquote {
@@ -80,5 +84,4 @@ h1 {
     size: A4;
     margin: 0mm;
 }
-
 

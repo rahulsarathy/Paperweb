@@ -124,6 +124,19 @@ def create_article_url(blog_name, article_id):
 
     return object_url
 
+def create_pdf_url(bucket_name, blog_name, article_id):
+    location = get_location(bucket_name)['LocationConstraint']
+
+    object_url = "https://s3-{bucket_location}.amazonaws.com/{bucket_name}/{blog_name}/{article_id}.pdf".format(
+        bucket_location=location,
+        bucket_name=bucket_name,
+        blog_name=blog_name,
+        article_id=article_id
+    )
+
+    return object_url
+
+
 def upload_article(blog_name, article_id, content):
     id_path = '{}.html'.format(article_id)
     try:
@@ -148,7 +161,7 @@ def check_file(path):
         if e.response['Error']['Code'] == "404":
             return False
 
-def delete_file(path):
+def delete_file(bucket_name, path):
 
     s3 = boto3.resource('s3')
-    s3.Object(BUCKET_NAME, path).delete()
+    s3.Object(bucket_name, path).delete()
