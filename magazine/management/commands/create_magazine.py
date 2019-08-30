@@ -11,6 +11,7 @@ import utils.s3_utils as s3_utils
 from bs4 import BeautifulSoup
 from shutil import copyfile, rmtree, copytree
 from blogs.serializers import BlogSerializer
+import PyPDF2
 
 class Command(BaseCommand):
 
@@ -83,6 +84,7 @@ def create_block(blog):
         article_tag.insert(0, blog_soup)
 
         staging_path = os.path.join('dump', 'pdf', s3_file)
+        print("input file is {}".format(staging_path))
         css_path = os.path.join(template_path, '{}.css'.format(blog_name))
         staging_path_css = os.path.join('dump', 'pdf', '{}.css'.format(blog_name))
         copyfile(css_path, staging_path_css)
@@ -93,6 +95,16 @@ def create_block(blog):
         #run princexml on downloaded path (/pdf)
         cmd = 'prince {inputpath} -o {outputpath}'.format(inputpath=staging_path, outputpath=final_file_path)
         os.system(cmd)
+        print(final_file_path)
+        with open(final_file_path, 'rb') as pdf_obj:
+            pdf = PyPDF2.PdfFileReader(pdf_obj)
+            out = PyPDF2.PdfFileWriter()
+            for page in range(pdf.getNumPages()):
+                page = pdf.getPage(page)
+                out.addPage(page)
+            with open(final_file_path, 'wb') as f:
+                out.removeLinks()
+                out.write(f)
 
         upload_pdf(final_file_path, article, blog_name)
 
@@ -101,7 +113,6 @@ def upload_pdf(src_path, article, blog_name):
     old_pdf_link = None
     if article.pdf_link:
         old_pdf_link = article.pdf_link
-
 
     article_id = hash(article)
     s3_path = os.path.join(blog_name, '{}.pdf'.format(article_id))

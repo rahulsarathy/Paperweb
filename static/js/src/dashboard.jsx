@@ -41,6 +41,7 @@ export default class Dashboard extends React.Component {
     		});
     }
 
+    // Uppercase first letter in javascript
     jsUcfirst(string) 
     {
     	return string.charAt(0).toUpperCase() + string.slice(1);
