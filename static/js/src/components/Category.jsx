@@ -63,8 +63,8 @@ export default class Category extends React.Component {
 	render () {
     return (
         <div className="category">
+            <p className="category-title">{this.props.category}</p>
             <div className="category-wrapper">
-                <p className="category-title">{this.props.category}</p>
                 {
                     this.props.blogs.map((blog) =>
                         <BlogCard key={shortid.generate()} blog={blog} onClick={this.handleClick}/>)
