@@ -12,13 +12,12 @@ export default class Authors extends React.Component {
 		super(props);
 		
 		this.state = {
-
+            curr_author: 0
 		};
 	}
 
     componentDidMount() {
     }
-
 
 	render () {
         return (

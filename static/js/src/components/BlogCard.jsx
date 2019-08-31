@@ -7,32 +7,11 @@ export default class BlogCard extends React.Component {
 
 	constructor(props) {
 		super(props);
-
-        this.handleMouseOut = this.handleMouseOut.bind(this);
-        this.handleMouseOver = this.handleMouseOver.bind(this);
-		
-		this.state = {
-            hover: false
-		};
 	}
 
     componentDidMount() {
 
       
-    }
-
-    handleMouseOver() {
-        this.setState(
-            {
-                hover: true
-            });
-    }
-
-    handleMouseOut() {
-        this.setState(
-            {
-                hover: false
-            });
     }
 
 
@@ -45,12 +24,13 @@ export default class BlogCard extends React.Component {
             backgroundImage: `url(${Background})`
         } 
     return (
-        <div className="blogcard-wrapper">
-            <div className="blogcard" style={background_image} onClick={this.props.onClick} onMouseOver={this.handleMouseOver} onMouseOut={this.handleMouseOut}>
-                <div className="layer"> 
+        <div className="blogcard" >
+            <div className="blogcard-wrapper">
+                <div className="background-image" style={background_image}></div>
+                <div className="blogcard-content" onClick={this.props.onClick}>
+                    {blog.display_name}
                 </div>
             </div>
-            <div className="blogcard-overlay"></div>
         </div>
     	);
   }

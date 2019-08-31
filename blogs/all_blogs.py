@@ -28,7 +28,6 @@ BLOGS = (
     MercatusCenterBlog,
     MarginalRevolutionBlog,
     StratecheryBlog,
-    SlateStarCodexBlog
 )
 
 SCRAPERS = (

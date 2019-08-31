@@ -24,8 +24,8 @@ export default class AboutCard extends React.Component {
         var blog = this.props.blog;
 
         return (
-            <div className="aboutcard-wrapper">
-                <div className="aboutcard">
+            <div className="aboutcard">
+                <div className="aboutcard-wrapper">
                     <h1 className="aboutcard-title">{blog.name}</h1>
                     <div className="row">
                         <div className="col-sm">
@@ -39,6 +39,7 @@ export default class AboutCard extends React.Component {
                         </div>
                     </div>
                     <button>more info</button>
+                    <button onClick={this.props.nextBlog}> Next author</button>
                 </div>
             </div>
     	);
