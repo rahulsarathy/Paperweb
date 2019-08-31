@@ -22,7 +22,7 @@ export default class AuthorCard extends React.Component {
 	render () {
 
     return (
-        <div>
+        <div className="authorcard">
             <h2>{this.props.author.name}</h2>
             <img className="author-profile" src={this.props.author.profile} />
         </div>

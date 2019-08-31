@@ -73,7 +73,7 @@ export default class Category extends React.Component {
             <div className="aboutcard-slider">
                 <div className="aboutcard-slider-wrapper" style={{'transform': `translateX(-${this.state.curr_blog*100}%)`}}>
                     {
-                    this.props.blogs.map(blog => <AboutCard nextBlog={this.nextBlog} blog={blog} />)
+                    this.props.blogs.map(blog => <AboutCard key={shortid.generate()} nextBlog={this.nextBlog} blog={blog} />)
                 }
                 </div>
             </div>

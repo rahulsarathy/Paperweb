@@ -21,12 +21,15 @@ export default class Authors extends React.Component {
 
 	render () {
         return (
-            <div>
+            <div className="authors-slider">
+            <div className="authors-slider-wrapper">
             {
                 this.props.authors.map((author) =>
                     <AuthorCard key={shortid.generate()} author={author} onClick={this.handleClick}/>
                     )
             }  
+            </div>
+
             </div>
     	);
   }

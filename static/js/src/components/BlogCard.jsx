@@ -14,8 +14,6 @@ export default class BlogCard extends React.Component {
       
     }
 
-
-
 	render () {
         var blog = this.props.blog;
 
@@ -26,10 +24,11 @@ export default class BlogCard extends React.Component {
     return (
         <div className="blogcard" >
             <div className="blogcard-wrapper">
-                <div className="background-image" style={background_image}></div>
                 <div className="blogcard-content" onClick={this.props.onClick}>
                     {blog.display_name}
                 </div>
+                <div className="background-image" style={background_image}></div>
+
             </div>
         </div>
     	);
