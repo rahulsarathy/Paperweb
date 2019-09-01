@@ -16,7 +16,6 @@ export default class Category extends React.Component {
         this.previousBlog = this.previousBlog.bind(this);
 
 		this.state = {
-            curr_blog: 0
 		};
 	} 
 
@@ -68,13 +67,9 @@ export default class Category extends React.Component {
 
     handleClick(e) {
     // console.log($('.aboutcard'));
-        var index = ($(e.target).closest('.blogcard').attr('index'));
-        console.log(index);
-
+        var index = parseInt(($(e.target).closest('.blogcard').attr('index')));
         if (index !== this.state.curr_blog)
         {
-            console.log("setting curr index to " + index);
-
             if ($(e.target).closest('.category').find('.aboutcard-slider').is(":hidden"))
             {
                 $(e.target).closest('.category').find('.aboutcard-slider').slideDown()
@@ -101,8 +96,8 @@ export default class Category extends React.Component {
             </div>
             <div className="aboutcard-slider">
                 <div className="aboutcard-slider-wrapper" style={{'transform': `translateX(-${this.state.curr_blog*100}%)`}}>
-                    {
-                    this.props.blogs.map(blog => <AboutCard key={shortid.generate()} nextBlog={this.nextBlog} blog={blog} />)
+                {
+                    this.props.blogs.map((blog, index) => <AboutCard index={index} selected={this.state.curr_blog} key={shortid.generate()} nextBlog={this.nextBlog} blog={blog} />)
                 }
                 </div>
             </div>

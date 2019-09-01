@@ -2,6 +2,19 @@ body {
   overflow-x: hidden;
 }
 
+.subscribe-button {
+  color: white;
+  background-color: #0ABAFF;
+  // width: 100px;
+  // height: 30px;
+  border-radius: 3px;
+  border-style: none;
+  padding: 8px;
+  font-weight: bold;
+  text-align: center;
+  margin: auto;
+}
+
 .magazine {
   width: 400px;
   height: 520px;
@@ -84,6 +97,7 @@ body {
 
 .category {
   position: relative;
+  margin-left: 20px;
   .category-title {
       font-weight: bold;
       font-size: 25px;
@@ -93,7 +107,6 @@ body {
   .category-wrapper {
     position: relative;
     display: flex;
-    margin-left: 20px;
   }
 }
 
@@ -101,13 +114,23 @@ body {
   position: relative;
   .authors-slider-wrapper {
     display: flex;
-    position: absolute;
 
     .authorcard {
       flex: 1;
+
+      .author-image{
+        display: inline-block;
+        .author-profile {
+          height: 100px;
+          width: 100px;
+        } 
+      }
+
+      .author-title {
+        display: inline-block;
+      }
     }
   }
-  height: 150px;
 }
 
 .aboutcard-slider {
@@ -124,10 +147,12 @@ body {
         .aboutcard-wrapper {
           border-style: solid;
           border-width: 1px;
-          border-radius: 1px;
-          border-color: gray;
+          border-radius: 3px;
+          border-color: #858585;
+          // height: 500px;
 
           .aboutcard {
+            margin-left: 30px;
             .aboutcard-title {
               font-weight: bold;
             }
@@ -147,6 +172,8 @@ body {
 
 .dashboard {
   background-color: #FFFEFC;
+  margin-left: 30px;
+  margin-right: 30px;
 }
 
 .page {
@@ -221,10 +248,6 @@ body {
   } 
 }
 
-.author-profile {
-  height: 100px;
-  width: 100px;
-}
 
 
 
