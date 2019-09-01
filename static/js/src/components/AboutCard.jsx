@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import shortid from 'shortid';
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import {Authors} from './Components.jsx'
 
@@ -18,7 +19,6 @@ export default class AboutCard extends React.Component {
     componentDidMount() {
 
     }
-
 
 	render () {
         var blog = this.props.blog;

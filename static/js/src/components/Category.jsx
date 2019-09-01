@@ -69,20 +69,30 @@ export default class Category extends React.Component {
     handleClick(e) {
     // console.log($('.aboutcard'));
         var index = parseInt(($(e.target).closest('.blogcard').attr('index')));
-        if (index !== this.state.curr_blog)
-        {
-            if ($(e.target).closest('.category').find('.aboutcard-slider').is(":hidden"))
-            {
-                $(e.target).closest('.category').find('.aboutcard-slider').slideDown()
-            }
-            this.setState(
+        this.setState(
             {
                 curr_blog: index
-            }); 
+            });
+        if ($(e.target).closest('.category').find('.aboutcard-slider').is(":hidden")) {
+            $(e.target).closest('.category').find('.aboutcard-slider').slideDown()
         }
-        else {
-            $(e.target).closest('.category').find('.aboutcard-slider').slideToggle()
-        }
+        // if (!$(e.target).closest('.category').find('.aboutcard-slider').is(":hidden")) {
+        //     $(e.target).closest('.category').find('.aboutcard-slider').slideUp()
+        // }
+        // if (index !== this.state.curr_blog)
+        // {
+        //     if ($(e.target).closest('.category').find('.aboutcard-slider').is(":hidden"))
+        //     {
+        //         $(e.target).closest('.category').find('.aboutcard-slider').slideDown()
+        //     }
+        //     this.setState(
+        //     {
+        //         curr_blog: index
+        //     }); 
+        // }
+        // else {
+        //     $(e.target).closest('.category').find('.aboutcard-slider').slideToggle()
+        // }
     }
 
 	render () {
@@ -96,9 +106,9 @@ export default class Category extends React.Component {
                     }        
             </div>
             <div className="aboutcard-slider">
-                <div className="aboutcard-slider-wrapper" style={{'transform': `translateX(-${this.state.curr_blog*100}%)`}}>
-                    <TransitionGroup className="dashboard">
-                        <CSSTransition 
+                <div className="aboutcard-slider-wrapper">
+                    <TransitionGroup>
+                        <CSSTransition key={shortid.generate()}
                         timeout={300}
                         classNames="fade">
                         <AboutCard key={shortid.generate()} nextBlog={this.nextBlog} blog={this.props.blogs[this.state.curr_blog]} />
