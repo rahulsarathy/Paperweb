@@ -23,16 +23,8 @@ export default class AboutCard extends React.Component {
 	render () {
         var blog = this.props.blog;
 
-        var selected = {}
-        if (this.props.selected !== this.props.index)
-        {
-            selected = {
-                'display': 'None'
-            }
-        }
-
         return (
-            <div className="aboutcard" style={selected}>
+            <div className="aboutcard">
                 <div className="aboutcard-wrapper">
                     <h1 className="aboutcard-title">{blog.name}</h1>
                     <div className="row">
