@@ -12,6 +12,7 @@ export default class Category extends React.Component {
 		
         this.handleClick = this.handleClick.bind(this);
         this.nextBlog = this.nextBlog.bind(this);
+        this.selectBlog = this.selectBlog.bind(this);
         this.previousBlog = this.previousBlog.bind(this);
 
 		this.state = {
@@ -40,6 +41,15 @@ export default class Category extends React.Component {
         }
     } 
 
+    selectBlog(e)
+    {
+        var index = ($(e.target).closest('.blogcard').attr('index'));
+        this.setState(
+            {
+                curr_blog: index
+            });
+    }
+
     previousBlog() {
         const curr_index = this.state.curr_blog;
 
@@ -57,7 +67,26 @@ export default class Category extends React.Component {
     }
 
     handleClick(e) {
-        console.log(event);
+    // console.log($('.aboutcard'));
+        var index = ($(e.target).closest('.blogcard').attr('index'));
+        console.log(index);
+
+        if (index !== this.state.curr_blog)
+        {
+            console.log("setting curr index to " + index);
+
+            if ($(e.target).closest('.category').find('.aboutcard-slider').is(":hidden"))
+            {
+                $(e.target).closest('.category').find('.aboutcard-slider').slideDown()
+            }
+            this.setState(
+            {
+                curr_blog: index
+            }); 
+        }
+        else {
+            $(e.target).closest('.category').find('.aboutcard-slider').slideToggle()
+        }
     }
 
 	render () {
@@ -66,8 +95,8 @@ export default class Category extends React.Component {
             <p className="category-title">{this.props.category}</p>
             <div className="category-wrapper">
                 {
-                    this.props.blogs.map((blog) =>
-                        <BlogCard key={shortid.generate()} blog={blog} onClick={this.handleClick}/>)
+                    this.props.blogs.map((blog, index) =>
+                        <BlogCard index={index} key={shortid.generate()} selectBlog={this.selectBlog} blog={blog} onClick={this.handleClick}/>)
                 }        
             </div>
             <div className="aboutcard-slider">
