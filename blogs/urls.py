@@ -8,4 +8,5 @@ app_name = 'blogs'
 
 urlpatterns = [
     path('', views.get_blogs),
+    path('subscribe/', views.subscribe)
 ]

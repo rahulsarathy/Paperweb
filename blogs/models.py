@@ -1,7 +1,9 @@
 from django.db import models
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
+from django.utils.timezone import make_aware
 
+from datetime import datetime
 
 # Create your models here.
 
@@ -44,5 +46,5 @@ class Comment(models.Model):
 
 class Subscription(models.Model):
     subscriber = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    date_subscribed = models.DateTimeField(_('Date Subscribed'))
+    date_subscribed = models.DateTimeField(_('Date Subscribed'), default=make_aware(datetime.now()))
     blog = models.OneToOneField(Blog, on_delete=models.CASCADE)

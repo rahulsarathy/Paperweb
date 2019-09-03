@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body class="dashboard-frame">
+{% csrf_token %}
 {%  block content  %}
 {% if user.is_authenticated %}
     Hi {{ user.username }}!

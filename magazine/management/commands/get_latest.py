@@ -1,17 +1,7 @@
 
 from django.core.management.base import BaseCommand
-from blogs.all_blogs import MeltingAsphaltScraper, KwokchainScraper, MarginalRevolutionScraper, RibbonfarmScraper, \
-    StratecheryScraper, NassimTalebScraper, SlateStarCodexScraper
+from blogs.all_blogs import scraper_map
 
-scraper_map = {
-    MeltingAsphaltScraper().name_id: MeltingAsphaltScraper,
-    KwokchainScraper().name_id: KwokchainScraper,
-    MarginalRevolutionScraper().name_id: MarginalRevolutionScraper,
-    RibbonfarmScraper().name_id: RibbonfarmScraper,
-    StratecheryScraper().name_id: StratecheryScraper,
-    # NassimTalebScraper().name_id: NassimTalebScraper
-    SlateStarCodexScraper().name_id: SlateStarCodexScraper
-}
 
 class Command(BaseCommand):
 

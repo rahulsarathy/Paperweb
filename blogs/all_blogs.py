@@ -39,3 +39,13 @@ SCRAPERS = (
     # NassimTalebScraper,
     SlateStarCodexScraper
 )
+
+scraper_map = {
+    MeltingAsphaltScraper().name_id: MeltingAsphaltScraper,
+    KwokchainScraper().name_id: KwokchainScraper,
+    MarginalRevolutionScraper().name_id: MarginalRevolutionScraper,
+    RibbonfarmScraper().name_id: RibbonfarmScraper,
+    StratecheryScraper().name_id: StratecheryScraper,
+    # NassimTalebScraper().name_id: NassimTalebScraper
+    SlateStarCodexScraper().name_id: SlateStarCodexScraper
+}

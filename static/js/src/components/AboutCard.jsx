@@ -11,6 +11,8 @@ export default class AboutCard extends React.Component {
 
 	constructor(props) {
 		super(props);
+
+        this.subscribe = this.subscribe.bind(this)
 		
 		this.state = {
 		};
@@ -31,6 +33,23 @@ export default class AboutCard extends React.Component {
             });
     }
 
+    subscribe () {
+        var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+        console.log(csrftoken)
+        $.ajax(
+            {
+                url: '/api/blogs/subscribe/',
+                type: 'POST',
+                data: {
+                    name_id: this.props.blog.name_id,
+                    csrfmiddlewaretoken: csrftoken,
+                },
+                success: function (data) {
+                    console.log(data)
+                }
+            });
+    }
+
 	render () {
         var blog = this.props.blog;
 
@@ -43,7 +62,7 @@ export default class AboutCard extends React.Component {
                         <div className="col-sm">
                             <h2 className="aboutcard-about-title">About {blog.name}</h2>
                             <p className="aboutcard-about">{blog.about}</p>
-                            <button className="subscribe-button">SUBSCRIBE</button>
+                            <button onClick={this.subscribe} className="subscribe-button">SUBSCRIBE</button>
                             <Authors authors={blog.authors}/>
                         </div>
                         <div className="col-sm">
