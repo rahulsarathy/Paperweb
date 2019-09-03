@@ -49,3 +49,14 @@ scraper_map = {
     # NassimTalebScraper().name_id: NassimTalebScraper
     SlateStarCodexScraper().name_id: SlateStarCodexScraper
 }
+
+# def create_blog_map():
+#     scraper_map = {}
+#     for blog in BLOGS:
+#         scraper_map[blog().name_id] = blog
+#     return scraper_map
+
+def blog_map(requested_id):
+    for blog in BLOGS:
+        if blog().name_id == requested_id:
+            return blog

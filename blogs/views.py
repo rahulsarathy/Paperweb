@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from blogs import serializers
 from blogs.models import Subscription
 
-from blogs.all_blogs import BLOGS
+from blogs.all_blogs import BLOGS, blog_map
 
 CATEGORIES = ["Rationality", "Economics", "Technology"]
 
@@ -42,8 +42,9 @@ def get_blogs(request):
 @api_view(['POST'])
 def subscribe(request):
     user = request.user
-    print(request.POST)
+    name_id = request.POST['name_id']
+    blog = blog_map(name_id)
     # name_id = request.name_id
     # print(name_id)
-    # new_subscription = Subscription(subscriber=user, blog=)
+    new_subscription = Subscription(subscriber=user, blog=blog)
     return HttpResponse('Welcome to the library')
