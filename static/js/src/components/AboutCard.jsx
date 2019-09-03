@@ -20,6 +20,17 @@ export default class AboutCard extends React.Component {
 
     }
 
+    nextAuthor() {
+        if  (this.state.author == this.props.blog.authors.length) {
+           
+        }
+
+        this.setState(
+            {
+                author: this.state.author + 1
+            });
+    }
+
 	render () {
         var blog = this.props.blog;
 
@@ -27,6 +38,7 @@ export default class AboutCard extends React.Component {
             <div className="aboutcard">
                 <div className="aboutcard-wrapper">
                     <h1 className="aboutcard-title">{blog.name}</h1>
+                    <button>Close</button>
                     <div className="row">
                         <div className="col-sm">
                             <h2 className="aboutcard-about-title">About {blog.name}</h2>
@@ -38,8 +50,12 @@ export default class AboutCard extends React.Component {
                             <h2>Recent Posts</h2>
                         </div>
                     </div>
+                    <div className="moreinfo">
                     <button>more info</button>
+                    </div>
+                    <div className="nextauthor">
                     <button onClick={this.props.nextBlog}> Next author</button>
+                    </div>
                 </div>
             </div>
     	);
