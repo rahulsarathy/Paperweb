@@ -15,6 +15,7 @@ export default class AboutCard extends React.Component {
         this.subscribe = this.subscribe.bind(this)
 		
 		this.state = {
+            subscribed: false
 		};
 	}
 
@@ -35,7 +36,6 @@ export default class AboutCard extends React.Component {
 
     subscribe () {
         var csrftoken = $("[name=csrfmiddlewaretoken]").val();
-        console.log(csrftoken)
         $.ajax(
             {
                 url: '/api/blogs/subscribe/',
@@ -44,7 +44,7 @@ export default class AboutCard extends React.Component {
                     name_id: this.props.blog.name_id,
                     csrfmiddlewaretoken: csrftoken,
                 },
-                success: function (data) {
+                success: function (data, xhr) {
                     console.log(data)
                 }
             });
@@ -52,6 +52,15 @@ export default class AboutCard extends React.Component {
 
 	render () {
         var blog = this.props.blog;
+
+        var subscribeText;
+        if (this.state.subscribed) 
+        {
+            subscribeText = "subscribe"
+        }
+        else {
+            subscribeText = "unsubscribe"
+        }
 
         return (
             <div className="aboutcard">
@@ -70,10 +79,13 @@ export default class AboutCard extends React.Component {
                         </div>
                     </div>
                     <div className="moreinfo">
-                    <button>more info</button>
+                    <button>{subscribeText}</button>
                     </div>
                     <div className="nextauthor">
-                    <button onClick={this.props.nextBlog}> Next author</button>
+                    <button onClick={this.props.nextBlog}>
+                    { 
+
+                    } Next author</button>
                     </div>
                 </div>
             </div>

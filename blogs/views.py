@@ -7,7 +7,7 @@ from rest_framework.response import Response
 
 
 from blogs import serializers
-from blogs.models import Subscription
+from blogs.models import Subscription, Blog
 
 from blogs.all_blogs import BLOGS, blog_map
 
@@ -26,25 +26,62 @@ class BlogViewSet(viewsets.ViewSet):
 @api_view(['GET'])
 def get_blogs(request):
 
-    final_json = {}
+    category_json = {}
     for blog in BLOGS:
         new_blog = blog()
         categories = new_blog.categories
 
         if categories:
             for category in categories:
-                if category not in final_json:
-                    final_json[category] = [new_blog.to_json()]
+                if category not in category_json:
+                    category_json[category] = [new_blog.to_json()]
                 else:
-                    final_json[category].append(new_blog.to_json())
-    return JsonResponse(final_json, safe=False)
+                    category_json[category].append(new_blog.to_json())
+    user = request.user
+    try:
+        subscriptions = Subscription.objects.get(subscriber=user)
+    except:
+        subscriptions = []
+
+    return JsonResponse(category_json, safe=False)
+
+def get_subscription(request):
+    user = request.user
+    name_id = request.POST['name_id']
+    blog = Blog.objects.get(name=name_id)
+    try:
+        curr_subscription = Subscription.objects.get(subscriber=user, blog=blog)
+    except Subscription.DoesNotExist:
+        return False
+    except Subscription.MultipleObjectsReturned:
+        return HttpResponse(status=500)
+
+    # Already subscribed
+    return [True]
+
 
 @api_view(['POST'])
 def subscribe(request):
     user = request.user
     name_id = request.POST['name_id']
-    blog = blog_map(name_id)
-    # name_id = request.name_id
-    # print(name_id)
+    blog = Blog.objects.get(name=name_id)
+    print(name_id)
     new_subscription = Subscription(subscriber=user, blog=blog)
-    return HttpResponse('Welcome to the library')
+    new_subscription.save()
+    return HttpResponse(status=200)
+
+@api_view(['POST'])
+def unsubscribe(request):
+    user = request.user
+    name_id = request.POST['name_id']
+    blog = Blog.objects.get(name=name_id)
+    try:
+        old_subscription = Subscription.objects.get(subscriber=user, blog=blog)
+    except Subscription.DoesNotExist:
+        return HttpResponse(status=403)
+    except Subscription.MultipleObjectsReturned:
+        return HttpResponse(status=500)
+
+    old_subscription.delete()
+    return HttpResponse(status=200)
+

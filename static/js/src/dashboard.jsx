@@ -15,7 +15,7 @@ export default class Dashboard extends React.Component {
 		
 		this.state = {
 			data: {},
-		};
+	};
 	}
 
     componentDidMount() {
@@ -30,8 +30,6 @@ export default class Dashboard extends React.Component {
     			success: function(data)
     			{
     				console.log(data);
-    				var blogs = data.blogs;
-    				var categories = Object.keys(data);
     				this.setState(
     					{
     						data: data
