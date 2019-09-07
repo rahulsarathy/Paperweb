@@ -19,8 +19,7 @@ export default class BlogCard extends React.Component {
 	}
 
     componentDidMount() {
-
-      
+        this.checkSubStatus()      
     }
 
     handleMouseUp() {
@@ -48,6 +47,23 @@ export default class BlogCard extends React.Component {
         {
             hover: false
         });
+    }
+
+    checkSubStatus() {
+        var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+        var data = {
+            csrfmiddlewaretoken: csrftoken,
+            name_id: this.props.blog.name_id,
+        }
+        $.ajax(
+            {
+                url: '/api/blogs/check_sub_status/',
+                type: 'POST',
+                data: data,
+                success: function(data) {
+                    console.log(data)
+                }
+            });
     }
 
 	render () {

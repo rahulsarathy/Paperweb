@@ -34,13 +34,14 @@ class Scraper(object):
         try:
             self._poll(*args, **kwargs)
         except:
-            "failed to poll"
+            print("failed to poll")
+            traceback.print_exc()
             return
 
-        to_save = self.check_blog()
-
-        to_save.last_polled_time = now
-        to_save.save()
+        # to_save = self.check_blog()
+        #
+        # to_save.last_polled_time = now
+        # to_save.save()
 
         #continue polling
         pass
@@ -73,7 +74,6 @@ class Scraper(object):
         current_blog = self.check_blog()
 
         upload_article(blog_name=self.name_id, article_id=article_id, content=content)
-
         if not check_file(os.path.join(current_blog.name, '{}.html'.format(article_id))):
             raise Exception('Uploading to s3 failed. Not committing to DB')
             return

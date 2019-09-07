@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'payments.apps.PaymentsConfig',
     'users.apps.UsersConfig',
     'rest_framework',
+    'coverage'
 ]
 
 MIDDLEWARE = [

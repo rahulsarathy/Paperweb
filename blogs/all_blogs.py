@@ -7,6 +7,7 @@ from blogs.slatestarcodex.slatestarcodex_blog import SlateStarCodexBlog
 from blogs.mercatus_center.mercatus_center_blog import MercatusCenterBlog
 from blogs.marginal_revolution.marginal_revolution_blog import MarginalRevolutionBlog
 from blogs.stratechery.stratechery_blog import StratecheryBlog
+from blogs.mercatus_center.mercatus_center_blog import MercatusCenterBlog
 
 from blogs.melting_asphalt.melting_asphalt_scraper import MeltingAsphaltScraper
 from blogs.kwokchain.kwokchain_scraper import KwokchainScraper
@@ -15,6 +16,7 @@ from blogs.Ribbonfarm.ribbonfarm_scraper import RibbonfarmScraper
 from blogs.stratechery.stratechery_scraper import StratecheryScraper
 from blogs.Nassim_Taleb.nassim_taleb_scraper import NassimTalebScraper
 from blogs.slatestarcodex.slatestarcodex_scraper import SlateStarCodexScraper
+from blogs.mercatus_center.mercatus_center_scraper import MercatusCenterScraper
 
 CATEGORIES = ["Rationality", "Economics", "Technology"]
 
@@ -37,7 +39,9 @@ SCRAPERS = (
     RibbonfarmScraper,
     StratecheryScraper,
     # NassimTalebScraper,
-    SlateStarCodexScraper
+    SlateStarCodexScraper,
+    MercatusCenterScraper
+
 )
 
 scraper_map = {
@@ -56,7 +60,13 @@ scraper_map = {
 #         scraper_map[blog().name_id] = blog
 #     return scraper_map
 
+
 def blog_map(requested_id):
     for blog in BLOGS:
         if blog().name_id == requested_id:
             return blog
+
+def scraper_map(requested_id):
+    for scraper in SCRAPERS:
+        if scraper().name_id == requested_id:
+            return scraper

@@ -45,19 +45,21 @@ def get_blogs(request):
 
     return JsonResponse(category_json, safe=False)
 
+@api_view(['POST'])
 def get_subscription(request):
     user = request.user
     name_id = request.POST['name_id']
+    print("name_id is {}".format(name_id))
     blog = Blog.objects.get(name=name_id)
     try:
         curr_subscription = Subscription.objects.get(subscriber=user, blog=blog)
     except Subscription.DoesNotExist:
-        return False
+        return JsonResponse(False, safe=False)
     except Subscription.MultipleObjectsReturned:
         return HttpResponse(status=500)
 
     # Already subscribed
-    return [True]
+    return JsonResponse(True, safe=False)
 
 
 @api_view(['POST'])
