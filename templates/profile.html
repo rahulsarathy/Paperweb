@@ -5,11 +5,11 @@
 <head>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
-<body class="dashboard-frame">
+<body class="profile-frame">
 {% csrf_token %}
 {%  block content  %}
 {% if user.is_authenticated %}
-    <a href="/profile">profile</a>
+    <a href="/dashboard">dashboard</a>
     Hi {{ user.username }}!
     <p><a href="{% url 'logout' %}">logout</a></p>
 {% else %}
@@ -17,7 +17,7 @@
     <a href="{% url 'login' %}">login</a>
 {% endif %}
 {% endblock %}
-<div id="dashboard"></div>
-<script src="http://localhost:8080/dashboard.js"></script>
+<div id="profile"></div>
+<script src="http://localhost:8080/profile.js"></script>
 </body>
 </html>

@@ -11,5 +11,4 @@ urlpatterns = [
     path('subscribe/', views.subscribe),
     path('check_sub_status/', views.check_sub_status),
     path('unsubscribe/', views.unsubscribe)
-
 ]

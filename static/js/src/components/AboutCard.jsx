@@ -96,15 +96,6 @@ export default class AboutCard extends React.Component {
 	render () {
         var blog = this.props.blog;
 
-        var subscribeText;
-        if (this.state.subscribed) 
-        {
-            subscribeText = "unsubscribe"
-        }
-        else {
-            subscribeText = "subscribe"
-        }
-
         return (
             <div className="aboutcard">
                 <div className="aboutcard-wrapper">
@@ -125,7 +116,6 @@ export default class AboutCard extends React.Component {
                         </div>
                     </div>
                     <div className="moreinfo">
-                    <button>{subscribeText}</button>
                     </div>
                     <div className="nextauthor">
                     <button onClick={this.props.nextBlog}>

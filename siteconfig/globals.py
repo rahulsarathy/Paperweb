@@ -1,0 +1,2 @@
+GOOGLE_MAPS_PLACES = 'AIzaSyAStU9SHXwqw6iyBonOjkIQtzgQ8FguR3U'
+
