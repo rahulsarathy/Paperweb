@@ -46,11 +46,11 @@ def get_blogs(request):
     return JsonResponse(category_json, safe=False)
 
 @api_view(['POST'])
-def get_subscription(request):
+def check_sub_status(request):
     user = request.user
     name_id = request.POST['name_id']
-    print("name_id is {}".format(name_id))
     blog = Blog.objects.get(name=name_id)
+
     try:
         curr_subscription = Subscription.objects.get(subscriber=user, blog=blog)
     except Subscription.DoesNotExist:
@@ -66,10 +66,16 @@ def get_subscription(request):
 def subscribe(request):
     user = request.user
     name_id = request.POST['name_id']
-    blog = Blog.objects.get(name=name_id)
-    print(name_id)
-    new_subscription = Subscription(subscriber=user, blog=blog)
-    new_subscription.save()
+    try:
+        blog = Blog.objects.get(name=name_id)
+    except:
+        return HttpResponse(status=500)
+    try:
+        new_subscription = Subscription(subscriber=user, blog=blog)
+        new_subscription.save()
+    except:
+        return HttpResponse(status=403)
+
     return HttpResponse(status=200)
 
 @api_view(['POST'])
