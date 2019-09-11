@@ -13,7 +13,6 @@ class Magazine(models.Model):
     date_end = models.DateTimeField()
     file_link = models.URLField(_('S3 File Link'), primary_key=True)
 
-
 class Blog(models.Model):
     name = models.CharField(_('Blog Name'), max_length=100, unique=True)
     last_polled_time = models.DateTimeField(_('Last Polled Time'), max_length=8, null=True)

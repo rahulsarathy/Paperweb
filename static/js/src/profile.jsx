@@ -37,7 +37,6 @@ export default class Profile extends React.Component {
     			<li>Delivery Schedule</li>
     			<li>Cancel Subscription</li>
     		</ul>
-    		<p>Magazines will be delivered to 1574 Elka Avenue, San Jose CA 95129</p>
     		<h3>Change Address</h3>
     		<input value={this.state.value} onChange={this.handleChange}></input>
     		<Address />

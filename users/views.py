@@ -18,7 +18,7 @@ def get_address(request):
     user = request.user
 
     try:
-        billing_info = BillingInfo.objects.get(user=user)
+        billing_info = BillingInfo.objects.get(customer=user)
         address = billing_info.delivery_address
     except:
         address = ""
@@ -27,15 +27,15 @@ def get_address(request):
 
 @api_view(['POST'])
 def set_address(request):
-    user = request.user
+    current_user = request.user
     address = request.POST['address']
 
     try:
-        billing_info = BillingInfo.objects.get(user=user)
+        billing_info = BillingInfo.objects.get(customer=current_user)
         billing_info.delivery_address = address
         billing_info.save()
     except:
-        billing_info = BillingInfo(address=address, user=user)
+        billing_info = BillingInfo(delivery_address=address, customer=current_user)
         billing_info.save()
 
     return HttpResponse(status=200)

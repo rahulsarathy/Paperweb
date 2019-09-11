@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext as _
-
+from django.conf import settings
 
 # Create your models here.
 
@@ -27,9 +27,10 @@ class Transaction(models.Model):
     payment_cancellation = models.BooleanField(_('Payment Cancellation'))
 
 class BillingInfo(models.Model):
-    delivery_address = models.CharField(_('Delivery Address'), max_length=100)
-    stripe_customer_id = models.CharField(_('Stripe Customer ID'), max_length=100)
-    payment_tier = models.OneToOneField(PaymentTier, on_delete=models.CASCADE)
+    delivery_address = models.CharField(_('Delivery Address'), max_length=100, default=None, null=True)
+    stripe_customer_id = models.CharField(_('Stripe Customer ID'), max_length=100, default=None, null=True)
+    payment_tier = models.OneToOneField(PaymentTier, on_delete=models.CASCADE, default=None, null=True)
+    customer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.delivery_address

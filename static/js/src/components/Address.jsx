@@ -22,6 +22,7 @@ export default class Address extends React.Component {
 
 		this.handleChange = this.handleChange.bind(this);
 		this.setAddress = this.setAddress.bind(this);
+		this.getAddress = this.getAddress.bind(this);
 
 		this.state = {
 			value: '',
@@ -30,10 +31,7 @@ export default class Address extends React.Component {
 	}
 
 	componentDidMount() {
-	}
-
-	componentDidUpdate() {
-		// this.getAddresses()
+		this.getAddress()
 	}
 
 	handleChange(e) {
@@ -44,24 +42,25 @@ export default class Address extends React.Component {
 
 	}
 
-	setAddress(e)
+	setAddress()
 	{
-		var address = e.target.innerText
+		var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+		var address = this.state.value
 		var data = {
-			address: address
+			address: address,
+			csrfmiddlewaretoken: csrftoken,
 		}
 
 		$.ajax(
 			{
 				type: 'POST',
 				data: data,
-				url: '/set_address',
+				url: '../api/users/set_address/',
 				success: function(data)
 					{
 						this.setState(
 							{
 								address: address,
-								value: address
 							});
 					}.bind(this)
 			});
@@ -69,46 +68,17 @@ export default class Address extends React.Component {
 
 	}
 
-	createAddresses() {
-		var addressItems;
-		if (!this.state.value || this.state.value <= 2)
-		{
-			addressItems = [];
-		}
-		else {
-			const addresses = this.state.addresses;
-			addressItems = addresses.map((address) =>
-				(
-					<div className="address" onClick={this.setAddress}>
-						<li>{address}</li>
-					</div>
-					)
-			);
-		}
-
-		return addressItems;
+	getAddress() {
+		$.ajax({
+			type: 'GET',
+			url: '../api/users/get_address/',
+			success: function(data) {
+				this.setState({
+					address: data
+				});
+			}.bind(this)
+		});
 	}
-
-	// getAddresses(address) {
-
-	// 	var data = {
-	// 		address: address
-	// 	}
-
-	// 	$.ajax(
-	// 		{
-	// 			url: '/autocomplete',
-	// 			type: 'POST',
-	// 			data: data,
-	// 			success: function(data, statusText, xhr)
-	// 			{
-	// 				this.setState(
-	// 					{
-	// 						addresses: JSON.parse(data)
-	// 					});
-	// 			}.bind(this)
-	// 		});
-	// }
 
 	render () {
 		// const addresses = this.createAddresses()
@@ -118,6 +88,7 @@ export default class Address extends React.Component {
 				<h2>Your Shipping Address</h2>
 				{this.state.address}
 				<input id="autocomplete" className="address-field" onChange={this.handleChange} value={this.state.value} type="text"/>
+				<button onClick={this.setAddress}>Set Address</button>
 			</div>
     	);
   }
