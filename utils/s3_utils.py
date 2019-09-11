@@ -137,7 +137,7 @@ def create_pdf_url(bucket_name, blog_name, article_id):
     return object_url
 
 
-def upload_article(blog_name, article_id, content):
+def upload_article(blog_name, article_id, content, bucket_name=BUCKET_NAME):
     id_path = '{}.html'.format(article_id)
     try:
         os.mkdir(os.path.join('dump', blog_name))
@@ -149,13 +149,13 @@ def upload_article(blog_name, article_id, content):
         f.write(str(content))
     f.close()
 
-    put_object(dest_bucket_name=BUCKET_NAME, dest_object_name=os.path.join(blog_name, id_path), src_data=local_path)
+    put_object(dest_bucket_name=bucket_name, dest_object_name=os.path.join(blog_name, id_path), src_data=local_path)
 
-def check_file(path):
+def check_file(path, bucket_name=BUCKET_NAME):
     s3 = boto3.resource('s3')
 
     try:
-        s3.Object(BUCKET_NAME, path).load()
+        s3.Object(bucket_name, path).load()
         return True
     except ClientError as e:
         if e.response['Error']['Code'] == "404":
@@ -165,3 +165,9 @@ def delete_file(bucket_name, path):
 
     s3 = boto3.resource('s3')
     s3.Object(bucket_name, path).delete()
+
+def clear_all(bucket_name):
+    s3 = boto3.resource('s3')
+    bucket = s3.Bucket(bucket_name)
+    bucket.objects.all().delete()
+    logging.debug("Cleared out %s S3 Bucket", bucket_name)

@@ -1,13 +1,18 @@
-from enum import Enum
-from datetime import datetime, timedelta, timezone
+import feedparser
+
 from blogs.models import Blog as BlogModel, Article as ArticleModel
+from utils.s3_utils import upload_article, create_article_url, check_file
+
+from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.timezone import make_aware
-from utils.s3_utils import upload_article, create_article_url, check_file
-import traceback
-import feedparser
-import os
+
+import logging
+from datetime import datetime, timedelta, timezone
 from time import mktime
+import os
+import traceback
+
 
 class Scraper(object):
 
@@ -38,12 +43,12 @@ class Scraper(object):
             traceback.print_exc()
             return
 
-        # to_save = self.check_blog()
-        #
-        # to_save.last_polled_time = now
-        # to_save.save()
+        to_save = self.check_blog()
 
-        #continue polling
+        to_save.last_polled_time = now
+        to_save.save()
+
+        print("continue polling")
         pass
 
     def check_blog(self):
@@ -64,6 +69,7 @@ class Scraper(object):
             return False
 
     def handle_s3(self, title, permalink, date_published, author, content):
+        bucket_name = 'pulpscrapedarticles'
         article_id = hash(permalink)
         s3_link = create_article_url(blog_name=self.name_id, article_id=article_id)
 
@@ -73,13 +79,13 @@ class Scraper(object):
 
         current_blog = self.check_blog()
 
-        upload_article(blog_name=self.name_id, article_id=article_id, content=content)
-        if not check_file(os.path.join(current_blog.name, '{}.html'.format(article_id))):
+        upload_article(blog_name=self.name_id, article_id=article_id, content=content, bucket_name=bucket_name)
+        if not check_file(os.path.join(current_blog.name, '{}.html'.format(article_id)), bucket_name):
             raise Exception('Uploading to s3 failed. Not committing to DB')
             return
 
         to_save = ArticleModel(title=title, date_published=date_published, author=author, permalink=permalink,
-                          file_link=s3_link, blog=current_blog)
+                               file_link=s3_link, blog=current_blog)
         to_save.save()
 
         to_save = self.check_blog()

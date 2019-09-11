@@ -1,27 +1,36 @@
 from blogs.mercatus_center.mercatus_center_scraper import MercatusCenterScraper
+from utils.s3_utils import check_file, clear_all
 
 from django.test import TestCase
 
 import logging
 import unittest
 from unittest.mock import patch
+import os
+import vcr
 
+BUCKET_NAME = 'pulpscrapedarticlestest'
 
 class ScraperTests(TestCase):
+    clear_all(BUCKET_NAME)
     scraper = MercatusCenterScraper()
 
-    @unittest.skip("skipping because unimplemented")
-    def test_poll(self):
-        pass
 
-    def test_parse_bridge(self):
+    def test_poll(self):
+        self.scraper._poll()
+
+    @unittest.skip("skipping because unimplemented")
+    @patch('blogs.parsability.handle_s3')
+    def test_parse_bridge(self, handle_s3):
         permalink = 'https://www.mercatus.org/bridge/commentary/pressuring-fed-no-surefire-electoral-solution-says-' \
                     'economic-historian'
-        self.scraper.parse_permalink(permalink)
 
-        assert False
+        with vcr.use_cassette('dump/test_parse_bridge.yaml'):
+            self.scraper.parse_permalink(permalink)
 
-    @unittest.skip("skipping for speed")
+        # TO DO
+        handle_s3.assert_called_with()
+
     @patch('logging.Logger.warning')
     def test_parse_podcast(self, logger):
         permalink = 'https://www.mercatus.org/bridge/podcasts/09022019/judge-glock-riefler-keynes-doctrine-and-' \

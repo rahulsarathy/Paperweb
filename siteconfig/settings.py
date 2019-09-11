@@ -20,6 +20,8 @@ sentry_sdk.init(
     integrations=[DjangoIntegration()]
 )
 
+# If django is called with test, set TESTING to True
+TESTING = len(sys.argv) > 1 and sys.argv[1] == 'test'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/

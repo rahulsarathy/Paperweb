@@ -3,24 +3,19 @@ from blogs.Ribbonfarm.ribbonfarm_scraper import RibbonfarmScraper
 from blogs.melting_asphalt.melting_asphalt_scraper import MeltingAsphaltScraper
 from blogs.Econlib.bryan_caplan.bryan_caplan_scraper import BryanCaplanEconlibScraper
 from blogs.serializers import ArticleSerializer
+from blogs.all_blogs import MercatusCenterScraper
 
-SCRAPERS = (
-    RibbonfarmScraper,
-    # MeltingAsphaltScraper
-    BryanCaplanEconlibScraper,
-
-)
 
 class Command(BaseCommand):
 
     def add_arguments(self, parser):
-        parser.add_argument('blog_name', nargs='+', type=str)
+        parser.add_argument('permalink', nargs='+', type=str)
 
     def handle(self, *args, **options):
 
-        for blog_name in options['blog_name']:
-            correct_scraper = find_scraper(blog_name)
-            article = correct_scraper.parse_permalink(blog_name)
+        for permalink in options['permalink']:
+            correct_scraper = find_scraper(permalink)
+            article = correct_scraper.parse_permalink(permalink)
             serializer = ArticleSerializer(article)
             print(serializer.data)
 
@@ -34,4 +29,7 @@ def find_scraper(permalink):
 
     if 'econlib' in permalink:
         scraper = BryanCaplanEconlibScraper()
+        return scraper
+    if 'mercatus.org' in permalink:
+        scraper = MercatusCenterScraper()
         return scraper
