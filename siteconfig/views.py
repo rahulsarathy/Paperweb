@@ -12,8 +12,4 @@ def dashboard(request):
   return render(request, 'dashboard.html')
 
 def profile(request):
-  return render(request, 'profile.html')
-
-@api_view(['GET'])
-def google_maps_key(request):
-  return JsonResponse(GOOGLE_MAPS_PLACES, safe=False)
+  return render(request, 'profile.html', {'gmaps_key': GOOGLE_MAPS_PLACES})

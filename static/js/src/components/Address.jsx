@@ -3,29 +3,17 @@ import ReactDOM from 'react-dom';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import $ from 'jquery';
-
-var placeSearch, autocomplete;
-
-var componentForm = {
-  street_number: 'short_name',
-  route: 'long_name',
-  locality: 'long_name',
-  administrative_area_level_1: 'short_name',
-  country: 'long_name',
-  postal_code: 'short_name'
-};
+import Autocomplete from 'react-google-autocomplete';
 
 export default class Address extends React.Component {
 
 	constructor(props) {
 		super(props);
 
-		this.handleChange = this.handleChange.bind(this);
 		this.setAddress = this.setAddress.bind(this);
 		this.getAddress = this.getAddress.bind(this);
 
 		this.state = {
-			value: '',
 			addresses: []
 		};
 	}
@@ -34,20 +22,19 @@ export default class Address extends React.Component {
 		this.getAddress()
 	}
 
-	handleChange(e) {
-
-		this.setState({
-			value: e.target.value
-		});
-
-	}
-
-	setAddress()
+	setAddress(address)
 	{
+		console.log(address)
+		// var address_components = address['address_components']
+		// console.log(address_components)
 		var csrftoken = $("[name=csrfmiddlewaretoken]").val();
-		var address = this.state.value
 		var data = {
-			address: address,
+			"address": address[0].long_name,
+			"street": address[1].long_name,
+			"city": address[2].long_name,
+			"zip": address[7].long_name,
+			"country": address[6].short_name,
+			"state": address[5].short_name,
 			csrfmiddlewaretoken: csrftoken,
 		}
 
@@ -86,9 +73,14 @@ export default class Address extends React.Component {
 		return (
 			<div className="">
 				<h2>Your Shipping Address</h2>
-				{this.state.address}
-				<input id="autocomplete" className="address-field" onChange={this.handleChange} value={this.state.value} type="text"/>
-				<button onClick={this.setAddress}>Set Address</button>
+				<Autocomplete
+				style={{width: '90%'}}
+				onPlaceSelected={(place) => {
+					var address_array = place.address_components
+					this.setAddress(address_array)
+				}}
+				types={['address']}
+				/>
 			</div>
     	);
   }

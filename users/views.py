@@ -28,7 +28,17 @@ def get_address(request):
 @api_view(['POST'])
 def set_address(request):
     current_user = request.user
-    address = request.POST['address']
+    address_block = request.POST
+    address = address_block['address']
+    street = address_block['street']
+    city = address_block['city']
+    state = address_block['state']
+    zip = address_block['zip']
+    country = address_block['country']
+    print(address)
+    print(street)
+    print(city)
+    print(address, street, city, state, zip)
 
     try:
         billing_info = BillingInfo.objects.get(customer=current_user)
@@ -39,5 +49,3 @@ def set_address(request):
         billing_info.save()
 
     return HttpResponse(status=200)
-
-
