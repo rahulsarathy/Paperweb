@@ -4,8 +4,6 @@ import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import $ from 'jquery';
 
-var placeSearch, autocomplete;
-
 var componentForm = {
   street_number: 'short_name',
   route: 'long_name',
@@ -87,7 +85,16 @@ export default class Address extends React.Component {
 			<div className="">
 				<h2>Your Shipping Address</h2>
 				{this.state.address}
+				Address Line 1
 				<input id="autocomplete" className="address-field" onChange={this.handleChange} value={this.state.value} type="text"/>
+				Address Line 2
+				<input/>
+				City
+				<input /> 
+				State/Province/Region
+				<input /> 
+				Zip
+				<input /> 
 				<button onClick={this.setAddress}>Set Address</button>
 			</div>
     	);

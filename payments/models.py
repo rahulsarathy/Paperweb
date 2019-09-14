@@ -26,8 +26,17 @@ class Transaction(models.Model):
     payment_tier = models.OneToOneField(PaymentTier, on_delete=models.CASCADE)
     payment_cancellation = models.BooleanField(_('Payment Cancellation'))
 
+class Address(models.Model):
+    line_1 = models.CharField(max_length=500)
+    line_2 = models.CharField(max_length=500, null=True)
+    city = models.CharField(max_length=100)
+    state = models.CharField(max_length=100, null=True)
+    zip = models.CharField(max_length=100, null=True)
+    country = models.CharField(max_length=100)
+
+
 class BillingInfo(models.Model):
-    delivery_address = models.CharField(_('Delivery Address'), max_length=100, default=None, null=True)
+    delivery_address = models.OneToOneField(Address, on_delete=models.CASCADE, default=None)
     stripe_customer_id = models.CharField(_('Stripe Customer ID'), max_length=100, default=None, null=True)
     payment_tier = models.OneToOneField(PaymentTier, on_delete=models.CASCADE, default=None, null=True)
     customer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
