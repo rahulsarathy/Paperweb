@@ -13,7 +13,7 @@ var componentForm = {
   postal_code: 'short_name'
 };
 
-export default class Address extends React.Component {
+export default class Address_Pane extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -23,8 +23,13 @@ export default class Address extends React.Component {
 		this.getAddress = this.getAddress.bind(this);
 
 		this.state = {
-			value: '',
-			addresses: []
+			address: '',
+			line_1: '',
+			line_2: '',
+			city: '',
+			state: '',
+			zip: '',
+			country: '',
 		};
 	}
 
@@ -32,20 +37,26 @@ export default class Address extends React.Component {
 		this.getAddress()
 	}
 
-	handleChange(e) {
-
+	handleChange(e){
+		var field = e.target.id;
 		this.setState({
-			value: e.target.value
+			[field]: e.target.value
 		});
-
 	}
 
 	setAddress()
 	{
 		var csrftoken = $("[name=csrfmiddlewaretoken]").val();
-		var address = this.state.value
+		var address_json = {
+			line_1: this.state.line_1,
+			line_2: this.state.line_2,
+			city: this.state.city,
+			state: this.state.state,
+			zip: this.state.zip,
+			country: this.state.country,
+		}
 		var data = {
-			address: address,
+			address_json: JSON.stringify(address_json),
 			csrfmiddlewaretoken: csrftoken,
 		}
 
@@ -56,13 +67,13 @@ export default class Address extends React.Component {
 				url: '../api/users/set_address/',
 				success: function(data)
 					{
+						console.log(data)
 						this.setState(
 							{
-								address: address,
+								address: data,
 							});
 					}.bind(this)
 			});
-
 
 	}
 
@@ -71,6 +82,7 @@ export default class Address extends React.Component {
 			type: 'GET',
 			url: '../api/users/get_address/',
 			success: function(data) {
+				console.log(data)
 				this.setState({
 					address: data
 				});
@@ -80,22 +92,30 @@ export default class Address extends React.Component {
 
 	render () {
 		// const addresses = this.createAddresses()
-
 		return (
-			<div className="">
-				<h2>Your Shipping Address</h2>
-				{this.state.address}
+			<div className="address_pane">
+				<h1>Delivery Address</h1>
+				{this.state.address == '' ? <h2>No Magazine</h2> : <h2>Your magazine will be delivered to</h2>}
+				{this.state.address.line_1}
 				Address Line 1
-				<input id="autocomplete" className="address-field" onChange={this.handleChange} value={this.state.value} type="text"/>
+				<input 
+				id="line_1" 
+				onChange={this.handleChange} 
+				value={this.state.value} 
+				type="text"/>
 				Address Line 2
-				<input/>
+				<input id="line_2" onChange={this.handleChange} />
 				City
-				<input /> 
+				<input id="city" onChange={this.handleChange}/> 
 				State/Province/Region
-				<input /> 
+				<input id="state" onChange={this.handleChange}/> 
 				Zip
-				<input /> 
+				<input id="zip" onChange={this.handleChange}/>
+				Country
+				<input id="country" onChange={this.handleChange}/>
 				<button onClick={this.setAddress}>Set Address</button>
+				<h1>Schedule</h1>
+				<h3>Magazines will be delivered the 15th of every month</h3>
 			</div>
     	);
   }

@@ -6,7 +6,7 @@ import Category from './Category.jsx';
 import AboutCard from './AboutCard.jsx';
 import Authors from './Authors.jsx';
 import AuthorCard from './AuthorCard.jsx';
-import Address from './Address.jsx';
+import Address_Pane from './Address_Pane.jsx';
 
 export {
 	Magazine,
@@ -16,5 +16,5 @@ export {
 	AboutCard,
 	Authors,
 	AuthorCard,
-	Address
+	Address_Pane,
 }

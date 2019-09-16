@@ -34,9 +34,18 @@ class Address(models.Model):
     zip = models.CharField(max_length=100, null=True)
     country = models.CharField(max_length=100)
 
+    def to_json(self):
+        return {
+            'line_1': self.line_1,
+            'line_2': self.line_2,
+            'city': self.city,
+            'state': self.state,
+            'zip': self.zip,
+            'country': self.country,
+        }
 
 class BillingInfo(models.Model):
-    delivery_address = models.OneToOneField(Address, on_delete=models.CASCADE, default=None)
+    delivery_address = models.OneToOneField(Address, on_delete=models.CASCADE, default=None, null=True)
     stripe_customer_id = models.CharField(_('Stripe Customer ID'), max_length=100, default=None, null=True)
     payment_tier = models.OneToOneField(PaymentTier, on_delete=models.CASCADE, default=None, null=True)
     customer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

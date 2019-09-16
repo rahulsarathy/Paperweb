@@ -5,41 +5,38 @@ import 'bootstrap/dist/css/bootstrap.css';
 import $ from 'jquery';
 import shortid from 'shortid';
 
-import {Category, Address} from './components/Components.jsx'
+import {Category, Address_Pane} from './components/Components.jsx'
 
 
 export default class Profile extends React.Component {
 
 	constructor(props) {
 		super(props);
-
-		this.handleChange = this.handleChange.bind(this)
 		
 		this.state = {
-			data: {},
-			value: ''
+			selected: 'address'
 		};
 	}
 
-	handleChange(e) {
-		this.setState(
-			{
-				value: e.target.value
-			});
+	handleClick(e) {
+		
 	}
    
 	render () {
 		return (
     	<div className="profile">
-    		<ul>
-    			<li>Delivery Address</li>
-    			<li>Payment Info</li>
-    			<li>Delivery Schedule</li>
-    			<li>Cancel Subscription</li>
-    		</ul>
-    		<h3>Change Address</h3>
-    		<input value={this.state.value} onChange={this.handleChange}></input>
-    		<Address />
+    		<div className="row">
+    			<div className="col-3 profile-navbar">
+    				<ul className="profile-options">
+    					<li onClick={this.handleClick} id="payment">Payment Info</li>
+    					<li onClick={this.handleClick} id="schedule">Delivery Schedule</li>
+    					<li onClick={this.handleClick} className="cancel_subscription" id="cancel">Cancel Subscription</li>
+    				</ul>
+    			</div>
+    			<div className="col-9">
+    				<Address_Pane />
+    			</div>
+    		</div>
     	</div>
     	);
   }

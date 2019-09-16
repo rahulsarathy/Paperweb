@@ -282,6 +282,26 @@ body {
   transition: opacity 300ms linear;
 }
 
+.profile {
+
+  .profile-navbar {
+    .profile-options {
+      list-style: none;
+      .cancel_subscription {
+        color: red;
+      }
+    }
+  }
+
+  .address_pane {
+    input {
+      display: block;
+      width: 350px;
+    }
+  }
+
+}
+
 
 
 
