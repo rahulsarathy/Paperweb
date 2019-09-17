@@ -76,9 +76,11 @@ export default class Address_Pane extends React.Component {
 							{
 								address: data,
 							});
-					}.bind(this)
+					}.bind(this),
+				error: function (request, status, error) {
+					console.log(status);
+				}
 			});
-
 	}
 
 	getAddress() {
@@ -107,15 +109,23 @@ export default class Address_Pane extends React.Component {
 
 	render () {
 		// const addresses = this.createAddresses()
-		const no_address = <h2>No Magazine</h2>;
-		const address = <p>Your magazine will be delivered to <span className="highlighted">{this.state.address.line_1}</span> </p>;
+		const no_address = (
+			<div>
+				<h3>You have not yet set a delivery address</h3>
+				<Address_Modal set={true} handleChange={this.handleChange} setAddress={this.setAddress} />
+			</div>
+			);
+		const address = (
+			<div>
+				<p>Your magazine will be delivered to <span className="highlighted">{this.state.address.line_1}</span> </p>
+				<Address_Modal set={false} handleChange={this.handleChange} setAddress={this.setAddress}/>
+				<h3>Schedule</h3>
+				<h4>Magazines will be delivered the <span className="highlighted">15th of every month</span></h4>
+			</div>
+			);
 		return (
 			<div className="address_pane">
-				<h1>Delivery Address</h1>
 				{this.state.address == '' ? no_address : address}
-				<Address_Modal handleChange={this.handleChange} setAddress={this.setAddress}/>
-				<h1>Schedule</h1>
-				<h3>Magazines will be delivered the <span className="highlighted">15th of every month</span></h3>
 			</div>
     	);
   }

@@ -23,10 +23,11 @@ def get_address(request):
     try:
         billing_info = BillingInfo.objects.get(customer=user)
         address = billing_info.delivery_address
+        to_send = address.to_json()
     except:
-        address = {}
+        to_send = ''
 
-    return JsonResponse(address.to_json())
+    return JsonResponse(to_send, safe=False)
 
 @api_view(['POST'])
 def set_address(request):
@@ -38,6 +39,9 @@ def set_address(request):
     state = address_json['state']
     zip = address_json['zip']
     country = address_json['country']
+
+    if line_1 is '':
+        return HttpResponse(status=403)
 
     new_address = Address(line_1=line_1, line_2=line_2, city=city, state=state, zip=zip, country=country)
     new_address.save()

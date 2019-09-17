@@ -10,6 +10,7 @@ export default class Address_Model extends React.Component {
 
 		this.showModal = this.showModal.bind(this);
 		this.closeModal = this.closeModal.bind(this);
+		this.setAddressWrapper = this.setAddressWrapper.bind(this);
 
 		this.state = {
 			show: false,
@@ -28,25 +29,39 @@ export default class Address_Model extends React.Component {
 		});
 	}
 
+	setAddressWrapper() {
+		this.props.setAddress();
+		this.closeModal();
+	}
+
 	render () {
+
+
 		return (
-			<div >
-				<button onClick={this.showModal}>Change Address</button>
-				<Modal show={this.state.show}>
-					Address Line 1
-					<input id="line_1" onChange={this.props.handleChange} type="text"/>
-					Address Line 2
-					<input id="line_2" onChange={this.props.handleChange} />
-					City
-					<input id="city" onChange={this.props.handleChange}/> 
-					State/Province/Region
-					<input id="state" onChange={this.props.handleChange}/> 
-					Zip
-					<input id="zip" onChange={this.props.handleChange}/>
-					Country
-					<input id="country" onChange={this.props.handleChange}/>
-					<button onClick={this.props.setAddress}>Set Address</button>
-					<button onClick={this.closeModal}>Close</button>
+			<div className="address_modal">
+				<button onClick={this.showModal} >{this.props.set ? "Set Address": "Change Address"}</button>
+				<Modal show={this.state.show} onHide={this.closeModal} id="modal-change-address">
+					<Modal.Body>
+						<h2>Change Address</h2>
+						<div>
+						Address Line 1
+						<input id="line_1" onChange={this.props.handleChange} type="text"/>
+						Address Line 2
+						<input id="line_2" onChange={this.props.handleChange} />
+						City
+						<input id="city" onChange={this.props.handleChange}/> 
+						State/Province/Region
+						<input id="state" onChange={this.props.handleChange}/> 
+						Zip
+						<input id="zip" onChange={this.props.handleChange}/>
+						Country
+						<input id="country" onChange={this.props.handleChange}/>
+						</div>
+					</Modal.Body>
+					<Modal.Footer>
+						<button className="set-address" onClick={this.setAddressWrapper}>Set Address</button>
+						<button className="close-modal"onClick={this.closeModal}>Close</button>
+					</Modal.Footer>
 				</Modal>
 			</div>
     	);

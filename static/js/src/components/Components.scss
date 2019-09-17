@@ -310,12 +310,30 @@ body {
   }
 
   .address_pane {
-    input {
+    
+  }
+
+}
+
+#modal-change-address {
+   input {
       display: block;
       width: 350px;
     }
-  }
 
+    button {
+      border-radius: 2px;
+      border-style: none;
+    }
+
+    .set-address {
+      background-color: #2393FF;
+      color: white;
+    }
+
+    .close-modal {
+      // background-color: #;
+    }
 }
 
 
