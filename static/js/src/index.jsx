@@ -1,9 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import $ from 'jquery';
-
+import { Row, Col } from 'react-bootstrap';
 import {Magazine} from './components/Components.jsx'
 
 
@@ -25,21 +24,21 @@ export default class Landing extends React.Component {
     return (
     	<div>
     		<div className="container">
-    			<div className="row">
-    				<div className="col-sm">
+    			<Row>
+    				<Col>
     			    	<h1>What if the internet published a magazine?</h1>
-    				</div>
-    			</div>
-    			<div className="row">
-    				<div className="col-sm-6">
+    				</Col>
+    			</Row>
+    			<Row>
+    				<Col>
     					<Magazine />
-    				</div>
-    				<div className="col-sm-6">
+    				</Col>
+    				<Col>
     					<p>Pulp is a monthly custom print magazine delivered to your doorstep made up of your favorite blogs and newsletters that you choose.</p>
     					<input></input>
     					<button>Get Started</button>
-    				</div>
-    			</div>
+    				</Col>
+    			</Row>
     		</div>
     	</div>
     	);

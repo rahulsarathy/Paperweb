@@ -284,12 +284,16 @@ body {
 
 .profile {
 
+  .highlighted {
+    color: #2393FF;
+  }
+
   .profile-navbar {
     .profile-options {
       list-style: none;
       li {
         cursor: pointer;
-        width: 125px;
+        width: 100%;
         padding: 5px 5px 3px 3px;
         border-radius: 3px;
         vertical-align: center;

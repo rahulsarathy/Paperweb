@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import $ from 'jquery';
+import { Modal } from 'react-bootstrap';
+import {Address_Modal} from './Components.jsx'
+
 
 var componentForm = {
   street_number: 'short_name',
@@ -21,6 +23,8 @@ export default class Address_Pane extends React.Component {
 		this.handleChange = this.handleChange.bind(this);
 		this.setAddress = this.setAddress.bind(this);
 		this.getAddress = this.getAddress.bind(this);
+		this.showModal = this.showModal.bind(this);
+		this.closeModal = this.closeModal.bind(this);
 
 		this.state = {
 			address: '',
@@ -30,6 +34,7 @@ export default class Address_Pane extends React.Component {
 			state: '',
 			zip: '',
 			country: '',
+			show: false
 		};
 	}
 
@@ -67,7 +72,6 @@ export default class Address_Pane extends React.Component {
 				url: '../api/users/set_address/',
 				success: function(data)
 					{
-						console.log(data)
 						this.setState(
 							{
 								address: data,
@@ -82,7 +86,6 @@ export default class Address_Pane extends React.Component {
 			type: 'GET',
 			url: '../api/users/get_address/',
 			success: function(data) {
-				console.log(data)
 				this.setState({
 					address: data
 				});
@@ -90,32 +93,29 @@ export default class Address_Pane extends React.Component {
 		});
 	}
 
+	closeModal (e) {
+		this.setState({
+			show: false
+		});
+	}
+
+	showModal(e) {
+		this.setState({
+			show: true
+		});
+	}
+
 	render () {
 		// const addresses = this.createAddresses()
+		const no_address = <h2>No Magazine</h2>;
+		const address = <p>Your magazine will be delivered to <span className="highlighted">{this.state.address.line_1}</span> </p>;
 		return (
 			<div className="address_pane">
 				<h1>Delivery Address</h1>
-				{this.state.address == '' ? <h2>No Magazine</h2> : <h2>Your magazine will be delivered to</h2>}
-				{this.state.address.line_1}
-				Address Line 1
-				<input 
-				id="line_1" 
-				onChange={this.handleChange} 
-				value={this.state.value} 
-				type="text"/>
-				Address Line 2
-				<input id="line_2" onChange={this.handleChange} />
-				City
-				<input id="city" onChange={this.handleChange}/> 
-				State/Province/Region
-				<input id="state" onChange={this.handleChange}/> 
-				Zip
-				<input id="zip" onChange={this.handleChange}/>
-				Country
-				<input id="country" onChange={this.handleChange}/>
-				<button onClick={this.setAddress}>Set Address</button>
+				{this.state.address == '' ? no_address : address}
+				<Address_Modal handleChange={this.handleChange} setAddress={this.setAddress}/>
 				<h1>Schedule</h1>
-				<h3>Magazines will be delivered the 15th of every month</h3>
+				<h3>Magazines will be delivered the <span className="highlighted">15th of every month</span></h3>
 			</div>
     	);
   }

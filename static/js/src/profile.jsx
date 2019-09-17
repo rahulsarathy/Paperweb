@@ -1,11 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import $ from 'jquery';
 import shortid from 'shortid';
 import classnames from 'classnames';
-
+import { Row, Col } from 'react-bootstrap';
 import {Category, Address_Pane, Payment_Pane, Cancel_Pane} from './components/Components.jsx'
 
 
@@ -62,18 +61,22 @@ export default class Profile extends React.Component {
 
 		return (
     	<div className="profile">
-    		<div className="row">
-    			<div className="col-3 profile-navbar">
+    		<Row>
+    			<Col xs={3}>
+    			<div className="profile-navbar">
     				<ul className="profile-options">
     					<li onClick={this.handleClick} className={delivery_style} id="delivery">Delivery Info</li>
     					<li onClick={this.handleClick} className={payment_style} id="payment">Payment Status</li>
     					<li onClick={this.handleClick} className={classnames('cancel_subscription', cancel_style)} id="cancel">Cancel Subscription</li>
     				</ul>
     			</div>
-    			<div className="col-9">
+    			</Col>
+    			<Col xs={9}>
+    			<div>
     			{this.renderSwitch(this.state.selected)}
     			</div>
-    		</div>
+    			</Col>
+    		</Row>
     	</div>
     	);
   }
