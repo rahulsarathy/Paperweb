@@ -7,6 +7,8 @@ import AboutCard from './AboutCard.jsx';
 import Authors from './Authors.jsx';
 import AuthorCard from './AuthorCard.jsx';
 import Address_Pane from './Address_Pane.jsx';
+import Cancel_Pane from './Cancel_Pane.jsx';
+import Payment_Pane from './Payment_Pane.jsx';
 
 export {
 	Magazine,
@@ -17,4 +19,6 @@ export {
 	Authors,
 	AuthorCard,
 	Address_Pane,
+	Cancel_Pane,
+	Payment_Pane,
 }
