@@ -3,15 +3,8 @@ import ReactDOM from 'react-dom';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import $ from 'jquery';
-// const stripe = Stripe('pk_test_9DUWDnI9T5YJWmLRhNn6nHtS')
-// const stripe = require('stripe')('pk_test_9DUWDnI9T5YJWmLRhNn6nHtS')
 
-var src = 'https://js.stripe.com/v3/';
-var tag = document.createElement('script');
-tag.async = false;
-tag.src = src;
-document.getElementsByTagName('script')[0].appendChild(tag);
-const stripe = Stripe('pk_test_9DUWDnI9T5YJWmLRhNn6nHtS');
+const stripe = Stripe(stripe_public_key);
 
 export default class Payment_Pane extends React.Component {
 
@@ -26,10 +19,6 @@ export default class Payment_Pane extends React.Component {
 
 	componentDidMount() {
 		this.checkPaymentStatus();
-	}
-
-	setStripeScript() {
-		
 	}
 
 	checkPaymentStatus(){

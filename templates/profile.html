@@ -4,6 +4,9 @@
 <html>
 <head>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script>
+    	var stripe_public_key = '{{stripe_public_key}}';
+    </script>
     <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body class="profile-frame">
