@@ -5,8 +5,12 @@ from utils.google_maps_utils import autocomplete
 from utils import stripe_utils
 from utils.stripe_utils import stripe
 from django.http import JsonResponse, HttpResponse
-from payments.models import Transaction
+from payments.models import Transaction, BillingInfo
 import json
+from datetime import datetime
+from django.utils.timezone import make_aware
+
+from users.models import CustomUser
 
 # Create your views here.
 @api_view(['GET'])
@@ -45,7 +49,23 @@ def payment_status(request):
 
     return HttpResponse(status=200)
 
+@api_view(['GET'])
+def cancel_payment(request):
+    current_user = request.user
+    try:
+        latest_transaction = Transaction.objects.filter(customer=current_user).latest()
+    except:
+        latest_transaction = None
+
+    if latest_transaction and not latest_transaction.payment_cancellation:
+        cancel_transaction = Transaction(make_aware(datetime.now()), customer=current_user, payment_cancellation=True)
+        cancel_transaction.save()
+        return HttpResponse(status=200)
+    else:
+        return HttpResponse("User has no subscription", status=402)
+
 @csrf_exempt
+@api_view(['POST'])
 def stripe_hook(request):
     print("stripe webhook hit!")
     payload = request.body
@@ -60,18 +80,23 @@ def stripe_hook(request):
         return HttpResponse(status=400)
 
     if event.type == 'checkout.session.completed':
-        print(event)
-
-    # Handle the event
-    if event.type == 'payment_intent.succeeded':
-        payment_intent = event.data.object  # contains a stripe.PaymentIntent
-        # handle_payment_intent_succeeded(payment_intent)
-    elif event.type == 'payment_method.attached':
-        payment_method = event.data.object  # contains a stripe.PaymentMethod
-        # handle_payment_method_attached(payment_method)
-    # ... handle other event types
+        handle_checkout_complete(event)
+        return HttpResponse(status=200)
     else:
         # Unexpected event type
         return HttpResponse(status=400)
 
     return HttpResponse(status=200)
+
+def handle_checkout_complete(event):
+    stripe_response = event.data.object
+
+    client_reference_id = stripe_response.get('client_reference_id')
+    stripe_customer_id = stripe_response.get('customer')
+
+    customer_billing_info = BillingInfo.objects.get(customer=client_reference_id)
+    customer_billing_info.stripe_customer_id = stripe_customer_id
+    customer_billing_info.save()
+
+    new_transaction = Transaction(transaction_date=make_aware(datetime.now()), customer=client_reference_id, payment_cancellation=False)
+

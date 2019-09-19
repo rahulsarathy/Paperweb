@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'bootstrap';
-import 'bootstrap/dist/css/bootstrap.css';
 import $ from 'jquery';
 
 const stripe = Stripe(stripe_public_key);
@@ -33,6 +32,18 @@ export default class Payment_Pane extends React.Component {
 					});
 				}
 			}.bind(this)
+		});
+	}
+
+	cancelPayment() {
+		$.ajax({
+			url: '../api/payments/cancel_payment',
+			type: 'GET',
+			success: function(data, statusText, xhr) {
+				this.setState({
+					paid: false
+				});
+			}
 		});
 	}
 

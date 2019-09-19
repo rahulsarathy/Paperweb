@@ -25,3 +25,6 @@ def create_session(client_reference_id, customer_email):
     )
 
     return session
+
+def retrieve_customer(stripe_customer_id):
+    stripe.Customer.retrieve(customer_id)
