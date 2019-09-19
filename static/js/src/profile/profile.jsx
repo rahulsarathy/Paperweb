@@ -5,7 +5,7 @@ import $ from 'jquery';
 import shortid from 'shortid';
 import classnames from 'classnames';
 import { Row, Col } from 'react-bootstrap';
-import {Category, Address_Pane, Payment_Pane, Cancel_Pane} from './components/Components.jsx'
+import {Address_Pane, Payment_Pane, Cancel_Pane} from './/Components.jsx'
 
 
 export default class Profile extends React.Component {

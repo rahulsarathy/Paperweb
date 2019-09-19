@@ -14,11 +14,12 @@ import os
 import sys
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
+from siteconfig.globals import NGROK_HOST
 
-sentry_sdk.init(
-    dsn="https://376f22cb96ba4052a0cb5f47084f452c@sentry.io/1529016",
-    integrations=[DjangoIntegration()]
-)
+# sentry_sdk.init(
+#     dsn="https://376f22cb96ba4052a0cb5f47084f452c@sentry.io/1529016",
+#     integrations=[DjangoIntegration()]
+# )
 
 # If django is called with test, set TESTING to True
 TESTING = len(sys.argv) > 1 and sys.argv[1] == 'test'
@@ -36,8 +37,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
 
+ALLOWED_HOSTS = [NGROK_HOST, '127.0.0.1']
 
 # Application definition
 

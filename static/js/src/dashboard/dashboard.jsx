@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import $ from 'jquery';
 import shortid from 'shortid';
 
-import {Category} from './components/Components.jsx'
+import {Category} from './Components.jsx'
 
 
 export default class Dashboard extends React.Component {

@@ -5,7 +5,7 @@ from siteconfig import views
 
 urlpatterns = [
   path('admin/', admin.site.urls),
-  path('', views.index, name='index'),
+  path('', views.landing, name='landing'),
   path('dashboard/', views.dashboard, name='dashboard'),
   path('profile/', views.profile, name='profile'),
   path('auth/', include('django.contrib.auth.urls')),

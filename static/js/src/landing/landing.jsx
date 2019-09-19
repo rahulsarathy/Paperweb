@@ -3,8 +3,7 @@ import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import $ from 'jquery';
 import { Row, Col } from 'react-bootstrap';
-import {Magazine} from './components/Components.jsx'
-
+import {Magazine} from './Components.jsx'
 
 export default class Landing extends React.Component {
 

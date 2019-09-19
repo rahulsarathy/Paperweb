@@ -23,8 +23,12 @@ class PaymentTier(models.Model):
 
 class Transaction(models.Model):
     transaction_date = models.DateTimeField(_('Transaction Date'))
-    payment_tier = models.OneToOneField(PaymentTier, on_delete=models.CASCADE)
+    payment_tier = models.OneToOneField(PaymentTier, on_delete=models.CASCADE, null=True)
     payment_cancellation = models.BooleanField(_('Payment Cancellation'))
+    customer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+    class Meta:
+        get_latest_by = "transaction_date"
 
 class Address(models.Model):
     line_1 = models.CharField(max_length=500)
