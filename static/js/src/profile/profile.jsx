@@ -5,7 +5,7 @@ import $ from 'jquery';
 import shortid from 'shortid';
 import classnames from 'classnames';
 import { Row, Col } from 'react-bootstrap';
-import {Address_Pane, Payment_Pane, Cancel_Pane} from './/Components.jsx'
+import {Address_Pane, Payment_Pane, Cancel_Pane, Unpaid, Paid} from './Components.jsx'
 
 
 export default class Profile extends React.Component {
@@ -13,70 +13,35 @@ export default class Profile extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.handleClick = this.handleClick.bind(this);
 		this.state = {
-			selected: 'delivery',
+			paid: false
 		};
 	}
 
-	handleClick(e) {
-		var field = e.target.id;
-		this.setState({
-			selected: e.target.id,
-			[field]: 'selected'
+	componentDidMount() {
+
+	}
+
+	checkPaymentStatus(){
+		$.ajax({
+			url: '../api/payments/payment_status',
+			type: 'GET',
+			success: function(data, statusText, xhr) {
+				console.log(xhr)
+				if (xhr.status == 208) {
+					this.setState({
+						paid: true
+					});
+				}
+			}.bind(this)
 		});
 	}
 
-	renderSwitch(param){
-		switch(param) {
-			case 'delivery':
-				return <Address_Pane />;
-			case 'payment':
-				return <Payment_Pane />;
-			case 'cancel':
-				return <Cancel_Pane />;
-			default: 
-				return <Address_Pane />;
-			}
-		}
-
 	render () {
-		var delivery_style = '';
-		var payment_style = '';
-		var cancel_style = '';
-		switch(this.state.selected) {
-			case 'delivery':
-				delivery_style = 'selected';
-				break;
-			case 'payment':
-				payment_style = 'selected';
-				break;
-			case 'cancel':
-				cancel_style = 'selected';
-				break;
-			default:
-				delivery_style = 'selected';
-				break;
-		}
 
 		return (
     	<div className="profile">
-    		<Row>
-    			<Col xs={3}>
-    			<div className="profile-navbar">
-    				<ul className="profile-options">
-    					<li onClick={this.handleClick} className={delivery_style} id="delivery">Delivery Info</li>
-    					<li onClick={this.handleClick} className={payment_style} id="payment">Payment Status</li>
-    					<li onClick={this.handleClick} className={classnames('cancel_subscription', cancel_style)} id="cancel">Cancel Subscription</li>
-    				</ul>
-    			</div>
-    			</Col>
-    			<Col xs={9}>
-    			<div>
-    			{this.renderSwitch(this.state.selected)}
-    			</div>
-    			</Col>
-    		</Row>
+    		{this.state.paid ? <Paid /> : <Unpaid />}
     	</div>
     	);
   }
