@@ -19,13 +19,14 @@ export default class Profile extends React.Component {
 	}
 
 	componentDidMount() {
-
+		this.checkPaymentStatus();
 	}
 
 	checkPaymentStatus(){
 		$.ajax({
 			url: '../api/payments/payment_status',
 			type: 'GET',
+			async: false,
 			success: function(data, statusText, xhr) {
 				console.log(xhr)
 				if (xhr.status == 208) {

@@ -47,21 +47,7 @@ export default class Payment_Pane extends React.Component {
 		});
 	}
 
-	createSession(){
-		$.ajax({
-			url: '../api/payments/create_session',
-			type: 'GET',
-			success: function(data, statusText, xhr) {
-				if (xhr.status == 208){
-					this.setState({
-						paid: true
-					});
-				}
-				var id = data.id;
-				this.startPayment(id);
-			}.bind(this)
-		});
-	}
+
 
 	startPayment(id) {
 		console.log("starting stripe payment")
