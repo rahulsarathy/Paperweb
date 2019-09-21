@@ -17,6 +17,7 @@ export default class Unpaid extends React.Component {
 	} 
 
     createSession(){
+        console.log("create session called");
         $.ajax({
             url: '../api/payments/create_session',
             type: 'GET',
@@ -38,7 +39,8 @@ export default class Unpaid extends React.Component {
         // Make the id field from the Checkout Session creation API response
         // available to this file, so you can provide it as parameter here
         // instead of the {{CHECKOUT_SESSION_ID}} placeholder.
-        sessionId: id
+        sessionId: id,
+
     }).then(function (result) {
         // If `redirectToCheckout` fails due to a browser or network
         // error, display the localized error message to your customer

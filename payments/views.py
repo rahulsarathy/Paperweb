@@ -22,14 +22,18 @@ def address_autocomplete(request):
 
 @api_view(['GET'])
 def create_session(request):
+    print("create session called!")
     current_user = request.user
     try:
         billing_info = BillingInfo.objects.get(customer=current_user)
         stripe_customer_id = None
         if billing_info and billing_info.stripe_customer_id:
             stripe_customer_id = billing_info.stripe_customer_id
-        new_session = stripe_utils.create_session(current_user.id, current_user.email, stripe_customer_id)
-    except:
+        print("create session customer id is ", stripe_customer_id)
+        new_session = stripe_utils.create_session(current_user.id, stripe_customer_id=stripe_customer_id)
+    except Exception as e:
+        print(e)
+        print("creating new session with no customer ID!")
         new_session = stripe_utils.create_session(current_user.id, current_user.email)
 
     return JsonResponse(new_session)
@@ -49,13 +53,15 @@ def payment_status(request):
         # User has not paid yet
         return HttpResponse(status=200)
 
+    print("current customer id is ", stripe_customer_id)
+
     stripe_customer = stripe_utils.retrieve_customer(stripe_customer_id)
     subscriptions = stripe_customer.get('subscriptions')
     subscriptions_data = subscriptions.get('data')
-    if len(subscriptions_data) > 1:
+    if len(subscriptions_data) >= 1:
         return HttpResponse(status=208)
     else:
-        return HttpResponse(status=208)
+        return HttpResponse(status=200)
 
 @api_view(['GET'])
 def cancel_payment(request):
@@ -69,9 +75,11 @@ def cancel_payment(request):
     stripe_customer = stripe_utils.retrieve_customer(stripe_customer_id)
     subscriptions = stripe_customer.get('subscriptions')
     subscriptions_data = subscriptions.get('data')
+    if len(subscriptions_data) == 0:
+        return HttpResponse("User has no subscription", status=403)
     for data_point in subscriptions_data:
         sub_id = data_point.id
-        stripe_utils.delete_customer(sub_id)
+        stripe_utils.delete_subscription(sub_id)
 
     return HttpResponse(status=200)
 
@@ -91,7 +99,7 @@ def stripe_hook(request):
         return HttpResponse(status=400)
 
     if event.type == 'checkout.session.completed':
-        handle_checkout_complete(event)
+        return handle_checkout_complete(event)
         return HttpResponse(status=200)
     else:
         # Unexpected event type
@@ -105,10 +113,18 @@ def handle_checkout_complete(event):
     client_reference_id = stripe_response.get('client_reference_id')
     stripe_customer_id = stripe_response.get('customer')
 
+    print("webhook customer id is ", stripe_customer_id)
+
     try:
-        customer_billing_info = BillingInfo.objects.get(customer=client_reference_id)
+        current_user = CustomUser.objects.get(id=client_reference_id)
     except:
-        customer_billing_info = BillingInfo(customer=client_reference_id)
+        return HttpResponse(status=400)
+
+    try:
+        customer_billing_info = BillingInfo.objects.get(customer=current_user)
+    except:
+        customer_billing_info = BillingInfo(customer=current_user)
 
     customer_billing_info.stripe_customer_id = stripe_customer_id
     customer_billing_info.save()
+    return HttpResponse(status=200)

@@ -33,6 +33,11 @@ export default class Profile extends React.Component {
 						paid: true
 					});
 				}
+				else {
+					this.setState({
+						paid: false
+					});
+				}
 			}.bind(this)
 		});
 	}

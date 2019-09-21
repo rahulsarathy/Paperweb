@@ -1,4 +1,4 @@
-NGROK_HOST = '942651c4.ngrok.io'
+NGROK_HOST = 'edb661da.ngrok.io'
 
 GOOGLE_MAPS_PLACES = 'AIzaSyAStU9SHXwqw6iyBonOjkIQtzgQ8FguR3U'
 STRIPE_API_KEY = 'sk_test_gZ50gEoA6E8vcDZC3IZVyVqi00e5FInywM'
