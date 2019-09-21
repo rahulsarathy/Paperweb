@@ -14,7 +14,7 @@ export default class Profile extends React.Component {
 		super(props);
 
 		this.state = {
-			paid: false
+			paid: true
 		};
 	}
 
@@ -26,7 +26,6 @@ export default class Profile extends React.Component {
 		$.ajax({
 			url: '../api/payments/payment_status',
 			type: 'GET',
-			async: false,
 			success: function(data, statusText, xhr) {
 				console.log(xhr)
 				if (xhr.status == 208) {

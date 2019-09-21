@@ -5,7 +5,7 @@ from utils.google_maps_utils import autocomplete
 from utils import stripe_utils
 from utils.stripe_utils import stripe
 from django.http import JsonResponse, HttpResponse
-from payments.models import Transaction, BillingInfo
+from payments.models import BillingInfo
 import json
 from datetime import datetime
 from django.utils.timezone import make_aware
@@ -67,7 +67,6 @@ def cancel_payment(request):
 
     stripe_customer_id = billing_info.stripe_customer_id
     stripe_customer = stripe_utils.retrieve_customer(stripe_customer_id)
-    print(stripe_customer)
     subscriptions = stripe_customer.get('subscriptions')
     subscriptions_data = subscriptions.get('data')
     for data_point in subscriptions_data:
@@ -75,18 +74,6 @@ def cancel_payment(request):
         stripe_utils.delete_customer(sub_id)
 
     return HttpResponse(status=200)
-    # current_user = request.user
-    # try:
-    #     latest_transaction = Transaction.objects.filter(customer=current_user).latest()
-    # except:
-    #     latest_transaction = None
-    #
-    # if latest_transaction and not latest_transaction.payment_cancellation:
-    #     cancel_transaction = Transaction(make_aware(datetime.now()), customer=current_user, payment_cancellation=True)
-    #     cancel_transaction.save()
-    #     return HttpResponse(status=200)
-    # else:
-    #     return HttpResponse("User has no subscription", status=402)
 
 @csrf_exempt
 @api_view(['POST'])
