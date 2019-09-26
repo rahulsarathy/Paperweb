@@ -1,4 +1,4 @@
-import './components.scss';
+import './Components.scss';
 import Magazine from './Magazine.jsx';
 import BlogChapter from './BlogChapter.jsx';
 

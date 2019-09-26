@@ -8,13 +8,30 @@ from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 import json
+from django.views import generic
+from django.urls import reverse_lazy
+from django.contrib.auth.forms import UserCreationForm
+from django import forms
+from django.shortcuts import render
 
 User = get_user_model()
+
+class RegisterForm(UserCreationForm):
+    email = forms.EmailField(label='Email')
+
+    class Meta:
+        model = User
+        fields = ("email",)
 
 class UserViewSet(viewsets.ModelViewSet):
 
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
+
+class SignUp(generic.CreateView):
+    form_class = RegisterForm
+    success_url = reverse_lazy('login')
+    template_name = 'registration/signup.html'
 
 @api_view(['GET'])
 def get_address(request):

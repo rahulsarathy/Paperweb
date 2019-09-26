@@ -1,19 +1,28 @@
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.conf import settings
 
 from siteconfig.globals import GOOGLE_MAPS_PLACES, STRIPE_PUBLIC_KEY
 from rest_framework.decorators import api_view
 
 
 def landing(request):
-  return render(request, 'landing.html')
+  context = {
+    'js_file': settings.JAVASCRIPT_URLS['landing']
+  }
+  return render(request, 'landing.html', context)
 
 def dashboard(request):
-  return render(request, 'dashboard.html')
+  context = {
+    'js_file': settings.JAVASCRIPT_URLS['dashboard']
+  }
+  return render(request, 'dashboard.html', context)
 
 def profile(request):
   context = {
-    'stripe_public_key': STRIPE_PUBLIC_KEY
+    'stripe_public_key': STRIPE_PUBLIC_KEY,
+    'js_file': settings.JAVASCRIPT_URLS['profile']
+
   }
   return render(request, 'profile.html', context)
 

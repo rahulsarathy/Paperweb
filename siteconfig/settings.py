@@ -16,11 +16,6 @@ import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 from siteconfig.globals import NGROK_HOST
 
-# sentry_sdk.init(
-#     dsn="https://376f22cb96ba4052a0cb5f47084f452c@sentry.io/1529016",
-#     integrations=[DjangoIntegration()]
-# )
-
 # If django is called with test, set TESTING to True
 TESTING = len(sys.argv) > 1 and sys.argv[1] == 'test'
 
@@ -32,13 +27,6 @@ SECRET_KEY = 'y7s56!29ct(y8ii(zda7$p847++9s9&=m^kc8ufup@68n&ioe6'
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-
-ALLOWED_HOSTS = [NGROK_HOST, '127.0.0.1']
 
 # Application definition
 
@@ -97,17 +85,6 @@ WSGI_APPLICATION = 'siteconfig.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'pulp',
-        'USER': 'pulp_admin',
-        'PASSWORD': 'cat',
-        'HOST': 'localhost',
-        'PORT': '5432'
-    }
-}
 
 
 # Password validation
