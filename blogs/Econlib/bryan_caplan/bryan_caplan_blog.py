@@ -11,7 +11,7 @@ AUTHORS = [
                "University, research fellow at the Mercatus Center, adjunct scholar at the Cato Institute, "
                "and frequent contributor to Freakonomics as well as publishing his own blog, EconLog.",
         "link": "",
-        "profile": "http://libwww.freelibrary.org/assets/images/calendar/events/2017/21/72426.jpg"
+        "profile": "https://i.imgur.com/J2Cwrdj.jpg"
     },
 ]
 
