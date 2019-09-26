@@ -1,5 +1,7 @@
 from siteconfig.settings import *
 
+print("using test config")
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',

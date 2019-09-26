@@ -16,6 +16,8 @@ import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 from siteconfig.globals import NGROK_HOST
 
+print("using settings config")
+
 # If django is called with test, set TESTING to True
 TESTING = len(sys.argv) > 1 and sys.argv[1] == 'test'
 
