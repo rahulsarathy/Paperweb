@@ -49,7 +49,10 @@ def get_blogs(request):
 def check_sub_status(request):
     user = request.user
     name_id = request.POST['name_id']
-    blog = Blog.objects.get(name=name_id)
+    try:
+        blog = Blog.objects.get(name=name_id)
+    except:
+        return JsonResponse(False, safe=False)
 
     try:
         curr_subscription = Subscription.objects.get(subscriber=user, blog=blog)
