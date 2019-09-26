@@ -4,12 +4,10 @@ DATABASES = {
      'default': {
          'ENGINE': 'django.db.backends.postgresql',
          'NAME': 'pulp',
--        'USER': 'pulp_admin',
--        'PASSWORD': 'cat',
 +        'USER': 'admin',
 +        'PASSWORD': 's@>03u9-y;2ug`Tjd2h261',
          'HOST': 'localhost',
-         'PORT': '5432'
+         'PORT': '5432',
      }
 }
 
