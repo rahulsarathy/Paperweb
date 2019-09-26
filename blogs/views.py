@@ -13,6 +13,8 @@ from blogs.all_blogs import BLOGS, blog_map
 
 CATEGORIES = ["Rationality", "Economics", "Technology"]
 
+LANDING_BLOGS = ['bryan_caplan_econlib', 'stratechery', 'melting_asphalt', 'mercatus_center', 'ribbonfarm',
+                 'marginal_revolution', 'slatestarcodex', 'kwokchain']
 
 class BlogViewSet(viewsets.ViewSet):
     # Required for the Browsable API renderer to have a nice form.
@@ -38,12 +40,18 @@ def get_blogs(request):
                 else:
                     category_json[category].append(new_blog.to_json())
     user = request.user
-    try:
-        subscriptions = Subscription.objects.get(subscriber=user)
-    except:
-        subscriptions = []
 
     return JsonResponse(category_json, safe=False)
+
+# Blogs to display for the landing page
+@api_view(['GET'])
+def get_landing_blogs(request):
+    landing_blogs = []
+    for blog in BLOGS:
+        new_blog = blog()
+        if new_blog.name_id in LANDING_BLOGS:
+            landing_blogs.append(new_blog.to_json())
+    return JsonResponse(landing_blogs, safe=False)
 
 @api_view(['POST'])
 def check_sub_status(request):

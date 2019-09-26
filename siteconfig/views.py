@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from django.conf import settings
 
 from siteconfig.globals import GOOGLE_MAPS_PLACES, STRIPE_PUBLIC_KEY
@@ -7,6 +7,8 @@ from rest_framework.decorators import api_view
 
 
 def landing(request):
+  if request.user.is_authenticated:
+    return HttpResponseRedirect('/dashboard')
   context = {
     'js_file': settings.JAVASCRIPT_URLS['landing']
   }
