@@ -1,14 +1,14 @@
 from siteconfig.settings import *
 
 DATABASES = {
-     'default': {
-         'ENGINE': 'django.db.backends.postgresql',
-         'NAME': 'pulp',
-+        'USER': 'admin',
-+        'PASSWORD': 's@>03u9-y;2ug`Tjd2h261',
-         'HOST': 'localhost',
-         'PORT': '5432',
-     }
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'pulp',
+        'USER': 'admin',
+        'PASSWORD': 's@>03u9-y;2ug`Tjd2h261',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
 }
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
