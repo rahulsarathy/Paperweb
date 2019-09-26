@@ -4,6 +4,16 @@
         <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     </head>
     <body>
-       test
+    	<div class="header">
+	    	{% if user.is_authenticated %}
+	    		Logged in as {{user.username}}
+	    		<p><a href="{% url 'logout' %}">logout</a></p>
+	    	{% else %}
+	    	<div class="container">
+	    		<a href="{% url 'login' %}">Login</a>
+	    		<a href="{% url 'users:signup' %}">Signup</a>
+	    	</div>
+    	</div>
+    	{% endif %}
     </body>
 </html>

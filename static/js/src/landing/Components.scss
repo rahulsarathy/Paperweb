@@ -1,6 +1,7 @@
 
 .landing {
   padding-left: 50px;
+  margin-top: 50px;
 }
 
 
@@ -31,7 +32,33 @@
   display: flex;
 }
 
+.bloglist {
+  font-size: 20px;
+  p {
+    font-weight: bold;
+    font-size: 25px;
+  }
+
+  ul {
+    color: #2393FF;
+    font-weight: bold;
+    list-style-type: none;
+    list-style-position:inside;
+    padding:0;
+    position: relative;
+    top: -5px;
+  }
+
+  li {
+    padding-bottom: 5px;
+  }
+}
+
 .blogcopy {
+  font-size: 25px;
+}
+
+.contentcopy {
   font-weight: bold;
   font-size: 30px;
   margin-top: 30px;
@@ -41,6 +68,27 @@
   font-weight: bold;
   font-size: 40px;
 }
+
+.getstarted {
+  background-color: #2393FF;
+  color: white;
+  border-radius: 3px;
+  padding: 5px;
+  border-style: none;
+  font-size: 25px;
+  margin-bottom: 25px;
+
+
+
+  a {
+    color: white;
+    text-decoration: none;
+  }
+}
+
+.getstarted:hover {
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
+};
 
 .logo {
   font-size: 100px;

@@ -1,3 +1,21 @@
 body {
 	background-color: #FFFEFC;
 }
+
+.header {
+	font-size: 25px;
+	color: black;
+	box-shadow: 0 4px 5px -5px rgba(0, 0, 0, 0.5);
+	position: fixed;
+	width: 100%;
+	padding: 10px 0;
+/*	padding-right: 100;
+*/	top: 0;
+	background-color: white;
+}
+
+.container {
+	width: 90%;
+	margin: auto;
+	text-align: right;
+}

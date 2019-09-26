@@ -1,14 +1,6 @@
 {% include 'base.html' %}
 
 {%  block content  %}
-{% if user.is_authenticated %}
-    Hi {{ user.username }}!
-    <p><a href="{% url 'logout' %}">logout</a></p>
-{% else %}
-    <p>You are not logged in</p>
-    <a href="{% url 'login' %}">login</a>
-    <a href="{% url 'users:signup' %}">signup</a>
-{% endif %}
     <div id="landing"></div>
 <script src={{js_file}}></script>
 {% endblock %}
