@@ -50,7 +50,7 @@ export default class BlogCard extends React.Component {
 
 	render () {
         var blog = this.props.blog;
-        var Background = "http://127.0.1:8000/static/images/" + blog.image + ".png"
+        var Background = "/static/images/" + blog.image + ".png"
         var background_image = {
             backgroundImage: `url(${Background})`
         } 
