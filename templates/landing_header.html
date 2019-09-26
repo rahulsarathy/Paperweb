@@ -2,12 +2,18 @@
 <html>
     <head>
         <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+        <title>
+            Pulp
+        </title>
     </head>
     <body>
     	<div class="header">
 	    	{% if user.is_authenticated %}
+            <div class="container">
 	    		Logged in as {{user.username}}
 	    		<p><a href="{% url 'logout' %}">logout</a></p>
+            </div>
+            </div>
 	    	{% else %}
 	    	<div class="container">
 	    		<a href="{% url 'login' %}">Login</a>

@@ -1,23 +1,9 @@
-{% load static %}
+{% include 'header.html' %}
 
-<!DOCTYPE html>
-<html>
-<head>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-</head>
-<body class="dashboard-frame">
-{% csrf_token %}
 {%  block content  %}
-{% if user.is_authenticated %}
-    <a href="/profile">profile</a>
-    Hi {{ user.username }}!
-    <p><a href="{% url 'logout' %}">logout</a></p>
-{% else %}
-    <p>You are not logged in</p>
-    <a href="{% url 'login' %}">login</a>
-{% endif %}
+{% csrf_token %}
+<div id="dashboard">
+	
+</div>
+<script src={{js_file}}></script>
 {% endblock %}
-<div id="dashboard"></div>
-<script src={{ js_file }}></script>
-</body>
-</html>
