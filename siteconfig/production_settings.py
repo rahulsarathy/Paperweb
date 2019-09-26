@@ -1,4 +1,4 @@
-from siteconfig.settings import *d
+from siteconfig.settings import *
 
 DATABASES = {
      'default': {
