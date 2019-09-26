@@ -15,12 +15,16 @@ def landing(request):
   return render(request, 'landing.html', context)
 
 def dashboard(request):
+  if not request.user.is_authenticated:
+    return HttpResponseRedirect('../')
   context = {
     'js_file': settings.JAVASCRIPT_URLS['dashboard']
   }
   return render(request, 'dashboard.html', context)
 
 def profile(request):
+  if not request.user.is_authenticated:
+    return HttpResponseRedirect('../')
   context = {
     'stripe_public_key': STRIPE_PUBLIC_KEY,
     'js_file': settings.JAVASCRIPT_URLS['profile']
