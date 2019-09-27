@@ -1,10 +1,19 @@
 <!-- templates/registration/signup.html -->
+{% load static %}
 
-{% block content %}
-  <h2>Sign up</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Sign up</button>
-  </form>
-{% endblock %}
+<html>
+	<head>
+	<link rel="stylesheet" href="{% static 'css/login.css' %}">
+	</head>
+	<body>
+		<p class="back">
+			<i class="arrow left"></i><a href="{% url 'landing' %}">Back to Home</a>
+		</p>
+		<h2>Sign up</h2>
+		<form method="post">
+			{% csrf_token %}
+			{{ form.as_p }}
+			<button type="submit">Sign up</button>
+		</form>
+	</body>
+</html>
