@@ -9,6 +9,8 @@ from payments.models import BillingInfo
 import json
 from datetime import datetime
 from django.utils.timezone import make_aware
+from dateutil.relativedelta import relativedelta
+
 
 from users.models import CustomUser
 
@@ -22,18 +24,14 @@ def address_autocomplete(request):
 
 @api_view(['GET'])
 def create_session(request):
-    print("create session called!")
     current_user = request.user
     try:
         billing_info = BillingInfo.objects.get(customer=current_user)
         stripe_customer_id = None
         if billing_info and billing_info.stripe_customer_id:
             stripe_customer_id = billing_info.stripe_customer_id
-        print("create session customer id is ", stripe_customer_id)
         new_session = stripe_utils.create_session(current_user.id, stripe_customer_id=stripe_customer_id)
     except Exception as e:
-        print(e)
-        print("creating new session with no customer ID!")
         new_session = stripe_utils.create_session(current_user.id, current_user.email)
 
     return JsonResponse(new_session)
@@ -52,8 +50,6 @@ def payment_status(request):
     if stripe_customer_id is None:
         # User has not paid yet
         return HttpResponse(status=200)
-
-    print("current customer id is ", stripe_customer_id)
 
     stripe_customer = stripe_utils.retrieve_customer(stripe_customer_id)
     subscriptions = stripe_customer.get('subscriptions')
@@ -83,10 +79,38 @@ def cancel_payment(request):
 
     return HttpResponse(status=200)
 
+@api_view(['GET'])
+def next_billing_date(request):
+    current_user = request.user
+    user_billing_info = BillingInfo.objects.get(customer=current_user)
+    stripe_customer_id = user_billing_info.stripe_customer_id
+    stripe_customer = stripe_utils.retrieve_customer(stripe_customer_id)
+    billing_anchor = stripe_customer.get('subscriptions').get('data')[0].get('billing_cycle_anchor')
+    value = datetime.fromtimestamp(billing_anchor)
+
+    next_billing_date = {
+        'day': value.day,
+        'month': value.strftime("%B"),
+        'year': value.year,
+    }
+
+    return JsonResponse(next_billing_date)
+
+@api_view(['GET'])
+def next_delivery_date(request):
+    current_date = datetime.now()
+
+    last_date_of_month = datetime(current_date.year, current_date.month, 1) + relativedelta(months=1, days=-1)
+    next_delivery_date = {
+        'day': last_date_of_month.day,
+        'month': last_date_of_month.strftime("%B"),
+        'year': last_date_of_month.year,
+    }
+    return JsonResponse(next_delivery_date)
+
 @csrf_exempt
 @api_view(['POST'])
 def stripe_hook(request):
-    print("stripe webhook hit!")
     payload = request.body
     event = None
 
@@ -112,8 +136,6 @@ def handle_checkout_complete(event):
 
     client_reference_id = stripe_response.get('client_reference_id')
     stripe_customer_id = stripe_response.get('customer')
-
-    print("webhook customer id is ", stripe_customer_id)
 
     try:
         current_user = CustomUser.objects.get(id=client_reference_id)

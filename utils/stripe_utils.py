@@ -12,7 +12,7 @@ stripe.WebhookEndpoint.create(url=stripe_webhook_url, enabled_events=['checkout.
 
 
 def create_session(client_reference_id, customer_email=None, stripe_customer_id=None):
-    print("stripe customer id in utils is ", stripe_customer_id)
+    pulp_url = 'https://getpulp.io'
     session = stripe.checkout.Session.create(
         payment_method_types=['card'],
         subscription_data={
@@ -21,8 +21,8 @@ def create_session(client_reference_id, customer_email=None, stripe_customer_id=
             }],
             'payment_behavior': 'allow_incomplete'
         },
-        success_url='https://example.com/success',
-        cancel_url='https://example.com/cancel',
+        success_url=pulp_url,
+        cancel_url=pulp_url,
         client_reference_id=client_reference_id,
         customer_email=customer_email,
         customer=stripe_customer_id,

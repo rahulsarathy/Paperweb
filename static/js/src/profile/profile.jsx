@@ -12,6 +12,7 @@ export default class Profile extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.cancelPayment = this.cancelPayment.bind(this);
 
 		this.state = {
 			paid: true
@@ -42,11 +43,24 @@ export default class Profile extends React.Component {
 		});
 	}
 
+	cancelPayment() {
+		$.ajax({
+			url: '../api/payments/cancel_payment',
+			type: 'GET',
+			success: function(data, statusText, xhr) {
+				this.setState({
+					paid: false
+				});
+			}.bind(this)
+		});
+	}
+
+
 	render () {
 
 		return (
     	<div className="profile">
-    		{this.state.paid ? <Paid /> : <Unpaid />}
+    		{this.state.paid ? <Paid cancel={this.cancelPayment}/> : <Unpaid />}
     	</div>
     	);
   }

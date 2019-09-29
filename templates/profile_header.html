@@ -1,0 +1,14 @@
+{% load static %}
+<html>
+    <head>
+        <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    </head>
+    <body>
+    	<div class="header">
+            <div class="container">
+            	<a href="{% url 'dashboard' %}">dashboard</a>
+                <a href="{% url 'logout' %}">logout</a>
+	    	</div>
+    	</div>
+    </body>
+</html>
