@@ -82,7 +82,10 @@ def cancel_payment(request):
 @api_view(['GET'])
 def next_billing_date(request):
     current_user = request.user
-    user_billing_info = BillingInfo.objects.get(customer=current_user)
+    try:
+        user_billing_info = BillingInfo.objects.get(customer=current_user)
+    except:
+        return HttpResponse(status=400)
     stripe_customer_id = user_billing_info.stripe_customer_id
     stripe_customer = stripe_utils.retrieve_customer(stripe_customer_id)
     billing_anchor = stripe_customer.get('subscriptions').get('data')[0].get('billing_cycle_anchor')
