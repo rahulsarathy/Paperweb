@@ -71,7 +71,6 @@ export default class Magazine extends React.Component {
             <div className="magazine">
                 <h3>My Magazine</h3>
                 <h3>{this.state.sub_count}/8 Blogs</h3>
-                <h3>My Blogs</h3>
                 {
                     this.state.subscribed.map((blog) =>
                         <MagazineCard blog={blog} key={shortid.generate()}/>
