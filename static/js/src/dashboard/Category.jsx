@@ -76,23 +76,6 @@ export default class Category extends React.Component {
         if ($(e.target).closest('.category').find('.aboutcard-slider').is(":hidden")) {
             $(e.target).closest('.category').find('.aboutcard-slider').slideDown()
         }
-        // if (!$(e.target).closest('.category').find('.aboutcard-slider').is(":hidden")) {
-        //     $(e.target).closest('.category').find('.aboutcard-slider').slideUp()
-        // }
-        // if (index !== this.state.curr_blog)
-        // {
-        //     if ($(e.target).closest('.category').find('.aboutcard-slider').is(":hidden"))
-        //     {
-        //         $(e.target).closest('.category').find('.aboutcard-slider').slideDown()
-        //     }
-        //     this.setState(
-        //     {
-        //         curr_blog: index
-        //     }); 
-        // }
-        // else {
-        //     $(e.target).closest('.category').find('.aboutcard-slider').slideToggle()
-        // }
     }
 
 	render () {

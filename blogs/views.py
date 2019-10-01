@@ -8,6 +8,7 @@ from rest_framework.response import Response
 
 from blogs import serializers
 from blogs.models import Subscription, Blog
+from users.models import CustomUser
 
 from blogs.all_blogs import BLOGS, blog_map
 
@@ -72,11 +73,39 @@ def check_sub_status(request):
     # Already subscribed
     return JsonResponse(True, safe=False)
 
+@api_view(['GET'])
+def get_subscriptions(request):
+    current_user = request.user
+    print("user is ", current_user)
+    try:
+        subscriptions = Subscription.objects.filter(subscriber=current_user)
+        print(subscriptions)
+    except Exception as e:
+        print(str(e))
+        return JsonResponse({})
+
+    blogs = []
+    for subscription in subscriptions:
+        subscribed_blog = subscription.blog
+        blog_object = blog_map(subscribed_blog.name)
+        blogs.append(blog_object().to_json())
+
+    return JsonResponse(blogs, safe=False)
 
 @api_view(['POST'])
 def subscribe(request):
     user = request.user
     name_id = request.POST['name_id']
+
+    try:
+        subscriptions = Subscription.objects.filter(subscriber=user)
+    except Exception as e:
+        print(str(e))
+        return HttpResponse(status=400)
+
+    if len(subscriptions) == 8:
+        return HttpResponse(status=400)
+
     try:
         blog = Blog.objects.get(name=name_id)
     except:

@@ -4,6 +4,8 @@ import Category from './Category.jsx';
 import AboutCard from './AboutCard.jsx';
 import Authors from './Authors.jsx';
 import AuthorCard from './AuthorCard.jsx';
+import Magazine from './Magazine.jsx';
+
 
 export {
 	BlogCard,
@@ -11,4 +13,5 @@ export {
 	AboutCard,
 	Authors,
 	AuthorCard,
+	Magazine,
 }

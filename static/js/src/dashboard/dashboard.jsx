@@ -3,22 +3,42 @@ import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import $ from 'jquery';
 import shortid from 'shortid';
-
-import {Category} from './Components.jsx'
+import { Modal } from 'react-bootstrap';
+import {Category, Magazine} from './Components.jsx'
 
 
 export default class Dashboard extends React.Component {
 
 	constructor(props) {
 		super(props);
-		
+        this.showMagazine = this.showMagazine.bind(this);
+        this.closeMagazine = this.closeMagazine.bind(this);
+        this.bindMagazineButton = this.bindMagazineButton.bind(this);
+        this.bindMagazineButton();
 		this.state = {
 			data: {},
-	};
-	}
+            showMagazine: false
+        };
+    }
 
     componentDidMount() {
     	this.getBlogs();
+    }
+
+    bindMagazineButton() {
+        $("#mymagazine").click(this.showMagazine);
+    }
+
+    showMagazine() {
+        this.setState({
+            showMagazine: true
+        });
+    }
+
+    closeMagazine() {
+        this.setState({
+            showMagazine: false
+        });
     }
 
     getBlogs() {
@@ -47,6 +67,9 @@ export default class Dashboard extends React.Component {
 	render () {
 		return (
     	<div className="dashboard">
+        <Modal show={this.state.showMagazine} onHide={this.closeMagazine}>
+            <Magazine close={this.closeMagazine}/>
+        </Modal>
     	{
     		Object.keys(this.state.data).map((category) =>
     			<Category key={shortid.generate()} category={this.jsUcfirst(category)} blogs={this.state.data[category]}/>
