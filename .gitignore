@@ -1,15 +1,13 @@
 virtualenv/
 pulp/mysite/__pychache__/
 static/js/node_modules/
+static/js/build/
 *.pyc
 
 # Cached files
 polls/*.py~
 siteconfig/*.py~
 dump
-
-# JS Build
-static/js/build/
 
 # Directory metadata
 .idea
