@@ -1,9 +1,16 @@
-{% include 'header.html' %}
-
+{% load static %}
 {%  block content  %}
 {% csrf_token %}
-<div id="dashboard">
-	
-</div>
-<script src={{js_file}}></script>
+<html>
+    <head>
+        <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    </head>
+    <body>
+    	<div id="dashboard">
+    		
+    	</div>
+    	<script src={{js_file}}></script>
+    </body>
+</html>
+
 {% endblock %}

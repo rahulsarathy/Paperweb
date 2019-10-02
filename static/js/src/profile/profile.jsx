@@ -5,7 +5,7 @@ import $ from 'jquery';
 import shortid from 'shortid';
 import classnames from 'classnames';
 import { Row, Col } from 'react-bootstrap';
-import {Address_Pane, Payment_Pane, Cancel_Pane, Unpaid, Paid} from './Components.jsx'
+import {Address_Pane, Payment_Pane, Cancel_Pane, Unpaid, Paid, Header} from './Components.jsx'
 
 
 export default class Profile extends React.Component {
@@ -59,9 +59,13 @@ export default class Profile extends React.Component {
 	render () {
 
 		return (
-    	<div className="profile">
-    		{this.state.paid ? <Paid cancel={this.cancelPayment}/> : <Unpaid />}
-    	</div>
+			<div>
+				<Header />
+				<div className="profile">
+					{this.state.paid ? <Paid cancel={this.cancelPayment}/> : <Unpaid />}
+				</div>
+			</div>
+
     	);
   }
 }

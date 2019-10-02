@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import $ from 'jquery';
 import shortid from 'shortid';
 import { Modal } from 'react-bootstrap';
-import {Category, Magazine} from './Components.jsx'
+import {Category, Magazine, Header} from './Components.jsx'
 
 
 export default class Dashboard extends React.Component {
@@ -66,16 +66,19 @@ export default class Dashboard extends React.Component {
 
 	render () {
 		return (
-    	<div className="dashboard">
-        <Modal show={this.state.showMagazine} onHide={this.closeMagazine}>
-            <Magazine close={this.closeMagazine}/>
-        </Modal>
-    	{
-    		Object.keys(this.state.data).map((category) =>
-    			<Category key={shortid.generate()} category={this.jsUcfirst(category)} blogs={this.state.data[category]}/>
-    			)
-    	}
-    	</div>
+            <div>
+                <Header handleClick={this.showMagazine}/>
+                <div className="dashboard">
+                    <Modal show={this.state.showMagazine} onHide={this.closeMagazine}>
+                        <Magazine close={this.closeMagazine}/>
+                    </Modal>
+                	{
+                		Object.keys(this.state.data).map((category) =>
+                			<Category key={shortid.generate()} category={this.jsUcfirst(category)} blogs={this.state.data[category]}/>
+                			)
+                	}
+                </div>
+            </div>
     	);
   }
 }

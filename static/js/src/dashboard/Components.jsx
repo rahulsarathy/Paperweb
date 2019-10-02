@@ -5,6 +5,7 @@ import AboutCard from './AboutCard.jsx';
 import Authors from './Authors.jsx';
 import AuthorCard from './AuthorCard.jsx';
 import Magazine from './Magazine.jsx';
+import Header from './Header.jsx';
 
 
 export {
@@ -14,4 +15,5 @@ export {
 	Authors,
 	AuthorCard,
 	Magazine,
+	Header,
 }

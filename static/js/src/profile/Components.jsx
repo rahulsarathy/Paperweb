@@ -5,6 +5,7 @@ import Payment_Pane from './Payment_Pane.jsx';
 import Address_Modal from './Address_Modal.jsx';
 import Paid from './Paid.jsx';
 import Unpaid from './Unpaid.jsx';
+import Header from './Header.jsx';
 
 
 export {
@@ -14,4 +15,5 @@ export {
 	Address_Modal,
 	Unpaid,
 	Paid,
+	Header
 }
