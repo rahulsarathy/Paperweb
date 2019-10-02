@@ -76,7 +76,7 @@ export default class Magazine extends React.Component {
                         <MagazineCard blog={blog} key={shortid.generate()}/>
                         )
                 }
-                <button onClick={this.props.close}>Close</button>
+                <button className="close" onClick={this.props.close}>X</button>
             </div>
     	);
   }
