@@ -27,29 +27,23 @@ class Scraper(object):
         self.author = author
 
     def poll(self, *args, **kwargs):
-        print("polling..")
-        print("last polled time is ", self.last_polled_time)
 
         now = make_aware(datetime.now())
 
         if not (now - self.last_polled_time > timedelta(days=1)):
-            print("Scraper polled too recently!")
+            logging.info("Sraper {} polled too recently!".format(self.name_id))
             return
 
         try:
             self._poll(*args, **kwargs)
         except:
-            print("failed to poll")
-            traceback.print_exc()
-            return
+            logging.exception("failed to poll {} scraper".format(self.name_id))
+            raise
 
         to_save = self.check_blog()
 
         to_save.last_polled_time = now
         to_save.save()
-
-        print("continue polling")
-        pass
 
     def check_blog(self):
         try:
@@ -68,6 +62,7 @@ class Scraper(object):
         except ObjectDoesNotExist:
             return False
 
+    # Saves blog to S3 and to DB
     def handle_s3(self, title, permalink, date_published, author, content):
         bucket_name = 'pulpscrapedarticles'
         article_id = hash(permalink)

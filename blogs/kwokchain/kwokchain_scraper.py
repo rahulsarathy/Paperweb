@@ -9,6 +9,8 @@ import feedparser
 from utils.s3_utils import put_object, get_location, BUCKET_NAME, upload_article, create_article_url
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.timezone import make_aware
+import logging
+
 
 HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) '
                          'Chrome/41.0.2228.0 Safari/537.3'}
@@ -57,7 +59,7 @@ class KwokchainScraper(Scraper):
 
         id = hash(permalink)
 
-        path = "dump/bryan_caplan_econlib/{}.html".format(id)
+        path = "dump/kwokchain/{}.html".format(id)
 
         f = open(path, "w+")
         f.write(str(article))
@@ -68,7 +70,7 @@ class KwokchainScraper(Scraper):
         object_url = "https://s3-{bucket_location}.amazonaws.com/{bucket_name}/{path}".format(
             bucket_location=location,
             bucket_name=BUCKET_NAME,
-            path='bryan_caplan_econlib/{}.html'.format(id))
+            path='kwokchain/{}.html'.format(id))
 
         current_blog = self.check_blog()
 
@@ -76,11 +78,32 @@ class KwokchainScraper(Scraper):
                 file_link=object_url, blog=current_blog)
         to_save.save()
 
-        put_object(dest_bucket_name=BUCKET_NAME, dest_object_name='bryan_caplan_econlib/{}.html'.format(id),
+        put_object(dest_bucket_name=BUCKET_NAME, dest_object_name='kwokchain/{}.html'.format(id),
                    src_data=path)
 
         return to_save
 
+    def get_last_posts(self, num_posts):
+        xml = feedparser.parse(self.rss_url)
+        entries = xml['entries']
+        if num_posts > len(entries):
+            logging.warning("Requested {} posts from {}, but only {} posts found".format(num_posts, self.name_id),
+                            len(entries))
+            num_posts = len(entries)
+
+        author = "Kevin Kwok"
+        for i in range(num_posts - 1):
+            current_entry = entries[i]
+            title = current_entry.get('title', None)
+            permalink = current_entry.get('link', None)
+            date_published = make_aware(datetime.fromtimestamp(mktime(current_entry.get('published_parsed', None))))
+            content = current_entry['content'][0]['value']
+
+            if title is None or permalink is None or date_published is None or content is None:
+                continue
+            self.handle_s3(title, permalink, date_published, author, content)
+
+        logging.info("Scraped {} posts from {}".format(num_posts, self.name_id))
 
     def get_all_posts(self, page, year):
         pass
