@@ -70,7 +70,7 @@ class KwokchainScraper(Scraper):
         object_url = "https://s3-{bucket_location}.amazonaws.com/{bucket_name}/{path}".format(
             bucket_location=location,
             bucket_name=BUCKET_NAME,
-            path='kwokchain/{}.html'.format(id))
+            path='{}/{}.html'.format(self.name_id, id))
 
         current_blog = self.check_blog()
 
@@ -78,7 +78,7 @@ class KwokchainScraper(Scraper):
                 file_link=object_url, blog=current_blog)
         to_save.save()
 
-        put_object(dest_bucket_name=BUCKET_NAME, dest_object_name='kwokchain/{}.html'.format(id),
+        put_object(dest_bucket_name=BUCKET_NAME, dest_object_name='{}/{}.html'.format(self.name_id, id),
                    src_data=path)
 
         return to_save
@@ -87,8 +87,8 @@ class KwokchainScraper(Scraper):
         xml = feedparser.parse(self.rss_url)
         entries = xml['entries']
         if num_posts > len(entries):
-            logging.warning("Requested {} posts from {}, but only {} posts found".format(num_posts, self.name_id),
-                            len(entries))
+            logging.warning("Requested {} posts from {}, but only {} posts found".format(num_posts, self.name_id,
+                                                                                         len(entries)))
             num_posts = len(entries)
 
         author = "Kevin Kwok"
@@ -102,6 +102,7 @@ class KwokchainScraper(Scraper):
             if title is None or permalink is None or date_published is None or content is None:
                 continue
             self.handle_s3(title, permalink, date_published, author, content)
+            logging.info("Scraped {} from {}".format(permalink, self.name_id))
 
         logging.info("Scraped {} posts from {}".format(num_posts, self.name_id))
 

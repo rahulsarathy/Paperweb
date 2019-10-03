@@ -10,7 +10,7 @@ from blogs import serializers
 from blogs.models import Subscription, Blog
 from users.models import CustomUser
 
-from blogs.all_blogs import BLOGS, blog_map
+from utils.blog_utils import blog_map, BLOGS
 
 CATEGORIES = ["Rationality", "Economics", "Technology"]
 

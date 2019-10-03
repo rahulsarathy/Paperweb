@@ -3,8 +3,7 @@ from blogs.Ribbonfarm.ribbonfarm_scraper import RibbonfarmScraper
 from blogs.melting_asphalt.melting_asphalt_scraper import MeltingAsphaltScraper
 from blogs.Econlib.bryan_caplan.bryan_caplan_scraper import BryanCaplanEconlibScraper
 from blogs.serializers import ArticleSerializer
-from blogs.all_blogs import MercatusCenterScraper
-
+from utils.blog_utils import MercatusCenterScraper
 
 class Command(BaseCommand):
 

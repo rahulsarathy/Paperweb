@@ -1,6 +1,6 @@
 
 from django.core.management.base import BaseCommand
-from blogs.all_blogs import scraper_map
+from utils.blog_utils import scraper_map
 
 
 class Command(BaseCommand):

@@ -14,4 +14,3 @@ class Command(BaseCommand):
             current_scraper = scraper()
             # current_scraper.poll()
             current_scraper.parse_permalink("https://www.ribbonfarm.com/2019/08/05/domestic-cozy-7/")
-
