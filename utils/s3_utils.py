@@ -10,14 +10,19 @@
 # OF ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
 
-import logging
 import boto3
 from botocore.exceptions import ClientError
 import os
+from siteconfig.globals import S3_USER_ACCESS_ID, S3_USER_SECRET
+import logging
 
 BUCKET_NAME = 'pulpscrapedarticles'
 
-
+s3_client = boto3.client('s3', aws_access_key_id=S3_USER_ACCESS_ID, aws_secret_access_key=S3_USER_SECRET)
+session = boto3.Session(
+    aws_access_key_id=S3_USER_ACCESS_ID,
+    aws_secret_access_key=S3_USER_SECRET,
+)
 def get_object(bucket_name, object_name):
     """Retrieve an object from an Amazon S3 bucket
 
@@ -66,14 +71,12 @@ def put_object(dest_bucket_name, dest_object_name, src_data):
                       ' for the argument \'src_data\' is not supported.')
         return False
 
-    # Put the object
-    s3 = boto3.client('s3')
     try:
-        s3.put_object(Bucket=dest_bucket_name, Key=dest_object_name, Body=object_data)
+        s3_client.put_object(Bucket=dest_bucket_name, Key=dest_object_name, Body=object_data)
     except ClientError as e:
         # AllAccessDisabled error == bucket not found
         # NoSuchKey or InvalidRequest error == (dest bucket/obj == src bucket/obj)
-        logging.error(e)
+        logging.error(e, exc_info=True)
         return False
     finally:
         if isinstance(src_data, str):
@@ -104,8 +107,7 @@ def upload_file(file_name, bucket, object_name=None):
     return True
 
 def get_location(bucket_name):
-
-    bucket_location = boto3.client('s3').get_bucket_location(Bucket=bucket_name)
+    bucket_location = s3_client.get_bucket_location(Bucket=bucket_name)
     return bucket_location
 
 def download_link(s3_file_path, output_file_path):
@@ -152,12 +154,13 @@ def upload_article(blog_name, article_id, content, bucket_name=BUCKET_NAME):
     put_object(dest_bucket_name=bucket_name, dest_object_name=os.path.join(blog_name, id_path), src_data=local_path)
 
 def check_file(path, bucket_name=BUCKET_NAME):
-    s3 = boto3.resource('s3')
+    s3 = session.resource('s3')
 
     try:
         s3.Object(bucket_name, path).load()
         return True
     except ClientError as e:
+        logging.error(e, exc_info=True)
         if e.response['Error']['Code'] == "404":
             return False
 

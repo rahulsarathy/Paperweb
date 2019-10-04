@@ -92,7 +92,7 @@ class KwokchainScraper(Scraper):
             num_posts = len(entries)
 
         author = "Kevin Kwok"
-        for i in range(num_posts - 1):
+        for i in range(num_posts):
             current_entry = entries[i]
             title = current_entry.get('title', None)
             permalink = current_entry.get('link', None)

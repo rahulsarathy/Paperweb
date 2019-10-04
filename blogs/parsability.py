@@ -13,7 +13,6 @@ from time import mktime
 import os
 import traceback
 
-
 class Scraper(object):
 
     def __init__(self, name_id, rss_url="", home_url="", username="",
@@ -69,14 +68,14 @@ class Scraper(object):
         s3_link = create_article_url(blog_name=self.name_id, article_id=article_id)
 
         if self.check_article(permalink):
-            print("Article already exists, exit polling")
+            logging.warning("{} already is stored in DB.".format(permalink))
             return
 
         current_blog = self.check_blog()
 
         upload_article(blog_name=self.name_id, article_id=article_id, content=content, bucket_name=bucket_name)
         if not check_file(os.path.join(current_blog.name, '{}.html'.format(article_id)), bucket_name):
-            raise Exception('Uploading to s3 failed. Not committing to DB')
+            logging.warning('Uploading to s3 failed. Not committing to DB')
             return
 
         to_save = ArticleModel(title=title, date_published=date_published, author=author, permalink=permalink,
@@ -86,7 +85,7 @@ class Scraper(object):
         to_save = self.check_blog()
         to_save.save()
 
-        print("uploaded and saved")
+        logging.info("uploaded and saved {}".format(permalink))
 
         return to_save
 
