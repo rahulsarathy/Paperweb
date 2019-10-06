@@ -49,13 +49,16 @@ class Kwokchain(BlogInformation):
         latest_entry = xml['entries'][0]
         title = latest_entry['title']
         permalink = latest_entry['link']
+        if self.check_article(permalink):
+            logging.warning("Already scraped {} for {}. exiting polling".format(permalink, self.name_id))
+
         date_published = make_aware(datetime.fromtimestamp(mktime(latest_entry['published_parsed'])))
         author = "Kevin Kwok"
         content = latest_entry['content'][0]['value']
 
         self.handle_s3(title=title, permalink=permalink, date_published=date_published, author=author, content=content)
 
-    def get_old_urls(self):
+    def _get_old_urls(self):
         xml = feedparser.parse(self.rss_url)
         entries = xml['entries']
         for entry in entries:

@@ -60,6 +60,22 @@ class BryanCaplanEconlib(BlogInformation):
 
         self.handle_s3(title=title, permalink=permalink, date_published=date_published, author=author, content=content)
 
+
+    def _get_old_urls(self):
+        entries = xml.entries
+        for entry in entries:
+            permalink = entry.link
+
+            if self.check_article(permalink):
+                logging.warning("Already scraped {} for {}. exiting polling".format(permalink, self.name_id))
+            title = entry.title
+            date_published = make_aware(datetime.fromtimestamp(mktime(entry['published_parsed'])))
+            content = entry.summary
+            author = "Bryan Caplan"
+
+            self.handle_s3(title=title, permalink=permalink, date_published=date_published, author=author,
+                           content=content)
+
     def parse_permalink(self, permalink):
 
         try:
