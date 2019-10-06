@@ -62,6 +62,7 @@ class BryanCaplanEconlib(BlogInformation):
 
 
     def _get_old_urls(self):
+        xml = feedparser.parse(self.rss_url)
         entries = xml.entries
         for entry in entries:
             permalink = entry.link
