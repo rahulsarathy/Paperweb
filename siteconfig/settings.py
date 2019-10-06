@@ -15,6 +15,7 @@ import sys
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 from siteconfig.globals import NGROK_HOST
+from celery.schedules import crontab
 
 # If django is called with test, set TESTING to True
 TESTING = len(sys.argv) > 1 and sys.argv[1] == 'test'
@@ -79,6 +80,21 @@ TEMPLATES = [
     },
   },
 ]
+
+CELERY_BROKER_URL = 'redis://localhost:6379'
+
+CELERY_BEAT_SCHEDULE = {
+ 'send-summary-every-hour': {
+       'task': 'summary',
+        # There are 4 ways we can handle time, read further
+       'schedule': 5.0,
+    },
+    # Executes every Friday at 4pm
+    'send-notification-on-friday-afternoon': {
+         'task': 'blog.tasks.send_notification',
+         'schedule': crontab(hour=16, day_of_week=5),
+        },
+}
 
 WSGI_APPLICATION = 'siteconfig.wsgi.application'
 
