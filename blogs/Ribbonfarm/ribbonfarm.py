@@ -87,7 +87,6 @@ class Ribbonfarm(BlogInformation):
                 logging.warning("Already scraped {} for {}. exiting polling".format(permalink, self.name_id))
             self.parse_permalink(permalink)
 
-
     def parse_permalink(self, permalink):
 
         try:
