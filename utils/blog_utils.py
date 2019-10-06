@@ -5,6 +5,7 @@ from blogs.Ribbonfarm.ribbonfarm import Ribbonfarm
 from blogs.stratechery.stratechery import Stratechery
 from blogs.slatestarcodex.slatestarcodex import SlateStarCodex
 from blogs.mercatus_center.mercatus_center import MercatusCenter
+from blogs.Econlib.bryan_caplan.bryan_caplan import BryanCaplanEconlib
 
 CATEGORIES = ["Rationality", "Economics", "Technology"]
 
@@ -16,6 +17,7 @@ BLOGS = (
     Stratechery,
     SlateStarCodex,
     MercatusCenter,
+    BryanCaplanEconlib
 )
 
 def blog_map(requested_id):
