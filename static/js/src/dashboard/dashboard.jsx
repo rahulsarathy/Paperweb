@@ -87,6 +87,7 @@ export default class Dashboard extends React.Component {
                     <Modal show={this.state.showMagazine} onHide={this.closeMagazine}>
                         <Magazine close={this.closeMagazine}/>
                     </Modal>
+                    <div className="categories">
                 	{
                 		Object.keys(this.state.data).map((category) =>
                         {
@@ -95,6 +96,7 @@ export default class Dashboard extends React.Component {
                             return <Category selected={{}} hide={this.hideAboutCard} show={this.showAboutCard} key={shortid.generate()} category={this.jsUcfirst(category)} blogs={this.state.data[category]}/>
                         })
                 	}
+                    </div>
                 </div>
             </div>
     	);

@@ -50,7 +50,13 @@ body {
 .aboutcard {
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
   border-radius: 3px;
-  padding: 2px;
+  padding: 20px;
+  width: 200%;
+  transform: translateX(-25%);
+
+  h1 {
+    width: 100%;
+  }
 }
 
 .about {
@@ -124,6 +130,11 @@ body {
   margin-left: 30px;
   margin-right: 30px;
   margin-top: 50px;
+
+  .categories {
+    width: 700px;
+    margin: auto;
+  }
 }
 
 .header {

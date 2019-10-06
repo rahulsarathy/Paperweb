@@ -100,6 +100,7 @@ export default class AboutCard extends React.Component {
         var blog = this.props.blog;
         return (
             <div className="aboutcard">
+                <h1>{blog.display_name}</h1>
                 <Row>
                     <Col>
                         <About about={blog.about}/>
@@ -109,7 +110,7 @@ export default class AboutCard extends React.Component {
                         }
                     </Col>
                     <Col>
-                        <AboutAuthor nextAuthor={this.nextAuthor} author={blog.authors[this.state.selected_author]}/>
+                        <AboutAuthor num_authors={blog.authors.length} nextAuthor={this.nextAuthor} author={blog.authors[this.state.selected_author]}/>
                     </Col>
                 </Row>
 
@@ -128,9 +129,13 @@ class AboutAuthor extends React.Component {
         console.log(author);
         return(
         <div className="about-author">
-            <h2>Authors</h2>
+            {
+                this.props.num_authors === 1 ? <h2>Author</h2> : <h2>Authors</h2>
+            }
             <a href={author.link} target="_blank"><h3>{author.name}</h3></a>
-            <button onClick={this.props.nextAuthor}>Next Author</button>
+            {
+                this.props.num_authors === 1 ? <div></div> : <button onClick={this.props.nextAuthor}>Next Author</button>
+            }
             <p>{author.bio}</p>
         </div>)
     }
