@@ -11,11 +11,12 @@ export default class AboutCard extends React.Component {
 	constructor(props) {
 		super(props);
 
-        this.subscribe = this.subscribe.bind(this)
-		this.unsubscribe = this.unsubscribe.bind(this)
-
+        this.subscribe = this.subscribe.bind(this);
+		this.unsubscribe = this.unsubscribe.bind(this);
+        this.nextAuthor = this.nextAuthor.bind(this);
 		this.state = {
-            subscribed: false
+            subscribed: false,
+            selected_author: 0,
 		};
 	}
 
@@ -24,14 +25,17 @@ export default class AboutCard extends React.Component {
     }
 
     nextAuthor() {
-        if  (this.state.author == this.props.blog.authors.length) {
-           
-        }
-
-        this.setState(
-            {
-                author: this.state.author + 1
+        if  (this.state.selected_author === this.props.blog.authors.length - 1) {
+            this.setState({
+                selected_author: 0
             });
+        }
+        else {
+            this.setState(
+            {
+                selected_author: this.state.selected_author + 1
+            });
+        }
     }
 
     checkSubStatus() {
@@ -94,36 +98,53 @@ export default class AboutCard extends React.Component {
 
 	render () {
         var blog = this.props.blog;
-
         return (
             <div className="aboutcard">
-                <div className="aboutcard-wrapper">
-                    <h1 className="aboutcard-title">{blog.name}</h1>
-                    <button>Close</button>
-                    <Row>
-                        <Col>
-                            <h2 className="aboutcard-about-title">About {blog.name}</h2>
-                            <p className="aboutcard-about">{blog.about}</p>
-                            { 
-                                this.state.subscribed ? <button onClick={this.unsubscribe} className="subscribe-button">unsubscribe</button> :
-                                <button onClick={this.subscribe} className="subscribe-button">subscribe</button>
-                            }
-                            <Authors authors={blog.authors}/>
-                        </Col>
-                        <Col>
-                            <h2>Recent Posts</h2>
-                        </Col>
-                    </Row>
-                    <div className="moreinfo">
-                    </div>
-                    <div className="nextauthor">
-                    <button onClick={this.props.nextBlog}>
-                    { 
+                <Row>
+                    <Col>
+                        <About about={blog.about}/>
+                        { 
+                            this.state.subscribed ? <button onClick={this.unsubscribe} className="subscribe-button">unsubscribe</button> :
+                            <button onClick={this.subscribe} className="subscribe-button">subscribe</button>
+                        }
+                    </Col>
+                    <Col>
+                        <AboutAuthor nextAuthor={this.nextAuthor} author={blog.authors[this.state.selected_author]}/>
+                    </Col>
+                </Row>
 
-                    } Next author</button>
-                    </div>
-                </div>
+                 <button onClick={this.props.close}>Close</button>
             </div>
     	);
   }
+}
+
+class AboutAuthor extends React.Component {
+    constructor(props){
+        super(props);
+    }
+    render() {
+        var author = this.props.author;
+        console.log(author);
+        return(
+        <div className="about-author">
+            <h2>Authors</h2>
+            <a href={author.link} target="_blank"><h3>{author.name}</h3></a>
+            <button onClick={this.props.nextAuthor}>Next Author</button>
+            <p>{author.bio}</p>
+        </div>)
+    }
+}
+
+class About extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+    render() {
+        return(
+        <div className="about">
+            <h2>About</h2>
+            <p>{this.props.about}</p>
+        </div>)
+    }
 }

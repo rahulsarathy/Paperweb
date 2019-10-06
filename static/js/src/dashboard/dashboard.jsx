@@ -13,20 +13,17 @@ export default class Dashboard extends React.Component {
 		super(props);
         this.showMagazine = this.showMagazine.bind(this);
         this.closeMagazine = this.closeMagazine.bind(this);
-        this.bindMagazineButton = this.bindMagazineButton.bind(this);
-        this.bindMagazineButton();
+        this.showAboutCard = this.showAboutCard.bind(this);
+        this.hideAboutCard = this.hideAboutCard.bind(this);
 		this.state = {
 			data: {},
-            showMagazine: false
+            showMagazine: false,
+            selected: {},
         };
     }
 
     componentDidMount() {
     	this.getBlogs();
-    }
-
-    bindMagazineButton() {
-        $("#mymagazine").click(this.showMagazine);
     }
 
     showMagazine() {
@@ -41,6 +38,25 @@ export default class Dashboard extends React.Component {
         });
     }
 
+    showAboutCard(blog) {
+        if (blog === this.state.selected) {
+            this.setState({
+                selected: {}
+            });
+        }
+        else {
+            this.setState({
+                selected: blog
+            });         
+        }
+    }
+
+    hideAboutCard(blog) {
+        this.setState({
+            selected: {}
+        });
+    }
+
     getBlogs() {
     	$.ajax(
     		{
@@ -48,7 +64,6 @@ export default class Dashboard extends React.Component {
     			type: 'GET',
     			success: function(data)
     			{
-    				console.log(data);
     				this.setState(
     					{
     						data: data
@@ -74,8 +89,11 @@ export default class Dashboard extends React.Component {
                     </Modal>
                 	{
                 		Object.keys(this.state.data).map((category) =>
-                			<Category key={shortid.generate()} category={this.jsUcfirst(category)} blogs={this.state.data[category]}/>
-                			)
+                        {
+                            if (this.state.data[category].includes(this.state.selected))
+                                return <Category hide={this.hideAboutCard} show={this.showAboutCard} selected={this.state.selected} key={shortid.generate()} category={this.jsUcfirst(category)} blogs={this.state.data[category]}/> 
+                            return <Category selected={{}} hide={this.hideAboutCard} show={this.showAboutCard} key={shortid.generate()} category={this.jsUcfirst(category)} blogs={this.state.data[category]}/>
+                        })
                 	}
                 </div>
             </div>
