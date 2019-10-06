@@ -1,4 +1,4 @@
-from blogs.parsability import Scraper
+from blogs.BlogInformation import BlogInformation
 from blogs.models import Article, Blog
 from urllib.request import urlopen, Request as req
 import vcr
@@ -13,6 +13,36 @@ import traceback
 HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) '
                          'Chrome/41.0.2228.0 Safari/537.3'}
 
+description = "Ribbonfarm is a longform blog devoted to unusual takes on both familiar and new themes. " \
+              "What they call “refactored perception. Venkatesh Rao serves as Editor-in-Chief. Sarah Perry serves as " \
+              "Contributing Editor. Kevin Simler, Joe Kelly, Carlos Bueno, Renee DiResta, and Taylor Pearson serve " \
+              "as editors-at-large and comprise the Ribbonfarm Editorial Board."
+
+AUTHOR_BIO = "Venkat started writing Ribbonfarm in 2007. His other writing includes Tempo, a book about " \
+             "decision-making, and two ebooks, Be Slightly Evil and The Gervais Principle. He is also the creator " \
+             "of the Breaking Smart binge-reading site and email newsletter. His writing can also be found at " \
+             "Aeon magazine, The Atlantic, Information Week and Forbes. He lives in Seattle."
+
+AUTHORS = [
+    {
+        "name": "Venkatesh Rao",
+        "bio": "Venkat started writing Ribbonfarm in 2007. His other writing includes Tempo, a book about "
+               "decision-making, and two ebooks, Be Slightly Evil and The Gervais Principle. He is also the creator "
+               "of the Breaking Smart binge-reading site and email newsletter. His writing can also be found at Aeon "
+               "magazine, The Atlantic, Information Week and Forbes. He lives in Seattle.",
+        "link": "https://en.wikipedia.org/wiki/Venkatesh_Rao_(writer)",
+        "profile": "https://206hwf3fj4w52u3br03fi242-wpengine.netdna-ssl.com/wp-content/uploads/2006/12/venkatProfilePicPanama-300x270.jpg",
+    },
+    {
+        "name": "Sarah Perry",
+        "bio": "Sarah began contributing to Ribbonfarm in 2015, and serves as Contributing Editor. She also blogs at "
+               "The View from Hell. She is also the author of Every Cradle is a Grave, a book about the ethics of "
+               "birth and suicide. She is based in Reno. ",
+        "link": "https://twitter.com/sarahdoingthing?lang=en",
+        "profile": "https://206hwf3fj4w52u3br03fi242-wpengine.netdna-ssl.com/wp-content/uploads/2006/12/sarahperry-225x300.jpg",
+    }
+]
+
 def is_last_page(soup):
 
     navigation = soup.find('div', attrs={"class": "navigation"})
@@ -24,14 +54,16 @@ def is_last_page(soup):
 
     return False
 
-class RibbonfarmScraper(Scraper):
+class Ribbonfarm(BlogInformation):
     def __init__(self,
                  name_id="ribbonfarm",
                  rss_url="https://www.ribbonfarm.com/feed/",
-                 home_url="https://www.ribbonfarm.com"):
+                 home_url="https://www.ribbonfarm.com",  display_name="Ribbonfarm", about=description,
+                 about_link="https://www.ribbonfarm.com/about/",
+                 authors=AUTHORS, image="ribbonfarm", categories=["rationality"]):
 
-        super().__init__(name_id=name_id, rss_url=rss_url, home_url=home_url)
-
+        super().__init__(rss_url=rss_url, home_url=home_url, display_name=display_name, name_id=name_id, about=about,
+                         about_link=about_link, authors=authors, image=image, categories=categories)
 
     def _poll(self):
         headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) '

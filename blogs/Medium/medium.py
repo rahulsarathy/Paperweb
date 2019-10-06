@@ -1,4 +1,4 @@
-from blogs.parsability import Scraper
+from blogs.BlogInformation import BlogInformation
 import vcr
 from datetime import datetime
 from time import mktime
@@ -10,7 +10,7 @@ def is_last_page(soup):
 
     return False
 
-class MediumScraper(Scraper):
+class MediumScraper(BlogInformation):
     def __init__(self,
                  name_id=None,
                  rss_url="https://medium.com/feed/@{username}",
