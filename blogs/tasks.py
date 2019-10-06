@@ -1,6 +1,6 @@
 from celery import task
 from celery import shared_task
-from utils.blog_utils import SCRAPERS
+from utils.blog_utils import BLOGS
 import logging
 
 # We can have either registered task
@@ -16,7 +16,7 @@ def send_notifiction():
 
 @task(name='find_latest')
 def find_latest():
-     for scraper in SCRAPERS:
+     for blog in BLOGS:
           to_fire = scraper()
           logging.warning("Firing {}".format(to_fire.name_id))
           scraper().poll()
