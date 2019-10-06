@@ -1,4 +1,4 @@
-from blogs.parsability import Scraper
+from blogs.BlogInformation import BlogInformation
 from blogs.models import Article, Blog
 from urllib.request import urlopen, Request as req
 import vcr
@@ -15,14 +15,33 @@ import logging
 HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) '
                          'Chrome/41.0.2228.0 Safari/537.3'}
 
+description = "\"Kwokchain is an experiment to push myself to write more. My hope is that sharing these more " \
+              "publicly will lead to more interesting discussions. If you’re reading this and I have less essays " \
+              "than you have fingers on one hand–I’m failing at this goal. I’m particularly interested in " \
+              "understanding the underlying structures that shape industries and the core loops that drive companies.\""
 
-class KwokchainScraper(Scraper):
+AUTHORS = [
+    {
+        "name": "Kevin Kwok",
+        "bio": "\"I formerly worked at Greylock Partners investing in marketplaces, autonomous vehicles, "
+               "bottoms up productivity tools, and more. I also have a twitter, where I talk more and "
+               "people understand me less.\"",
+        "link": "https://twitter.com/kevinakwok",
+        "profile": "https://pbs.twimg.com/profile_images/487472769764847616/28Bio5kX.jpeg",
+    },
+]
+
+class Kwokchain(BlogInformation):
     def __init__(self,
                  name_id="kwokchain",
                  rss_url="https://kwokchain.com/feed",
-                 home_url="https://kwokchain.com"):
+                 home_url="https://kwokchain.com",
+                 display_name="Kwokchain", about=description,
+                 about_link="https://kwokchain.com/about/", authors=AUTHORS, image='kwokchain',
+                 categories=["technology"]):
 
-        super().__init__(name_id=name_id, rss_url=rss_url, home_url=home_url)
+        super().__init__(rss_url=rss_url, home_url=home_url, display_name=display_name, name_id=name_id, about=about,
+                         about_link=about_link, authors=authors, image=image, categories=categories)
 
 
     def _poll(self):

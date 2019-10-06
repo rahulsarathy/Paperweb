@@ -1,4 +1,4 @@
-from blogs.Ribbonfarm.ribbonfarm_scraper import RibbonfarmScraper
+from blogs.Ribbonfarm.ribbonfarm import RibbonfarmScraper
 
 
 if __name__ == "__main__":
