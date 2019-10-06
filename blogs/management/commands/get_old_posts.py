@@ -17,4 +17,3 @@ class Command(BaseCommand):
             blog = blog_map(blog_id)
             current_blog = blog()
             current_blog.get_old_urls()
-

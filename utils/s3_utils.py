@@ -21,6 +21,7 @@ BUCKET_NAME = settings.AWS_BUCKET
 
 s3_client = boto3.client('s3', aws_access_key_id=S3_USER_ACCESS_ID, aws_secret_access_key=S3_USER_SECRET)
 session = boto3.Session(
+    region_name='us-west-1',
     aws_access_key_id=S3_USER_ACCESS_ID,
     aws_secret_access_key=S3_USER_SECRET,
 )

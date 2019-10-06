@@ -54,8 +54,7 @@ class MeltingAsphalt(BlogInformation):
 
         entries = xml['entries']
         latest_rss = entries[0]
-        links = latest_rss.get('links')[0]
-        permalink = links.get('href')
+        permalink = latest_rss.get('link')
 
         if self.check_article(permalink):
             logging.warning("Already scraped {} for {}. exiting polling".format(permalink, self.name_id))
@@ -67,14 +66,10 @@ class MeltingAsphalt(BlogInformation):
         xml = feedparser.parse(self.rss_url)
         entries = xml['entries']
         for entry in entries:
-            links = entry.get('links')[0]
-            permalink = links.get('href')
-
-        if self.check_article(permalink):
-            logging.warning("Already scraped {} for {}. exiting polling".format(permalink, self.name_id))
-
-        self.parse_permalink(permalink)
-
+            permalink = entry.get('link')
+            if self.check_article(permalink):
+                logging.warning("Already scraped {} for {}. exiting polling".format(permalink, self.name_id))
+            self.parse_permalink(permalink)
 
     def parse_permalink(self, permalink):
 
