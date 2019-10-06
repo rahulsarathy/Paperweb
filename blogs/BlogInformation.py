@@ -73,7 +73,9 @@ class BlogInformation(object):
             return False
 
     # Saves blog to S3 and to DB
-    def handle_s3(self, title, permalink, date_published, author, content=None):
+    def handle_s3(self, title, permalink,
+                  date_published, author,
+                  content=None):
         bucket_name = settings.AWS_BUCKET
         article_id = hash(permalink)
         s3_link = create_article_url(blog_name=self.name_id, article_id=article_id)
@@ -129,6 +131,19 @@ class BlogInformation(object):
         content = latest_entry['content'][0]['value']
 
         self.handle_s3(title=title, permalink=permalink, date_published=date_published, author=author, content=content)
+
+    def feedparser_get_old_urls(self):
+        xml = feedparser.parse(self.rss_url)
+        entries = xml.entries
+        for entry in entries:
+            title = entry.title
+            permalink = entry.link
+            date_published = make_aware(datetime.fromtimestamp(mktime(entry['published_parsed'])))
+            author = entry.get('author')
+            content = entry.get('content')[0]['value']
+
+            self.handle_s3(title=title, permalink=permalink, date_published=date_published, author=author,
+                           content=content)
 
     def filter_short(self, content):
         pass

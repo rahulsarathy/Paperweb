@@ -60,8 +60,21 @@ class MeltingAsphalt(BlogInformation):
         if self.check_article(permalink):
             logging.warning("Already scraped {} for {}. exiting polling".format(permalink, self.name_id))
 
+        self.parse_permalink(permalink)
+
+    def _get_old_urls(self):
+
+        xml = feedparser.parse(self.rss_url)
+        entries = xml['entries']
+        for entry in entries:
+            links = entry.get('links')[0]
+            permalink = links.get('href')
+
+        if self.check_article(permalink):
+            logging.warning("Already scraped {} for {}. exiting polling".format(permalink, self.name_id))
 
         self.parse_permalink(permalink)
+
 
     def parse_permalink(self, permalink):
 
@@ -77,22 +90,6 @@ class MeltingAsphalt(BlogInformation):
         parsed_date = datetime.strptime(unparsed_date, '%B %d, %Y.')
         aware_date = make_aware(parsed_date)
         article = soup.find('div', attrs={"class": "post-entry"})
-        id = hash(permalink)
-        local_path = "dump/melting_asphalt/{}.html".format(id)
 
-        f = open(local_path, "w+")
-        f.write(str(article))
-        f.close()
-
-        s3_url = create_article_url(self.name_id, id)
-        current_blog = self.check_blog()
-
-        path = '{blog_name}/{id}.html'.format(blog_name=self.name_id, id=id)
-
-        if self.check_article(permalink):
-            return
-
-        Article(title=title, author=author, date_published=aware_date, permalink=permalink, file_link=s3_url,
-                blog=current_blog).save()
-        put_object(dest_bucket_name='pulpscrapedarticles', dest_object_name=path, src_data=local_path)
-        return Article
+        self.handle_s3(title=title, permalink=permalink,
+                       date_published=aware_date, author=author, content=article)
