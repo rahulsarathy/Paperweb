@@ -14,7 +14,13 @@ body {
   text-align: center;
   margin: auto;
   text-transform: uppercase;
+  transition: all .2s ease-in-out;
+
 }
+
+.subscribe-button:hover {
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
+};
 
 .magazine {
   width: 500px;
@@ -36,8 +42,62 @@ body {
     font-weight: normal;
     margin: 10px;
     vertical-align: middle;
+    outline:none;
   }
 
+}
+
+.aboutcard {
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
+  border-radius: 3px;
+  padding: 20px;
+  width: 120%;
+  // width: 100%;
+  // transform: translateX(-25%);
+
+  .close {
+    position: relative;
+    top: -10;
+    right: 20;
+    color: white;
+    background-color: grey;
+    border-radius: 20px;
+    width: 35px;
+    height: 35px;
+    font-size: 30px;
+    font-weight: normal;
+    margin: 10px;
+    vertical-align: middle;
+    outline: none;
+  }
+
+  h1 {
+    width: 100%;
+  }
+}
+
+.about {
+  
+}
+
+.about-author {
+
+  a {
+    display: inline-block;
+  }
+
+  button {
+    background-color: #0ABAFF;
+    border-style: none;
+    color: white;
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-weight: bold;
+    display: inline-block;
+    font-size: 15px;
+    margin-left: 15px;
+    vertical-align: middle;
+  }
 }
 
 .magazinecard {
@@ -50,6 +110,22 @@ body {
   // box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
   border-radius: 3px;
 }
+
+.blogcard-wrapper {
+  width: 200px;
+  height: 100px;
+  background-size: cover;
+  display: inline-block;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
+  margin: 10px;
+  transition: all .2s ease-in-out;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.blogcard-wrapper:hover {
+  transform: translateY(-5px) rotateX(20deg) rotateY(5deg);
+};
 
 .category {
   position: relative;
@@ -66,126 +142,15 @@ body {
   }
 }
 
-.authors-slider {
-  position: relative;
-  .authors-slider-wrapper {
-    display: flex;
-
-    .authorcard {
-      flex: 1;
-
-      .author-image{
-        display: inline-block;
-        .author-profile {
-          height: 100px;
-          width: 100px;
-        } 
-      }
-
-      .author-title {
-        display: inline-block;
-      }
-    }
-  }
-}
-
-.aboutcard-slider {
-  display: none;
-  position: relative;
-    .aboutcard-slider-wrapper {
-      display: flex;
-      position: relative;
-
-      transition: all .5s ease-in-out;
-      .aboutcard {
-        flex: 1;
-        min-width: 100%;
-        .aboutcard-wrapper {
-          padding: 10px;
-          border-style: solid;
-          border-width: 1px;
-          border-radius: 1px;
-          border-color: #858585;
-          box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
-
-          // height: 500px;
-
-          .aboutcard {
-            margin-left: 30px;
-            .aboutcard-title {
-              font-weight: bold;
-            }
-
-            .aboutcard-about-title {
-              font-size: 18px;
-            }
-
-            .aboutcard-about {
-              font-size: 12px;
-            }
-          }
-        }
-      }
-    }
-  }
-
 .dashboard {
   margin-left: 30px;
   margin-right: 30px;
   margin-top: 50px;
-}
 
-
-.blogcard {
-  margin-right: 20px;
-  margin-bottom: 30px;
-  // height: 120px;
-  // width: 240px;
-  // max-width: 240px;
-  display: flex;
-  background-color: white;
-
-  .blogcard-wrapper {
-    position: relative;
-    display: block;
-    width: 300px;
-    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
-    border-radius: 1px;
-    overflow: hidden;
-    flex: 1;
-
-    .blogcard:hover {
-
-    }
-    .background-image {
-      height: 150px;
-      background-size: cover;
-      transition: all .3s ease-in-out;
-      background-repeat: no-repeat;
-      z-index: 1;
-    }
-    .background-image:hover {
-      filter: blur(3px);
-      // transform: scale(1.1); 
-    }
-
-    .background-color {
-      background: rgba(128,128,128,0.5); /* newer browsers */
-      z-index: 2;
-      height: 150px;
-      width: 300px;
-      position: absolute;
-      // opacity: 0.5;
-      // display: none;
-    }
-
-    .blogcard-content {
-      color: white;
-      position: absolute;
-      z-index: 3;
-      transition: all .1s ease-in-out;
-    }
-  } 
+  .categories {
+    width: 700px;
+    margin: auto;
+  }
 }
 
 .header {
@@ -216,6 +181,7 @@ body {
     color: #007bff;
     background-color: Transparent;
     border-style: none;
+    outline:none;
   }
 
   button:hover {

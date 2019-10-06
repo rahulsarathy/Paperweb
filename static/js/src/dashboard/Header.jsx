@@ -17,8 +17,8 @@ export default class Header extends React.Component {
     return (
     	<div className="header">
             <div className="links">
-                <p><a href="../profile">My Account</a></p>  
                 <button onClick={this.props.handleClick}>My Magazine</button>
+                <p><a href="../profile">My Account</a></p>  
             </div>
     	</div>
     	);

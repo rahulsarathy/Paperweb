@@ -4,13 +4,9 @@ import $ from 'jquery';
 
 
 export default class BlogCard extends React.Component {
-
 	constructor(props) {
 		super(props);
-        this.handleMouseEnter = this.handleMouseEnter.bind(this);
-        this.handleMouseLeave = this.handleMouseLeave.bind(this);
-        this.handleMouseUp = this.handleMouseUp.bind(this);
-        this.handleMouseDown = this.handleMouseUp.bind(this);
+        this.handleClick = this.handleClick.bind(this);
 
         this.state = {
             hover: false,
@@ -21,31 +17,8 @@ export default class BlogCard extends React.Component {
     componentDidMount() {
     }
 
-    handleMouseUp() {
-        this.setState(
-            {
-                clicked: false
-            });
-    }
-
-    handleMouseDown() {
-        this.setState({
-            clicked: true
-        });
-    }
-
-    handleMouseEnter(e) {
-        this.setState(
-        {
-            hover: true
-        });
-    }
-
-    handleMouseLeave(e) {
-        this.setState(
-        {
-            hover: false
-        });
+    handleClick() {
+        this.props.show(this.props.blog);
     }
 
 	render () {
@@ -75,21 +48,7 @@ export default class BlogCard extends React.Component {
         }
 
     return (
-        <div 
-        className="blogcard" 
-        index={this.props.index} 
-        onClick={this.props.onClick} 
-        onMouseDown={this.handleMouseDown} 
-        onMouseUp={this.handleMouseUp} 
-        onMouseEnter={this.handleMouseEnter} 
-        onMouseLeave={this.handleMouseLeave}>
-            <div className="blogcard-wrapper" style={border}>
-                <div className="blogcard-content" style={show}>
-                    {blog.display_name}
-                </div>
-                <div className="background-color" style={show}></div>
-                <div className="background-image" style={background_image}></div>
-            </div>
+        <div className="blogcard-wrapper" onClick={this.handleClick} style={background_image}>
         </div>
     	);
   }
