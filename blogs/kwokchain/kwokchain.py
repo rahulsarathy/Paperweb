@@ -55,6 +55,18 @@ class Kwokchain(BlogInformation):
 
         self.handle_s3(title=title, permalink=permalink, date_published=date_published, author=author, content=content)
 
+    def get_old_urls(self):
+        xml = feedparser.parse(self.rss_url)
+        entries = xml['entries']
+        for entry in entries:
+            title = entry['title']
+            title = entry.get('title', None)
+            permalink = entry.get('link', None)
+            date_published = make_aware(datetime.fromtimestamp(mktime(entry['published_parsed'])))
+            author = "Kevin Kwok"
+
+            self.handle_s3(title=title, permalink=permalink, date_published=date_published, author=author)
+
     def parse_permalink(self, permalink):
 
         try:

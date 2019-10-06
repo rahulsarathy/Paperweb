@@ -17,6 +17,6 @@ def send_notifiction():
 @task(name='find_latest')
 def find_latest():
      for blog in BLOGS:
-          to_fire = scraper()
+          to_fire = blog()
           logging.warning("Firing {}".format(to_fire.name_id))
-          scraper().poll()
+          to_fire.poll()

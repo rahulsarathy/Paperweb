@@ -85,15 +85,9 @@ CELERY_BROKER_URL = 'redis://localhost:6379'
 
 CELERY_BEAT_SCHEDULE = {
  'send-summary-every-hour': {
-       'task': 'summary',
-        # There are 4 ways we can handle time, read further
-       'schedule': 5.0,
+       'task': 'find_latest',
+       'schedule': 300,
     },
-    # Executes every Friday at 4pm
-    'send-notification-on-friday-afternoon': {
-         'task': 'blog.tasks.send_notification',
-         'schedule': crontab(hour=16, day_of_week=5),
-        },
 }
 
 WSGI_APPLICATION = 'siteconfig.wsgi.application'

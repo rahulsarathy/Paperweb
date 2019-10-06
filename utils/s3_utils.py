@@ -15,14 +15,26 @@ from botocore.exceptions import ClientError
 import os
 from siteconfig.globals import S3_USER_ACCESS_ID, S3_USER_SECRET
 import logging
+from django.conf import settings
 
-BUCKET_NAME = 'pulpscrapedarticles'
+BUCKET_NAME = settings.AWS_BUCKET
 
 s3_client = boto3.client('s3', aws_access_key_id=S3_USER_ACCESS_ID, aws_secret_access_key=S3_USER_SECRET)
 session = boto3.Session(
     aws_access_key_id=S3_USER_ACCESS_ID,
     aws_secret_access_key=S3_USER_SECRET,
 )
+resource = session.resource('s3')
+
+def transfer_file(src_bucket, src_path, dst_bucket):
+    s3 = session.resource('s3')
+    copy_source = {
+        'Bucket': src_bucket,
+        'Key': src_path,
+    }
+
+    s3.meta.client.copy(copy_source, dst_bucket, src_path)
+
 def get_object(bucket_name, object_name):
     """Retrieve an object from an Amazon S3 bucket
 
@@ -112,7 +124,7 @@ def get_location(bucket_name):
 
 def download_link(s3_file_path, output_file_path):
     s3 = boto3.client('s3')
-    s3.download_file('pulpscrapedarticles', s3_file_path, output_file_path)
+    s3.download_file(BUCKET_NAME, s3_file_path, output_file_path)
 
 def create_article_url(blog_name, article_id):
     location = get_location(BUCKET_NAME)['LocationConstraint']
@@ -154,10 +166,9 @@ def upload_article(blog_name, article_id, content, bucket_name=BUCKET_NAME):
     put_object(dest_bucket_name=bucket_name, dest_object_name=os.path.join(blog_name, id_path), src_data=local_path)
 
 def check_file(path, bucket_name=BUCKET_NAME):
-    s3 = session.resource('s3')
 
     try:
-        s3.Object(bucket_name, path).load()
+        resource.Object(bucket_name, path).load()
         return True
     except ClientError as e:
         logging.error(e, exc_info=True)

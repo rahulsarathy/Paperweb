@@ -8,6 +8,7 @@ from urllib.request import urlopen, Request as req
 from bs4 import BeautifulSoup
 from utils.s3_utils import get_object, put_object, upload_file, create_article_url
 from django.utils.timezone import make_aware
+import logging
 
 HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) '
                          'Chrome/41.0.2228.0 Safari/537.3'}
@@ -49,19 +50,22 @@ class MeltingAsphalt(BlogInformation):
                          about_link=about_link, authors=authors, image=image, categories=categories)
 
     def _poll(self):
-        with vcr.use_cassette('dump/melting_asphalt/xml/melting_asphalt.yaml'):
-            xml = feedparser.parse(self.rss_url)
+        xml = feedparser.parse(self.rss_url)
 
         entries = xml['entries']
         latest_rss = entries[0]
         links = latest_rss.get('links')[0]
         permalink = links.get('href')
+
+        if self.check_article(permalink):
+            logging.warning("Already scraped {} for {}. exiting polling".format(permalink, self.name_id))
+
+
         self.parse_permalink(permalink)
 
     def parse_permalink(self, permalink):
 
-        with vcr.use_cassette('dump/melting_asphalt/xml/melting_asphalt1.yaml'):
-            to_send = req(url=permalink, headers=HEADERS)
+        to_send = req(url=permalink, headers=HEADERS)
         html = urlopen(to_send).read()
 
         soup = BeautifulSoup(html, 'html.parser')

@@ -32,3 +32,5 @@ JAVASCRIPT_URLS = {
     'profile': '/static/js/build/profile.js',
 }
 
+AWS_BUCKET = 'pulpscrapedarticles'
+
