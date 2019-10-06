@@ -1,4 +1,4 @@
-from blogs.mercatus_center.mercatus_center_scraper import MercatusCenterScraper
+from blogs.mercatus_center.mercatus_center import MercatusCenterScraper
 from utils.s3_utils import check_file, clear_all
 
 from django.test import TestCase

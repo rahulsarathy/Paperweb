@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
-from utils.blog_utils import scraper_map
+from utils.blog_utils import blog_map
 
 class Command(BaseCommand):
 
@@ -12,5 +12,5 @@ class Command(BaseCommand):
         blog_id = options['blog_id']
         num_posts = options['num_posts']
 
-        correct_scraper = scraper_map(blog_id)
+        correct_scraper = blog_map(blog_id)
         correct_scraper().get_last_posts(num_posts)

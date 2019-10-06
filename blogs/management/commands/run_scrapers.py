@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
-from blogs.Ribbonfarm.ribbonfarm_scraper import RibbonfarmScraper
-from blogs.melting_asphalt.melting_asphalt_scraper import MeltingAsphaltScraper
+from blogs.Ribbonfarm.ribbonfarm import RibbonfarmScraper
+from blogs.melting_asphalt.melting_asphalt import MeltingAsphaltScraper
 
 SCRAPERS = (
     RibbonfarmScraper,
