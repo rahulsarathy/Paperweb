@@ -36,7 +36,6 @@ class BlogInformation(object):
             'authors': self.authors,
             'image': self.image,
             'categories': self.categories,
-            'font': self.font,
         }
 
     def poll(self, *args, **kwargs):
@@ -142,11 +141,6 @@ class BlogInformation(object):
 
     def parse(self):
         pass
-
-    def to_json(self):
-        return {
-
-        }
 
     def get_last_polled_time(self):
         try:
