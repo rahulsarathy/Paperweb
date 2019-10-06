@@ -100,6 +100,7 @@ export default class AboutCard extends React.Component {
         var blog = this.props.blog;
         return (
             <div className="aboutcard">
+                <button className="close" onClick={this.props.close}>X</button>
                 <h1>{blog.display_name}</h1>
                 <Row>
                     <Col>
@@ -113,8 +114,6 @@ export default class AboutCard extends React.Component {
                         <AboutAuthor num_authors={blog.authors.length} nextAuthor={this.nextAuthor} author={blog.authors[this.state.selected_author]}/>
                     </Col>
                 </Row>
-
-                 <button onClick={this.props.close}>Close</button>
             </div>
     	);
   }
@@ -126,7 +125,6 @@ class AboutAuthor extends React.Component {
     }
     render() {
         var author = this.props.author;
-        console.log(author);
         return(
         <div className="about-author">
             {
