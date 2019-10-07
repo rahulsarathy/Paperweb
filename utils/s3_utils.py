@@ -16,6 +16,7 @@ import os
 from siteconfig.globals import S3_USER_ACCESS_ID, S3_USER_SECRET
 import logging
 from django.conf import settings
+import traceback
 
 BUCKET_NAME = settings.AWS_BUCKET
 
@@ -154,10 +155,10 @@ def create_pdf_url(bucket_name, blog_name, article_id):
 
 def upload_article(blog_name, article_id, content, bucket_name=BUCKET_NAME):
     id_path = '{}.html'.format(article_id)
-    try:
-        os.mkdir(os.path.join('dump', blog_name))
-    except:
-        pass
+    os.makedirs(os.path.join('dump', blog_name))
+#    except:
+    #    print(traceback.format_exc())
+     #   pass
     local_path = os.path.join('dump', blog_name, id_path)
 
     with open(local_path, 'w') as f:

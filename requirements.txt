@@ -45,6 +45,7 @@ feedparser==5.2.1
 fpdf==1.7.2
 future==0.17.1
 googlemaps==3.1.1
+gunicorn==19.9.0
 html5lib==1.0.1
 idna==2.8
 importlib-metadata==0.23
@@ -59,6 +60,7 @@ newspaper3k==0.2.8
 nltk==3.4.4
 pdfkit==0.6.1
 Pillow==6.1.0
+pkg-resources==0.0.0
 psycopg2-binary==2.8.3
 pyasn1==0.4.6
 PyPDF2==1.26.0
