@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'payments.apps.PaymentsConfig',
     'users.apps.UsersConfig',
     'rest_framework',
-    'coverage'
+    'coverage',
+    'django_celery_beat',
 ]
 
 MIDDLEWARE = [

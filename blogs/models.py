@@ -45,5 +45,5 @@ class Comment(models.Model):
 
 class Subscription(models.Model):
     subscriber = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    date_subscribed = models.DateTimeField(_('Date Subscribed'), default=timezone.now())
+    date_subscribed = models.DateTimeField(_('Date Subscribed'), default=timezone.now)
     blog = models.OneToOneField(Blog, on_delete=models.CASCADE)
