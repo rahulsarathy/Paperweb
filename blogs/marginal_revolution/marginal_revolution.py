@@ -68,6 +68,9 @@ class MarginalRevolution(BlogInformation):
     def _poll(self):
         self.standard_rss_poll()
 
+    def _get_old_urls(self):
+        self.feedparser_get_old_urls()
+
     def parse_permalink(self, permalink):
 
         try:

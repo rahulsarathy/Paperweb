@@ -47,8 +47,7 @@ class MercatusCenter(BlogInformation):
         headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) '
                                  'Chrome/41.0.2228.0 Safari/537.3'}
 
-        with vcr.use_cassette('dump/mercatus/first.yaml'):
-            xml = feedparser.parse(self.rss_url)
+        xml = feedparser.parse(self.rss_url)
         unparsed_article = xml.entries[0]
         permalink = unparsed_article.link
 
@@ -60,8 +59,15 @@ class MercatusCenter(BlogInformation):
 
         self.parse_permalink(permalink)
 
+    def _get_old_urls(self):
+        xml = feedparser.parse(self.rss_url)
+        entries = xml.entries
+        for entry in entries:
+            permalink = entry.link
+
+            self.parse_permalink(permalink)
+
     def parse_permalink(self, permalink):
-        print("permalink is", permalink)
         # Example URLS:
         # https://www.mercatus.org/bridge/commentary/we-shouldnt-demonize-digital-innovation-and-expand-administrative-state
         # https://www.mercatus.org/publications/regulation/snapshot-washington-dc-regulation-2019
@@ -143,4 +149,3 @@ class MercatusCenter(BlogInformation):
 
         author_pane = soup.find('div', attrs={"class": "field-name-field-people"})
         authors = author_pane.findall('li')
-        print(authors)

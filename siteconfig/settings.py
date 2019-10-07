@@ -15,6 +15,7 @@ import sys
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 from siteconfig.globals import NGROK_HOST
+from celery.schedules import crontab
 
 # If django is called with test, set TESTING to True
 TESTING = len(sys.argv) > 1 and sys.argv[1] == 'test'
@@ -79,6 +80,15 @@ TEMPLATES = [
     },
   },
 ]
+
+CELERY_BROKER_URL = 'redis://localhost:6379'
+
+CELERY_BEAT_SCHEDULE = {
+ 'poll-blogs': {
+       'task': 'find_latest',
+       'schedule': 3600.0,
+    },
+}
 
 WSGI_APPLICATION = 'siteconfig.wsgi.application'
 

@@ -3,7 +3,7 @@ from django.core.management.base import BaseCommand
 from blogs.models import Article, Blog, BlogBlock
 from magazine.html_template import template
 from users.models import CustomUser as User
-from blogs.all_blogs import BLOGS
+from utils.blog_utils import BLOGS
 from datetime import datetime
 import os
 from utils.s3_utils import download_link

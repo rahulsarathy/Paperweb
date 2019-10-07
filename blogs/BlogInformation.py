@@ -13,6 +13,8 @@ from time import mktime
 import os
 import traceback
 
+BUCKET_NAME = settings.AWS_BUCKET
+
 class BlogInformation(object):
 
     def __init__(self, display_name, name_id, about, about_link, rss_url, home_url, authors, image, categories):
@@ -46,24 +48,12 @@ class BlogInformation(object):
             logging.warning("Scraper {} polled too recently!".format(self.name_id))
             return
 
-        latest_scrape = self.get_latest_url()
-        latest_url = latest_scrape.get('permalink', None)
-        latest_content = latest_scrape.get('content', None)
-        if self.check_article(latest_url):
-            logging.warning("Latest article already exists for {}".format(self.name_id))
-            return
-        if latest_content is not None:
-            self.standard_rss_poll(latest_content)
-        else:
-            self._poll(*args, **kwargs)
+        self._poll(*args, **kwargs)
 
         to_save = self.check_blog()
 
         to_save.last_polled_time = now
         to_save.save()
-
-    def get_latest_url(self):
-        raise Exception('Not Implemented')
 
     def check_blog(self):
         try:
@@ -83,16 +73,17 @@ class BlogInformation(object):
             return False
 
     # Saves blog to S3 and to DB
-    def handle_s3(self, title, permalink, date_published, author, content=None):
-        bucket_name = 'pulpscrapedarticles'
+    def handle_s3(self, title, permalink,
+                  date_published, author,
+                  content=None):
+        bucket_name = settings.AWS_BUCKET
         article_id = hash(permalink)
         s3_link = create_article_url(blog_name=self.name_id, article_id=article_id)
-
-        if self.check_article(permalink):
-            logging.warning("{} already is stored in DB.".format(permalink))
-            return
-
         current_blog = self.check_blog()
+
+        if check_file(os.path.join(current_blog.name, '{}.html'.format(article_id)), bucket_name):
+            logging.warning("{} already exists in S3 Bucket".format(permalink))
+            return
 
         if content is not None:
             upload_article(blog_name=self.name_id, article_id=article_id, content=content, bucket_name=bucket_name)
@@ -115,6 +106,20 @@ class BlogInformation(object):
 
         return to_save
 
+    def get_old_urls(self):
+        current_blog = self.check_blog()
+        if current_blog.scraped_old_posts:
+            logging.warning("Already scraped old URLs for {}".format(self.name_id))
+            return
+
+        self._get_old_urls()
+        current_blog.scraped_old_posts = True
+        current_blog.save()
+
+
+    def _get_old_urls(self):
+        raise Exception('Not Implemented')
+
     def standard_rss_poll(self, xml=None):
         if xml is None:
             xml = feedparser.parse(self.rss_url)
@@ -127,11 +132,24 @@ class BlogInformation(object):
 
         self.handle_s3(title=title, permalink=permalink, date_published=date_published, author=author, content=content)
 
+    def feedparser_get_old_urls(self):
+        xml = feedparser.parse(self.rss_url)
+        entries = xml.entries
+        for entry in entries:
+            title = entry.title
+            permalink = entry.link
+            date_published = make_aware(datetime.fromtimestamp(mktime(entry['published_parsed'])))
+            author = entry.get('author')
+            content = entry.get('content')[0]['value']
+
+            self.handle_s3(title=title, permalink=permalink, date_published=date_published, author=author,
+                           content=content)
+
     def filter_short(self, content):
         pass
 
     def parse_permalink(self, permalink):
-        raise Exception('Not Implemented')
+        raise Exception('Not Implemented for {}'.format(self.name_id))
 
     def get_all_posts(self, page):
         raise Exception('Not Implemented')

@@ -9,6 +9,8 @@ import feedparser
 from utils.s3_utils import upload_article, create_article_url
 from django.core.exceptions import ObjectDoesNotExist
 import traceback
+import logging
+from django.utils.timezone import make_aware
 
 HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) '
                          'Chrome/41.0.2228.0 Safari/537.3'}
@@ -74,6 +76,16 @@ class Ribbonfarm(BlogInformation):
         print(permalink)
 
         self.parse_permalink(permalink)
+
+    def _get_old_urls(self):
+        xml = feedparser.parse(self.rss_url)
+        entries = xml.entries
+        for entry in entries:
+            permalink = entry.link
+
+            if self.check_article(permalink):
+                logging.warning("Already scraped {} for {}. exiting polling".format(permalink, self.name_id))
+            self.parse_permalink(permalink)
 
     def parse_permalink(self, permalink):
 

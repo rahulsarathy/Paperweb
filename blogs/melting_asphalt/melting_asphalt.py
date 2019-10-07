@@ -8,6 +8,7 @@ from urllib.request import urlopen, Request as req
 from bs4 import BeautifulSoup
 from utils.s3_utils import get_object, put_object, upload_file, create_article_url
 from django.utils.timezone import make_aware
+import logging
 
 HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) '
                          'Chrome/41.0.2228.0 Safari/537.3'}
@@ -49,19 +50,30 @@ class MeltingAsphalt(BlogInformation):
                          about_link=about_link, authors=authors, image=image, categories=categories)
 
     def _poll(self):
-        with vcr.use_cassette('dump/melting_asphalt/xml/melting_asphalt.yaml'):
-            xml = feedparser.parse(self.rss_url)
+        xml = feedparser.parse(self.rss_url)
 
         entries = xml['entries']
         latest_rss = entries[0]
-        links = latest_rss.get('links')[0]
-        permalink = links.get('href')
+        permalink = latest_rss.get('link')
+
+        if self.check_article(permalink):
+            logging.warning("Already scraped {} for {}. exiting polling".format(permalink, self.name_id))
+
         self.parse_permalink(permalink)
+
+    def _get_old_urls(self):
+
+        xml = feedparser.parse(self.rss_url)
+        entries = xml['entries']
+        for entry in entries:
+            permalink = entry.get('link')
+            if self.check_article(permalink):
+                logging.warning("Already scraped {} for {}. exiting polling".format(permalink, self.name_id))
+            self.parse_permalink(permalink)
 
     def parse_permalink(self, permalink):
 
-        with vcr.use_cassette('dump/melting_asphalt/xml/melting_asphalt1.yaml'):
-            to_send = req(url=permalink, headers=HEADERS)
+        to_send = req(url=permalink, headers=HEADERS)
         html = urlopen(to_send).read()
 
         soup = BeautifulSoup(html, 'html.parser')
@@ -73,22 +85,6 @@ class MeltingAsphalt(BlogInformation):
         parsed_date = datetime.strptime(unparsed_date, '%B %d, %Y.')
         aware_date = make_aware(parsed_date)
         article = soup.find('div', attrs={"class": "post-entry"})
-        id = hash(permalink)
-        local_path = "dump/melting_asphalt/{}.html".format(id)
 
-        f = open(local_path, "w+")
-        f.write(str(article))
-        f.close()
-
-        s3_url = create_article_url(self.name_id, id)
-        current_blog = self.check_blog()
-
-        path = '{blog_name}/{id}.html'.format(blog_name=self.name_id, id=id)
-
-        if self.check_article(permalink):
-            return
-
-        Article(title=title, author=author, date_published=aware_date, permalink=permalink, file_link=s3_url,
-                blog=current_blog).save()
-        put_object(dest_bucket_name='pulpscrapedarticles', dest_object_name=path, src_data=local_path)
-        return Article
+        self.handle_s3(title=title, permalink=permalink,
+                       date_published=aware_date, author=author, content=article)

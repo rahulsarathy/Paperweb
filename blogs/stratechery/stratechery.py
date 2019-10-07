@@ -9,6 +9,7 @@ import feedparser
 from utils.s3_utils import get_object, put_object, upload_file, get_location, BUCKET_NAME, upload_article, create_article_url
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.timezone import make_aware
+import logging
 
 HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) '
                          'Chrome/41.0.2228.0 Safari/537.3'}
@@ -57,8 +58,35 @@ class Stratechery(BlogInformation):
         super().__init__(rss_url=rss_url, home_url=home_url, display_name=display_name, name_id=name_id, about=about,
                          about_link=about_link, authors=authors, image=image, categories=categories)
 
+    def _get_old_urls(self):
+        xml = feedparser.parse(self.rss_url)
+        entries = xml.entries
+        for entry in entries:
+            permalink = entry.link
+            if self.check_article(permalink):
+                logging.warning("Already scraped {} for {}. exiting polling".format(permalink, self.name_id))
+            title = entry.title
+            author = entry.author
+            date_published = make_aware(datetime.fromtimestamp(mktime(entry['published_parsed'])))
+            content = entry['content'][0]['value']
+
+            self.handle_s3(title=title, permalink=permalink, date_published=date_published, author=author,
+                           content=content)
+
     def _poll(self):
-        self.standard_rss_poll()
+        xml = feedparser.parse(self.rss_url)
+        entries = xml.entries
+        for entry in entries:
+            permalink = entry.link
+            if self.check_article(permalink):
+                logging.warning("Already scraped {} for {}. exiting polling".format(permalink, self.name_id))
+            title = entry.title
+            author = entry.author
+            date_published = make_aware(datetime.fromtimestamp(mktime(entry['published_parsed'])))
+            content = entry['content'][0]['value']
+
+            self.handle_s3(title=title, permalink=permalink, date_published=date_published, author=author,
+                           content=content)
 
     # USE WITH PROXY FLEET TO PREVENT RATE LIMITS
     def get_all_posts(self, page):

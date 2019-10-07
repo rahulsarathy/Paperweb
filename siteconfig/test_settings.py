@@ -25,3 +25,5 @@ JAVASCRIPT_URLS = {
     'dashboard': 'http://localhost:8080/dashboard.js',
     'profile': 'http://localhost:8080/profile.js',
 }
+
+AWS_BUCKET = 'pulpscrapedarticlestest'
