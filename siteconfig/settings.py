@@ -84,9 +84,9 @@ TEMPLATES = [
 CELERY_BROKER_URL = 'redis://localhost:6379'
 
 CELERY_BEAT_SCHEDULE = {
- 'send-summary-every-hour': {
+ 'poll-blogs': {
        'task': 'find_latest',
-       'schedule': 300,
+       'schedule': 3600.0,
     },
 }
 

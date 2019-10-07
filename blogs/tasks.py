@@ -16,7 +16,8 @@ def send_notifiction():
 
 @task(name='find_latest')
 def find_latest():
-     for blog in BLOGS:
-          to_fire = blog()
-          logging.warning("Firing {}".format(to_fire.name_id))
-          to_fire.poll()
+     print("fired on the hour")
+     # for blog in BLOGS:
+     #      to_fire = blog()
+     #      logging.warning("Celery firing {}".format(to_fire.name_id))
+     #      to_fire.poll()
