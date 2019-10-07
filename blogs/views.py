@@ -5,12 +5,12 @@ from rest_framework.decorators import api_view
 from rest_framework import viewsets
 from rest_framework.response import Response
 
-
 from blogs import serializers
 from blogs.models import Subscription, Blog
 from users.models import CustomUser
 
 from utils.blog_utils import blog_map, BLOGS
+import traceback
 
 CATEGORIES = ["Rationality", "Economics", "Technology"]
 
@@ -109,6 +109,7 @@ def subscribe(request):
     try:
         blog = Blog.objects.get(name=name_id)
     except:
+        traceback.print_exc()
         return HttpResponse(status=500)
     try:
         new_subscription = Subscription(subscriber=user, blog=blog)
