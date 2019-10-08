@@ -32,6 +32,14 @@ def profile(request):
   }
   return render(request, 'profile.html', context)
 
+def feed(request):
+  if not request.user.is_authenticated:
+    return HttpResponseRedirect('../')
+  context = {
+    'js_file': settings.JAVASCRIPT_URLS['feed']
+  }
+  return render(request, 'feed.html', context)
+
 @api_view(['GET'])
 def google_maps_key(request):
   return JsonResponse(GOOGLE_MAPS_PLACES, safe=False)

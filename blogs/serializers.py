@@ -37,11 +37,10 @@ class ArticleSerializer(serializers.ModelSerializer):
     permalink = serializers.URLField()
     date_published = serializers.DateTimeField()
     author = serializers.CharField()
-    file_link = serializers.URLField()
 
     class Meta:
         model = Article
-        fields = ['title', 'permalink', 'date_published', 'author', 'file_link']
+        fields = ['title', 'permalink', 'date_published', 'author',]
 
     def create(self, validated_data):
         return Article(**validated_data)

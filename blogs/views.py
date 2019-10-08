@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
 
 from rest_framework.decorators import api_view
@@ -6,10 +5,8 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 
 from blogs import serializers
-from blogs.models import Subscription, Blog
-from users.models import CustomUser
-
-from utils.blog_utils import blog_map, BLOGS
+from blogs.models import Subscription, Blog, Article
+from utils.blog_utils import BLOGS, blog_map
 import traceback
 
 CATEGORIES = ["Rationality", "Economics", "Technology"]
@@ -43,6 +40,32 @@ def get_blogs(request):
     user = request.user
 
     return JsonResponse(category_json, safe=False)
+
+@api_view(['GET'])
+def get_posts(request):
+    user = request.user
+    subscriptions = Subscription.objects.filter(subscriber=user)
+    posts = []
+    for subscription in subscriptions:
+        sub_blog = subscription.blog
+        blog_posts = Article.objects.filter(blog=sub_blog)
+        posts.extend(blog_posts)
+    posts.sort(key=lambda x: x.date_published, reverse=True)
+    serialized_posts = []
+    for post in posts:
+        current_blog = blog_map(post.blog.name)
+        blog_name = current_blog().display_name
+
+        article_json = {
+            'title': post.title,
+            'permalink': post.permalink,
+            'date_published': post.date_published,
+            'author': post.author,
+            'blog_name': blog_name,
+        }
+        serialized_posts.append(article_json)
+
+    return JsonResponse(serialized_posts, safe=False)
 
 # Blogs to display for the landing page
 @api_view(['GET'])

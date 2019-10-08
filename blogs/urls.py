@@ -12,5 +12,6 @@ urlpatterns = [
     path('check_sub_status/', views.check_sub_status),
     path('unsubscribe/', views.unsubscribe),
     path('landing_blogs', views.get_landing_blogs),
-    path('get_subscriptions', views.get_subscriptions)
+    path('get_subscriptions', views.get_subscriptions),
+    path('get_posts', views.get_posts),
 ]

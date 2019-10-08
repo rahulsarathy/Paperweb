@@ -1,0 +1,17 @@
+{% load static %}
+{%  block content  %}
+{% csrf_token %}
+<html>
+    <head>
+        <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+        <title>Pulp - Feed</title>
+    </head>
+    <body>
+    	<div id="feed">
+    		
+    	</div>
+    	<script src={{js_file}}></script>
+    </body>
+</html>
+
+{% endblock %}

@@ -89,6 +89,10 @@ CELERY_BEAT_SCHEDULE = {
        'task': 'find_latest',
        'schedule': 3600.0,
     },
+    'summary': {
+        'task': 'summary',
+        'schedule': 5.0,
+    }
 }
 
 WSGI_APPLICATION = 'siteconfig.wsgi.application'

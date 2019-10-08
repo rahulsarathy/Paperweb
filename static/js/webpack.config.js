@@ -5,7 +5,8 @@ module.exports = {
   entry: {
     landing: path.join(__dirname, 'src', 'landing', 'landing.jsx'),
     dashboard: path.join(__dirname, 'src', 'dashboard', 'dashboard.jsx'),
-    profile: path.join(__dirname, 'src', 'profile', 'profile.jsx')
+    profile: path.join(__dirname, 'src', 'profile', 'profile.jsx'),
+    feed: path.join(__dirname, 'src', 'feed', 'feed.jsx'),
   },
   output: {
     path: path.join(__dirname, 'build'),
