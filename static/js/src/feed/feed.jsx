@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import $ from 'jquery';
 import shortid from 'shortid';
-import {Post, Header} from './Components.jsx'
+import {Post, Header, DateDivider} from './Components.jsx'
 
 
 export default class Feed extends React.Component {
@@ -12,7 +12,7 @@ export default class Feed extends React.Component {
         super(props);
 
         this.state = {
-            posts: []
+            date_map: {}
         };
     }
 
@@ -27,11 +27,27 @@ export default class Feed extends React.Component {
             url: '/api/blogs/get_posts',
             type: 'GET',
             success: function(data) {
+                console.log(data);
                 this.setState({
-                    posts: data
+                    date_map: data
                 });
+                // var dates = this.getDates();
+                // this.setState({
+                //     posts: data,
+                //     dates: dates,
+                // });
             }.bind(this)
         });
+    }
+
+    getDates() {
+        var dates = [];
+        var posts = this.state.posts;
+        for (var i =0; i < posts.length; i++) {
+            dates.push(posts[i].date_published);
+        }
+        var unique_dates = new Set(dates);
+        return unique_dates;
     }
 
     render () {
@@ -39,9 +55,11 @@ export default class Feed extends React.Component {
             <div>
                 <Header />
                 <h1>Feed</h1>
-                {this.state.posts.map((post) =>
-                    <Post post={post} key={shortid.generate()}/>
-                    )}
+                {
+                    Object.keys(this.state.date_map).map((date) =>
+                        <DateDivider date={date} posts={this.state.date_map[date]} key={shortid.generate()}/>
+                        )
+                }
             </div>
         );
   }

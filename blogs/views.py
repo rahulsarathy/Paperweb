@@ -51,21 +51,28 @@ def get_posts(request):
         blog_posts = Article.objects.filter(blog=sub_blog)
         posts.extend(blog_posts)
     posts.sort(key=lambda x: x.date_published, reverse=True)
-    serialized_posts = []
+    # dates = map(lambda x: x.date_published.date(), posts)
+    date_map = {
+
+    }
     for post in posts:
+
         current_blog = blog_map(post.blog.name)
         blog_name = current_blog().display_name
 
         article_json = {
             'title': post.title,
             'permalink': post.permalink,
-            'date_published': post.date_published,
+            'date_published': post.date_published.date(),
             'author': post.author,
             'blog_name': blog_name,
         }
-        serialized_posts.append(article_json)
+        if str(post.date_published.date()) in date_map.keys():
+            date_map[str(post.date_published.date())].append(article_json)
+        else:
+            date_map[str(post.date_published.date())] = [article_json]
 
-    return JsonResponse(serialized_posts, safe=False)
+    return JsonResponse(date_map)
 
 # Blogs to display for the landing page
 @api_view(['GET'])
