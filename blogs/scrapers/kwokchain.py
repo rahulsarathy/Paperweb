@@ -62,7 +62,6 @@ class Kwokchain(BlogInformation):
         xml = feedparser.parse(self.rss_url)
         entries = xml['entries']
         for entry in entries:
-            title = entry['title']
             title = entry.get('title', None)
             permalink = entry.get('link', None)
             date_published = make_aware(datetime.fromtimestamp(mktime(entry['published_parsed'])))

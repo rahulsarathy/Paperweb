@@ -1,12 +1,10 @@
-from blogs.mercatus_center.mercatus_center import MercatusCenterScraper
-from utils.s3_utils import check_file, clear_all
+from blogs.scrapers.mercatus_center import MercatusCenterScraper
+from utils.s3_utils import clear_all
 
 from django.test import TestCase
 
-import logging
 import unittest
 from unittest.mock import patch
-import os
 import vcr
 
 BUCKET_NAME = 'pulpscrapedarticlestest'

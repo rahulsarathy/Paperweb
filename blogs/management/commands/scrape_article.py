@@ -1,7 +1,5 @@
-from django.core.management.base import BaseCommand, CommandError
-from blogs.Ribbonfarm.ribbonfarm import RibbonfarmScraper
-from blogs.melting_asphalt.melting_asphalt import MeltingAsphaltScraper
-from blogs.Econlib.bryan_caplan.bryan_caplan import BryanCaplanEconlibScraper
+from django.core.management.base import BaseCommand
+from blogs.scrapers.bryan_caplan import BryanCaplanEconlibScraper
 from blogs.serializers import ArticleSerializer
 from utils.blog_utils import MercatusCenterScraper
 

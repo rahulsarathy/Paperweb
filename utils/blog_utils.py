@@ -1,11 +1,12 @@
-from blogs.melting_asphalt.melting_asphalt import MeltingAsphalt
-from blogs.kwokchain.kwokchain import Kwokchain
-from blogs.marginal_revolution.marginal_revolution import MarginalRevolution
-from blogs.Ribbonfarm.ribbonfarm import Ribbonfarm
+from blogs.scrapers.melting_asphalt import MeltingAsphalt
+from blogs.scrapers.kwokchain import Kwokchain
+from blogs.scrapers.marginal_revolution import MarginalRevolution
+from blogs.scrapers.ribbonfarm import Ribbonfarm
 from blogs.stratechery.stratechery import Stratechery
 from blogs.slatestarcodex.slatestarcodex import SlateStarCodex
-from blogs.mercatus_center.mercatus_center import MercatusCenter
-from blogs.Econlib.bryan_caplan.bryan_caplan import BryanCaplanEconlib
+from blogs.scrapers.mercatus_center import MercatusCenter
+from blogs.scrapers.bryan_caplan import BryanCaplanEconlib
+from blogs.scrapers.eugenewei import EugeneWei
 
 CATEGORIES = ["Rationality", "Economics", "Technology"]
 
@@ -17,7 +18,8 @@ BLOGS = (
     Stratechery,
     SlateStarCodex,
     MercatusCenter,
-    BryanCaplanEconlib
+    BryanCaplanEconlib,
+    EugeneWei
 )
 
 def blog_map(requested_id):
