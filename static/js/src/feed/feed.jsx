@@ -56,8 +56,8 @@ export default class Feed extends React.Component {
                 <Header />
                 <h1>Feed</h1>
                 {
-                    Object.keys(this.state.date_map).map((date) =>
-                        <DateDivider date={date} posts={this.state.date_map[date]} key={shortid.generate()}/>
+                    Object.keys(this.state.date_map).map((date, index) =>
+                        <DateDivider index={index} date={date} posts={this.state.date_map[date]} key={shortid.generate()}/>
                         )
                 }
             </div>

@@ -23,7 +23,10 @@ export default class DateDivider extends React.Component {
             <h1>{this.props.date}</h1>
             {
                 this.props.posts.map((post) =>
+                    <div key={shortid.generate()}>
+                    <div className="post-dot"></div>
                     <Post post={post}/>
+                    </div>
                     )
             }
             </div>

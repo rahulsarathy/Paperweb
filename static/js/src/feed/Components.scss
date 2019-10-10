@@ -1,3 +1,23 @@
+.post-dot {
+  width: 15px;
+  height: 15px;
+  background-color: gray;
+  display: inline-block;
+  border-radius: 20px;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+
+.post {
+  display: inline-block;
+}
+
+.post-modal {
+  iframe {
+      width: 60%;
+  }
+}
+
 .header {
   z-index: 4;
   font-size: 20px;
