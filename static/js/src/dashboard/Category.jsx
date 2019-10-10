@@ -24,11 +24,13 @@ export default class Category extends React.Component {
         return (
             <div className="category">
             <h3>{this.props.category}</h3>
+            <div classNam="blogcards">
             {
                 this.props.blogs.map((blog) => 
                     <BlogCard show={this.showCard} key={shortid.generate()} blog={blog}/>
                     )
             }
+            </div>
             {Object.keys(this.props.selected).length === 0 ? <div></div> : <AboutCard close={this.props.hide} blog={this.props.selected}/>}
             </div>
             );
