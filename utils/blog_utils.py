@@ -9,6 +9,7 @@ from blogs.scrapers.bryan_caplan import BryanCaplanEconlib
 from blogs.scrapers.eugene_wei import EugeneWei
 from blogs.scrapers.dan_wang import DanWang
 from blogs.scrapers.elaineou import ElaineOu
+from blogs.scrapers.everything_studies import EverythingStudies
 from blogs.scrapers.brookings import BrookingsInstitution
 
 CATEGORIES = ["Rationality", "Economics", "Technology"]
@@ -25,6 +26,7 @@ BLOGS = (
     EugeneWei,
     DanWang,
     ElaineOu,
+    EverythingStudies
     # BrookingsInstitution,
 )
 

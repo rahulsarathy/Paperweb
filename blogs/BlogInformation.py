@@ -76,6 +76,9 @@ class BlogInformation(object):
     def handle_s3(self, title, permalink,
                   date_published, author,
                   content=None):
+        if self.check_article(permalink):
+            logging.warning("{} already exists in DB".format(permalink))
+            return
         bucket_name = settings.AWS_BUCKET
         article_id = hash(permalink)
         s3_link = create_article_url(blog_name=self.name_id, article_id=article_id)
