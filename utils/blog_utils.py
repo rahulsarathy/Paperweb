@@ -6,7 +6,10 @@ from blogs.stratechery.stratechery import Stratechery
 from blogs.slatestarcodex.slatestarcodex import SlateStarCodex
 from blogs.scrapers.mercatus_center import MercatusCenter
 from blogs.scrapers.bryan_caplan import BryanCaplanEconlib
-from blogs.scrapers.eugenewei import EugeneWei
+from blogs.scrapers.eugene_wei import EugeneWei
+from blogs.scrapers.dan_wang import DanWang
+from blogs.scrapers.elaineou import ElaineOu
+from blogs.scrapers.brookings import BrookingsInstitution
 
 CATEGORIES = ["Rationality", "Economics", "Technology"]
 
@@ -17,9 +20,12 @@ BLOGS = (
     Ribbonfarm,
     Stratechery,
     SlateStarCodex,
-    MercatusCenter,
+    # MercatusCenter,
     BryanCaplanEconlib,
-    EugeneWei
+    EugeneWei,
+    DanWang,
+    ElaineOu,
+    # BrookingsInstitution,
 )
 
 def blog_map(requested_id):

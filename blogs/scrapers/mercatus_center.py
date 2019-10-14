@@ -38,7 +38,7 @@ class MercatusCenter(BlogInformation):
                  rss_url="https://www.mercatus.org/feed",
                  home_url="https://www.mercatus.org/", display_name="Mercatus Center",
                  about=description, about_link="https://www.mercatus.org/about",
-                 authors=AUTHORS, image="mercatus_center", categories=["economics"]):
+                 authors=AUTHORS, image="mercatus_center", categories=["economics", "think tanks"]):
 
         super().__init__(rss_url=rss_url, home_url=home_url, display_name=display_name, name_id=name_id, about=about,
                          about_link=about_link, authors=authors, image=image, categories=categories)

@@ -44,7 +44,7 @@ You can also email me at eugene at eugenewei dot com.""",
 
 class EugeneWei(BlogInformation):
     def __init__(self,
-                 name_id="eugenewei",
+                 name_id="eugene_wei",
                  rss_url="https://eugene-wei.squarespace.com/blog?format=rss",
                  home_url="https://www.eugenewei.com/",
                  display_name="Remains of the Day", about=description,

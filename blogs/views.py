@@ -9,7 +9,7 @@ from blogs.models import Subscription, Blog, Article
 from utils.blog_utils import BLOGS, blog_map
 import traceback
 
-CATEGORIES = ["Rationality", "Economics", "Technology"]
+CATEGORIES = ["Rationality", "Economics", "Technology", "Think Tanks"]
 
 LANDING_BLOGS = ['bryan_caplan_econlib', 'stratechery', 'melting_asphalt', 'mercatus_center', 'ribbonfarm',
                  'marginal_revolution', 'slatestarcodex', 'kwokchain']
@@ -133,8 +133,8 @@ def subscribe(request):
         print(str(e))
         return HttpResponse(status=400)
 
-    if len(subscriptions) == 8:
-        return HttpResponse(status=400)
+    # if len(subscriptions) == 8:
+    #     return HttpResponse(status=400)
 
     try:
         blog = Blog.objects.get(name=name_id)

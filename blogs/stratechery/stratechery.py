@@ -62,9 +62,10 @@ class Stratechery(BlogInformation):
         xml = feedparser.parse(self.rss_url)
         entries = xml.entries
         for entry in entries:
-            permalink = entry.link
+            permalink = entry.linkd
             if self.check_article(permalink):
                 logging.warning("Already scraped {} for {}. exiting polling".format(permalink, self.name_id))
+                return
             title = entry.title
             author = entry.author
             date_published = make_aware(datetime.fromtimestamp(mktime(entry['published_parsed'])))
@@ -76,17 +77,18 @@ class Stratechery(BlogInformation):
     def _poll(self):
         xml = feedparser.parse(self.rss_url)
         entries = xml.entries
-        for entry in entries:
-            permalink = entry.link
-            if self.check_article(permalink):
-                logging.warning("Already scraped {} for {}. exiting polling".format(permalink, self.name_id))
-            title = entry.title
-            author = entry.author
-            date_published = make_aware(datetime.fromtimestamp(mktime(entry['published_parsed'])))
-            content = entry['content'][0]['value']
+        entry = entries[0]
+        permalink = entry.link
+        if self.check_article(permalink):
+            logging.warning("Already scraped {} for {}. exiting polling".format(permalink, self.name_id))
+            return
+        title = entry.title
+        author = entry.author
+        date_published = make_aware(datetime.fromtimestamp(mktime(entry['published_parsed'])))
+        content = entry['content'][0]['value']
 
-            self.handle_s3(title=title, permalink=permalink, date_published=date_published, author=author,
-                           content=content)
+        self.handle_s3(title=title, permalink=permalink, date_published=date_published, author=author,
+                       content=content)
 
     # USE WITH PROXY FLEET TO PREVENT RATE LIMITS
     def get_all_posts(self, page):
