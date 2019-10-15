@@ -3,13 +3,15 @@ from blogs.scrapers.kwokchain import Kwokchain
 from blogs.scrapers.marginal_revolution import MarginalRevolution
 from blogs.scrapers.ribbonfarm import Ribbonfarm
 from blogs.stratechery.stratechery import Stratechery
-from blogs.slatestarcodex.slatestarcodex import SlateStarCodex
+from blogs.scrapers.slatestarcodex import SlateStarCodex
 from blogs.scrapers.mercatus_center import MercatusCenter
 from blogs.scrapers.bryan_caplan import BryanCaplanEconlib
 from blogs.scrapers.eugene_wei import EugeneWei
 from blogs.scrapers.dan_wang import DanWang
 from blogs.scrapers.elaineou import ElaineOu
 from blogs.scrapers.everything_studies import EverythingStudies
+from blogs.scrapers.overcoming_bias import OvercomingBias
+from blogs.scrapers.noahpinion import Noahpinion
 from blogs.scrapers.brookings import BrookingsInstitution
 
 CATEGORIES = ["Rationality", "Economics", "Technology"]
@@ -26,7 +28,9 @@ BLOGS = (
     EugeneWei,
     DanWang,
     ElaineOu,
-    EverythingStudies
+    EverythingStudies,
+    OvercomingBias,
+    Noahpinion
     # BrookingsInstitution,
 )
 
