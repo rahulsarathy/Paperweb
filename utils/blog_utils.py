@@ -12,6 +12,9 @@ from blogs.scrapers.elaineou import ElaineOu
 from blogs.scrapers.everything_studies import EverythingStudies
 from blogs.scrapers.overcoming_bias import OvercomingBias
 from blogs.scrapers.noahpinion import Noahpinion
+from blogs.scrapers.less_wrong import LessWrong
+from blogs.scrapers.otium import Otium
+from blogs.scrapers.gwern import Gwern
 from blogs.scrapers.brookings import BrookingsInstitution
 
 CATEGORIES = ["Rationality", "Economics", "Technology"]
@@ -23,15 +26,19 @@ BLOGS = (
     Ribbonfarm,
     Stratechery,
     SlateStarCodex,
-    # MercatusCenter,
     BryanCaplanEconlib,
     EugeneWei,
     DanWang,
     ElaineOu,
     EverythingStudies,
     OvercomingBias,
-    Noahpinion
+    Noahpinion,
+    LessWrong,
+    Otium,
+    # Gwern
     # BrookingsInstitution,
+    # MercatusCenter,
+
 )
 
 def blog_map(requested_id):
