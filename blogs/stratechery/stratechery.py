@@ -62,7 +62,7 @@ class Stratechery(BlogInformation):
         xml = feedparser.parse(self.rss_url)
         entries = xml.entries
         for entry in entries:
-            permalink = entry.linkd
+            permalink = entry.link
             if self.check_article(permalink):
                 logging.warning("Already scraped {} for {}. exiting polling".format(permalink, self.name_id))
                 return
