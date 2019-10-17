@@ -57,6 +57,7 @@ class LessWrong(BlogInformation):
         for entry in entries:
             title = entry.title
             permalink = entry.link
+            print("polling {}".format(permalink))
             date_published = make_aware(datetime.fromtimestamp(mktime(entry['published_parsed'])))
             author = entry.get('author')
             content = entry.get('summary', None)

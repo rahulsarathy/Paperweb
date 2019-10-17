@@ -14,7 +14,7 @@ class Magazine(models.Model):
     file_link = models.URLField(_('S3 File Link'), primary_key=True)
 
 class Blog(models.Model):
-    name = models.CharField(_('Blog Name'), max_length=100, unique=True)
+    name = models.CharField(_('Blog Name'), max_length=255, unique=True)
     last_polled_time = models.DateTimeField(_('Last Polled Time'), max_length=8, null=True)
     home_url = models.URLField(_('Home URL'))
     rss_url = models.URLField(_('RSS URL'))
@@ -27,10 +27,10 @@ class BlogBlock(models.Model):
     date_end = models.DateTimeField()
 
 class Article(models.Model):
-    title = models.CharField(_('Article Title'), max_length=100)
+    title = models.CharField(_('Article Title'), max_length=255)
     permalink = models.URLField(_('Permalink'), primary_key=True)
     date_published = models.DateTimeField(_('Date Published'))
-    author = models.CharField(_('Author'), max_length=100)
+    author = models.CharField(_('Author'), max_length=255)
     file_link = models.URLField(_('S3 File Link'), )
     blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
     magazine = models.ManyToManyField(Magazine)

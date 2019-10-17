@@ -8,12 +8,15 @@ from blogs.scrapers.mercatus_center import MercatusCenter
 from blogs.scrapers.bryan_caplan import BryanCaplanEconlib
 from blogs.scrapers.eugene_wei import EugeneWei
 from blogs.scrapers.dan_wang import DanWang
-from blogs.scrapers.elaineou import ElaineOu
+from blogs.scrapers.elaine_ou import ElaineOu
 from blogs.scrapers.everything_studies import EverythingStudies
 from blogs.scrapers.overcoming_bias import OvercomingBias
 from blogs.scrapers.noahpinion import Noahpinion
 from blogs.scrapers.less_wrong import LessWrong
 from blogs.scrapers.otium import Otium
+from blogs.scrapers.epsilon_theory import EpsilonTheory
+from blogs.scrapers.truthonthemarket import TruthOnTheMarket
+from blogs.scrapers.daring_fireball import DaringFireball
 from blogs.scrapers.gwern import Gwern
 from blogs.scrapers.brookings import BrookingsInstitution
 
@@ -35,6 +38,9 @@ BLOGS = (
     Noahpinion,
     LessWrong,
     Otium,
+    EpsilonTheory,
+    TruthOnTheMarket,
+    DaringFireball,
     # Gwern
     # BrookingsInstitution,
     # MercatusCenter,

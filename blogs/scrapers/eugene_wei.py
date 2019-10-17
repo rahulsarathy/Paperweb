@@ -48,7 +48,7 @@ class EugeneWei(BlogInformation):
                  rss_url="https://eugene-wei.squarespace.com/blog?format=rss",
                  home_url="https://www.eugenewei.com/",
                  display_name="Remains of the Day", about=description,
-                 about_link="https://www.eugenewei.com/info", authors=AUTHORS, image='eugenewei',
+                 about_link="https://www.eugenewei.com/info", authors=AUTHORS, image='eugene_wei',
                  categories=["technology"]):
 
         super().__init__(rss_url=rss_url, home_url=home_url, display_name=display_name, name_id=name_id, about=about,
