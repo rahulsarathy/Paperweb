@@ -16,9 +16,10 @@ export default class Dashboard extends React.Component {
         this.showAboutCard = this.showAboutCard.bind(this);
         this.hideAboutCard = this.hideAboutCard.bind(this);
 		this.state = {
-			data: {},
+			data: [],
             showMagazine: false,
             selected: {},
+            categories: {},
         };
     }
 
@@ -36,6 +37,25 @@ export default class Dashboard extends React.Component {
         this.setState({
             showMagazine: false
         });
+    }
+
+    assembleCategories(blogs) {
+        let categories = {};
+        // Iterate through all blogs
+        for (let i = 0; i < blogs.length; i++)
+        {
+            let blog_categories = blogs[i].categories;
+            // Iterate through this blog's categories
+            for (let j =0; j < blog_categories.length; j++)
+            {
+                let blog_category = blog_categories[j];
+                // 
+                let categories_list = categories[blog_category] || [];
+                categories_list.push(blogs[i]);
+                categories[blog_category] = categories_list;
+            }   
+        }
+        return categories;
     }
 
     showAboutCard(blog) {
@@ -64,9 +84,12 @@ export default class Dashboard extends React.Component {
     			type: 'GET',
     			success: function(data)
     			{
+                    let categories = this.assembleCategories(data);
+                    console.log(categories);
     				this.setState(
     					{
-    						data: data
+    						data: data,
+                            categories: categories,
     					});
     			}.bind(this)
 
@@ -89,11 +112,11 @@ export default class Dashboard extends React.Component {
                     </Modal>
                     <div className="categories">
                 	{
-                		Object.keys(this.state.data).map((category) =>
+                		Object.keys(this.state.categories).map((category) =>
                         {
-                            if (this.state.data[category].includes(this.state.selected))
-                                return <Category hide={this.hideAboutCard} show={this.showAboutCard} selected={this.state.selected} key={shortid.generate()} category={this.jsUcfirst(category)} blogs={this.state.data[category]}/> 
-                            return <Category selected={{}} hide={this.hideAboutCard} show={this.showAboutCard} key={shortid.generate()} category={this.jsUcfirst(category)} blogs={this.state.data[category]}/>
+                            if (this.state.categories[category].includes(this.state.selected))
+                                return <Category hide={this.hideAboutCard} show={this.showAboutCard} selected={this.state.selected} key={shortid.generate()} category={this.jsUcfirst(category)} blogs={this.state.categories[category]}/> 
+                            return <Category selected={{}} hide={this.hideAboutCard} show={this.showAboutCard} key={shortid.generate()} category={this.jsUcfirst(category)} blogs={this.state.categories[category]}/>
                         })
                 	}
                     </div>

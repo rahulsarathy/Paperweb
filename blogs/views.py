@@ -26,20 +26,12 @@ class BlogViewSet(viewsets.ViewSet):
 @api_view(['GET'])
 def get_blogs(request):
 
-    category_json = {}
+    all_blogs = []
     for blog in BLOGS:
         new_blog = blog()
-        categories = new_blog.categories
+        all_blogs.append(new_blog.to_json())
 
-        if categories:
-            for category in categories:
-                if category not in category_json:
-                    category_json[category] = [new_blog.to_json()]
-                else:
-                    category_json[category].append(new_blog.to_json())
-    user = request.user
-
-    return JsonResponse(category_json, safe=False)
+    return JsonResponse(all_blogs, safe=False)
 
 @api_view(['GET'])
 def get_posts(request):
