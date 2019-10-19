@@ -3,34 +3,25 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import shortid from 'shortid';
 
-import {BlogCard, AuthorCard} from './Components.jsx'
-
+import {AuthorCard} from './Components.jsx'
 
 export default class Authors extends React.Component {
 
-	constructor(props) {
-		super(props);
-		
-		this.state = {
-            curr_author: 0
-		};
-	}
+  constructor(props) {
+    super(props);
 
-    componentDidMount() {
-    }
+    this.state = {
+      curr_author: 0
+    };
+  }
 
-	render () {
-        return (
-            <div className="authors-slider">
-            <div className="authors-slider-wrapper">
-            {
-                this.props.authors.map((author) =>
-                    <AuthorCard key={shortid.generate()} author={author} onClick={this.handleClick}/>
-                    )
-            }  
-            </div>
+  componentDidMount() {}
 
-            </div>
-    	);
+  render() {
+    return (<div className="authors-slider">
+      <div className="authors-slider-wrapper">
+        {this.props.authors.map((author) => <AuthorCard key={shortid.generate()} author={author} onClick={this.handleClick}/>)}
+      </div>
+    </div>);
   }
 }

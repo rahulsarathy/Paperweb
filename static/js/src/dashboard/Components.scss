@@ -1,6 +1,4 @@
-body {
-
-}
+body {}
 
 .subscribe-button {
   color: white;
@@ -14,12 +12,11 @@ body {
   text-align: center;
   margin: auto;
   text-transform: uppercase;
-  transition: all .2s ease-in-out;
-
+  transition: all 0.2s ease-in-out;
 }
 
 .subscribe-button:hover {
-  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
 };
 
 .magazine {
@@ -37,23 +34,20 @@ body {
     background-color: grey;
     border-radius: 20px;
     width: 35px;
-    height: 35px;
+    height: 835px;
     font-size: 30px;
     font-weight: normal;
     margin: 10px;
     vertical-align: middle;
-    outline:none;
+    outline: none;
   }
-
 }
 
 .aboutcard {
-  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   border-radius: 3px;
   padding: 20px;
   width: 100%;
-  // width: 100%;
-  // transform: translateX(-25%);
 
   .close {
     position: relative;
@@ -76,12 +70,48 @@ body {
   }
 }
 
-.about {
-  
+.menu {
+  border-radius: 10px;
+  background-color: #EEEEEF;
+  font-weight: bold;
+  font-size: 18px;
+  min-width: 300px;
+
+  .menu-slider {
+    width: 80%;
+
+    .selected {
+      border-radius: 10px;
+      margin: 3px;
+      height: 44px;
+      width: 33%;
+      line-height: 44px;
+      vertical-align: middle;
+      background-color: white;
+      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+      display: inline-block;
+      position: absolute;
+      text-align: center;
+      transition: all 0.2s ease-in-out;
+      top: 0;
+    }
+  }
+
+  .menu-item {
+    text-align: center;
+    vertical-align: middle;
+    line-height: 50px;
+    width: 33%;
+    display: inline-block;
+  }
 }
 
-.about-author {
 
+
+
+.about {}
+
+.about-author {
   a {
     display: inline-block;
   }
@@ -116,9 +146,9 @@ body {
   height: 100px;
   background-size: cover;
   display: inline-block;
-  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   margin: 10px;
-  transition: all .2s ease-in-out;
+  transition: all 0.2s ease-in-out;
   border-radius: 3px;
   cursor: pointer;
 }
@@ -129,6 +159,7 @@ body {
 
 .category {
   width: 100%;
+
   .blogcards {
     overflow-x: hidden;
   }
@@ -149,8 +180,9 @@ body {
   width: 100%;
   padding: 5px 0;
   height: 45px;
-/*  padding-right: 100;
-*/  top: 0;
+  /*  padding-right: 100;
+*/
+  top: 0;
   background-color: white;
   text-align: right;
 
@@ -168,7 +200,7 @@ body {
     color: #007bff;
     background-color: Transparent;
     border-style: none;
-    outline:none;
+    outline: none;
   }
 
   button:hover {
@@ -182,11 +214,11 @@ body {
     border-radius: 3px;
     background-color: #2393FF;
     transition: all 0.2s ease;
+
     a {
       color: white;
     }
   };
-
 }
 
 .fade-appear {
@@ -218,7 +250,3 @@ body {
   opacity: 1;
   transition: opacity 300ms linear;
 }
-
-
-
-

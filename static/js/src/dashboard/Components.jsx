@@ -6,7 +6,8 @@ import Authors from './Authors.jsx';
 import AuthorCard from './AuthorCard.jsx';
 import Magazine from './Magazine.jsx';
 import Header from './Header.jsx';
-
+import Menu from './Menu.jsx';
+import AboutAuthor from './AboutAuthor.jsx'
 
 export {
 	BlogCard,
@@ -16,4 +17,6 @@ export {
 	AuthorCard,
 	Magazine,
 	Header,
+	Menu,
+	AboutAuthor,
 }
