@@ -4,7 +4,7 @@ import $ from 'jquery';
 import shortid from 'shortid';
 import {CSSTransition, TransitionGroup} from "react-transition-group";
 import {Row, Col} from 'react-bootstrap';
-import {Authors, Menu, AboutAuthor} from './Components.jsx';
+import {Authors, Menu, AboutAuthor, Overview, Related, More_Info} from './Components.jsx';
 
 export default class AboutCard extends React.Component {
 
@@ -13,12 +13,10 @@ export default class AboutCard extends React.Component {
 
     this.subscribe = this.subscribe.bind(this);
     this.unsubscribe = this.unsubscribe.bind(this);
-    this.nextAuthor = this.nextAuthor.bind(this);
-		this.changeSelected = this.changeSelected.bind(this);
+    this.changeSelected = this.changeSelected.bind(this);
     this.state = {
       subscribed: false,
-      selected_author: 0,
-			selected: 0,
+      selected: 0
     };
   }
 
@@ -26,21 +24,8 @@ export default class AboutCard extends React.Component {
     this.checkSubStatus();
   }
 
-	changeSelected(index) {
-		console.log(index);
-		this.setState({
-			selected: index
-		});
-	}
-
-  nextAuthor() {
-    if (this.state.selected_author === this.props.blog.authors.length - 1) {
-      this.setState({selected_author: 0});
-    } else {
-      this.setState({
-        selected_author: this.state.selected_author + 1
-      });
-    }
+  changeSelected(index) {
+    this.setState({selected: index});
   }
 
   checkSubStatus() {
@@ -91,8 +76,24 @@ export default class AboutCard extends React.Component {
     });
   }
 
+	choosePanel() {
+		const {blog} = this.props;
+
+		switch (this.state.selected) {
+			case 0:
+				return <Overview blog={blog}/>;
+			case 1:
+				return <Related blog={blog}/>;
+			case 2:
+				return <More_Info blog={blog}/>
+			default:
+				return <Overview blog={blog}/>;
+		}
+	}
+
   render() {
-    var blog = this.props.blog;
+    let to_render = this.choosePanel();
+
     return (<div className="aboutcard">
       <Row>
         <Col></Col>
@@ -101,32 +102,7 @@ export default class AboutCard extends React.Component {
         </Col>
         <Col></Col>
       </Row>
-      <button className="close" onClick={this.props.close}>X</button>
-      <h1>{blog.display_name}</h1>
-      <Row>
-        <Col>
-          <About about={blog.about}/> {
-            this.state.subscribed
-              ? <button onClick={this.unsubscribe} className="subscribe-button">unsubscribe</button>
-              : <button onClick={this.subscribe} className="subscribe-button">subscribe</button>
-          }
-        </Col>
-        <Col>
-          <AboutAuthor num_authors={blog.authors.length} nextAuthor={this.nextAuthor} author={blog.authors[this.state.selected_author]}/>
-        </Col>
-      </Row>
+      {to_render}
     </div>);
-  }
-}
-
-class About extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-  render() {
-    return (<div className="about">
-      <h2>About</h2>
-      <p>{this.props.about}</p>
-    </div>)
   }
 }

@@ -8,6 +8,7 @@ export default class AboutAuthor extends React.Component {
 
   render() {
     var author = this.props.author;
+    console.log(author);
     return (<div className="about-author">
       {
         this.props.num_authors === 1

@@ -27,7 +27,7 @@ The “secure transport of light” is one of my favorite phrases. It refers to 
 
 AUTHORS = [
     {
-        "name": "Dang Wang",
+        "name": "Dan Wang",
         "bio": """Dan Wang is the Beijing-based technology analyst at Gavekal Dragonomics.""",
         "link": "https://twitter.com/danwwang",
         "profile": "https://pbs.twimg.com/profile_images/1121039666575233024/VVWTUzXf_400x400.jpg",
