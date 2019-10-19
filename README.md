@@ -1,30 +1,48 @@
-<h1>Pulp</h1>
-<p>Select your favorite content from the web, and get it mailed to your doorstep as a magazine. </p>
+# Pre-Build Checklist
+After cloning the repository in preparation to run please make sure that you have:
+* Installed Docker locally 
+```$ docker --version```
+> tested wtih Docker version 19.03.2, build 6a30dfc
+* Installed Docker Compose locally 
+```$ docker-compose --version```
+> tested with docker-compose version 1.24.1, build 4667896b
+* A .env.dev file in your project root directory. This is used by docker-compose to setup the environment variables 
 
-<h2>Setup</h2>
+.env.dev file has following entries:
+>
+> ## django
+> DEBUG=1
 
-<p>Clone the Pulp repo</p>
+> SECRET_KEY="enter secret key"
 
-```
-mkdir paperweb
-git clone https://github.com/rahulsarathy/Pulp.git Pulp
-cd Pulp
-git remote add upstream git@github.com:rahulsarathy/Pulp.git
-git fetch upstream
-```
+> DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
 
-<h2>To run</h2>
+> DJANGO_SETTINGS_MODULE=pulp.dev_settings
+> 
+> ## database
+> SQL_ENGINE=django.db.backends.postgresql
 
-<h3>Start up webserver</h3>
+> SQL_DATABASE=pulp_db
 
-```
-source venv/bin/activate
-python manage.py runserver
-```
-<h3>Start up webpack server (for live js change updates)</h3>
+> SQL_USER=admin
 
-```
-cd static/js
-npm i
-npm start
-```
+> SQL_PASSWORD="enter db password"
+
+> SQL_HOST=db
+
+> SQL_PORT=5432
+
+> DATABASE=postgres
+
+> 
+> ## ngrok
+> NGROK_HOST='95c0c850.ngrok.io'
+
+# Build 
+$ docker-compose up -d --build
+
+# Run 
+$ Open http://localhost:8000/landing in a browser
+
+# Cleanup 
+$ docker-compose down -v 
