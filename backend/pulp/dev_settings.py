@@ -25,6 +25,7 @@ JAVASCRIPT_URLS = {
     'dashboard': 'http://localhost:8080/dashboard.js',
     'profile': 'http://localhost:8080/profile.js',
     'feed': 'http://localhost:8080/feed.js',
+    'reading_list': 'http://localhost:8080/reading_list.js',
 }
 
 AWS_BUCKET = 'pulpscrapedarticlestest'

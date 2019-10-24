@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from blogs import serializers
 from blogs.models import Subscription, Blog, Article
 from utils.blog_utils import BLOGS, blog_map
+from newspaper import Article
 import traceback
 
 CATEGORIES = ["Rationality", "Economics", "Technology", "Think Tanks"]
@@ -155,4 +156,14 @@ def unsubscribe(request):
 
     old_subscription.delete()
     return HttpResponse(status=200)
+
+@api_view(['GET'])
+def get_title(request):
+    permalink = request.POST['permalink']
+    article = Article(permalink)
+    article.download()
+    article.parse()
+    title = article.title
+    return JsonResponse(title, safe=False)
+
 

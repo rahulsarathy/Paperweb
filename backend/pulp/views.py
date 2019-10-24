@@ -42,6 +42,15 @@ def feed(request):
   }
   return render(request, 'feed.html', context)
 
+def reading_list(request):
+  if not request.user.is_authenticated:
+    return HttpResponseRedirect('../')
+  context = {
+    'js_file': settings.JAVASCRIPT_URLS['reading_list']
+  }
+  return render(request, 'reading_list.html', context)
+
+
 @api_view(['GET'])
 def google_maps_key(request):
   return JsonResponse(GOOGLE_MAPS_PLACES, safe=False)
