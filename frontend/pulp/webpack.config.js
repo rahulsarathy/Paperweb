@@ -7,7 +7,7 @@ module.exports = {
     dashboard: path.join(__dirname, 'src', 'dashboard', 'dashboard.jsx'),
     profile: path.join(__dirname, 'src', 'profile', 'profile.jsx'),
     feed: path.join(__dirname, 'src', 'feed', 'feed.jsx'),
-    feed: path.join(__dirname, 'src', 'reading_list', 'reading_list.jsx'),
+    reading_list: path.join(__dirname, 'src', 'reading_list', 'reading_list.jsx'),
   },
   output: {
     path: path.join(__dirname, 'build'),
