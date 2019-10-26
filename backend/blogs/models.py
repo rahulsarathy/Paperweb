@@ -47,3 +47,11 @@ class Subscription(models.Model):
     subscriber = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     date_subscribed = models.DateTimeField(_('Date Subscribed'), default=timezone.now)
     blog = models.OneToOneField(Blog, on_delete=models.CASCADE)
+
+class ReadingListItem(models.Model):
+    reader = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    date_added = models.DateTimeField(_('Date Added'), default=timezone.now)
+    title = models.CharField(_('Article Title'), max_length=255)
+    permalink = models.URLField(_('Permalink'), primary_key=True)
+    date_published = models.DateTimeField(_('Date Published'))
+    author = models.CharField(_('Author'), max_length=255)

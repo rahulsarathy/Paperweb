@@ -22,7 +22,11 @@ export default class ReadingList extends React.Component {
     return (<div>
       <Header/>
       <div className="readinglist">
+        <div className="row">
+          <div className="column"></div>
+        </div>
         <h1>Reading List</h1>
+        <h3>Add to Reading List</h3>
       </div>
     </div>);
   }
