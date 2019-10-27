@@ -11,9 +11,8 @@ then
     echo "PostgreSQL started"
 fi
 
-# Commented out because we are restoring the database from a dump
-# Uncommenting these will initialize the database to initial state
-# python manage.py flush --no-input
-# python manage.py migrate
+python manage.py flush --no-input
+python manage.py makemigrations
+python manage.py migrate
 
 exec "$@"
