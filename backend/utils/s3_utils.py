@@ -156,10 +156,14 @@ def create_pdf_url(bucket_name, blog_name, article_id):
 def upload_article(blog_name, article_id, content, bucket_name=BUCKET_NAME):
     id_path = '{}.html'.format(article_id)
     try:
+        os.mkdir('dump')
+    except FileExistsError:
+       logging.info("'dump' directory already exists")
+
+    try:
         os.mkdir(os.path.join('dump', blog_name))
-    except:
-       print(traceback.format_exc())
-       pass
+    except FileExistsError:
+        logging.info(os.path.join('dump', blog_name) + " already exists")
 
     local_path = os.path.join('dump', blog_name, id_path)
 
@@ -170,14 +174,15 @@ def upload_article(blog_name, article_id, content, bucket_name=BUCKET_NAME):
     put_object(dest_bucket_name=bucket_name, dest_object_name=os.path.join(blog_name, id_path), src_data=local_path)
 
 def check_file(path, bucket_name=BUCKET_NAME):
-
     try:
         resource.Object(bucket_name, path).load()
         return True
     except ClientError as e:
-        logging.error(e, exc_info=True)
         if e.response['Error']['Code'] == "404":
+            logging.warning(path + " already exists in S3")
             return False
+    logging.warning("Check File failed")
+    return True
 
 def delete_file(bucket_name, path):
 
