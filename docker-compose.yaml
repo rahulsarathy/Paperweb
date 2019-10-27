@@ -25,11 +25,8 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
+      - /tmp/postgres_data:/var/lib/postgresql/data/
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=paperweb
       - POSTGRES_DB=pulp_db
-
-volumes:
-  postgres_data:

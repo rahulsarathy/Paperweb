@@ -54,16 +54,17 @@ export default class Feed extends React.Component {
         return (
             <div>
                 <Header />
-                <h1>Feed</h1>
-                {
-                    Object.keys(this.state.date_map).map((date, index) =>
-                        <DateDivider index={index} date={date} posts={this.state.date_map[date]} key={shortid.generate()}/>
-                        )
-                }
+                  <div className="feed">
+                    <h1>Feed</h1>
+                    {
+                        Object.keys(this.state.date_map).map((date, index) =>
+                            <DateDivider index={index} date={date} posts={this.state.date_map[date]} key={shortid.generate()}/>
+                            )
+                    }
+                </div>
             </div>
         );
   }
 }
 
 ReactDOM.render(<Feed/>, document.getElementById('feed'))
-
