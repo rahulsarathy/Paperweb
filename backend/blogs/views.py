@@ -1,4 +1,8 @@
 from django.http import JsonResponse, HttpResponse
+from django.utils.timezone import make_aware
+from datetime import datetime
+from django.core.validators import URLValidator
+from django.core.exceptions import ValidationError
 
 from rest_framework.decorators import api_view
 from rest_framework import viewsets
@@ -8,6 +12,9 @@ from blogs import serializers
 from blogs.models import Subscription, Blog, Article, ReadingListItem
 from utils.blog_utils import BLOGS, blog_map
 import traceback
+from newspaper import Article as NewspaperArticle
+import lxml.html
+import re
 
 CATEGORIES = ["Rationality", "Economics", "Technology", "Think Tanks"]
 
@@ -144,21 +151,70 @@ def unsubscribe(request):
     old_subscription.delete()
     return HttpResponse(status=200)
 
-# @api_view(['POST'])
-# def add_to_reading_list(request):
-#     user = request.user
-#     link = request.POST['link']
-#     try:
-#         already_added = ReadingListItem.objects.get()
-#     return
-
 @api_view(['GET'])
-def get_title(request):
-    permalink = request.POST['permalink']
-    article = Article(permalink)
-    article.download()
-    article.parse()
-    title = article.title
-    return JsonResponse(title, safe=False)
+def get_reading_list(request):
+    user = request.user
+    my_reading = ReadingListItem.objects.filter(reader=user)
+    my_reading_list = []
+    for reading in my_reading:
+        reading_json = {
+            'title': reading.title,
+            'date_added': reading.date_added,
+            'link': reading.link,
+        }
+        my_reading_list.append(reading_json)
+    return JsonResponse(my_reading_list, safe=False)
 
+@api_view(['POST'])
+def add_to_reading_list(request):
+    user = request.user
+    link = request.POST['link']
 
+    validate = URLValidator()
+    try:
+        validate(link)
+    except ValidationError:
+        print("invalid url")
+        return HttpResponse('Invalid URL', status=403)
+
+    now = make_aware(datetime.now())
+    try:
+        new_article = NewspaperArticle(link)
+        new_article.download()
+        new_article.parse()
+        title = new_article.title
+    except:
+        t = lxml.html.parse(link)
+        title = t.find(".//title")
+        if title is None:
+            title = ''
+
+    reading_list_item, created = ReadingListItem.objects.get_or_create(
+        link=link, reader=user, title=title, defaults={'date_added': now})
+    if not created:
+        return JsonResponse({})
+    # reading_list_item.save()
+    reading_list_json = {
+        'link': link,
+        'date_added': now,
+        'title': title,
+    }
+    return JsonResponse(reading_list_json)
+
+@api_view(['POST'])
+def remove_from_reading_list(request):
+    user = request.user
+    link = request.POST['link']
+    reading_list_item, created = ReadingListItem.objects.get_or_create(link=link, reader=user)
+    reading_list_item.delete()
+
+    my_reading = ReadingListItem.objects.filter(reader=user)
+    my_reading_list = []
+    for reading in my_reading:
+        reading_json = {
+            'title': reading.title,
+            'date_added': reading.date_added,
+            'link': reading.link,
+        }
+        my_reading_list.append(reading_json)
+    return JsonResponse(my_reading_list, safe=False)

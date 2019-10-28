@@ -7,6 +7,16 @@
   // flex-direction: column;
 }
 
+.add-article {
+  input {
+    display: inline-block;
+  }
+
+  button {
+    display: inline-block;
+  }
+}
+
 .row {
   display: flex;
   flex-direction: row;
@@ -20,8 +30,6 @@
   flex-basis: 100%;
   flex: 1;
 }
-
-
 
 .header {
   z-index: 4;
