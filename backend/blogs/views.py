@@ -7,7 +7,6 @@ from rest_framework.response import Response
 from blogs import serializers
 from blogs.models import Subscription, Blog, Article, ReadingListItem
 from utils.blog_utils import BLOGS, blog_map
-from newspaper import Article
 import traceback
 
 CATEGORIES = ["Rationality", "Economics", "Technology", "Think Tanks"]
