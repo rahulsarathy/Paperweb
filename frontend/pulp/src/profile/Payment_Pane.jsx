@@ -25,7 +25,6 @@ export default class Payment_Pane extends React.Component {
 			url: '../api/payments/payment_status',
 			type: 'GET',
 			success: function(data, statusText, xhr) {
-				console.log(xhr)
 				if (xhr.status == 208) {
 					this.setState({
 						paid: true
@@ -50,7 +49,6 @@ export default class Payment_Pane extends React.Component {
 
 
 	startPayment(id) {
-		console.log("starting stripe payment")
 		stripe.redirectToCheckout({
         // Make the id field from the Checkout Session creation API response
         // available to this file, so you can provide it as parameter here

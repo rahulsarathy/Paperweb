@@ -73,7 +73,7 @@ class MenuItemSelected extends React.Component {
   render() {
     var offset = this.props.index * 30
     var style = {
-      left: 'calc(' + 15 + 'px + ' + offset + '%)',
+      left: 'calc(' + 0 + 'px + ' + offset + '%)',
     }
     return (
       <div className="selected" style={style}>

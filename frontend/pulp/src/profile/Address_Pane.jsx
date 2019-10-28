@@ -78,7 +78,6 @@ export default class Address_Pane extends React.Component {
 							});
 					}.bind(this),
 				error: function (request, status, error) {
-					console.log(status);
 				}
 			});
 	}

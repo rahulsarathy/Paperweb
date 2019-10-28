@@ -10,7 +10,9 @@ export default class Overview extends React.Component {
 
   constructor(props) {
     super(props);
-    this.getBlogPosts = this.getBlogPosts.bind(this);
+    // this.getBlogPosts = this.getBlogPosts.bind(this);
+    this.subscribe = this.subscribe.bind(this);
+    this.unsubscribe = this.unsubscribe.bind(this);
 
     this.state = {
       posts: [],
@@ -18,7 +20,57 @@ export default class Overview extends React.Component {
   }
 
   componentDidMount() {
-    this.getBlogPosts();
+    // this.getBlogPosts();
+    this.checkSubStatus();
+  }
+
+  checkSubStatus() {
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    var data = {
+      csrfmiddlewaretoken: csrftoken,
+      name_id: this.props.blog.name_id
+    }
+    $.ajax({
+      url: '/api/blogs/check_sub_status/',
+      type: 'POST',
+      data: data,
+      success: function(data) {
+        if (data) {
+          this.setState({subscribed: true});
+        }
+      }.bind(this)
+    });
+  }
+
+
+  unsubscribe() {
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    $.ajax({
+      url: '/api/blogs/unsubscribe/',
+      type: 'POST',
+      data: {
+        name_id: this.props.blog.name_id,
+        csrfmiddlewaretoken: csrftoken
+      },
+      success: function(data, xhr) {
+        this.setState({subscribed: false});
+      }.bind(this)
+    });
+  }
+
+  subscribe() {
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    $.ajax({
+      url: '/api/blogs/subscribe/',
+      type: 'POST',
+      data: {
+        name_id: this.props.blog.name_id,
+        csrfmiddlewaretoken: csrftoken
+      },
+      success: function(data, xhr) {
+        this.setState({subscribed: true});
+      }.bind(this)
+    });
   }
 
   getBlogPosts() {
@@ -32,7 +84,6 @@ export default class Overview extends React.Component {
       type: 'GET',
       data: data,
       success: function(data) {
-        console.log(data);
         this.setState({
           posts: data
         });

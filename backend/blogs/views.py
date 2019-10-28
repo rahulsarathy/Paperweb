@@ -5,15 +5,13 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 
 from blogs import serializers
-from blogs.models import Subscription, Blog, Article
+from blogs.models import Subscription, Blog, Article, ReadingListItem
 from utils.blog_utils import BLOGS, blog_map
 from newspaper import Article
 import traceback
 
 CATEGORIES = ["Rationality", "Economics", "Technology", "Think Tanks"]
 
-LANDING_BLOGS = ['bryan_caplan_econlib', 'stratechery', 'melting_asphalt', 'mercatus_center', 'ribbonfarm',
-                 'marginal_revolution', 'slatestarcodex', 'kwokchain']
 
 class BlogViewSet(viewsets.ViewSet):
     # Required for the Browsable API renderer to have a nice form.
@@ -66,16 +64,6 @@ def get_posts(request):
             date_map[str(post.date_published.date())] = [article_json]
 
     return JsonResponse(date_map)
-
-# Blogs to display for the landing page
-@api_view(['GET'])
-def get_landing_blogs(request):
-    landing_blogs = []
-    for blog in BLOGS:
-        new_blog = blog()
-        if new_blog.name_id in LANDING_BLOGS:
-            landing_blogs.append(new_blog.to_json())
-    return JsonResponse(landing_blogs, safe=False)
 
 @api_view(['POST'])
 def check_sub_status(request):
@@ -156,6 +144,14 @@ def unsubscribe(request):
 
     old_subscription.delete()
     return HttpResponse(status=200)
+
+# @api_view(['POST'])
+# def add_to_reading_list(request):
+#     user = request.user
+#     link = request.POST['link']
+#     try:
+#         already_added = ReadingListItem.objects.get()
+#     return
 
 @api_view(['GET'])
 def get_title(request):

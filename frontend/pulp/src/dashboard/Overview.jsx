@@ -10,25 +10,92 @@ export default class Overview extends React.Component {
 
   constructor(props) {
     super(props);
+    // this.getBlogPosts = this.getBlogPosts.bind(this);
+    this.subscribe = this.subscribe.bind(this);
+    this.unsubscribe = this.unsubscribe.bind(this);
 
     this.state = {
+      posts: [],
       selected_author: 0,
     };
   }
 
-  nextAuthor() {
-    if (this.state.selected_author === this.props.blog.authors.length - 1) {
-      this.setState({selected_author: 0});
-    } else {
-      this.setState({
-        selected_author: this.state.selected_author + 1
-      });
-    }
+  componentDidMount() {
+    // this.getBlogPosts();
+    this.checkSubStatus();
   }
+
+  checkSubStatus() {
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    var data = {
+      csrfmiddlewaretoken: csrftoken,
+      name_id: this.props.blog.name_id
+    }
+    $.ajax({
+      url: '/api/blogs/check_sub_status/',
+      type: 'POST',
+      data: data,
+      success: function(data) {
+        if (data) {
+          this.setState({subscribed: true});
+        }
+      }.bind(this)
+    });
+  }
+
+
+  unsubscribe() {
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    $.ajax({
+      url: '/api/blogs/unsubscribe/',
+      type: 'POST',
+      data: {
+        name_id: this.props.blog.name_id,
+        csrfmiddlewaretoken: csrftoken
+      },
+      success: function(data, xhr) {
+        this.setState({subscribed: false});
+      }.bind(this)
+    });
+  }
+
+  subscribe() {
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    $.ajax({
+      url: '/api/blogs/subscribe/',
+      type: 'POST',
+      data: {
+        name_id: this.props.blog.name_id,
+        csrfmiddlewaretoken: csrftoken
+      },
+      success: function(data, xhr) {
+        this.setState({subscribed: true});
+      }.bind(this)
+    });
+  }
+
+  getBlogPosts() {
+    const { blog } = this.props;
+    let blog_id = blog.name_id;
+    let data = {
+      blog_id: blog_id,
+    }
+    $.ajax({
+      url: '/api/blogs/get_blog_posts',
+      type: 'GET',
+      data: data,
+      success: function(data) {
+        this.setState({
+          posts: data
+        });
+      }.bind(this)
+    });
+  }
+
 
   render() {
     const { blog } = this.props;
-
+    console.log(blog);
     return (<div className="overview">
       <h1>{blog.display_name}</h1>
       <Row>
