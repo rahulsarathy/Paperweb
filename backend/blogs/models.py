@@ -55,5 +55,11 @@ class ReadingListItem(models.Model):
     reader = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     date_added = models.DateTimeField(_('Date Added'), default=timezone.now)
     title = models.CharField(_('Article Title'), max_length=255)
-    link = models.URLField(_('Link'), primary_key=True, default="")
+    link = models.URLField(_('Link'), default="")
     date_added = models.DateTimeField(_('Date Added'))
+    archived = models.BooleanField(_('Archived'), default=False)
+    trashed = models.BooleanField(_('Trashed'), default=False)
+    delivered = models.BooleanField(_('Delivered'), default=False)
+
+    class Meta:
+        unique_together = (("reader", "link"),)

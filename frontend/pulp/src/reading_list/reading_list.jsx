@@ -5,7 +5,12 @@ import shortid from 'shortid';
 import {CSSTransition, TransitionGroup} from "react-transition-group";
 import {Row, Col} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
-import {Header} from './Components.jsx'
+import {Header} from './Components.jsx';
+import Mercury from '@postlight/mercury-parser';
+
+let url = "https://phase2.github.io/devtools/common-tasks/ssh-into-a-container/";
+Mercury.parse(url).then(result => console.log(result));
+
 
 class ReadingListItem extends React.Component {
 
@@ -17,6 +22,12 @@ class ReadingListItem extends React.Component {
     this.state = {
       hovered: false,
     };
+  }
+
+  getLocation(href) {
+    var l = document.createElement("a");
+    l.href = href;
+    return l.hostname;
   }
 
   handleHover() {
@@ -33,10 +44,12 @@ class ReadingListItem extends React.Component {
 
   render() {
     const {article} = this.props;
+    let host = this.getLocation(article.link)
     return (<div onMouseEnter={this.handleHover} onMouseLeave={this.handleUnhover}>
       <h3>{article.title}</h3>
+      <p>{host}</p>
       {
-        this.state.hovered ? <button onClick={() => this.props.removeArticle(article.link)}>Remove</button> : <div></div>
+        this.state.hovered ? (<div><button onClick={() => this.props.removeArticle(article.link)}>Remove</button><button>Archive</button></div>) : <div></div>
       }
     </div>);
   }
@@ -127,24 +140,25 @@ export default class ReadingList extends React.Component {
 
     return (<div>
       <Header/>
-      <div className="readinglist">
-        <div className="row">
-          <div className="column"></div>
-        </div>
-        <h1>Reading List</h1>
-        <h3>Add to Reading List</h3>
+      <Row className="readinglist">
+        <Col md={2}>
+          <button>Archive</button>
+          <button>Edit Reading List</button>
+        </Col>
+        <Col md={10}>
         {
           this.state.invalid_url
             ? <h3>Invalid URL</h3>
             : <div></div>
         }
         <div className="add-article">
+          <button onClick={this.addToList}>+</button>
           <input placeholder="Add an article" value={this.state.value} onChange={this.handleChange}></input>
-          <button onClick={this.addToList}>Add to list</button>
         </div>
-        <h2>Your Reading List</h2>
+        { this.state.reading_list.length === 0 ? <p>No articles saved</p> : <div></div>}
         {this.state.reading_list.map((article) => <ReadingListItem removeArticle={this.removeArticle} key={article.link} article={article}/>)}
-      </div>
+      </Col>
+    </Row>
     </div>);
   }
 }
