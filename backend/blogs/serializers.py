@@ -1,7 +1,5 @@
-from blogs.models import Blog, Article
+from blogs.models import Blog, Article, ReadingListItem
 import json
-
-
 from rest_framework import serializers
 
 class BlogSerializer(serializers.Serializer):
@@ -33,19 +31,14 @@ class BlogSerializer(serializers.Serializer):
 
 
 class ArticleSerializer(serializers.ModelSerializer):
-    title = serializers.CharField(max_length=100)
-    permalink = serializers.URLField()
-    date_published = serializers.DateTimeField()
-    author = serializers.CharField()
-
+    blog_name = serializers.ReadOnlyField(source='blog.name')
     class Meta:
         model = Article
-        fields = ['title', 'permalink', 'date_published', 'author',]
+        fields = ['title', 'permalink', 'date_published', 'author', 'blog_name']
 
-    def create(self, validated_data):
-        return Article(**validated_data)
 
-    def update(self, instance, validated_data):
-        for field, value in validated_data.items():
-            setattr(instance, field, value)
-        return instance
+
+class ReadingListItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ReadingListItem
+        fields = ['title', 'link', 'date_added']

@@ -8,7 +8,7 @@ from rest_framework.decorators import api_view
 from rest_framework import viewsets
 from rest_framework.response import Response
 
-from blogs import serializers
+from blogs.serializers import ReadingListItemSerializer, ArticleSerializer
 from blogs.models import Subscription, Blog, Article, ReadingListItem
 from utils.blog_utils import BLOGS, blog_map
 import traceback
@@ -17,16 +17,6 @@ import lxml.html
 import re
 
 CATEGORIES = ["Rationality", "Economics", "Technology", "Think Tanks"]
-
-
-class BlogViewSet(viewsets.ViewSet):
-    # Required for the Browsable API renderer to have a nice form.
-    serializer_class = serializers.BlogSerializer
-
-    def list(self, request):
-        serializer = serializers.BlogSerializer(
-            instance=BLOGS, many=True)
-        return Response(serializer.data)
 
 @api_view(['GET'])
 def get_blogs(request):
@@ -47,27 +37,21 @@ def get_posts(request):
         sub_blog = subscription.blog
         blog_posts = Article.objects.filter(blog=sub_blog)
         posts.extend(blog_posts)
+
+    # Grab all posts from database
+    # Sort them by date_published
     posts.sort(key=lambda x: x.date_published, reverse=True)
-    # dates = map(lambda x: x.date_published.date(), posts)
     date_map = {
 
     }
+    # for each post manually serialize them
     for post in posts:
-
-        current_blog = blog_map(post.blog.name)
-        blog_name = current_blog().display_name
-
-        article_json = {
-            'title': post.title,
-            'permalink': post.permalink,
-            'date_published': post.date_published.date(),
-            'author': post.author,
-            'blog_name': blog_name,
-        }
+        serializer = ArticleSerializer(post)
+        # group posts within a date_map where dates are keys and posts are values
         if str(post.date_published.date()) in date_map.keys():
-            date_map[str(post.date_published.date())].append(article_json)
+            date_map[str(post.date_published.date())].append(serializer.data)
         else:
-            date_map[str(post.date_published.date())] = [article_json]
+            date_map[str(post.date_published.date())] = [serializer.data]
 
     return JsonResponse(date_map)
 
@@ -155,15 +139,8 @@ def unsubscribe(request):
 def get_reading_list(request):
     user = request.user
     my_reading = ReadingListItem.objects.filter(reader=user)
-    my_reading_list = []
-    for reading in my_reading:
-        reading_json = {
-            'title': reading.title,
-            'date_added': reading.date_added,
-            'link': reading.link,
-        }
-        my_reading_list.append(reading_json)
-    return JsonResponse(my_reading_list, safe=False)
+    serializer = ReadingListItemSerializer(my_reading, many=True)
+    return JsonResponse(serializer.data, safe=False)
 
 @api_view(['POST'])
 def add_to_reading_list(request):
@@ -193,13 +170,9 @@ def add_to_reading_list(request):
         link=link, reader=user, title=title, defaults={'date_added': now})
     if not created:
         return JsonResponse({})
-    # reading_list_item.save()
-    reading_list_json = {
-        'link': link,
-        'date_added': now,
-        'title': title,
-    }
-    return JsonResponse(reading_list_json)
+    serializer = ReadingListItemSerializer(reading_list_item)
+
+    return JsonResponse(serializer.data)
 
 @api_view(['POST'])
 def remove_from_reading_list(request):
@@ -209,12 +182,5 @@ def remove_from_reading_list(request):
     reading_list_item.delete()
 
     my_reading = ReadingListItem.objects.filter(reader=user)
-    my_reading_list = []
-    for reading in my_reading:
-        reading_json = {
-            'title': reading.title,
-            'date_added': reading.date_added,
-            'link': reading.link,
-        }
-        my_reading_list.append(reading_json)
-    return JsonResponse(my_reading_list, safe=False)
+    serializer = ReadingListItemSerializer(my_reading, many=True)
+    return JsonResponse(serializer.data, safe=False)

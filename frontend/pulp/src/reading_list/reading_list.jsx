@@ -11,15 +11,33 @@ class ReadingListItem extends React.Component {
 
   constructor(props) {
     super(props);
+    this.handleHover = this.handleHover.bind(this);
+    this.handleUnhover = this.handleUnhover.bind(this);
 
-    this.state = {};
+    this.state = {
+      hovered: false,
+    };
+  }
+
+  handleHover() {
+    this.setState({
+      hovered: true
+    });
+  }
+
+  handleUnhover() {
+    this.setState({
+      hovered: false
+    });
   }
 
   render() {
     const {article} = this.props;
-    return (<div>
+    return (<div onMouseEnter={this.handleHover} onMouseLeave={this.handleUnhover}>
       <h3>{article.title}</h3>
-      <button onClick={() => this.props.removeArticle(article.link)}>Remove</button>
+      {
+        this.state.hovered ? <button onClick={() => this.props.removeArticle(article.link)}>Remove</button> : <div></div>
+      }
     </div>);
   }
 }

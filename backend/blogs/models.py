@@ -36,6 +36,9 @@ class Article(models.Model):
     magazine = models.ManyToManyField(Magazine)
     pdf_link = models.URLField(_('S3 PDF Link'), default=None, null=True)
 
+    class Meta:
+        ordering = ['-date_published']
+
 class Comment(models.Model):
     author = models.CharField(_('Author'), max_length=100)
     content = models.CharField(_('Content'), max_length=100)
