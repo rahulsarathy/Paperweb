@@ -39,10 +39,10 @@ After cloning the repository in preparation to run please make sure that you hav
 > NGROK_HOST='95c0c850.ngrok.io'
 
 # Build 
-$ docker-compose up -d --build
+`$ docker-compose up -d --build`
 
 # Run 
-$ Open http://localhost:8000/landing in a browser
+`$ open http://localhost:8000/landing`
 
 # Cleanup 
-$ docker-compose down -v 
+`$ docker-compose down -v`
