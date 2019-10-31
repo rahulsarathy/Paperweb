@@ -4,8 +4,9 @@ from datetime import datetime
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 
-from rest_framework.decorators import api_view
 from rest_framework import viewsets
+from rest_framework.decorators import api_view
+from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 
 from blogs.serializers import ReadingListItemSerializer, ArticleSerializer
@@ -178,9 +179,13 @@ def add_to_reading_list(request):
 def remove_from_reading_list(request):
     user = request.user
     link = request.POST['link']
-    reading_list_item, created = ReadingListItem.objects.get_or_create(link=link, reader=user)
-    reading_list_item.delete()
+    try:
+        reading_list_item = ReadingListItem.objects.get(link=link, reader=user)
+        reading_list_item.delete()
 
-    my_reading = ReadingListItem.objects.filter(reader=user)
-    serializer = ReadingListItemSerializer(my_reading, many=True)
-    return JsonResponse(serializer.data, safe=False)
+        my_reading = ReadingListItem.objects.filter(reader=user)
+        serializer = ReadingListItemSerializer(my_reading, many=True)
+        return JsonResponse(serializer.data, safe=False)
+    except ReadingListItem.DoesNotExist:
+        raise NotFound(detail='ReadingListItem with link: %s not found.' % link, code=404)
+        
