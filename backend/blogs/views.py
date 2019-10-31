@@ -78,20 +78,15 @@ def check_sub_status(request):
 @api_view(['GET'])
 def get_subscriptions(request):
     current_user = request.user
-    print("user is ", current_user)
     try:
         subscriptions = Subscription.objects.filter(subscriber=current_user)
-        print(subscriptions)
     except Exception as e:
-        print(str(e))
         return JsonResponse({})
-
     blogs = []
     for subscription in subscriptions:
         subscribed_blog = subscription.blog
         blog_object = blog_map(subscribed_blog.name)
         blogs.append(blog_object().to_json())
-
     return JsonResponse(blogs, safe=False)
 
 @api_view(['POST'])

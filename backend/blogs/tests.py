@@ -1,8 +1,13 @@
 from datetime import datetime
 from django.utils.timezone import make_aware
+from blogs.models import Blog
 from blogs.models import ReadingListItem
+from blogs.models import Subscription
 from blogs.views import get_reading_list
+from blogs.views import get_subscriptions
 from blogs.views import remove_from_reading_list
+from blogs.views import subscribe
+from blogs.views import unsubscribe
 import json
 from users.models import CustomUser
 from rest_framework import status
@@ -10,9 +15,6 @@ from rest_framework.test import APIRequestFactory
 from rest_framework.test import APITestCase
 from rest_framework.test import force_authenticate
 
-
-# URL root for test cases.
-TEST_ROOT = 'http://localhost:8000'
 
 class BlogsTest(APITestCase):
   def setUp(self):
@@ -69,3 +71,78 @@ class BlogsTest(APITestCase):
     force_authenticate(request, user=self.test_user1)
     response = remove_from_reading_list(request)
     self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+class SubscriptionsTest(APITestCase):
+  def setUp(self):
+    self.factory = APIRequestFactory()
+    self.test_user1 = CustomUser.objects.create(username='postlight', email='postlight@mercurynews.org')
+    self.stratechery = Blog.objects.create(name='stratechery', last_polled_time=make_aware(datetime.now()), home_url='https://www.stratetchery.com', rss_url='https://www.stratetchery.com/feed/', scraped_old_posts=True)
+    Subscription.objects.create(subscriber=self.test_user1, date_subscribed=make_aware(datetime.now()), blog=self.stratechery)
+
+  def test_get_subscriptions(self):
+    """
+    Checks that get_subscriptions() returns the correct subscriptions for
+    a given user.
+    """
+    request = self.factory.get('/api/blogs/get_subscriptions')
+    force_authenticate(request, user=self.test_user1)
+    response = get_subscriptions(request)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
+    data = json.loads(response.content)
+    self.assertEqual(len(data), 1)
+    self.assertEqual(data[0]['name_id'], 'stratechery')
+
+  def test_subscribe(self):
+    """Checks that subscribe() adds the Blog to a user's list of subscribed blogs."""
+    # Add Ribbonfarm to the test database.
+    Blog.objects.create(name='ribbonfarm', last_polled_time=make_aware(datetime.now()), home_url='https://www.ribbonfarm.com', rss_url='https://www.ribbonfarm.com/feed/', scraped_old_posts=True)
+
+    request = self.factory.post('/api/blogs/subscribe', {'name_id': 'ribbonfarm'})
+    force_authenticate(request, user=self.test_user1)
+    response = subscribe(request)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    # Now verify that ribbonfarm is part of the user's subscriptions.
+    request = self.factory.get('/api/blogs/get_subscriptions')
+    force_authenticate(request, user=self.test_user1)
+    response = get_subscriptions(request)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
+    data = json.loads(response.content)
+    self.assertEqual(len(data), 2)
+    self.assertEqual(data[0]['name_id'], 'stratechery')
+    self.assertEqual(data[1]['name_id'], 'ribbonfarm')
+
+  def test_unsubscribe(self):
+    """Checks that unsubscribe() removes a Blog from a user's list of subscribed blogs."""
+    request = self.factory.post('/api/blogs/unsubscribe', {'name_id': 'stratechery'})
+    force_authenticate(request, user=self.test_user1)
+    response = unsubscribe(request)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    # Check that the list of subscriptions reflects this deletion.
+    request = self.factory.get('/api/blogs/get_subscriptions')
+    force_authenticate(request, user=self.test_user1)
+    response = get_subscriptions(request)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
+    data = json.loads(response.content)
+    self.assertEqual(len(data), 0)    
+
+  def test_unsubscribe_nonexistent_blog(self):
+    """Checks that unsubscribe() when given a Blog that a user doesn't subscribe to returns 403."""
+    # Add Ribbonfarm to the test database.
+    Blog.objects.create(name='ribbonfarm', last_polled_time=make_aware(datetime.now()), home_url='https://www.ribbonfarm.com', rss_url='https://www.ribbonfarm.com/feed/', scraped_old_posts=True)
+
+    request = self.factory.post('/api/blogs/unsubscribe', {'name_id': 'ribbonfarm'})
+    force_authenticate(request, user=self.test_user1)
+    response = unsubscribe(request)
+    self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    # The list of subscriptions should be unchanged.
+    request = self.factory.get('/api/blogs/get_subscriptions')
+    force_authenticate(request, user=self.test_user1)
+    response = get_subscriptions(request)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
+    data = json.loads(response.content)
+    self.assertEqual(len(data), 1)
+    self.assertEqual(data[0]['name_id'], 'stratechery')
+    
