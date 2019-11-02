@@ -38,7 +38,9 @@ services:
       - POSTGRES_DB=pulp_db
   node:
     build: ./node
+    command: npm run dev
     volumes:
-      - ./node:/usr/src/app/src
+      - ./node:/usr/src/app/
+      - /usr/src/app/node_modules
     ports:
       - 3000:3000
