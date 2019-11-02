@@ -1,6 +1,7 @@
 'use strict';
 const Mercury = require('@postlight/mercury-parser');
 const express = require('express');
+var bodyParser = require('body-parser')
 
 // Constants
 const PORT = 3000;
@@ -8,15 +9,22 @@ const HOST = '0.0.0.0';
 
 // App
 const app = express();
+app.use( bodyParser.json() );       // to support JSON-encoded bodies
+app.use(express.urlencoded({
+  extended: true
+})); // to support URL-encoded bodies
+
+
 app.get('/', (req, res) => {
   res.send('Hello worl1d\n');
 });
 
-app.post('api/mercury', (req, res) => {
-  console.log("hit api mercury");
-  // var url = req.body.url;
-  // console.log(url);
-  res.send('Hello worwaddsddsald tes3223432t23ing1\n');
+app.post('/api/mercury', function (req, res) {
+  var url = req.body.url;
+  console.log(req.body);
+  console.log(url);
+  res.send(url);
+  // res.send(req.body)
 });
 
 app.listen(PORT, HOST);
