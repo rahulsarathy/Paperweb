@@ -55,6 +55,14 @@ class ReadingListItem extends React.Component {
       url: url,
       csrfmiddlewaretoken: csrftoken
     }
+    $.ajax({
+      type: 'POST',
+      data: data,
+      url: '../api/blogs/get_html',
+      success: function(data) {
+        console.log(data);
+      }
+    });
 
   }
 

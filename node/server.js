@@ -16,11 +16,13 @@ app.use(express.urlencoded({
 
 
 app.get('/', (req, res) => {
-  res.send('Hello worl1d\n');
+  console.log('hello');
+  res.send('Hello new world\n');
 });
 
 app.post('/api/mercury', function (req, res) {
   var url = req.body.url;
+  console.log("hit");
   console.log(req.body);
   console.log(url);
   res.send(url);

@@ -15,11 +15,9 @@ from utils.blog_utils import BLOGS, blog_map
 import traceback
 from newspaper import Article as NewspaperArticle
 import lxml.html
-from urllib.request import urlopen, Request as req
-from bs4 import BeautifulSoup
-from html.parser import HTMLParser
 import requests
-from utils.html_utils import _remove_all_attrs
+import json
+import os
 
 
 CATEGORIES = ["Rationality", "Economics", "Technology", "Think Tanks"]
@@ -202,21 +200,8 @@ def get_html(request):
     if not user.is_authenticated:
         return HttpResponse(status=403)
     url = request.POST['url']
-    # if url in cache:
-    #     html = cache.get(url)
-    #     print("html from cache")
-    #     return HttpResponse(str(html), status=200)
-    # else:
-    toSend = req(url=url, headers=HEADERS)
-    html = urlopen(toSend).read()
-    soup = BeautifulSoup(html, 'lxml')
-    soup = _remove_all_attrs(soup)
-    print(soup)
-    # my_text = soup.get_text(strip=True)
-    # [s.extract() for s in soup(['style', 'script', '[document]', 'head', 'title'])]
-    # print(html.strip())
-    # cache.set(url, html)
-    # r = requests.get(url)
-    # print(r.text)
-    # r.text
-    return HttpResponse(str(soup), status=200)
+
+    data = {'url': 'goog'}
+    response = requests.post('http://pulp_node_1:3000/api/mercury', data=data)
+    print(response)
+    return HttpResponse(status=200)
