@@ -1,0 +1,18 @@
+{
+  "name": "docker_web_app",
+  "version": "1.0.0",
+  "description": "Pulp Node.js server running mercury",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server.js --watch src -e js,html server.js",
+    "start": "node server.js"
+  },
+  "author": "Rahul Sarathy <rahul@sarathy.org>",
+  "dependencies": {
+    "@postlight/mercury-parser": "^2.2.0",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.4"
+  }
+}

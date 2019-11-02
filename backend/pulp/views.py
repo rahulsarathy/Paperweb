@@ -1,9 +1,13 @@
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponseRedirect
 from django.conf import settings
+from django.core.cache.backends.base import DEFAULT_TIMEOUT
+from django.views.decorators.cache import cache_page
 
 from pulp.globals import GOOGLE_MAPS_PLACES, STRIPE_PUBLIC_KEY
 from rest_framework.decorators import api_view
+
+CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 
 def error_404(request, exception=None):
     return render(request, '404.html', status=404)
@@ -16,6 +20,7 @@ def landing(request):
   }
   return render(request, 'landing.html', context)
 
+@cache_page(CACHE_TTL)
 def dashboard(request):
   if not request.user.is_authenticated:
     return HttpResponseRedirect('../')

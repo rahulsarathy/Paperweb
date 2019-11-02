@@ -3,6 +3,7 @@ from django.utils.timezone import make_aware
 from datetime import datetime
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
+from django.core.cache import cache
 
 from rest_framework.decorators import api_view
 from rest_framework import viewsets
@@ -14,13 +15,22 @@ from utils.blog_utils import BLOGS, blog_map
 import traceback
 from newspaper import Article as NewspaperArticle
 import lxml.html
-import re
+from urllib.request import urlopen, Request as req
+from bs4 import BeautifulSoup
+from html.parser import HTMLParser
+import requests
+from utils.html_utils import _remove_all_attrs
+
 
 CATEGORIES = ["Rationality", "Economics", "Technology", "Think Tanks"]
 
+HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) '
+                         'Chrome/41.0.2228.0 Safari/537.3'}
+
 @api_view(['GET'])
 def get_blogs(request):
-
+    if not request.user.is_authenticated:
+        return HttpResponse(status=403)
     all_blogs = []
     for blog in BLOGS:
         new_blog = blog()
@@ -184,3 +194,29 @@ def remove_from_reading_list(request):
     my_reading = ReadingListItem.objects.filter(reader=user)
     serializer = ReadingListItemSerializer(my_reading, many=True)
     return JsonResponse(serializer.data, safe=False)
+
+
+@api_view(['POST'])
+def get_html(request):
+    user = request.user
+    if not user.is_authenticated:
+        return HttpResponse(status=403)
+    url = request.POST['url']
+    # if url in cache:
+    #     html = cache.get(url)
+    #     print("html from cache")
+    #     return HttpResponse(str(html), status=200)
+    # else:
+    toSend = req(url=url, headers=HEADERS)
+    html = urlopen(toSend).read()
+    soup = BeautifulSoup(html, 'lxml')
+    soup = _remove_all_attrs(soup)
+    print(soup)
+    # my_text = soup.get_text(strip=True)
+    # [s.extract() for s in soup(['style', 'script', '[document]', 'head', 'title'])]
+    # print(html.strip())
+    # cache.set(url, html)
+    # r = requests.get(url)
+    # print(r.text)
+    # r.text
+    return HttpResponse(str(soup), status=200)
