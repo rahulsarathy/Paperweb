@@ -3,6 +3,7 @@ from django.utils.timezone import make_aware
 from datetime import datetime
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
+from django.core.cache import cache
 
 from rest_framework import viewsets
 from rest_framework.decorators import api_view
@@ -15,13 +16,20 @@ from utils.blog_utils import BLOGS, blog_map
 import traceback
 from newspaper import Article as NewspaperArticle
 import lxml.html
-import re
+import requests
+import json
+import os
+
 
 CATEGORIES = ["Rationality", "Economics", "Technology", "Think Tanks"]
 
+HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) '
+                         'Chrome/41.0.2228.0 Safari/537.3'}
+
 @api_view(['GET'])
 def get_blogs(request):
-
+    if not request.user.is_authenticated:
+        return HttpResponse(status=403)
     all_blogs = []
     for blog in BLOGS:
         new_blog = blog()
@@ -183,4 +191,15 @@ def remove_from_reading_list(request):
         return JsonResponse(serializer.data, safe=False)
     except ReadingListItem.DoesNotExist:
         raise NotFound(detail='ReadingListItem with link: %s not found.' % link, code=404)
-        
+
+@api_view(['POST'])
+def get_html(request):
+    user = request.user
+    if not user.is_authenticated:
+        return HttpResponse(status=403)
+    url = request.POST['url']
+
+    data = {'url': 'goog'}
+    response = requests.post('http://pulp_node_1:3000/api/mercury', data=data)
+    print(response)
+    return HttpResponse(status=200)

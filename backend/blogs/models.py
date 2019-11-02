@@ -57,9 +57,9 @@ class ReadingListItem(models.Model):
     title = models.CharField(_('Article Title'), max_length=255)
     link = models.URLField(_('Link'), default="")
     date_added = models.DateTimeField(_('Date Added'))
-    archived = models.BooleanField(_('Archived'), default=False)
-    trashed = models.BooleanField(_('Trashed'), default=False)
-    delivered = models.BooleanField(_('Delivered'), default=False)
+    archived = models.BooleanField(_('Archived'), default=False, null=True)
+    trashed = models.BooleanField(_('Trashed'), default=False, null=True)
+    delivered = models.BooleanField(_('Delivered'), default=False, null=True)
 
     class Meta:
         unique_together = (("reader", "link"),)

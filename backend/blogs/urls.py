@@ -16,4 +16,5 @@ urlpatterns = [
     path('add_reading', views.add_to_reading_list),
     path('get_reading', views.get_reading_list),
     path('remove_reading', views.remove_from_reading_list),
+    path('get_html', views.get_html),
 ]
