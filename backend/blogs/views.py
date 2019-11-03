@@ -198,8 +198,12 @@ def get_html(request):
     if not user.is_authenticated:
         return HttpResponse(status=403)
     url = request.POST['url']
-
-    data = {'url': 'goog'}
-    response = requests.post('http://pulp_node_1:3000/api/mercury', data=data)
-    print(response)
-    return HttpResponse(status=200)
+    if url in cache:
+        json_response = json.loads(cache.get(url))
+    else:
+        data = {'url': url}
+        response = requests.post('http://pulp_node_1:3000/api/mercury', data=data)
+        response_string = response.content.decode("utf-8")
+        json_response = json.loads(response_string)
+        cache.set(url, response_string);
+    return JsonResponse(json_response)

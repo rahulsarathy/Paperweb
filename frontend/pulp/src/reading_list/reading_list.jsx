@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import shortid from 'shortid';
 import {CSSTransition, TransitionGroup} from "react-transition-group";
-import {Row, Col} from 'react-bootstrap';
+import {Row, Col, Modal} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import {Header} from './Components.jsx';
 
@@ -13,7 +13,6 @@ class ReadingListItem extends React.Component {
     super(props);
     this.handleHover = this.handleHover.bind(this);
     this.handleUnhover = this.handleUnhover.bind(this);
-    this.showArticle = this.showArticle.bind(this);
 
     this.state = {
       hovered: false,
@@ -46,31 +45,11 @@ class ReadingListItem extends React.Component {
     this.setState({hovered: false});
   }
 
-  showArticle() {
-    const {article} = this.props;
-    var html;
-    let url = article.link;
-    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
-    let data = {
-      url: url,
-      csrfmiddlewaretoken: csrftoken
-    }
-    $.ajax({
-      type: 'POST',
-      data: data,
-      url: '../api/blogs/get_html',
-      success: function(data) {
-        console.log(data);
-      }
-    });
-
-  }
-
 render() {
   const {article} = this.props;
   let host = this.getLocation(article.link)
   return (<div onMouseEnter={this.handleHover} onMouseLeave={this.handleUnhover}>
-    <h3 onClick={this.showArticle}>{article.title}</h3>
+    <h3 onClick={() => this.props.showArticle(article.link)}>{article.title}</h3>
     <p>{host}</p>
     {
       this.state.hovered
@@ -92,11 +71,15 @@ constructor(props) {
   this.handleChange = this.handleChange.bind(this);
   this.addToList = this.addToList.bind(this);
   this.removeArticle = this.removeArticle.bind(this);
+  this.closeArticle = this.closeArticle.bind(this);
+  this.showArticle = this.showArticle.bind(this);
 
   this.state = {
     value: "",
     reading_list: [],
-    invalid_url: false
+    invalid_url: false,
+    show_article: false,
+    article_data: {},
   };
 }
 
@@ -116,6 +99,31 @@ removeArticle(link) {
     type: 'POST',
     success: function(data) {
       this.setState({reading_list: data});
+    }.bind(this)
+  });
+}
+
+closeArticle() {
+  this.setState({
+    show_article: false,
+  });
+}
+
+showArticle(url) {
+  var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+  let data = {
+    url: url,
+    csrfmiddlewaretoken: csrftoken
+  }
+  $.ajax({
+    type: 'POST',
+    data: data,
+    url: '../api/blogs/get_html',
+    success: function(data) {
+      this.setState({
+        show_article: true,
+        article_data: data,
+      });
     }.bind(this)
   });
 }
@@ -167,6 +175,11 @@ render() {
 
   return (<div>
     <Header/>
+    <Modal show={this.state.show_article} onHide={this.closeArticle}>
+      <div dangerouslySetInnerHTML={{__html: this.state.article_data.content}}>
+      </div>
+      <button onClick={this.closeArticle}>Close</button>
+    </Modal>
     <Row className="readinglist">
       <Col md={2}>
         <button>Archive</button>
@@ -187,7 +200,7 @@ render() {
             ? <p>No articles saved</p>
             : <div></div>
         }
-        {this.state.reading_list.map((article) => <ReadingListItem removeArticle={this.removeArticle} key={article.link} article={article}/>)}
+        {this.state.reading_list.map((article) => <ReadingListItem key={article.link} showArticle={this.showArticle} removeArticle={this.removeArticle} key={article.link} article={article}/>)}
       </Col>
     </Row>
   </div>);
