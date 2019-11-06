@@ -1,6 +1,10 @@
 ## Testing
 
-NB: All of the following commands should be run in a docker container, that is `docker exec -it <container> <command with args>`. For example, `docker exec -it pulp_backend_1 ./manage.py test blogs`.
+_NB: All of the following commands should be run in a docker container, that is_ 
+
+`docker exec -it <container> <command with args>`. 
+
+For example, `docker exec -it pulp_backend_1 ./manage.py test blogs`.
 
 Run unit tests with `./manage.py test <app>`.
 
