@@ -48,7 +48,7 @@ class ReadingListItem extends React.Component {
 render() {
   const {article} = this.props;
   let host = this.getLocation(article.link)
-  return (<div onMouseEnter={this.handleHover} onMouseLeave={this.handleUnhover}>
+  return (<div className="readinglist-item" draggable="True" onMouseEnter={this.handleHover} onMouseLeave={this.handleUnhover}>
     <h3 onClick={() => this.props.showArticle(article.link)}>{article.title}</h3>
     <p>{host}</p>
     {
@@ -120,6 +120,7 @@ showArticle(url) {
     data: data,
     url: '../api/blogs/get_html',
     success: function(data) {
+      console.log(data);
       this.setState({
         show_article: true,
         article_data: data,

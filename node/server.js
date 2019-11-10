@@ -9,20 +9,22 @@ const HOST = '0.0.0.0';
 
 // App
 const app = express();
-app.use( bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.json()); // to support JSON-encoded bodies
 app.use(express.urlencoded({
   extended: true
 })); // to support URL-encoded bodies
 
 
 app.get('/', (req, res) => {
-  console.log('hello');
   res.send('Hello new world\n');
 });
 
-app.post('/api/mercury', function (req, res) {
+app.post('/api/mercury', function(req, res) {
   var url = req.body.url;
-  Mercury.parse(url).then(result => res.send(result));
+
+  Mercury.parse(url).then(function(result) {
+    res.send(result);
+  });
 });
 
 app.listen(PORT, HOST);

@@ -5,6 +5,17 @@
   margin-top: 50px;
 }
 
+.readinglist-item {
+  height: 110px;
+
+  button {
+    border-style: solid;
+    background-color: none;
+    border-radius: 3px;
+    margin-left: 10px;
+  }
+}
+
 .add-article {
   input {
     display: inline-block;
