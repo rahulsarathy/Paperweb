@@ -31,14 +31,14 @@ class BlogSerializer(serializers.Serializer):
 
 
 class ArticleSerializer(serializers.ModelSerializer):
-    blog_name = serializers.ReadOnlyField(source='blog.name')
     class Meta:
         model = Article
-        fields = ['title', 'permalink', 'date_published', 'author', 'blog_name']
-
+        fields = ['title', 'permalink', 'num_pages']
 
 
 class ReadingListItemSerializer(serializers.ModelSerializer):
+    article = ArticleSerializer()
+
     class Meta:
         model = ReadingListItem
-        fields = ['title', 'link', 'date_added']
+        fields = ['article', 'date_added', 'archived', 'delivered', 'trashed']

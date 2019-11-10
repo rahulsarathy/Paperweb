@@ -57,7 +57,8 @@ def get_object(bucket_name, object_name):
     print(response)
     return response['Body']
 
-def put_object(dest_bucket_name, dest_object_name, src_data):
+
+def put_object(dest_bucket_name, dest_object_name, src_data, metadata=None):
     """Add an object to an Amazon S3 bucket
 
     The src_data argument must be of type bytes or a string that references
@@ -86,7 +87,10 @@ def put_object(dest_bucket_name, dest_object_name, src_data):
         return False
 
     try:
-        s3_client.put_object(Bucket=dest_bucket_name, Key=dest_object_name, Body=object_data)
+        if metadata is None:
+            s3_client.put_object(Bucket=dest_bucket_name, Key=dest_object_name, Body=object_data)
+        else:
+            s3_client.put_object(Bucket=dest_bucket_name, Key=dest_object_name, Body=object_data, metadata=metadata)
     except ClientError as e:
         # AllAccessDisabled error == bucket not found
         # NoSuchKey or InvalidRequest error == (dest bucket/obj == src bucket/obj)

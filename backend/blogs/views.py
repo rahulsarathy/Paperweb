@@ -24,12 +24,15 @@ import threading
 import time
 import logging
 from bs4 import BeautifulSoup
+from urllib.request import urlopen, Request as req
 
 
 CATEGORIES = ["Rationality", "Economics", "Technology", "Think Tanks"]
 
 HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) '
                          'Chrome/41.0.2228.0 Safari/537.3'}
+
+PAGE_CONSTANT = 1800
 
 @api_view(['GET'])
 def get_blogs(request):
@@ -151,19 +154,26 @@ def get_reading_list(request):
     serializer = ReadingListItemSerializer(my_reading, many=True)
     return JsonResponse(serializer.data, safe=False)
 
-def print_article(url):
+def get_parsed(url):
+    if url in cache:
+        json_response = json.loads(cache.get(url))
+        return json_response
+    else:
+        data = {'url': url}
+        response = requests.post('http://pulp_node_1:3000/api/mercury', data=data)
+        response_string = response.content.decode("utf-8")
+        json_response = json.loads(response_string)
+    return json_response
+
+def print_article(url, user, article):
     print("starting printing")
     id = hash(url)
     if check_file('{}.html'.format(id), 'pulppdfs'):
         logging.warning("File already uploaded, exiting")
         return
 
-    data = {'url': url}
-    response = requests.post('http://pulp_node_1:3000/api/mercury', data=data)
-    response_string = response.content.decode("utf-8")
-    json_response = json.loads(response_string)
-
     date_string = None
+    json_response = get_parsed(url)
     content = json_response.get('content')
     author = json_response.get('author')
     date_published = json_response.get('date_published')
@@ -182,16 +192,25 @@ def print_article(url):
         template_soup.select_one('.date').string = date_string
 
     soup = BeautifulSoup(content, 'html.parser')
-    print(soup)
     template_soup.select_one('.main-content').insert(0, soup)
     id = hash(url)
     f = open("./{}.html".format(id), "w+")
     f.write(str(template_soup))
     f.close()
+    metadata = {
+        'title': article.title
+    }
     put_object('pulppdfs', "{}.html".format(id), "./{}.html".format(id))
     os.remove("./{}.html".format(id))
-    return
 
+    pages = round(len(soup.getText()) / PAGE_CONSTANT)
+    if article.title is '':
+        article.title = json_response.get('title')
+    article.save()
+    ReadingListItem.objects.get_or_create(
+        reader=user, article=article, num_pages=pages
+    )
+    return
 
 @api_view(['POST'])
 def add_to_reading_list(request):
@@ -217,18 +236,22 @@ def add_to_reading_list(request):
         if title is None:
             title = ''
 
+    article, created = Article.objects.get_or_create(
+         title=title, permalink=link
+     )
     reading_list_item, created = ReadingListItem.objects.get_or_create(
-        link=link, reader=user, title=title, defaults={'date_added': now})
-    if not created:
-        return JsonResponse({})
+        reader=user, article=article
+    )
+
     serializer = ReadingListItemSerializer(reading_list_item)
     try:
-        upload_article = threading.Thread(target=print_article, args=(link,))
+        upload_article = threading.Thread(target=print_article, args=(link, user, article,))
         print("Starting thread")
         upload_article.start()
     except:
         logging.warning("Threading failed")
 
+    # Return whole list
     return JsonResponse(serializer.data)
 
 @api_view(['POST'])

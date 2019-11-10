@@ -140,7 +140,7 @@ getReadingList() {
     type: 'GET',
     success: function(data) {
       console.log(data);
-      this.setState({reading_list: data});
+      // this.setState({reading_list: data});
     }.bind(this)
   });
 }
@@ -156,9 +156,8 @@ addToList() {
     data: data,
     type: 'POST',
     success: function(data) {
-      let reading_list = this.state.reading_list;
-      reading_list.push(data);
-      this.setState({reading_list: reading_list});
+      console.log(data);
+      // this.setState({reading_list: reading_list});
     }.bind(this),
     error: function(xhr) {
       if (xhr.responseText == 'Invalid URL') {
