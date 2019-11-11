@@ -1,24 +1,51 @@
 .readinglist {
 
   width: 80%;
+  max-width: 1000px;
   margin: 0 auto;
   margin-top: 150px;
 }
 
+.reading-list-items {
+  margin-top: 30px;
+}
+
 .readinglist-item {
-  height: 110px;
+  height: 155px;
+  padding: 5px;
+  border-bottom: solid;
+  border-width: 1px;
+  border-color: gray;
+
+  p {
+    margin: 0;
+  }
 
   button {
     border-style: solid;
     background-color: none;
     border-radius: 3px;
-    margin-left: 10px;
+    margin-right: 10px;
   }
 }
 
 .add-article {
   input {
     display: inline-block;
+    border-radius: 3px;
+    border-style: none;
+    width: 70%;
+    height: 35px;
+    font-size: 25px;
+    color: #000000;
+    border-bottom: solid;
+    border-color: #FFFFFF;
+  }
+
+  input:focus {
+    outline: none !important;
+    border-bottom: solid;
+    border-color: #005DFF;
   }
 
   button {

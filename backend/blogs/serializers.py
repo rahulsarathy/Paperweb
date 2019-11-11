@@ -31,10 +31,9 @@ class BlogSerializer(serializers.Serializer):
 
 
 class ArticleSerializer(serializers.ModelSerializer):
-    num_pages = serializers.IntegerField(allow_null=True)
     class Meta:
         model = Article
-        fields = ['title', 'permalink', 'num_pages']
+        fields = ['title', 'permalink', 'words', 'excerpt']
 
 
 class ReadingListItemSerializer(serializers.ModelSerializer):

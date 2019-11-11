@@ -4,9 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   entry: {
     landing: path.join(__dirname, 'src', 'landing', 'landing.jsx'),
-    dashboard: path.join(__dirname, 'src', 'dashboard', 'dashboard.jsx'),
     profile: path.join(__dirname, 'src', 'profile', 'profile.jsx'),
-    feed: path.join(__dirname, 'src', 'feed', 'feed.jsx'),
     reading_list: path.join(__dirname, 'src', 'reading_list', 'reading_list.jsx'),
   },
   output: {

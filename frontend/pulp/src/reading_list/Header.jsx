@@ -18,8 +18,6 @@ export default class Header extends React.Component {
     	<div className="header">
             <div className="links">
 								<img src=""/>
-                <button onClick={this.props.handleClick}>My Magazine</button>
-                <p><a href="../feed">My Feed</a></p>
                 <p><a href="../profile">My Account</a></p>
 								<p><a href="../reading_list">Reading List</a></p>
             </div>

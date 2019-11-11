@@ -16,6 +16,7 @@ import os
 from pulp.globals import S3_USER_ACCESS_ID, S3_USER_SECRET
 import logging
 from django.conf import settings
+from boto3.s3.transfer import S3Transfer
 import traceback
 
 BUCKET_NAME = settings.AWS_BUCKET
@@ -58,7 +59,7 @@ def get_object(bucket_name, object_name):
     return response['Body']
 
 
-def put_object(dest_bucket_name, dest_object_name, src_data, metadata=None):
+def put_object(dest_bucket_name, dest_object_name, src_data, metadata=None, ACL=False):
     """Add an object to an Amazon S3 bucket
 
     The src_data argument must be of type bytes or a string that references
@@ -88,9 +89,10 @@ def put_object(dest_bucket_name, dest_object_name, src_data, metadata=None):
 
     try:
         if metadata is None:
-            s3_client.put_object(Bucket=dest_bucket_name, Key=dest_object_name, Body=object_data)
+            s3_client.put_object(Bucket=dest_bucket_name, Key=dest_object_name, Body=object_data, ACL='public-read')
         else:
-            s3_client.put_object(Bucket=dest_bucket_name, Key=dest_object_name, Body=object_data, metadata=metadata)
+            s3_client.put_object(Bucket=dest_bucket_name, Key=dest_object_name, Body=object_data, Metadata=metadata,
+                                 ACL='public-read')
     except ClientError as e:
         # AllAccessDisabled error == bucket not found
         # NoSuchKey or InvalidRequest error == (dest bucket/obj == src bucket/obj)
@@ -143,6 +145,23 @@ def create_article_url(blog_name, article_id):
     )
 
     return object_url
+
+def get_html_url(link):
+    location = get_location('pulppdfs')['LocationConstraint']
+    id = hash(link)
+    object_url = "https://s3-{bucket_location}.amazonaws.com/{bucket_name}/{article_id}.html".format(
+        bucket_location=location,
+        bucket_name='pulppdfs',
+        article_id=id
+    )
+
+    return object_url
+
+def set_public(bucket, path):
+    transfer = S3T
+    key = conn
+    transfer = S3Transfer(s3_client)
+    transfer.upload_file()
 
 def create_pdf_url(bucket_name, blog_name, article_id):
     location = get_location(bucket_name)['LocationConstraint']

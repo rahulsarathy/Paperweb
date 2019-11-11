@@ -163,6 +163,7 @@ def get_parsed(url):
         response = requests.post('http://pulp_node_1:3000/api/mercury', data=data)
         response_string = response.content.decode("utf-8")
         json_response = json.loads(response_string)
+        cache.set(url, response_string)
     return json_response
 
 def print_article(url, user, article):
@@ -197,16 +198,20 @@ def print_article(url, user, article):
     f = open("./{}.html".format(id), "w+")
     f.write(str(template_soup))
     f.close()
+
+    printable = set(string.printable)
+    cleaned_title = filter(lambda x: x in printable, article.title)
     metadata = {
-        'title': article.title
+        'title': cleaned_title
     }
-    put_object('pulppdfs', "{}.html".format(id), "./{}.html".format(id))
+    put_object('pulppdfs', "{}.html".format(id), "./{}.html".format(id), metadata)
     os.remove("./{}.html".format(id))
 
-    pages = round(len(soup.getText()) / PAGE_CONSTANT)
+    words = len(soup.getText())
     if article.title is '':
         article.title = json_response.get('title')
-    article.num_pages = pages
+    article.word = words
+    article.excerpt = json_response.get('excerpt')
     article.save()
     ReadingListItem.objects.get_or_create(
         reader=user, article=article
@@ -283,6 +288,8 @@ def get_html(request):
     if url in cache:
         json_response = json.loads(cache.get(url))
     else:
+        # Check S3
+
         data = {'url': url}
         response = requests.post('http://pulp_node_1:3000/api/mercury', data=data)
         response_string = response.content.decode("utf-8")

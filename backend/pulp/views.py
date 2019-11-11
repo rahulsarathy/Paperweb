@@ -14,7 +14,7 @@ def error_404(request, exception=None):
 
 def landing(request):
   if request.user.is_authenticated:
-    return HttpResponseRedirect('/dashboard')
+    return HttpResponseRedirect('/reading_list')
   context = {
     'js_file': settings.JAVASCRIPT_URLS['landing']
   }
@@ -39,13 +39,13 @@ def profile(request):
   }
   return render(request, 'profile.html', context)
 
-def feed(request):
+def delivery(request):
   if not request.user.is_authenticated:
     return HttpResponseRedirect('../')
   context = {
-    'js_file': settings.JAVASCRIPT_URLS['feed']
+    'js_file': settings.JAVASCRIPT_URLS['delivery']
   }
-  return render(request, 'feed.html', context)
+  return render(request, 'delivery.html', context)
 
 def reading_list(request):
   if not request.user.is_authenticated:
