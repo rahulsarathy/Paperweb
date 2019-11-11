@@ -16,7 +16,7 @@ class Blog(models.Model):
 
 class Article(models.Model):
     title = models.CharField(_('Article Title'), max_length=255)
-    permalink = models.URLField(_('Permalink'), primary_key=True)
+    permalink = models.URLField(_('Permalink'), primary_key=True, max_length=500)
     num_pages = models.IntegerField(_('Number of Pages'), default=1, null=True)
     html_link = models.URLField(_('S3 HTML Link'), default=None, null=True)
 

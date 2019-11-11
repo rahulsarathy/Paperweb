@@ -47,14 +47,14 @@ class ReadingListItem extends React.Component {
 
 render() {
   const {article} = this.props;
-  let host = this.getLocation(article.link)
+  let host = this.getLocation(article.permalink)
   return (<div className="readinglist-item" draggable="True" onMouseEnter={this.handleHover} onMouseLeave={this.handleUnhover}>
-    <h3 onClick={() => this.props.showArticle(article.link)}>{article.title}</h3>
+    <h3 onClick={() => this.props.showArticle(article.permalink)}>{article.title}</h3>
     <p>{host}</p>
     {
       this.state.hovered
         ? (<div>
-          <button onClick={() => this.props.removeArticle(article.link)}>Remove</button>
+          <button onClick={() => this.props.removeArticle(article.permalink)}>Remove</button>
           <button>Archive</button>
         </div>)
         : <div></div>
@@ -140,7 +140,7 @@ getReadingList() {
     type: 'GET',
     success: function(data) {
       console.log(data);
-      // this.setState({reading_list: data});
+      this.setState({reading_list: data});
     }.bind(this)
   });
 }
@@ -157,7 +157,7 @@ addToList() {
     type: 'POST',
     success: function(data) {
       console.log(data);
-      // this.setState({reading_list: reading_list});
+      this.setState({reading_list: data});
     }.bind(this),
     error: function(xhr) {
       if (xhr.responseText == 'Invalid URL') {
@@ -200,7 +200,9 @@ render() {
             ? <p>No articles saved</p>
             : <div></div>
         }
-        {this.state.reading_list.map((article) => <ReadingListItem key={article.link} showArticle={this.showArticle} removeArticle={this.removeArticle} key={article.link} article={article}/>)}
+        <div className="reading-list-items">
+        {this.state.reading_list.map((reading_list_item) => <ReadingListItem key={reading_list_item.article.permalink} showArticle={this.showArticle} removeArticle={this.removeArticle} article={reading_list_item.article}/>)}
+      </div>
       </Col>
     </Row>
   </div>);

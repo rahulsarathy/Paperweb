@@ -206,9 +206,10 @@ def print_article(url, user, article):
     pages = round(len(soup.getText()) / PAGE_CONSTANT)
     if article.title is '':
         article.title = json_response.get('title')
+    article.num_pages = pages
     article.save()
     ReadingListItem.objects.get_or_create(
-        reader=user, article=article, num_pages=pages
+        reader=user, article=article
     )
     return
 
@@ -243,7 +244,6 @@ def add_to_reading_list(request):
         reader=user, article=article
     )
 
-    serializer = ReadingListItemSerializer(reading_list_item)
     try:
         upload_article = threading.Thread(target=print_article, args=(link, user, article,))
         print("Starting thread")
@@ -251,21 +251,27 @@ def add_to_reading_list(request):
     except:
         logging.warning("Threading failed")
 
-    # Return whole list
-    return JsonResponse(serializer.data)
+    my_reading = ReadingListItem.objects.filter(reader=user)
+    serializer = ReadingListItemSerializer(my_reading, many=True)
+    return JsonResponse(serializer.data, safe=False)
 
 @api_view(['POST'])
 def remove_from_reading_list(request):
     user = request.user
     link = request.POST['link']
     try:
-        reading_list_item = ReadingListItem.objects.get(link=link, reader=user)
+        article = Article.objects.get(permalink=link)
+    except Article.DoesNotExist:
+        raise NotFound(detail='Article not found', code=404)
+    try:
+        reading_list_item = ReadingListItem.objects.get(article=article, reader=user)
         reading_list_item.delete()
 
         my_reading = ReadingListItem.objects.filter(reader=user)
         serializer = ReadingListItemSerializer(my_reading, many=True)
         return JsonResponse(serializer.data, safe=False)
     except ReadingListItem.DoesNotExist:
+        print("this is exception!")
         raise NotFound(detail='ReadingListItem with link: %s not found.' % link, code=404)
 
 @api_view(['POST'])
