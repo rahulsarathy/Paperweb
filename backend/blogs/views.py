@@ -23,6 +23,7 @@ import os
 import threading
 import time
 import logging
+import string
 from bs4 import BeautifulSoup
 from urllib.request import urlopen, Request as req
 
@@ -166,7 +167,7 @@ def get_parsed(url):
         cache.set(url, response_string)
     return json_response
 
-def print_article(url, user, article):
+def print_article(url, user, article, json_response):
     print("starting printing")
     id = hash(url)
     if check_file('{}.html'.format(id), 'pulppdfs'):
@@ -174,7 +175,6 @@ def print_article(url, user, article):
         return
 
     date_string = None
-    json_response = get_parsed(url)
     content = json_response.get('content')
     author = json_response.get('author')
     date_published = json_response.get('date_published')
@@ -199,19 +199,14 @@ def print_article(url, user, article):
     f.write(str(template_soup))
     f.close()
 
-    printable = set(string.printable)
-    cleaned_title = filter(lambda x: x in printable, article.title)
     metadata = {
-        'title': cleaned_title
+        'url': url
     }
     put_object('pulppdfs', "{}.html".format(id), "./{}.html".format(id), metadata)
     os.remove("./{}.html".format(id))
 
     words = len(soup.getText())
-    if article.title is '':
-        article.title = json_response.get('title')
-    article.word = words
-    article.excerpt = json_response.get('excerpt')
+    article.words = words
     article.save()
     ReadingListItem.objects.get_or_create(
         reader=user, article=article
@@ -230,27 +225,20 @@ def add_to_reading_list(request):
         print("invalid url")
         return HttpResponse('Invalid URL', status=403)
 
-    now = make_aware(datetime.now())
-    try:
-        new_article = NewspaperArticle(link)
-        new_article.download()
-        new_article.parse()
-        title = new_article.title
-    except:
-        t = lxml.html.parse(link)
-        title = t.find(".//title")
-        if title is None:
-            title = ''
+    article_json = get_parsed(link)
+    title = article_json.get('title')
+    excerpt = article_json.get('excerpt')
+
 
     article, created = Article.objects.get_or_create(
-         title=title, permalink=link
+         title=title, permalink=link, excerpt=excerpt
      )
     reading_list_item, created = ReadingListItem.objects.get_or_create(
         reader=user, article=article
     )
 
     try:
-        upload_article = threading.Thread(target=print_article, args=(link, user, article,))
+        upload_article = threading.Thread(target=print_article, args=(link, user, article, article_json, ))
         print("Starting thread")
         upload_article.start()
     except:

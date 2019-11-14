@@ -17,9 +17,7 @@ export default class Header extends React.Component {
     return (
     	<div className="header">
             <div className="links">
-								<img src=""/>
                 <p><a href="../profile">My Account</a></p>
-								<p><a href="../reading_list">Reading List</a></p>
             </div>
     	</div>
     	);

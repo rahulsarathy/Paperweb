@@ -7,7 +7,7 @@ export default class Header extends React.Component {
 
 	constructor(props) {
 		super(props);
-		
+
 		this.state = {
 
 		};
@@ -17,11 +17,10 @@ export default class Header extends React.Component {
     return (
     	<div className="header">
             <div className="links">
-                <p><a href="../dashboard">Dashboard</a></p>  
-                <p><a href="../auth/logout">Logout</a></p>  
+                <p><a href="../reading_list">Reading List</a></p>
+                <p><a href="../auth/logout">Logout</a></p>
             </div>
     	</div>
     	);
   }
 }
-

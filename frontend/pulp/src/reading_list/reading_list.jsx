@@ -50,13 +50,14 @@ class ReadingListItem extends React.Component {
     let host = this.getLocation(article.permalink)
     return (<div className="readinglist-item" draggable="True" onMouseEnter={this.handleHover} onMouseLeave={this.handleUnhover}>
       <h3 onClick={() => this.props.showArticle(article.permalink)}>{article.title}</h3>
-      <p>{host}</p>
+      <p>
+        <a target="_blank" href={article.permalink}>{host}</a>
+      </p>
       <p>{article.excerpt}</p>
       {
         this.state.hovered
           ? (<div>
             <button onClick={() => this.props.removeArticle(article.permalink)}>Remove</button>
-            <button>Archive</button>
           </div>)
           : <div>Added on {added}</div>
       }
@@ -171,14 +172,15 @@ export default class ReadingList extends React.Component {
 
     return (<div>
       <Header/>
-      <Modal show={this.state.show_article} onHide={this.closeArticle}>
-        <div dangerouslySetInnerHTML={{
+      <Modal show={this.state.show_article} onHide={this.closeArticle} dialogClassName="modal-90w">
+        <div className="mercury" dangerouslySetInnerHTML={{
             __html: this.state.article_data.content
           }}></div>
         <button onClick={this.closeArticle}>Close</button>
       </Modal>
       <Row className="readinglist">
         <Col>
+          <h1>Your Reading List</h1>
           {
             this.state.invalid_url
               ? <h3>Invalid URL</h3>

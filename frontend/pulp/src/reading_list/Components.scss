@@ -1,14 +1,18 @@
 .readinglist {
-
   width: 80%;
   max-width: 1000px;
-  margin: 0 auto;
-  margin-top: 150px;
+  margin: 80px auto 0;
 }
 
 .reading-list-items {
   margin-top: 30px;
 }
+
+  .mercury {
+    img {
+      width: 100%;
+    }
+  }
 
 .readinglist-item {
   height: 155px;
@@ -16,6 +20,7 @@
   border-bottom: solid;
   border-width: 1px;
   border-color: gray;
+  cursor: pointer;
 
   p {
     margin: 0;

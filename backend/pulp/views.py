@@ -55,6 +55,14 @@ def reading_list(request):
   }
   return render(request, 'reading_list.html', context)
 
+def article(request, article_id):
+  if not request.user.is_authenticated:
+    return HttpResponseRedirect('../')
+  context = {
+    'article_id': article_id
+  }
+  return render(request, 'article.html', context)
+
 
 @api_view(['GET'])
 def google_maps_key(request):

@@ -202,7 +202,6 @@ def check_file(path, bucket_name=BUCKET_NAME):
         return True
     except ClientError as e:
         if e.response['Error']['Code'] == "404":
-            logging.warning(path + " already exists in S3")
             return False
     logging.warning("Check File failed")
     return True
