@@ -13,18 +13,27 @@ from rest_framework.response import Response
 from blogs.serializers import ReadingListItemSerializer, ArticleSerializer
 from blogs.models import Subscription, Blog, Article, ReadingListItem
 from utils.blog_utils import BLOGS, blog_map
+from utils.s3_utils import put_object, check_file
 import traceback
 from newspaper import Article as NewspaperArticle
 import lxml.html
 import requests
 import json
 import os
+import threading
+import time
+import logging
+import string
+from bs4 import BeautifulSoup
+from urllib.request import urlopen, Request as req
 
 
 CATEGORIES = ["Rationality", "Economics", "Technology", "Think Tanks"]
 
 HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) '
                          'Chrome/41.0.2228.0 Safari/537.3'}
+
+PAGE_CONSTANT = 1800
 
 @api_view(['GET'])
 def get_blogs(request):
@@ -146,6 +155,64 @@ def get_reading_list(request):
     serializer = ReadingListItemSerializer(my_reading, many=True)
     return JsonResponse(serializer.data, safe=False)
 
+def get_parsed(url):
+    if url in cache:
+        json_response = json.loads(cache.get(url))
+        return json_response
+    else:
+        data = {'url': url}
+        response = requests.post('http://pulp_node_1:3000/api/mercury', data=data)
+        response_string = response.content.decode("utf-8")
+        json_response = json.loads(response_string)
+        cache.set(url, response_string)
+    return json_response
+
+def print_article(url, user, article, json_response):
+    print("starting printing")
+    id = hash(url)
+    if check_file('{}.html'.format(id), 'pulppdfs'):
+        logging.warning("File already uploaded, exiting")
+        return
+
+    date_string = None
+    content = json_response.get('content')
+    author = json_response.get('author')
+    date_published = json_response.get('date_published')
+    title = json_response.get('title')
+    domain = json_response.get('domain')
+    if date_published is not None:
+        date_object = datetime.strptime(date_published[:10], '%Y-%m-%d')
+        date_string = date_object.strftime('Originally published on %B %-d, %Y')
+
+    template_soup = BeautifulSoup(open('./pdf/template.html'), 'html.parser')
+    if title is not None:
+        template_soup.select_one('.title').string = title
+    if author is not None:
+        template_soup.select_one('.author').string = 'By ' + author + ' on ' + domain
+    if date_string is not None:
+        template_soup.select_one('.date').string = date_string
+
+    soup = BeautifulSoup(content, 'html.parser')
+    template_soup.select_one('.main-content').insert(0, soup)
+    id = hash(url)
+    f = open("./{}.html".format(id), "w+")
+    f.write(str(template_soup))
+    f.close()
+
+    metadata = {
+        'url': url
+    }
+    put_object('pulppdfs', "{}.html".format(id), "./{}.html".format(id), metadata)
+    os.remove("./{}.html".format(id))
+
+    words = len(soup.getText())
+    article.words = words
+    article.save()
+    ReadingListItem.objects.get_or_create(
+        reader=user, article=article
+    )
+    return
+
 @api_view(['POST'])
 def add_to_reading_list(request):
     user = request.user
@@ -158,38 +225,46 @@ def add_to_reading_list(request):
         print("invalid url")
         return HttpResponse('Invalid URL', status=403)
 
-    now = make_aware(datetime.now())
-    try:
-        new_article = NewspaperArticle(link)
-        new_article.download()
-        new_article.parse()
-        title = new_article.title
-    except:
-        t = lxml.html.parse(link)
-        title = t.find(".//title")
-        if title is None:
-            title = ''
+    article_json = get_parsed(link)
+    title = article_json.get('title')
+    excerpt = article_json.get('excerpt')
 
+
+    article, created = Article.objects.get_or_create(
+         title=title, permalink=link, excerpt=excerpt
+     )
     reading_list_item, created = ReadingListItem.objects.get_or_create(
-        link=link, reader=user, title=title, defaults={'date_added': now})
-    if not created:
-        return JsonResponse({})
-    serializer = ReadingListItemSerializer(reading_list_item)
+        reader=user, article=article
+    )
 
-    return JsonResponse(serializer.data)
+    try:
+        upload_article = threading.Thread(target=print_article, args=(link, user, article, article_json, ))
+        print("Starting thread")
+        upload_article.start()
+    except:
+        logging.warning("Threading failed")
+
+    my_reading = ReadingListItem.objects.filter(reader=user)
+    serializer = ReadingListItemSerializer(my_reading, many=True)
+    return JsonResponse(serializer.data, safe=False)
 
 @api_view(['POST'])
 def remove_from_reading_list(request):
     user = request.user
     link = request.POST['link']
     try:
-        reading_list_item = ReadingListItem.objects.get(link=link, reader=user)
+        article = Article.objects.get(permalink=link)
+    except Article.DoesNotExist:
+        raise NotFound(detail='Article not found', code=404)
+    try:
+        reading_list_item = ReadingListItem.objects.get(article=article, reader=user)
         reading_list_item.delete()
 
         my_reading = ReadingListItem.objects.filter(reader=user)
         serializer = ReadingListItemSerializer(my_reading, many=True)
         return JsonResponse(serializer.data, safe=False)
     except ReadingListItem.DoesNotExist:
+        print("this is exception!")
         raise NotFound(detail='ReadingListItem with link: %s not found.' % link, code=404)
 
 @api_view(['POST'])
@@ -201,9 +276,11 @@ def get_html(request):
     if url in cache:
         json_response = json.loads(cache.get(url))
     else:
+        # Check S3
+
         data = {'url': url}
         response = requests.post('http://pulp_node_1:3000/api/mercury', data=data)
         response_string = response.content.decode("utf-8")
         json_response = json.loads(response_string)
-        cache.set(url, response_string);
+        cache.set(url, response_string)
     return JsonResponse(json_response)

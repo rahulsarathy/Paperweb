@@ -45,166 +45,163 @@ class ReadingListItem extends React.Component {
     this.setState({hovered: false});
   }
 
-render() {
-  const {article} = this.props;
-  let host = this.getLocation(article.link)
-  return (<div onMouseEnter={this.handleHover} onMouseLeave={this.handleUnhover}>
-    <h3 onClick={() => this.props.showArticle(article.link)}>{article.title}</h3>
-    <p>{host}</p>
-    {
-      this.state.hovered
-        ? (<div>
-          <button onClick={() => this.props.removeArticle(article.link)}>Remove</button>
-          <button>Archive</button>
-        </div>)
-        : <div></div>
-    }
-  </div>);
-}
+  render() {
+    const {article, added} = this.props;
+    let host = this.getLocation(article.permalink)
+    return (<div className="readinglist-item" draggable="True" onMouseEnter={this.handleHover} onMouseLeave={this.handleUnhover}>
+      <h3 onClick={() => this.props.showArticle(article.permalink)}>{article.title}</h3>
+      <p>
+        <a target="_blank" href={article.permalink}>{host}</a>
+      </p>
+      <p>{article.excerpt}</p>
+      {
+        this.state.hovered
+          ? (<div>
+            <button onClick={() => this.props.removeArticle(article.permalink)}>Remove</button>
+          </div>)
+          : <div>Added on {added}</div>
+      }
+    </div>);
+  }
 }
 
 export default class ReadingList extends React.Component {
 
-constructor(props) {
-  super(props);
+  constructor(props) {
+    super(props);
 
-  this.handleChange = this.handleChange.bind(this);
-  this.addToList = this.addToList.bind(this);
-  this.removeArticle = this.removeArticle.bind(this);
-  this.closeArticle = this.closeArticle.bind(this);
-  this.showArticle = this.showArticle.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.addToList = this.addToList.bind(this);
+    this.removeArticle = this.removeArticle.bind(this);
+    this.closeArticle = this.closeArticle.bind(this);
+    this.showArticle = this.showArticle.bind(this);
 
-  this.state = {
-    value: "",
-    reading_list: [],
-    invalid_url: false,
-    show_article: false,
-    article_data: {},
-  };
-}
-
-componentDidMount() {
-  this.getReadingList();
-}
-
-removeArticle(link) {
-  var csrftoken = $("[name=csrfmiddlewaretoken]").val();
-  let data = {
-    link: link,
-    csrfmiddlewaretoken: csrftoken
+    this.state = {
+      value: "",
+      reading_list: [],
+      invalid_url: false,
+      show_article: false,
+      article_data: {}
+    };
   }
-  $.ajax({
-    url: '../api/blogs/remove_reading',
-    data: data,
-    type: 'POST',
-    success: function(data) {
-      this.setState({reading_list: data});
-    }.bind(this)
-  });
-}
 
-closeArticle() {
-  this.setState({
-    show_article: false,
-  });
-}
-
-showArticle(url) {
-  var csrftoken = $("[name=csrfmiddlewaretoken]").val();
-  let data = {
-    url: url,
-    csrfmiddlewaretoken: csrftoken
+  componentDidMount() {
+    this.getReadingList();
   }
-  $.ajax({
-    type: 'POST',
-    data: data,
-    url: '../api/blogs/get_html',
-    success: function(data) {
-      this.setState({
-        show_article: true,
-        article_data: data,
-      });
-    }.bind(this)
-  });
-}
 
-getReadingList() {
-  var csrftoken = $("[name=csrfmiddlewaretoken]").val();
-  let data = {
-    csrfmiddlewaretoken: csrftoken
+  removeArticle(link) {
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    let data = {
+      link: link,
+      csrfmiddlewaretoken: csrftoken
+    }
+    $.ajax({
+      url: '../api/blogs/remove_reading',
+      data: data,
+      type: 'POST',
+      success: function(data) {
+        this.setState({reading_list: data});
+      }.bind(this)
+    });
   }
-  $.ajax({
-    url: '../api/blogs/get_reading',
-    data: data,
-    type: 'GET',
-    success: function(data) {
-      console.log(data);
-      this.setState({reading_list: data});
-    }.bind(this)
-  });
-}
 
-addToList() {
-  var csrftoken = $("[name=csrfmiddlewaretoken]").val();
-  let data = {
-    link: this.state.value,
-    csrfmiddlewaretoken: csrftoken
-  };
-  $.ajax({
-    url: '../api/blogs/add_reading',
-    data: data,
-    type: 'POST',
-    success: function(data) {
-      let reading_list = this.state.reading_list;
-      reading_list.push(data);
-      this.setState({reading_list: reading_list});
-    }.bind(this),
-    error: function(xhr) {
-      if (xhr.responseText == 'Invalid URL') {
-        this.setState({invalid_url: true});
-      }
-    }.bind(this)
-  });
-}
+  closeArticle() {
+    this.setState({show_article: false});
+  }
 
-handleChange(e) {
-  this.setState({value: e.target.value});
-}
+  showArticle(url) {
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    let data = {
+      url: url,
+      csrfmiddlewaretoken: csrftoken
+    }
+    $.ajax({
+      type: 'POST',
+      data: data,
+      url: '../api/blogs/get_html',
+      success: function(data) {
+        console.log(data);
+        this.setState({show_article: true, article_data: data});
+      }.bind(this)
+    });
+  }
 
-render() {
+  getReadingList() {
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    let data = {
+      csrfmiddlewaretoken: csrftoken
+    }
+    $.ajax({
+      url: '../api/blogs/get_reading',
+      data: data,
+      type: 'GET',
+      success: function(data) {
+        console.log(data);
+        this.setState({reading_list: data});
+      }.bind(this)
+    });
+  }
 
-  return (<div>
-    <Header/>
-    <Modal show={this.state.show_article} onHide={this.closeArticle}>
-      <div dangerouslySetInnerHTML={{__html: this.state.article_data.content}}>
-      </div>
-      <button onClick={this.closeArticle}>Close</button>
-    </Modal>
-    <Row className="readinglist">
-      <Col md={2}>
-        <button>Archive</button>
-        <button>Edit Reading List</button>
-      </Col>
-      <Col md={10}>
-        {
-          this.state.invalid_url
-            ? <h3>Invalid URL</h3>
-            : <div></div>
+  addToList() {
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    let data = {
+      link: this.state.value,
+      csrfmiddlewaretoken: csrftoken
+    };
+    $.ajax({
+      url: '../api/blogs/add_reading',
+      data: data,
+      type: 'POST',
+      success: function(data) {
+        console.log(data);
+        this.setState({reading_list: data});
+      }.bind(this),
+      error: function(xhr) {
+        if (xhr.responseText == 'Invalid URL') {
+          this.setState({invalid_url: true});
         }
-        <div className="add-article">
-          <button onClick={this.addToList}>+</button>
-          <input placeholder="Add an article" value={this.state.value} onChange={this.handleChange}></input>
-        </div>
-        {
-          this.state.reading_list.length === 0
-            ? <p>No articles saved</p>
-            : <div></div>
-        }
-        {this.state.reading_list.map((article) => <ReadingListItem key={article.link} showArticle={this.showArticle} removeArticle={this.removeArticle} key={article.link} article={article}/>)}
-      </Col>
-    </Row>
-  </div>);
-}
+      }.bind(this)
+    });
+  }
+
+  handleChange(e) {
+    this.setState({value: e.target.value});
+  }
+
+  render() {
+
+    return (<div>
+      <Header/>
+      <Modal show={this.state.show_article} onHide={this.closeArticle} dialogClassName="modal-90w">
+        <div className="mercury" dangerouslySetInnerHTML={{
+            __html: this.state.article_data.content
+          }}></div>
+        <button onClick={this.closeArticle}>Close</button>
+      </Modal>
+      <Row className="readinglist">
+        <Col>
+          <h1>Your Reading List</h1>
+          {
+            this.state.invalid_url
+              ? <h3>Invalid URL</h3>
+              : <div></div>
+          }
+          <div className="add-article">
+            <button onClick={this.addToList}>+</button>
+            <input placeholder="Input an article URL" value={this.state.value} onChange={this.handleChange}></input>
+          </div>
+          {
+            this.state.reading_list.length === 0
+              ? <p>No articles saved</p>
+              : <div></div>
+          }
+          <div className="reading-list-items">
+            {this.state.reading_list.map((reading_list_item) => <ReadingListItem key={reading_list_item.article.permalink} added={reading_list_item.date_added} showArticle={this.showArticle} removeArticle={this.removeArticle} article={reading_list_item.article}/>)}
+          </div>
+        </Col>
+      </Row>
+    </div>);
+  }
 }
 
 ReactDOM.render(<ReadingList/>, document.getElementById('reading_list'))

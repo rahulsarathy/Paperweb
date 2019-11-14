@@ -14,7 +14,7 @@ export default class Unpaid extends React.Component {
 
 		this.state = {
 		};
-	} 
+	}
 
     createSession(){
         console.log("create session called");
@@ -57,12 +57,12 @@ export default class Unpaid extends React.Component {
                         <p>Pulp</p>
                     </div>
                     <div className="description">
-                        <p>1 new magazine every month</p>
-                        <p>$9.99 a month</p>
+												<p>Your reading list printed out and delivered once a week</p>
+                        <p>$8.99 / month</p>
                         <button onClick={this.createSession} className="getpulp">Get Pulp</button>
                     </div>
 
-                </div> 
+                </div>
             </div>
             );
     }

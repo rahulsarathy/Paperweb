@@ -26,11 +26,12 @@ urlpatterns = [
   path('dashboard/', views.dashboard, name='dashboard'),
   path('reading_list/', views.reading_list, name='reading list'),
   path('profile/', views.profile, name='profile'),
-  path('feed/', views.feed, name='feed'),
   path('auth/', include('django.contrib.auth.urls')),
   path('api/users/', include('users.urls')),
   path('api/blogs/', include('blogs.urls')),
   path('api/payments/', include('payments.urls')),
+  path('articles/<int:article_id>/', views.article),
+
   # Google Maps API Key
   path('api/gmaps', views.google_maps_key, name='google_maps_key'),
 ]
