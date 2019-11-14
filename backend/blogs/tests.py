@@ -6,6 +6,7 @@ from blogs.models import Blog
 from blogs.models import Magazine
 from blogs.models import ReadingListItem
 from blogs.models import Subscription
+from blogs.views import get_blogs
 from blogs.views import get_posts
 from blogs.views import get_reading_list
 from blogs.views import get_subscriptions
@@ -39,6 +40,11 @@ class BlogsTest(APITestCase):
       date_added=make_aware(datetime.now())
     )
     self.factory = APIRequestFactory()
+
+  def test_get_blogs_unauthenticated(self):
+    """Checks that an unauthenticated get_blogs() request returns 403."""
+    response = get_blogs(self.factory.get('/api/blogs/get_blogs/'))
+    self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
   def test_get_reading_list(self):
     """Checks that get_reading_list() returns all of a user's ReadingListItem(s)."""
