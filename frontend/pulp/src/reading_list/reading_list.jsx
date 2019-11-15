@@ -192,7 +192,7 @@ export default class ReadingList extends React.Component {
           </div>
           {
             this.state.reading_list.length === 0
-              ? <p>No articles saved</p>
+              ? <p className="no-articles">No articles currently saved</p>
               : <div></div>
           }
           <div className="reading-list-items">

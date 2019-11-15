@@ -18,7 +18,7 @@ export default class Header extends React.Component {
     	<div className="header">
             <div className="links">
                 <p><a href="../reading_list">Reading List</a></p>
-                <p><a href="../auth/logout">Logout</a></p>
+                <p><a href="../accounts/logout">Logout</a></p>
             </div>
     	</div>
     	);
