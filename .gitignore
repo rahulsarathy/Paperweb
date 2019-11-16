@@ -10,7 +10,7 @@ siteconfig/*.py~
 dump
 
 # Migrations
-backend/blogs/migrations/*.py
+backend/reading_list/migrations/*.py
 backend/payments/migrations/*.py
 backend/users/migrations/*.py
 

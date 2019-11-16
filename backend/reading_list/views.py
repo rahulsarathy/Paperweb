@@ -6,9 +6,9 @@ from django.core.cache import cache
 from rest_framework.decorators import api_view
 from rest_framework.exceptions import NotFound
 
-from blogs.serializers import ReadingListItemSerializer, ArticleSerializer
-from blogs.models import Article, ReadingListItem
-from utils.blog_utils import get_parsed, html_to_s3, get_reading_list
+from reading_list.serializers import ReadingListItemSerializer, ArticleSerializer
+from reading_list.models import Article, ReadingListItem
+from reading_list.reading_list_utils import get_parsed, html_to_s3, get_reading_list
 import requests
 import json
 import threading
@@ -52,7 +52,7 @@ def add_to_reading_list(request):
     except:
         logging.warning("Threading failed")
 
-    return get_reading_list(user)
+    return get_reading_list(user, refresh=True)
 
 @api_view(['POST'])
 def remove_from_reading_list(request):
@@ -65,6 +65,6 @@ def remove_from_reading_list(request):
     try:
         reading_list_item = ReadingListItem.objects.get(article=article, reader=user)
         reading_list_item.delete()
-        return get_reading_list(user)
+        return get_reading_list(user, refresh=True)
     except ReadingListItem.DoesNotExist:
         raise NotFound(detail='ReadingListItem with link: %s not found.' % link, code=404)

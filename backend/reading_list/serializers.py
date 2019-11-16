@@ -1,4 +1,4 @@
-from blogs.models import Article, ReadingListItem
+from reading_list.models import Article, ReadingListItem
 import json
 from rest_framework import serializers
 
@@ -6,7 +6,7 @@ from rest_framework import serializers
 class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
-        fields = ['title', 'permalink', 'word_count']
+        fields = ['title', 'permalink', 'word_count', 'mercury_response']
 
 
 class ReadingListItemSerializer(serializers.ModelSerializer):

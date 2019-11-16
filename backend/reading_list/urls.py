@@ -4,7 +4,7 @@ from rest_framework import routers
 from . import views
 
 
-app_name = 'blogs'
+app_name = 'reading_list'
 
 urlpatterns = [
     path('add_reading', views.add_to_reading_list),

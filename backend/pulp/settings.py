@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'corsheaders',
     'rest_framework',
-    'blogs.apps.BlogsConfig',
+    'reading_list.apps.ReadingListConfig',
     'payments.apps.PaymentsConfig',
     'users.apps.UsersConfig',
     'coverage',

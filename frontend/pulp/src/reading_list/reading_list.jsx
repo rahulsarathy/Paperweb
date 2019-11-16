@@ -82,7 +82,7 @@ export default class ReadingList extends React.Component {
       csrfmiddlewaretoken: csrftoken
     }
     $.ajax({
-      url: '../api/blogs/remove_reading',
+      url: '../api/reading_list/remove_reading',
       data: data,
       type: 'POST',
       success: function(data) {
@@ -97,7 +97,7 @@ export default class ReadingList extends React.Component {
       csrfmiddlewaretoken: csrftoken
     }
     $.ajax({
-      url: '../api/blogs/get_reading',
+      url: '../api/reading_list/get_reading',
       data: data,
       type: 'GET',
       success: function(data) {
@@ -107,18 +107,16 @@ export default class ReadingList extends React.Component {
   }
 
   addToList() {
-    console.log("adding to list");
     var csrftoken = $("[name=csrfmiddlewaretoken]").val();
     let data = {
       link: this.state.value,
       csrfmiddlewaretoken: csrftoken
     };
     $.ajax({
-      url: '../api/blogs/add_reading',
+      url: '../api/reading_list/add_reading',
       data: data,
       type: 'POST',
       success: function(data) {
-        console.log(data);
         this.setState({reading_list: data});
       }.bind(this),
       error: function(xhr) {
@@ -155,7 +153,7 @@ export default class ReadingList extends React.Component {
               : <div></div>
           }
           <div className="reading-list-items">
-            {this.state.reading_list.map((reading_list_item) => <ReadingListItem key={reading_list_item.article.permalink} added={reading_list_item.date_added} removeArticle={this.removeArticle} article={reading_list_item.article}/>)}
+            {this.state.reading_list.map((reading_list_item, index) => <ReadingListItem key={index} index={index} added={reading_list_item.date_added} removeArticle={this.removeArticle} article={reading_list_item.article}/>)}
           </div>
         </Col>
       </Row>

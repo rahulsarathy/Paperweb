@@ -26,7 +26,7 @@ urlpatterns = [
   path('reading_list/', views.reading_list, name='reading list'),
   path('profile/', views.profile, name='profile'),
   path('api/users/', include('users.urls')),
-  path('api/blogs/', include('blogs.urls')),
+  path('api/reading_list/', include('reading_list.urls')),
   path('api/payments/', include('payments.urls')),
   path('articles/', views.article),
   path('accounts/', include('allauth.urls')),  # new

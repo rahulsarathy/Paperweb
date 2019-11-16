@@ -2,20 +2,26 @@ from django.core.cache import cache
 import json
 import requests
 from utils.s3_utils import put_object, check_file
-from blogs.models import ReadingListItem
+from reading_list.models import ReadingListItem, Article
 from bs4 import BeautifulSoup
 from datetime import datetime
 import logging
 import os
-from blogs.models import Article
 from django.http import JsonResponse
-from blogs.serializers import ReadingListItemSerializer
+from reading_list.serializers import ReadingListItemSerializer
+from django.core.cache import cache
 
 
-def get_reading_list(user):
-    my_reading = ReadingListItem.objects.filter(reader=user).order_by('-date_added')
-    serializer = ReadingListItemSerializer(my_reading, many=True)
-    return JsonResponse(serializer.data, safe=False)
+def get_reading_list(user, refresh=False):
+    key = 'reading_list' + user.email
+    if refresh is False and key in cache:
+        json_response = cache.get(key)
+    else:
+        my_reading = ReadingListItem.objects.filter(reader=user).order_by('-date_added')
+        serializer = ReadingListItemSerializer(my_reading, many=True)
+        json_response = serializer.data
+        cache.set(key, serializer.data)
+    return JsonResponse(json_response, safe=False)
 
 # Check for mercury response in
 # 1. cache

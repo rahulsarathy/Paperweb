@@ -6,7 +6,7 @@ from django.views.decorators.cache import cache_page
 
 from pulp.globals import GOOGLE_MAPS_PLACES, STRIPE_PUBLIC_KEY
 from rest_framework.decorators import api_view
-from utils.blog_utils import get_parsed
+from reading_list.reading_list_utils import get_parsed
 import json
 
 CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
