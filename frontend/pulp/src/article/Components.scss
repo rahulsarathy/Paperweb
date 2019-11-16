@@ -1,0 +1,21 @@
+h1 {
+  font-family: helvetica;
+}
+
+p {
+  font-family: "Times New Roman"
+}
+
+.article {
+  width: 70%;
+  max-width: 1000px;
+  margin: auto;
+}
+
+figure {
+  text-align: center;
+  img {
+    max-width: 100%;
+  }
+  margin: auto;
+}

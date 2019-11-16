@@ -6,6 +6,8 @@ from django.views.decorators.cache import cache_page
 
 from pulp.globals import GOOGLE_MAPS_PLACES, STRIPE_PUBLIC_KEY
 from rest_framework.decorators import api_view
+from utils.blog_utils import get_parsed
+import json
 
 CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 
@@ -55,11 +57,17 @@ def reading_list(request):
   }
   return render(request, 'reading_list.html', context)
 
-def article(request, article_id):
+def article(request):
   if not request.user.is_authenticated:
     return HttpResponseRedirect('../')
+  url = request.GET.get('url')
+  print("url is ", url)
+  article_response = get_parsed(url)
+  json_response = json.dumps(article_response)
   context = {
-    'article_id': article_id
+    'article_response': json_response,
+    'js_file': settings.JAVASCRIPT_URLS['article']
+
   }
   return render(request, 'article.html', context)
 

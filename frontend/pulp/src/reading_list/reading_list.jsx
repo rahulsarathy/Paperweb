@@ -15,9 +15,6 @@ class ReadingListItem extends React.Component {
     this.handleUnhover = this.handleUnhover.bind(this);
 
     this.state = {
-      hovered: false,
-      showArticle: false,
-      html: ''
     };
   }
 
@@ -25,16 +22,6 @@ class ReadingListItem extends React.Component {
     var l = document.createElement("a");
     l.href = href;
     return l.hostname;
-  }
-
-  getURL() {
-    $.ajax({
-      type: 'POST',
-      url: '../api/blogs/get_html',
-      success: function(data) {
-        this.setState({html: data});
-      }.bind(this)
-    });
   }
 
   handleHover() {
@@ -48,8 +35,9 @@ class ReadingListItem extends React.Component {
   render() {
     const {article, added} = this.props;
     let host = this.getLocation(article.permalink)
+    let href = '../articles/?url=' + encodeURIComponent(article.permalink)
     return (<div className="readinglist-item" draggable="True" onMouseEnter={this.handleHover} onMouseLeave={this.handleUnhover}>
-      <h3 onClick={() => this.props.showArticle(article.permalink)}>{article.title}</h3>
+      <h3><a target="_blank" href={href}>{article.title}</a></h3>
       <p>
         <a target="_blank" href={article.permalink}>{host}</a>
       </p>
@@ -73,8 +61,6 @@ export default class ReadingList extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.addToList = this.addToList.bind(this);
     this.removeArticle = this.removeArticle.bind(this);
-    this.closeArticle = this.closeArticle.bind(this);
-    this.showArticle = this.showArticle.bind(this);
 
     this.state = {
       value: "",
@@ -105,27 +91,6 @@ export default class ReadingList extends React.Component {
     });
   }
 
-  closeArticle() {
-    this.setState({show_article: false});
-  }
-
-  showArticle(url) {
-    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
-    let data = {
-      url: url,
-      csrfmiddlewaretoken: csrftoken
-    }
-    $.ajax({
-      type: 'POST',
-      data: data,
-      url: '../api/blogs/get_html',
-      success: function(data) {
-        console.log(data);
-        this.setState({show_article: true, article_data: data});
-      }.bind(this)
-    });
-  }
-
   getReadingList() {
     var csrftoken = $("[name=csrfmiddlewaretoken]").val();
     let data = {
@@ -136,13 +101,13 @@ export default class ReadingList extends React.Component {
       data: data,
       type: 'GET',
       success: function(data) {
-        console.log(data);
         this.setState({reading_list: data});
       }.bind(this)
     });
   }
 
   addToList() {
+    console.log("adding to list");
     var csrftoken = $("[name=csrfmiddlewaretoken]").val();
     let data = {
       link: this.state.value,
@@ -172,12 +137,6 @@ export default class ReadingList extends React.Component {
 
     return (<div>
       <Header/>
-      <Modal show={this.state.show_article} onHide={this.closeArticle} dialogClassName="modal-90w">
-        <div className="mercury" dangerouslySetInnerHTML={{
-            __html: this.state.article_data.content
-          }}></div>
-        <button onClick={this.closeArticle}>Close</button>
-      </Modal>
       <Row className="readinglist">
         <Col>
           <h1>Your Reading List</h1>
@@ -196,7 +155,7 @@ export default class ReadingList extends React.Component {
               : <div></div>
           }
           <div className="reading-list-items">
-            {this.state.reading_list.map((reading_list_item) => <ReadingListItem key={reading_list_item.article.permalink} added={reading_list_item.date_added} showArticle={this.showArticle} removeArticle={this.removeArticle} article={reading_list_item.article}/>)}
+            {this.state.reading_list.map((reading_list_item) => <ReadingListItem key={reading_list_item.article.permalink} added={reading_list_item.date_added} removeArticle={this.removeArticle} article={reading_list_item.article}/>)}
           </div>
         </Col>
       </Row>

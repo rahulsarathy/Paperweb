@@ -12,31 +12,9 @@ export default class Landing extends React.Component {
 		super(props);
 
 		this.state = {
-            row1: [],
-            row2: [],
+
 		};
 	}
-
-    componentDidMount() {
-        this.getLandingBlogs();
-    }
-
-    getLandingBlogs() {
-        $.ajax({
-            url: '/api/blogs/landing_blogs',
-            type: 'GET',
-            success: function(data) {
-                let halfWayThough = Math.floor(data.length / 2);
-                let arrayFirstHalf = data.slice(0, halfWayThough);
-                let arraySecondHalf = data.slice(halfWayThough, data.length);
-
-                this.setState({
-                    row1: arrayFirstHalf,
-                    row2: arraySecondHalf,
-                });
-            }.bind(this)
-        });
-    }
 
 	render () {
     return (

@@ -24,6 +24,8 @@ JAVASCRIPT_URLS = {
     'landing': 'http://localhost:8080/landing.js',
     'profile': 'http://localhost:8080/profile.js',
     'reading_list': 'http://localhost:8080/reading_list.js',
+    'article': 'http://localhost:8080/article.js',
+
 }
 
 AWS_BUCKET = 'pulpscrapedarticlestest'

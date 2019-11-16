@@ -9,6 +9,11 @@ polls/*.py~
 siteconfig/*.py~
 dump
 
+# Migrations
+backend/blogs/migrations/*.py
+backend/payments/migrations/*.py
+backend/users/migrations/*.py
+
 # Directory metadata
 .idea
 dump.rdb

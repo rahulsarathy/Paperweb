@@ -33,7 +33,7 @@ class BlogSerializer(serializers.Serializer):
 class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
-        fields = ['title', 'permalink', 'words', 'excerpt']
+        fields = ['title', 'permalink', 'word_count']
 
 
 class ReadingListItemSerializer(serializers.ModelSerializer):

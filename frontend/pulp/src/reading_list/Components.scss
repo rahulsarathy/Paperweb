@@ -25,7 +25,16 @@
   border-bottom: solid;
   border-width: 1px;
   border-color: gray;
+
+  h3 {
+    font-family: helvetica;
+    font-style: bold;
+  }
   cursor: pointer;
+
+  a {
+    color: black;
+  }
 
   p {
     margin: 0;

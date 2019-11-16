@@ -6,6 +6,7 @@ module.exports = {
     landing: path.join(__dirname, 'src', 'landing', 'landing.jsx'),
     profile: path.join(__dirname, 'src', 'profile', 'profile.jsx'),
     reading_list: path.join(__dirname, 'src', 'reading_list', 'reading_list.jsx'),
+    article: path.join(__dirname, 'src', 'article', 'article.jsx'),
   },
   output: {
     path: path.join(__dirname, 'build'),
