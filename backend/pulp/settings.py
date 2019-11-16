@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'blogs.apps.BlogsConfig',
-    'magazine.apps.MagazineConfig',
     'payments.apps.PaymentsConfig',
     'users.apps.UsersConfig',
     'coverage',

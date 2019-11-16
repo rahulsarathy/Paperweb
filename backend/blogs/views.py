@@ -7,8 +7,8 @@ from rest_framework.decorators import api_view
 from rest_framework.exceptions import NotFound
 
 from blogs.serializers import ReadingListItemSerializer, ArticleSerializer
-from blogs.models import Subscription, Blog, Article, ReadingListItem
-from utils.blog_utils import get_parsed, html_to_s3
+from blogs.models import Article, ReadingListItem
+from utils.blog_utils import get_parsed, html_to_s3, get_reading_list
 import requests
 import json
 import threading
@@ -21,11 +21,9 @@ HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML
                          'Chrome/41.0.2228.0 Safari/537.3'}
 
 @api_view(['GET'])
-def get_reading_list(request):
+def get_reading(request):
     user = request.user
-    my_reading = ReadingListItem.objects.filter(reader=user)
-    serializer = ReadingListItemSerializer(my_reading, many=True)
-    return JsonResponse(serializer.data, safe=False)
+    return get_reading_list(user)
 
 @api_view(['POST'])
 def add_to_reading_list(request):
@@ -54,9 +52,7 @@ def add_to_reading_list(request):
     except:
         logging.warning("Threading failed")
 
-    my_reading = ReadingListItem.objects.filter(reader=user)
-    serializer = ReadingListItemSerializer(my_reading, many=True)
-    return JsonResponse(serializer.data, safe=False)
+    return get_reading_list(user)
 
 @api_view(['POST'])
 def remove_from_reading_list(request):
@@ -69,9 +65,6 @@ def remove_from_reading_list(request):
     try:
         reading_list_item = ReadingListItem.objects.get(article=article, reader=user)
         reading_list_item.delete()
-
-        my_reading = ReadingListItem.objects.filter(reader=user)
-        serializer = ReadingListItemSerializer(my_reading, many=True)
-        return JsonResponse(serializer.data, safe=False)
+        return get_reading_list(user)
     except ReadingListItem.DoesNotExist:
         raise NotFound(detail='ReadingListItem with link: %s not found.' % link, code=404)

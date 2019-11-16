@@ -8,6 +8,14 @@ from datetime import datetime
 import logging
 import os
 from blogs.models import Article
+from django.http import JsonResponse
+from blogs.serializers import ReadingListItemSerializer
+
+
+def get_reading_list(user):
+    my_reading = ReadingListItem.objects.filter(reader=user).order_by('-date_added')
+    serializer = ReadingListItemSerializer(my_reading, many=True)
+    return JsonResponse(serializer.data, safe=False)
 
 # Check for mercury response in
 # 1. cache

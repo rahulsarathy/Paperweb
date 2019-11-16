@@ -1,5 +1,4 @@
 from users.models import CustomUser
-from blogs.models import Subscription
 from rest_framework import serializers
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
