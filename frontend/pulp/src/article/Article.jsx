@@ -19,11 +19,13 @@ export default class Article extends React.Component {
   }
 
   render() {
+    let author_text;
+    article_json.author === null || article_json.author === '' ? author_text = '' : author_text = 'By ' + article_json.author
     return (<div>
       <Row className="article">
         <Col>
           <h1>{article_json.title}</h1>
-          <p>By {article_json.author}</p>
+          <p className="author">{author_text}</p>
           <div dangerouslySetInnerHTML={this.createMarkup()}></div>
         </Col>
       </Row>
