@@ -28,10 +28,9 @@ SECURE_SSL_REDIRECT = True
 
 JAVASCRIPT_URLS = {
     'landing': '/static/js/build/landing.js',
-    'dashboard': '/static/js/build/dashboard.js',
     'profile': '/static/js/build/profile.js',
-    'feed': '/static/js/build/feed.js',
     'reading_list':  '/static/js/build/reading_list.js',
+    'article': '/static/js/build/article.js',
 }
 
 AWS_BUCKET = 'pulpscrapedarticles'

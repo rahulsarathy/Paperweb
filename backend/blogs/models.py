@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
+from jsonfield import JSONField
 
 from datetime import datetime
 
@@ -17,8 +18,8 @@ class Blog(models.Model):
 class Article(models.Model):
     title = models.CharField(_('Article Title'), max_length=255)
     permalink = models.URLField(_('Permalink'), primary_key=True, max_length=500)
-    words = models.IntegerField(_('Number of Words'), default=1, null=True)
-    excerpt = models.TextField(_('Excerpt'), null=True)
+    word_count = models.IntegerField(_('Number of Words'), default=1, null=True)
+    mercury_response = JSONField()
 
 class Subscription(models.Model):
     subscriber = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

@@ -8,6 +8,11 @@
   margin-top: 30px;
 }
 
+.no-articles {
+  margin-top: 20px;
+  font-size: 20px;
+}
+
   .mercury {
     img {
       width: 100%;
@@ -20,7 +25,16 @@
   border-bottom: solid;
   border-width: 1px;
   border-color: gray;
+
+  h3 {
+    font-family: helvetica;
+    font-style: bold;
+  }
   cursor: pointer;
+
+  a {
+    color: black;
+  }
 
   p {
     margin: 0;

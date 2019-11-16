@@ -1,0 +1,41 @@
+h1 {
+  font-family: helvetica;
+}
+
+p {
+  font-family: "Times New Roman";
+  font-size: 22px;
+}
+
+.author {
+  font-family: helvetica;
+  line-height: 25px;
+}
+
+.article {
+  width: 50%;
+  max-width: 1000px;
+  margin: auto;
+}
+
+figure {
+  text-align: center;
+  margin: auto;
+  img {
+    max-width: 100%;
+    margin: auto;
+  }
+}
+
+img {
+  margin: auto;
+}
+
+blockquote {
+  margin-left: 0px;
+  border-left: 3px solid #989898;
+  padding-left: 10px;
+  background-color: #f7f7f7;
+  padding: 5px;
+  border-radius: 3px;
+}

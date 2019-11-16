@@ -1,0 +1,36 @@
+body {
+  font-family: georgia;
+  font-size: 10;
+}
+
+img {
+  max-height: 100%;
+  max-width: 100%;
+}
+
+h4 {
+  font-family: helvetica;
+}
+
+.header {
+  font-family: helvetica;
+  line-height: 8px;
+}
+
+.main-content {
+  column-count: 3;
+}
+
+.date {
+  color: gray;
+}
+
+.author {
+  color: gray;
+}
+
+blockquote {
+  margin-left: 0px;
+  border-left: 3px solid #eee;
+  padding-left: 10px;
+}

@@ -2,9 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <script>
+        let article_json = {{ article_response|safe }}
+    </script>
 </head>
 <body>
-
+    <div id="article">
+    </div>
+    <script src={{js_file}}></script>
 </body>
 </html>
