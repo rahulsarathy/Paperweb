@@ -1,0 +1,23 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    pulp.service: redis
+  name: redis
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        pulp.service: redis
+    spec:
+      containers:
+      - args:
+        - redis-server
+        image: redis:5.0.6-alpine
+        name: redis
+        resources: {}
+      restartPolicy: Always
+status: {}
