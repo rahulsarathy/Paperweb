@@ -1,0 +1,32 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: db 
+  labels:
+    pulp.service: db
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: db
+        pulp.service: db
+    spec:
+      containers:
+        - name: db 
+          image: postgres:12.0-alpine 
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - configMapRef:
+                name: db-config
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgresdb
+              subPath: pgdata
+
+      volumes:
+        - name: postgresdb
+          persistentVolumeClaim:
+            claimName: db-claim-volume

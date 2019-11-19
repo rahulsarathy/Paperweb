@@ -1,0 +1,27 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    pulp.service: node
+  name: node
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        pulp.service: node
+    spec:
+      containers:
+      - args:
+        - npm
+        - run
+        - dev
+        image: gcr.io/sandbox-164917/pulp-node:v1
+        name: node
+        ports:
+        - containerPort: 3000
+        resources: {}
+      restartPolicy: Always
+status: {}
