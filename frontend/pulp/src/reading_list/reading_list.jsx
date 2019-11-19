@@ -14,8 +14,7 @@ class ReadingListItem extends React.Component {
     this.handleHover = this.handleHover.bind(this);
     this.handleUnhover = this.handleUnhover.bind(this);
 
-    this.state = {
-    };
+    this.state = {};
   }
 
   getLocation(href) {
@@ -33,22 +32,27 @@ class ReadingListItem extends React.Component {
   }
 
   render() {
-    const {article, added} = this.props;
+    const {article, added, index} = this.props;
     let host = this.getLocation(article.permalink)
     let href = '../articles/?url=' + encodeURIComponent(article.permalink)
-    return (<div className="readinglist-item" draggable="True" onMouseEnter={this.handleHover} onMouseLeave={this.handleUnhover}>
-      <h3><a target="_blank" href={href}>{article.title}</a></h3>
-      <p>
-        <a target="_blank" href={article.permalink}>{host}</a>
-      </p>
-      <p>{article.excerpt}</p>
-      {
-        this.state.hovered
-          ? (<div>
-            <button onClick={() => this.props.removeArticle(article.permalink)}>Remove</button>
-          </div>)
-          : <div>Added on {added}</div>
-      }
+    return (<div className="container">
+      <div className="readinglist-item" draggable="True" onMouseEnter={this.handleHover} onMouseLeave={this.handleUnhover}>
+        <h3>
+          <a target="_blank" href={href}>{article.title}</a>
+        </h3>
+        <p>
+          <a target="_blank" href={article.permalink}>{host}</a>
+        </p>
+        <p>{article.excerpt}</p>
+        {
+          this.state.hovered
+            ? (<div>
+              <button onClick={() => this.props.removeArticle(article.permalink)}>Remove</button>
+            </div>)
+            : <div>Added on {added}</div>
+        }
+      </div>
+      <div className="gradient"></div>
     </div>);
   }
 }
@@ -153,7 +157,7 @@ export default class ReadingList extends React.Component {
               : <div></div>
           }
           <div className="reading-list-items">
-            {this.state.reading_list.map((reading_list_item, index) => <ReadingListItem key={index} index={index} added={reading_list_item.date_added} removeArticle={this.removeArticle} article={reading_list_item.article}/>)}
+            {this.state.reading_list.map((reading_list_item, index) => <ReadingListItem key={index} added={reading_list_item.date_added} removeArticle={this.removeArticle} article={reading_list_item.article}/>)}
           </div>
         </Col>
       </Row>

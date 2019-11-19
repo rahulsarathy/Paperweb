@@ -1,7 +1,11 @@
 .readinglist {
-  width: 80%;
+  width: 50%;
   max-width: 1000px;
   margin: 80px auto 0;
+
+  h1 {
+    font-weight: bold;
+  }
 }
 
 .reading-list-items {
@@ -13,22 +17,37 @@
   font-size: 20px;
 }
 
-  .mercury {
-    img {
-      width: 100%;
-    }
+.container {
+  position: relative;
+}
+
+.gradient {
+  background: linear-gradient(to bottom, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 70%);
+  right:0;
+  bottom:0;
+  left:0;
+  height: 150px;
+  z-index: 2;
+  position: absolute;
+  pointer-events: none;
+}
+
+.mercury {
+  img {
+    width: 100%;
   }
+}
 
 .readinglist-item {
   height: 155px;
   padding: 5px;
-  border-bottom: solid;
-  border-width: 1px;
-  border-color: gray;
+  margin-bottom: 10px;
+  text-align: left;
+  left: -20px;
 
   h3 {
     font-family: helvetica;
-    font-style: bold;
+    font-weight: bold;
   }
   cursor: pointer;
 
