@@ -36,26 +36,29 @@ class ReadingListItem extends React.Component {
     let mercury_response = article.mercury_response;
     let host = this.getLocation(article.permalink)
     let href = '../articles/?url=' + encodeURIComponent(article.permalink)
-    return (<div className="readinglist-item" draggable="True" onMouseEnter={this.handleHover} onMouseLeave={this.handleUnhover}>
-      <h3>
-        <a target="_blank" href={href}>{article.title}</a>
-      </h3>
-      <p className="domain">
-        <a target="_blank" href={article.permalink}>{host}</a>
-      </p>
-      <div className="faded-content">
-        <div className="content">
-          <p>{mercury_response.parsed_text}</p>
+    return (<div className="readinglist-item-container">
+      <div className="readinglist-item" onMouseEnter={this.handleHover} onMouseLeave={this.handleUnhover}>
+        <h3>
+          <a target="_blank" href={href}>{article.title}</a>
+        </h3>
+        <p className="domain">
+          <a target="_blank" href={article.permalink}>{host}</a>
+        </p>
+        <div className="faded-content">
+          <div className="content">
+            <p>{mercury_response.parsed_text}</p>
+          </div>
+          <div className="gradient"></div>
         </div>
-        <div className="gradient"></div>
+        {
+          this.state.hovered
+            ? (<div>
+              <button onClick={() => this.props.removeArticle(article.permalink)}>Remove</button>
+            </div>)
+            : <div>Added on {added}</div>
+        }
+        <img className="first-image" src={mercury_response.lead_image_url}/>
       </div>
-      {
-        this.state.hovered
-          ? (<div>
-            <button onClick={() => this.props.removeArticle(article.permalink)}>Remove</button>
-          </div>)
-          : <div>Added on {added}</div>
-      }
     </div>);
   }
 }
@@ -142,8 +145,7 @@ export default class ReadingList extends React.Component {
 
     return (<div>
       <Header/>
-      <Row className="readinglist">
-        <Col>
+      <div className="readinglist">
           <h1>Your Reading List 📚</h1>
           {
             this.state.invalid_url
@@ -162,8 +164,7 @@ export default class ReadingList extends React.Component {
           <div className="reading-list-items">
             {this.state.reading_list.map((reading_list_item, index) => <ReadingListItem key={index} added={reading_list_item.date_added} removeArticle={this.removeArticle} article={reading_list_item.article}/>)}
           </div>
-        </Col>
-      </Row>
+      </div>
     </div>);
   }
 }

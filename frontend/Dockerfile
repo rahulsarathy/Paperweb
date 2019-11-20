@@ -20,7 +20,7 @@ COPY ./pulp/public /app/public
 # The volume mount specified in docker-compose will be used mount the src dir 
 # Additionally note that on on macOs, the ./frontend folder will have to
 # be given Docker File Sharing permissions!
-#COPY ./pulp/src /app/src
+COPY ./pulp/src /app/src
 
 EXPOSE 8080 
 
