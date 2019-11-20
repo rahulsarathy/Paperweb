@@ -33,26 +33,29 @@ class ReadingListItem extends React.Component {
 
   render() {
     const {article, added, index} = this.props;
+    let mercury_response = article.mercury_response;
     let host = this.getLocation(article.permalink)
     let href = '../articles/?url=' + encodeURIComponent(article.permalink)
-    return (<div className="container">
-      <div className="readinglist-item" draggable="True" onMouseEnter={this.handleHover} onMouseLeave={this.handleUnhover}>
-        <h3>
-          <a target="_blank" href={href}>{article.title}</a>
-        </h3>
-        <p>
-          <a target="_blank" href={article.permalink}>{host}</a>
-        </p>
-        <p>{article.excerpt}</p>
-        {
-          this.state.hovered
-            ? (<div>
-              <button onClick={() => this.props.removeArticle(article.permalink)}>Remove</button>
-            </div>)
-            : <div>Added on {added}</div>
-        }
+    return (<div className="readinglist-item" draggable="True" onMouseEnter={this.handleHover} onMouseLeave={this.handleUnhover}>
+      <h3>
+        <a target="_blank" href={href}>{article.title}</a>
+      </h3>
+      <p className="domain">
+        <a target="_blank" href={article.permalink}>{host}</a>
+      </p>
+      <div className="faded-content">
+        <div className="content">
+          <p>{mercury_response.parsed_text}</p>
+        </div>
+        <div className="gradient"></div>
       </div>
-      <div className="gradient"></div>
+      {
+        this.state.hovered
+          ? (<div>
+            <button onClick={() => this.props.removeArticle(article.permalink)}>Remove</button>
+          </div>)
+          : <div>Added on {added}</div>
+      }
     </div>);
   }
 }
@@ -141,7 +144,7 @@ export default class ReadingList extends React.Component {
       <Header/>
       <Row className="readinglist">
         <Col>
-          <h1>Your Reading List</h1>
+          <h1>Your Reading List 📚</h1>
           {
             this.state.invalid_url
               ? <h3>Invalid URL</h3>

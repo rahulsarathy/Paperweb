@@ -13,6 +13,7 @@ import requests
 import json
 import threading
 import logging
+from bs4 import BeautifulSoup
 
 
 CATEGORIES = ["Rationality", "Economics", "Technology", "Think Tanks"]
@@ -38,6 +39,9 @@ def add_to_reading_list(request):
 
     article_json = get_parsed(link)
     title = article_json.get('title')
+    soup = BeautifulSoup(article_json.get('content'), None)
+    article_text = soup.getText()
+    article_json['parsed_text'] = article_text
 
     article, created = Article.objects.get_or_create(
          title=title, permalink=link, mercury_response=article_json

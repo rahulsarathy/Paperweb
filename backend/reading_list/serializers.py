@@ -8,6 +8,11 @@ class ArticleSerializer(serializers.ModelSerializer):
         model = Article
         fields = ['title', 'permalink', 'word_count', 'mercury_response']
 
+    mercury_response = serializers.SerializerMethodField()
+
+    def get_mercury_response(self, obj):
+        return obj.mercury_response
+
 
 class ReadingListItemSerializer(serializers.ModelSerializer):
     article = ArticleSerializer()

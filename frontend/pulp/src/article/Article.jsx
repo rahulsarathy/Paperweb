@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import $ from 'jquery';
 import shortid from 'shortid';
-import {Row, Col} from 'react-bootstrap';
 import {Header} from './Components.jsx';
 
 // article_json is passed to the dom
@@ -22,13 +21,11 @@ export default class Article extends React.Component {
     let author_text;
     article_json.author === null || article_json.author === '' ? author_text = '' : author_text = 'By ' + article_json.author
     return (<div>
-      <Row className="article">
-        <Col>
+      <div className="article">
           <h1>{article_json.title}</h1>
           <p className="author">{author_text}</p>
-          <div dangerouslySetInnerHTML={this.createMarkup()}></div>
-        </Col>
-      </Row>
+          <div className="content" dangerouslySetInnerHTML={this.createMarkup()}></div>
+      </div>
     </div>);
   }
 }
