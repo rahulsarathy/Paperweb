@@ -15,9 +15,12 @@ COPY ./pulp/webpack.config.js /app
 RUN npm install
 
 COPY ./pulp/public /app/public
-# Using volume in docker-compose instead to enable hot reload
-# Note: on macOs, the ./frontend folder will have to be given Docker File Sharing perms!
-#COPY ./pulp/src /app/src
+# Note:
+# To enable hot reloading, uncomment the COPY command below
+# The volume mount specified in docker-compose will be used mount the src dir 
+# Additionally note that on on macOs, the ./frontend folder will have to
+# be given Docker File Sharing permissions!
+COPY ./pulp/src /app/src
 
 EXPOSE 8080 
 
