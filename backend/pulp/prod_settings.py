@@ -1,4 +1,4 @@
-from siteconfig.settings import *
+from pulp.settings import *
 
 DATABASES = {
     'default': {
