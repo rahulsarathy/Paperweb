@@ -36,28 +36,41 @@ class ReadingListItem extends React.Component {
     let mercury_response = article.mercury_response;
     let host = this.getLocation(article.permalink)
     let href = '../articles/?url=' + encodeURIComponent(article.permalink)
-    return (<div className="readinglist-item-container">
+    let has_image = false;
+    let style = {}
+    mercury_response.lead_image_url ? has_image = true : has_image = false
+    if (!has_image) {
+      style = {
+        width: '125%',
+      }
+    }
+    return (<div className="readinglist-item-container" style={style}>
       <div className="readinglist-item" onMouseEnter={this.handleHover} onMouseLeave={this.handleUnhover}>
         <h3>
           <a target="_blank" href={href}>{article.title}</a>
         </h3>
-        <p className="domain">
+        <div className="extras">
+          <div className="domain">
           <a target="_blank" href={article.permalink}>{host}</a>
-        </p>
+          </div>
+          <div className="author">
+          {mercury_response.author ? <p className="author_text">{'by ' + mercury_response.author}</p> : ''}
+        </div>
+        </div>
+        {
+          this.state.hovered
+            ? (<div className="hover-section">
+              <button onClick={() => this.props.removeArticle(article.permalink)}>Remove</button>
+            </div>)
+            : <div className="hover-section"><p className="date-added">Added on {added.split('T')[0]}</p></div>
+        }
         <div className="faded-content">
           <div className="content">
             <p>{mercury_response.parsed_text}</p>
           </div>
           <div className="gradient"></div>
         </div>
-        {
-          this.state.hovered
-            ? (<div>
-              <button onClick={() => this.props.removeArticle(article.permalink)}>Remove</button>
-            </div>)
-            : <div>Added on {added}</div>
-        }
-        <img className="first-image" src={mercury_response.lead_image_url}/>
+        {has_image ? <img className="first-image" src={mercury_response.lead_image_url}/> : <div></div>}
       </div>
     </div>);
   }

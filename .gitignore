@@ -1,13 +1,8 @@
-virtualenv/
-pulp/mysite/__pychache__/
-static/js/node_modules/
-static/js/build/
 *.pyc
+.env.dev
 
 # Cached files
-polls/*.py~
-siteconfig/*.py~
-dump
+backend/dump
 
 # Migrations
 backend/reading_list/migrations/*.py
@@ -16,5 +11,4 @@ backend/users/migrations/*.py
 
 # Directory metadata
 .idea
-dump.rdb
 celerybeat.pid

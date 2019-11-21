@@ -1,5 +1,5 @@
 .readinglist {
-  width: 60%;
+  width: 50%;
   // max-width: 1500px;
   margin: 80px auto 0;
   min-width: 400px;
@@ -8,6 +8,7 @@
     font-weight: bold;
   }
 }
+
 
 .reading-list-items {
   margin-top: 30px;
@@ -18,13 +19,27 @@
   font-size: 20px;
 }
 
-.domain {
+.date-added {
+  color: #616161;
+}
+
+.extras {
   font-weight: bold;
+  .author {
+    display: inline-block;
+    margin-left: 5px;
+    color: #616161;
+  }
+
+  .domain {
+    display: inline-block;
+  }
 
   a {
-    color: #616161;
     text-decoration: none;
     -webkit-transition: color 0.2s ease-in-out;
+    display: inline-block;
+    color: black;
   }
 
   a:hover {
@@ -35,8 +50,8 @@
 .readinglist-item-container {
   // position: relative;
 }
+$image-dim: 150px;
 
-$image-dim : 130px;
 .first-image {
   width: $image-dim;
   height: $image-dim;
@@ -47,11 +62,15 @@ $image-dim : 130px;
   border-radius: 3px;
 }
 
+.hover-section {
+  height: 30px;
+}
+
 .readinglist-item {
-  height: 165px;
+  height: 170px;
   // padding: 5px;
   margin-bottom: 10px;
-  width: 100%;
+  width: 80%;
   position: relative;
 
   h3 {
@@ -90,6 +109,7 @@ $image-dim : 130px;
 
   .faded-content {
     position: relative;
+
     .content {
       height: $excerpt-height;
       overflow-y: hidden;
