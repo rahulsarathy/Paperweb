@@ -22,6 +22,7 @@ from pulp import views
 
 urlpatterns = [
   path('admin/', admin.site.urls),
+  path('ready/', include('health_check.urls')),
   path('', views.landing, name='landing'),
   path('reading_list/', views.reading_list, name='reading list'),
   path('profile/', views.profile, name='profile'),

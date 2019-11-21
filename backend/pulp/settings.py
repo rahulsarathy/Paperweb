@@ -34,6 +34,13 @@ ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 # Application definition
 
 INSTALLED_APPS = [
+    'health_check',                             # required
+    'health_check.db',                          # stock Django health checkers
+    'health_check.cache',
+    'health_check.storage',
+#   'health_check.contrib.celery',              # requires celery
+#   'health_check.contrib.redis',               # required Redis broker
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
