@@ -34,6 +34,7 @@ ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 # Application definition
 
 INSTALLED_APPS = [
+    'captcha',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -173,6 +174,7 @@ AUTHENTICATION_BACKENDS = (
 SITE_ID = 1
 
 AUTH_USER_MODEL = 'users.CustomUser'
+ACCOUNT_SIGNUP_FORM_CLASS = 'users.forms.AllauthSignupForm'
 ACCOUNT_USER_MODEL_USERNAME_FIELD = 'username'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
@@ -185,14 +187,12 @@ ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 10
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_REDIRECT_URL = '/'
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com' #I used gmail in my case
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'rahul@getpulp.io'
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 EMAIL_PORT = 587
 DEFAULT_FROM_EMAIL = 'rahul@getpulp.io'
-ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 LOGIN_URL = '/accounts/login'
-ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # Internationalization
@@ -212,3 +212,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+
+RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY')
+RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY')
+
+RECAPTCHA_USE_SSL = True     # Defaults to False

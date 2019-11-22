@@ -29,3 +29,5 @@ JAVASCRIPT_URLS = {
 }
 
 AWS_BUCKET = 'pulpscrapedarticlestest'
+
+RECAPTCHA_SITE_KEY = '6LdhB8QUAAAAADsIgnDJ2HR4FyNm8MM1q1Xxw9_F'

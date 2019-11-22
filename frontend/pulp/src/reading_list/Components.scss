@@ -50,14 +50,14 @@
 .readinglist-item-container {
   // position: relative;
 }
-$image-dim: 150px;
+$image-dim: 130px;
 
 .first-image {
   width: $image-dim;
   height: $image-dim;
   position: absolute;
   right: -180;
-  top: 0;
+  top: 20;
   object-fit: cover;
   border-radius: 3px;
 }
