@@ -29,7 +29,7 @@ SECURE_SSL_REDIRECT = True
 JAVASCRIPT_URLS = {
     'landing': '/static/js/build/landing.js',
     'profile': '/static/js/build/profile.js',
-    'reading_list':  '/static/js/build/reading_list.js',
+    'reading_list': '/static/js/build/reading_list.js',
     'article': '/static/js/build/article.js',
 }
 

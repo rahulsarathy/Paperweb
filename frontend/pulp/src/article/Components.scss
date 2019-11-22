@@ -1,4 +1,4 @@
-$article-width: 1000px;
+$article-width: 800px;
 
 h1 {
   font-family: helvetica;
@@ -21,10 +21,6 @@ body {
   margin: auto;
 }
 
-.content {
-
-}
-
 figure {
   margin: auto;
   img {
@@ -32,6 +28,7 @@ figure {
     width: 100%;
     margin: auto;
   }
+  max-width: 500px;
 }
 
 img {

@@ -11,7 +11,7 @@ DATABASES = {
     }
 }
 
-ALLOWED_HOSTS = [NGROK_HOST, '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = [NGROK_HOST, '127.0.0.1', 'localhost', '10.105.80.65']
 
 SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False
@@ -29,3 +29,6 @@ JAVASCRIPT_URLS = {
 }
 
 AWS_BUCKET = 'pulpscrapedarticlestest'
+
+RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY')
+RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY')
