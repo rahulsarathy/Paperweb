@@ -40,6 +40,11 @@ spec:
             configMapKeyRef:
               key: DJANGO_SETTINGS_MODULE
               name: backend-config
+        - name: DJANGO_MANAGEPY_MIGRATE
+          valueFrom:
+            configMapKeyRef:
+              key: DJANGO_MANAGEPY_MIGRATE
+              name: backend-config
         - name: NGROK_HOST
           valueFrom:
             configMapKeyRef:

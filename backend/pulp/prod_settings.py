@@ -2,11 +2,11 @@ from pulp.settings import *
 
 DATABASES = {
     'default': {
-        "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
-        "NAME": os.environ.get("SQL_DATABASE", os.path.join(BASE_DIR, "db.sqlite3")),
+        "ENGINE": "django.db.backends.postgresql", 
+        "NAME": os.environ.get("SQL_DATABASE", "pulp_db"),
         "USER": os.environ.get("SQL_USER", "admin"),
         "PASSWORD": os.environ.get("SQL_PASSWORD", "password"),
-        "HOST": os.environ.get("SQL_HOST", "localhost"),
+        "HOST": os.environ.get("SQL_HOST", "pulp-db-host"),
         "PORT": os.environ.get("SQL_PORT", "5432"),
     }
 }

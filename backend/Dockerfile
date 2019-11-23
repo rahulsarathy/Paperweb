@@ -4,31 +4,44 @@ FROM python:3.7.4-alpine
 # set work directory
 WORKDIR /usr/src/app
 
+# copy code
+COPY . /usr/src/app/
+
+# update and install dependencies
+RUN apk --update \
+    add --no-cache --virtual .build-deps \
+    postgresql \
+    postgresql-dev \
+    gcc \
+    python3-dev \
+    libc-dev \
+    musl-dev \
+    # pillow dependencies
+    jpeg-dev \
+    zlib-dev \
+    # libsxlt dependencies
+    libxslt-dev \
+    libxslt \
+    # libxml dependencies
+    py3-lxml \
+    && pip install -r ./requirements.txt \ 
+    && find /usr/local \
+        \( -type d -a -name test -o -name tests \) \
+        -o \( -type f -a -name '*.pyc' -o -name '*.pyo' \) \
+        -exec rm -rf '{}' + \
+    && runDeps="$( \
+        scanelf --needed --nobanner --recursive /usr/local \
+                | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
+                | sort -u \
+                | xargs -r apk info --installed \
+                | sort -u \
+    )" \
+    && apk add --virtual .rundeps $runDeps \
+    && apk del .build-deps
+
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# install psycopg2 dependencies
-RUN apk update \
-    && apk add postgresql-dev gcc python3-dev musl-dev
-
-# install jpeg / zlib dependencies
-RUN apk add jpeg-dev zlib-dev
-
-# install lxml, libxslt, libxml2
-RUN apk add libc-dev libxslt-dev libxml2-dev
-RUN apk add libxslt libxml2
-
-# install dependencies
-RUN pip install --upgrade pip
-COPY ./requirements.txt /usr/src/app/requirements.txt
-RUN pip install -r requirements.txt
-
-# copy entrypoint.sh
-COPY ./entrypoint.sh /usr/src/app/entrypoint.sh
-
-# copy project
-COPY . /usr/src/app/
-
-# run entrypoint.sh
-ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
+# run entrypoint-dev.sh
+ENTRYPOINT ["/usr/src/app/entrypoint-dev.sh"]
