@@ -10,20 +10,12 @@ COPY . /usr/src/app/
 # update and install dependencies
 RUN apk --update \
     add --no-cache --virtual .build-deps \
+    gcc \
+    musl-dev \
+    libc-dev \
+    python3-dev \
     postgresql \
     postgresql-dev \
-    gcc \
-    python3-dev \
-    libc-dev \
-    musl-dev \
-    # pillow dependencies
-    jpeg-dev \
-    zlib-dev \
-    # libsxlt dependencies
-    libxslt-dev \
-    libxslt \
-    # libxml dependencies
-    py3-lxml \
     && pip install --upgrade pip \
     && pip install -r ./requirements.txt \ 
     && find /usr/local \
