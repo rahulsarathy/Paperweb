@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'health_check.storage',
 #   'health_check.contrib.celery',              # requires celery
 #   'health_check.contrib.redis',               # required Redis broker
-
+    'captcha',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -178,6 +178,7 @@ AUTHENTICATION_BACKENDS = (
 SITE_ID = 1
 
 AUTH_USER_MODEL = 'users.CustomUser'
+ACCOUNT_SIGNUP_FORM_CLASS = 'users.forms.AllauthSignupForm'
 ACCOUNT_USER_MODEL_USERNAME_FIELD = 'username'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
@@ -186,8 +187,18 @@ ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_LOGOUT_ON_GET = True
+ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 10
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_REDIRECT_URL = '/'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'rahul@getpulp.io'
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+EMAIL_PORT = 587
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+DEFAULT_FROM_EMAIL = 'rahul@getpulp.io'
+LOGIN_URL = '/accounts/login'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
@@ -207,3 +218,4 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
+RECAPTCHA_USE_SSL = True     # Defaults to False

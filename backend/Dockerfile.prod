@@ -1,5 +1,8 @@
-# pull official base image
 FROM python:3.7.4-alpine
+
+# Create a group and user to run the app
+ARG APP_USER=appuser
+RUN groupadd -r ${APP_USER} && useradd --no-log-init -r -g ${APP_USER} ${APP_USER}
 
 # set work directory
 WORKDIR /usr/src/app
@@ -16,8 +19,9 @@ RUN apk --update \
     python3-dev \
     postgresql \
     postgresql-dev \
+    uwsgi-python3 \
     && pip install --upgrade pip \
-    && pip install -r ./requirements.txt \ 
+    && pip install -r ./requirements.txt \
     && find /usr/local \
         \( -type d -a -name test -o -name tests \) \
         -o \( -type f -a -name '*.pyc' -o -name '*.pyo' \) \
@@ -36,5 +40,14 @@ RUN apk --update \
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# run entrypoint-dev.sh
-ENTRYPOINT ["/usr/src/app/entrypoint-dev.sh"]
+# uWSGI will listen on this port
+EXPOSE 8000
+
+# Change to a non-root user
+USER ${APP_USER}:${APP_USER}
+
+# run entrypoint.sh
+ENTRYPOINT ["/usr/src/app/entrypoint-prod.sh"]
+
+# Start uWSGI
+CMD ["uwsgi", "--show-config"]

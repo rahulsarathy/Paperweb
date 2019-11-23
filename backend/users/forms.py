@@ -1,7 +1,10 @@
 # users/forms.py
-from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from .models import CustomUser
+from django.contrib.auth import get_user_model
+User = get_user_model()
+from django import forms
+from captcha.fields import ReCaptchaField
 
 class CustomUserCreationForm(UserCreationForm):
 
@@ -14,3 +17,11 @@ class CustomUserChangeForm(UserChangeForm):
     class Meta:
         model = CustomUser
         fields = ('username', 'email',)
+
+class AllauthSignupForm(forms.Form):
+
+    captcha = ReCaptchaField()
+
+    def signup(self, request, user):
+        """ Required, or else it throws deprecation warnings """
+        pass

@@ -35,6 +35,11 @@ spec:
             configMapKeyRef:
               key: DJANGO_SETTINGS_MODULE
               name: backend-config
+        - name: DJANGO_MANAGEPY_MIGRATE
+          valueFrom:
+            configMapKeyRef:
+              key: DJANGO_MANAGEPY_MIGRATE
+              name: backend-config
         - name: NGROK_HOST
           valueFrom:
             configMapKeyRef:
@@ -74,6 +79,16 @@ spec:
           valueFrom:
             configMapKeyRef:
               key: SQL_USER
+              name: backend-config
+        - name: RECAPTCHA_PUBLIC_KEY
+          valueFrom:
+            configMapKeyRef:
+              key: RECAPTCHA_PUBLIC_KEY
+              name: backend-config
+        - name: RECAPTCHA_PRIVATE_KEY
+          valueFrom:
+            configMapKeyRef:
+              key: RECAPTCHA_PRIVATE_KEY
               name: backend-config
         image: gcr.io/sandbox-164917/pulp-backend:v1
         imagePullPolicy: Always
