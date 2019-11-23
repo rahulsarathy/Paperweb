@@ -18,3 +18,5 @@ data:
   SQL_PASSWORD: paperweb
   SQL_PORT: "5432"
   SQL_USER: admin
+  RECAPTCHA_PUBLIC_KEY=''
+  RECAPTCHA_PRIVATE_KEY=''

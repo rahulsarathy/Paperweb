@@ -85,6 +85,16 @@ spec:
             configMapKeyRef:
               key: SQL_USER
               name: backend-config
+        - name: RECAPTCHA_PUBLIC_KEY
+          valueFrom:
+            configMapKeyRef:
+              key: RECAPTCHA_PUBLIC_KEY
+              name: backend-config
+        - name: RECAPTCHA_PRIVATE_KEY
+          valueFrom:
+            configMapKeyRef:
+              key: RECAPTCHA_PRIVATE_KEY
+              name: backend-config
         image: gcr.io/sandbox-164917/pulp-backend:v1
         name: backend
         ports:
