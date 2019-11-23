@@ -19,6 +19,7 @@ spec:
         - run
         - dev
         image: gcr.io/sandbox-164917/pulp-node:v1
+        imagePullPolicy: Always
         name: node
         ports:
         - containerPort: 3000

@@ -30,11 +30,6 @@ spec:
             configMapKeyRef:
               key: DEBUG
               name: backend-config
-        - name: DJANGO_ALLOWED_HOSTS
-          valueFrom:
-            configMapKeyRef:
-              key: DJANGO_ALLOWED_HOSTS
-              name: backend-config
         - name: DJANGO_SETTINGS_MODULE
           valueFrom:
             configMapKeyRef:
@@ -81,7 +76,23 @@ spec:
               key: SQL_USER
               name: backend-config
         image: gcr.io/sandbox-164917/pulp-backend:v1
+        imagePullPolicy: Always
         name: backend
+        livenessProbe:
+          httpGet:
+            path: /ready
+            port: 80
+          initialDelaySeconds: 30 
+          periodSeconds: 20
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8000
+          initialDelaySeconds: 15
+          periodSeconds: 20
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 2
         ports:
         - containerPort: 8000
         resources: {}

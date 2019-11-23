@@ -18,17 +18,10 @@ spec:
         - name: NODE_ENV
           value: development
         image: gcr.io/sandbox-164917/pulp-frontend:v1
+        imagePullPolicy: Always
         name: frontend
         ports:
         - containerPort: 8080
         resources: {}
-        volumeMounts:
-        - mountPath: /app/src
-          name: frontend-claim-volume
-          subPath: frontend
       restartPolicy: Always
-      volumes:
-      - name: frontend-claim-volume
-        persistentVolumeClaim:
-          claimName: frontend-claim-volume
 status: {}

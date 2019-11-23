@@ -7,8 +7,7 @@ metadata:
 data:
   DATABASE: postgres
   DEBUG: "1"
-  DJANGO_ALLOWED_HOSTS: localhost 127.0.0.1 [::1]
-  DJANGO_SETTINGS_MODULE: pulp.dev_settings
+  DJANGO_SETTINGS_MODULE: pulp.prod_settings
   NGROK_HOST: 95c0c850.ngrok.io
   SECRET_KEY: '*-4q4au)57$4tz-s@mlt8mm!-ibju'
   SQL_DATABASE: pulp_db

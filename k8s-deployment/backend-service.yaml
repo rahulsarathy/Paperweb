@@ -5,8 +5,10 @@ metadata:
     pulp.service: backend
   name: backend
 spec:
+  type: NodePort
   ports:
   - name: "8000"
+    nodePort: 30163
     port: 8000
     targetPort: 8000
   selector:

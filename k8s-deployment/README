@@ -50,7 +50,6 @@ FRONTEND
 
 3. Deploy 
 cd <pulp dir>/k8s-deployment
-kubectl create -f ./frontend-claim.yaml
 kubectl create -f ./frontend-deployment.yaml
 kubectl create -f ./fronend-service.yaml
 

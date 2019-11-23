@@ -5,6 +5,5 @@ metadata:
   namespace: "default"
 spec:
   backend:
-    serviceName: "frontend"
-    servicePort: 8080
-
+    serviceName: "backend"
+    servicePort: 8000
