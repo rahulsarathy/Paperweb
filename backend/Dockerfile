@@ -1,5 +1,29 @@
-# pull official base image
-FROM python:3.7.4-alpine
+###
+# Stage 1 - Throwaway image with C compiler/dependencies
+#
+FROM python:3.7.4-alpine as buildimage
+
+# update and install dependencies
+RUN apk --update \
+    add --no-cache --virtual .build-deps \
+    gcc \
+    linux-headers \
+    musl-dev \
+    libc-dev \
+    python3-dev \
+    postgresql \
+    postgresql-dev
+
+# instead of installing, create a wheel
+RUN pip install --upgrade pip
+RUN pip wheel --wheel-dir=/root/wheels uwsgi psycopg2
+
+###
+# Stage 2 - Image WITHOUT C compiler
+#
+FROM python:3.7-alpine as prodimage
+
+COPY --from=buildimage /root/wheels /root/wheels
 
 # set work directory
 WORKDIR /usr/src/app
@@ -7,34 +31,25 @@ WORKDIR /usr/src/app
 # copy code
 COPY . /usr/src/app/
 
-# update and install dependencies
-RUN apk --update \
-    add --no-cache --virtual .build-deps \
-    gcc \
-    musl-dev \
-    libc-dev \
-    python3-dev \
-    postgresql \
-    postgresql-dev \
-    && pip install --upgrade pip \
-    && pip install -r ./requirements.txt \ 
-    && find /usr/local \
-        \( -type d -a -name test -o -name tests \) \
-        -o \( -type f -a -name '*.pyc' -o -name '*.pyo' \) \
-        -exec rm -rf '{}' + \
-    && runDeps="$( \
-        scanelf --needed --nobanner --recursive /usr/local \
-                | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
-                | sort -u \
-                | xargs -r apk info --installed \
-                | sort -u \
-    )" \
-    && apk add --virtual .rundeps $runDeps \
-    && apk del .build-deps
-
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
+
+# Get alpine updates
+RUN apk --update \
+    add --no-cache --virtual .build-deps \
+    postgresql-client
+
+# Install from pip archive
+RUN pip install --upgrade pip
+RUN pip install -r ./requirements.txt
+
+# Look for archives in # /root/wheels
+RUN pip install \
+      --no-index \
+      --find-links=/root/wheels \
+      psycopg2 \
+      uwsgi
 
 # run entrypoint-dev.sh
 ENTRYPOINT ["/usr/src/app/entrypoint-dev.sh"]
