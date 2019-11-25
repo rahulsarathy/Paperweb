@@ -1,84 +1,121 @@
-body {
-
-}
+body {}
 
 .profile {
-  margin-top: 80px;
-  .paid {
-    width: 80%;
-    margin: auto;
-    .payment-tabs {
-      width: 100%;
-      .payment-tab {
-        width: 50%;
-        display: inline-block;
-        padding: 5px;
-        cursor: pointer;
-        border-radius: 4px;
-        border-style: none;
-        font-weight: bold;
-        box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
-        text-align: center;
-        color: black;
-      }
+  width: 50%;
+  margin: 80px auto auto;
+}
 
-      .selected {
-        color: white;
-        background-color: #2393FF;
-      }
+label {
+  display: block;
+}
+
+.address {
+  input {
+    border-radius: 3px;
+    border-style: solid;
+    height: 35px;
+    color: black;
+    border-width: 1px;
+    border-color: #e4e4e4;
+    width: 300px;
+  }
+}
+
+.subscription-pane {
+  .option {
+    text-align: center;
+    border-radius: 3px;
+    border-width: 1px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
+    width: 200px;
+
+    button {
+      border-radius: 3px;
+      color: #3ac73a;
+      border-color: #3ac73a;
+      background-color: #b0ffc56b;
+      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
     }
   }
+}
 
-  .unpaid {
-    text-align: center;
-    .pay-card {
-      box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
-      margin: auto;
-      width: 90%;
+.paid {
+  width: 80%;
+  margin: auto;
+
+  .payment-tabs {
+    width: 100%;
+
+    .payment-tab {
+      width: 50%;
+      display: inline-block;
+      padding: 5px;
+      cursor: pointer;
+      border-radius: 4px;
+      border-style: none;
+      font-weight: bold;
+      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
       text-align: center;
+      color: black;
+    }
 
-      .title {
-        font-size: 95px;
-        font-weight: bold;
-      }
+    .selected {
+      color: white;
+      background-color: #2393FF;
+    }
+  }
+}
 
-      .description {
-        font-size: 20px;
-        position: relative;
-        top: -25px;
-      }
+.unpaid {
+  text-align: center;
 
-      .getpulp {
-        position: relative;
-        background-color: #34D058;
-        color: white;
-        border-style: none;
-        border-radius: 3px;
-        box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
-      }
+  .pay-card {
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    margin: auto;
+    width: 90%;
+    text-align: center;
+
+    .title {
+      font-size: 95px;
+      font-weight: bold;
+    }
+
+    .description {
+      font-size: 20px;
+      position: relative;
+      top: -25px;
+    }
+
+    .getpulp {
+      position: relative;
+      background-color: #34D058;
+      color: white;
+      border-style: none;
+      border-radius: 3px;
+      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
     }
   }
 }
 
 #modal-change-address {
-   input {
-      display: block;
-      width: 350px;
-    }
+  input {
+    display: block;
+    width: 350px;
+  }
 
-    button {
-      border-radius: 2px;
-      border-style: none;
-    }
+  button {
+    border-radius: 2px;
+    border-style: none;
+  }
 
-    .set-address {
-      background-color: #2393FF;
-      color: white;
-    }
+  .set-address {
+    background-color: #2393FF;
+    color: white;
+  }
 
-    .close-modal {
-      // background-color: #;
-    }
+  .close-modal {
+    // background-color: #;
+  }
 }
 
 .header {
@@ -90,8 +127,9 @@ body {
   width: 100%;
   padding: 5px 0;
   height: 45px;
-/*  padding-right: 100;
-*/  top: 0;
+  /*  padding-right: 100;
+*/
+  top: 0;
   background-color: white;
   text-align: right;
 
@@ -122,12 +160,9 @@ body {
     border-radius: 3px;
     background-color: #2393FF;
     transition: all 0.2s ease;
+
     a {
       color: white;
     }
   };
-
 }
-
-
-
