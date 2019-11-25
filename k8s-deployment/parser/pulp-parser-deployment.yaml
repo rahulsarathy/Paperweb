@@ -1,0 +1,38 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: pulp-parser-deployment
+  labels:
+    component: pulp-parser-pod
+    pulp.service: pulp-parser
+    tier: backend 
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      component: pulp-parser-pod
+  template:
+    metadata:
+      labels:
+        component: pulp-parser-pod
+        pulp.service: pulp-parser
+        tier: backend 
+    spec:
+      containers:
+      - name: pulp-parser
+        args:
+        - npm
+        - run
+        - dev
+        image: gcr.io/sandbox-164917/pulp-node:v1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
+        env:
+        - name: NODE_ENV
+          value: development
+        resources: {}
+      restartPolicy: Always
+status: {}

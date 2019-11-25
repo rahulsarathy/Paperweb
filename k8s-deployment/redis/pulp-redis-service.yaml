@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: pulp-redis-service
+  labels:
+    component: pulp-redis-service
+    pulp.service: pulp-redis
+    tier: backend
+spec:
+  ports:
+    - port: 6379
+      name: redis
+  selector:
+    component: pulp-redis-pod
+    pulp.service: pulp-redis
+    tier: backend 
+

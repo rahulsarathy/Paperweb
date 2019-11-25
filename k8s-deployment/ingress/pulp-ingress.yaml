@@ -1,0 +1,9 @@
+apiVersion: "extensions/v1beta1"
+kind: "Ingress"
+metadata:
+  name: "pulp-ingress"
+  namespace: "default"
+spec:
+  backend:
+    serviceName: "pulp-backend-service"
+    servicePort: 8000

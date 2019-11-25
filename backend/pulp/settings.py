@@ -29,6 +29,9 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = int(os.environ.get("DEBUG", default=0))
 
+# Need to change for production
+ALLOWED_HOSTS = ['*']
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -79,7 +82,7 @@ CORS_ORIGIN_WHITELIST = (
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://redis:6379/0",
+        "LOCATION": "redis://pulp-redis-service:6379/0",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -210,12 +213,15 @@ USE_L10N = True
 USE_TZ = True
 
 
+# Recaptcha
+RECAPTCHA_USE_SSL = True     # Defaults to False
+SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
-
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+STATIC_ROOT = 'static/'
 
-RECAPTCHA_USE_SSL = True     # Defaults to False

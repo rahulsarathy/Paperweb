@@ -1,0 +1,48 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: pulp-postgres-db-deployment
+  labels:
+    component: pulp-postgres-db-pod
+    pulp.service: pulp-postgres-db
+    tier: database 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: pulp-postgres-db-pod
+  template:
+    metadata:
+      labels:
+        component: pulp-postgres-db-pod
+        pulp.service: pulp-postgres-db
+        tier: database 
+    spec:
+      containers:
+        - name: pulp-postgres-db 
+          image: postgres:12.0-alpine 
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - configMapRef:
+                name: pulp-postgres-db-config
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: pulp-postgres-db-credentials
+                  key: user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pulp-postgres-db-credentials
+                  key: password
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: pulp-postgres-db-volume
+              subPath: pgdata
+      volumes:
+        - name: pulp-postgres-db-volume
+          persistentVolumeClaim:
+            claimName: pulp-postgres-db-volume-claim
