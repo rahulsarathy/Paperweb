@@ -1,9 +1,11 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: db-claim-volume
+  name: pulp-postgres-db-volume-claim
   labels:
-    pulp.service: db-claim
+    component: pulp-postgres-db-volume-claim
+    pulp.service: pulp-postgres-db
+    tier: database
 spec:
   storageClassName: standard
   accessModes:

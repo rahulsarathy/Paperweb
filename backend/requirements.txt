@@ -14,6 +14,7 @@ django_recaptcha==2.0.5
 django-redis==4.10.0
 djangorestframework==3.10.3
 googlemaps==3.1.4
+gunicorn==20.0.2
 python_dateutil==2.8.0
 sentry_sdk==0.13.2
 stripe==2.40.0

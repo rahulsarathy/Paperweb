@@ -1,5 +1,6 @@
 ###
 # Stage 1 - Throwaway image with C compiler/dependencies
+#
 FROM python:3.7.4-alpine as buildimage
 
 # update and install dependencies
@@ -15,10 +16,11 @@ RUN apk --update \
 
 # instead of installing, create a wheel
 RUN pip install --upgrade pip
-RUN pip wheel --wheel-dir=/root/wheels psycopg2
+RUN pip wheel --wheel-dir=/root/wheels uwsgi psycopg2
 
 ###
 # Stage 2 - Image WITHOUT C compiler
+#
 FROM python:3.7-alpine as prodimage
 
 # Create a group and user to run the app
@@ -34,7 +36,6 @@ WORKDIR /usr/src/app
 
 # copy code
 COPY . /usr/src/app/
-RUN chown -R ${APP_USER}:appgroup . 
 
 # Get alpine updates
 RUN apk --update \
@@ -49,18 +50,15 @@ RUN pip install -r ./requirements.txt
 RUN pip install \
       --no-index \
       --find-links=/root/wheels \
-      psycopg2
+      psycopg2 \
+      uwsgi
 
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# Define environment variables, and default values if not set
-ENV SERVER_PORT=8000
-ENV NUM_WORKERS=3
-
 # uWSGI will listen on this port
-EXPOSE ${SERVER_PORT}
+EXPOSE 8000
 
 # Change to a non-root user
 USER ${APP_USER}:${APP_USER}
@@ -69,7 +67,4 @@ USER ${APP_USER}:${APP_USER}
 ENTRYPOINT ["/usr/src/app/entrypoint-prod.sh"]
 
 # Start uWSGI
-CMD ["sh", "-c", "gunicorn pulp.wsgi \
-                    --access-logfile - \
-                    --workers ${NUM_WORKERS} \
-                    --bind 0.0.0.0:${SERVER_PORT}"]
+CMD ["uwsgi", "--ini", "/usr/src/app/pulp/uwsgi.ini", "--show-config" ]

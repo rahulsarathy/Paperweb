@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: pulp-backend-service
+  labels:
+    component: pulp-backend-service 
+    pulp.service: pulp-backend
+    tier: backend
+spec:
+  type: NodePort 
+  ports:
+  - name: "backend-port"
+    port: 8000
+    targetPort: 8000
+  selector:
+    component: pulp-backend-pod
+    pulp.service: pulp-backend
+    tier: backend
+status:
+  loadBalancer: {}

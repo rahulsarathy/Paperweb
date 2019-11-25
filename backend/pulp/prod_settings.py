@@ -24,7 +24,7 @@ DEBUG = False
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
-SECURE_SSL_REDIRECT = True
+SECURE_SSL_REDIRECT = False 
 
 JAVASCRIPT_URLS = {
     'landing': '/static/js/build/landing.js',

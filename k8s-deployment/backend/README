@@ -1,0 +1,8 @@
+0. Delete existing image from gcr.io
+# gcloud container images delete gcr.io/<project id>/pulp-backend:<image version> --force-delete-tags
+
+1. Set Project ID and Image Version
+# cat ../config.sh (Review PROJECT_ID and IMAGE_VERSION)
+
+2. Build
+# ./build.sh <path to backend source>

@@ -1,22 +1,48 @@
+STARTUP SEQUENCE
+1. Postgres DB
+2. Backend
+3. Frontend
+4. Redis
+5. Parser
+6. Ingress
+
 
 DATABASE / POSTGRES POD SETUP
 
+Notes: remember to save DB credentials using a k8s secrets object - https://kubernetes.io/docs/concepts/configuration/secret
+1. Use base64 to encode username and password in postgres-secrets.yaml
+# echo -n "<string>" | base64 
+
+2. create postgres-secrets
+# kubectl create -f ./postgres/pulp-postgres-secrets.yaml
+
 To startup DB deloyment and service
-# ./db-startup.sh
+# ./postgres/startup.sh
 
-To connect and test DB 
-1. Navigate to GKE Menu > Services & Ingress
-2. click on 'db'
-3. Under 'Service Details' scroll down to 'Ports'
-4. Click on 'Port Forwarding' for port 5432
-5. In the dialog that appears click on 'Run in cloud shell'
-6. The command for port forwading is pasted into cloud shell; click enter. This starts the port forwarding of 5432 to 8080 on localhost
-7. Open a new tab/window in cloudshell and enter the following in this new shell
-   # psql -h localhost -U admin -d pulp_db -p 8080 --password 
-8. You should be in the postgres db
+3. To test
+ a. # kubectl get pods (get the pod id for pulp-postgres-db-deployment)
+ b. # kubectl exec -it <postgres-db-deployment pod id> /bin/sh
+ c. # psql -h localhost -U admin -d pulp_db -p 8080 --password 
+ d. Test if you can connect to the database
 
-To delete db service and deployment
-# ./delete-db.sh
+To delete postgres-db service and deployment
+# ./postgres/teaddown.sh
+
+REDIS
+
+1. Build the backend
+
+# cd <pulp dir>/redis
+# export PROJECT_ID=<set project id>
+# docker build -t gcr.io/${PROJECT_ID}/pulp-redis:v1 .
+
+2. Push the backend to gcr.io
+# docker push gcr.io/${PROJECT_ID}/pulp-redis:v1
+
+3. Deploy 
+cd <pulp dir>/k8s-deployment/redis
+kubectl create -f ./pulp-redis-deployment.yaml
+kubectl create -f ./pulp-redis-service.yaml
 
 
 BACKEND
@@ -25,17 +51,16 @@ BACKEND
 
 # cd <pulp dir>/backend
 # export PROJECT_ID=<set project id>
-# docker build -t gcr.io/${PROJECT_ID}/pulp-backend:v1 .
+# docker build -f Dockerfile.prod -t gcr.io/${PROJECT_ID}/pulp-backend:v1 .
 
 2. Push the backend to gcr.io
 # docker push gcr.io/${PROJECT_ID}/pulp-backend:v1
 
 3. Deploy 
-cd <pulp dir>/k8s-deployment
-kubectl create -f ./backend-config.yaml
-kubectl create -f ./backend-claim.yaml
-kubectl create -f ./backend-deployment.yaml
-kubectl create -f ./backend-service.yaml
+cd <pulp dir>/k8s-deployment/backend
+kubectl create -f ./pulp-backend-config.yaml
+kubectl create -f ./pulp-backend-deployment.yaml
+kubectl create -f ./pulp-backend-service.yaml
 
 FRONTEND
 
@@ -49,14 +74,14 @@ FRONTEND
 # docker push gcr.io/${PROJECT_ID}/pulp-frontend:v1
 
 3. Deploy 
-cd <pulp dir>/k8s-deployment
-kubectl create -f ./frontend-deployment.yaml
-kubectl create -f ./fronend-service.yaml
+cd <pulp dir>/k8s-deployment/frontend
+kubectl create -f ./pulp-frontend-deployment.yaml
+kubectl create -f ./pulp-frontend-service.yaml
 
 
-NODE
+PARSER
 
-1. Build the node 
+1. Build the parser
 
 # cd <pulp dir>/node
 # export PROJECT_ID=<set project id>
@@ -66,8 +91,13 @@ NODE
 # docker push gcr.io/${PROJECT_ID}/pulp-node:v1
 
 3. Deploy 
-cd <pulp dir>/k8s-deployment
-kubectl create -f ./node-claim0.yaml
-kubectl create -f ./node-claim1.yaml
-kubectl create -f ./node-deployment.yaml
-kubectl create -f ./node-service.yaml
+cd <pulp dir>/k8s-deployment/parser
+
+kubectl create -f ./pulp-parser-service.yaml
+
+
+INGRES
+
+1. Deploy the ingress
+kubectl create -f ./pulp-ingres.yaml
+

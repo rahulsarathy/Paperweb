@@ -1,111 +1,103 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
+  name: pulp-backend-deployment
   labels:
-    pulp.service: backend
-  name: backend
+    component: pulp-backend-pod
+    pulp.service: pulp-backend
+    tier: backend
 spec:
   replicas: 1
   strategy:
     type: Recreate
+  selector:
+    matchLabels:
+      component: pulp-backend-pod
   template:
     metadata:
       labels:
-        pulp.service: backend
+        component: pulp-backend-pod
+        pulp.service: pulp-backend
+        tier: backend 
     spec:
       containers:
-      - args:
-        - python
-        - manage.py
-        - runserver
-        - 0.0.0.0:8000
+      - name: pulp-backend
+        image: gcr.io/sandbox-164917/pulp-backend:v1
+        imagePullPolicy: Always
         env:
-        - name: DATABASE
-          valueFrom:
-            configMapKeyRef:
-              key: DATABASE
-              name: backend-config
         - name: DEBUG
           valueFrom:
             configMapKeyRef:
               key: DEBUG
-              name: backend-config
+              name: pulp-backend-config
         - name: DJANGO_SETTINGS_MODULE
           valueFrom:
             configMapKeyRef:
               key: DJANGO_SETTINGS_MODULE
-              name: backend-config
-        - name: DJANGO_MANAGEPY_MIGRATE
-          valueFrom:
-            configMapKeyRef:
-              key: DJANGO_MANAGEPY_MIGRATE
-              name: backend-config
-        - name: NGROK_HOST
-          valueFrom:
-            configMapKeyRef:
-              key: NGROK_HOST
-              name: backend-config
+              name: pulp-backend-config
         - name: SECRET_KEY
           valueFrom:
             configMapKeyRef:
               key: SECRET_KEY
-              name: backend-config
+              name: pulp-backend-config
         - name: SQL_DATABASE
           valueFrom:
             configMapKeyRef:
               key: SQL_DATABASE
-              name: backend-config
+              name: pulp-backend-config
         - name: SQL_ENGINE
           valueFrom:
             configMapKeyRef:
               key: SQL_ENGINE
-              name: backend-config
+              name: pulp-backend-config
         - name: SQL_HOST
           valueFrom:
             configMapKeyRef:
               key: SQL_HOST
-              name: backend-config
-        - name: SQL_PASSWORD
-          valueFrom:
-            configMapKeyRef:
-              key: SQL_PASSWORD
-              name: backend-config
+              name: pulp-backend-config
         - name: SQL_PORT
           valueFrom:
             configMapKeyRef:
               key: SQL_PORT
-              name: backend-config
+              name: pulp-backend-config
         - name: SQL_USER
           valueFrom:
+            secretKeyRef:
+               name: pulp-postgres-db-credentials
+               key: user 
+        - name: SQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+               name: pulp-postgres-db-credentials
+               key: password
+        - name: NGROK_HOST
+          valueFrom:
             configMapKeyRef:
-              key: SQL_USER
-              name: backend-config
+              key: NGROK_HOST
+              name: pulp-backend-config
         - name: RECAPTCHA_PUBLIC_KEY
           valueFrom:
             configMapKeyRef:
               key: RECAPTCHA_PUBLIC_KEY
-              name: backend-config
+              name: pulp-backend-config
         - name: RECAPTCHA_PRIVATE_KEY
           valueFrom:
             configMapKeyRef:
               key: RECAPTCHA_PRIVATE_KEY
-              name: backend-config
-        image: gcr.io/sandbox-164917/pulp-backend:v1
-        imagePullPolicy: Always
-        name: backend
+              name: pulp-backend-config
         livenessProbe:
           httpGet:
-            path: /ready
-            port: 80
+            path: ready/
+            port: 8000
           initialDelaySeconds: 30 
           periodSeconds: 20
         readinessProbe:
           httpGet:
-            path: /ready
+            path: ready/
             port: 8000
           initialDelaySeconds: 15
           periodSeconds: 20
-          timeoutSeconds: 5
+          timeoutSeconds: 10 
           successThreshold: 1
           failureThreshold: 2
         ports:

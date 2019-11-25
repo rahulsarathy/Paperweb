@@ -1,0 +1,30 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: pulp-redis-deployment
+  labels:
+    component: pulp-redis-pod
+    pulp.service: pulp-redis
+    tier: backend 
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      component: pulp-redis-pod
+  template:
+    metadata:
+      labels:
+        component: pulp-redis-pod
+        pulp.service: pulp-redis
+        tier: backend 
+    spec:
+      containers:
+      - name: pulp-redis
+        args:
+        - redis-server
+        image: redis:5.0.6-alpine
+        resources: {}
+      restartPolicy: Always
+status: {}
