@@ -38,10 +38,6 @@ COPY ./requirements.txt /usr/src/app/
 # local directory via volumes in docker-compose.yaml
 # COPY ./app /usr/src/app/
 
-# copy code
-# handled by volume
->>>>>>> Stashed changes
-
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
