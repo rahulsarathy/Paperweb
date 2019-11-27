@@ -30,9 +30,13 @@ WORKDIR /usr/src/app
 
 RUN pip install --upgrade pip
 
-# copy code
-# handled by volume
-COPY ./app/requirements.txt /usr/src/app/
+# Copy requirements.txt for cache efficiency
+COPY ./requirements.txt /usr/src/app/
+
+# copy application code
+# commented out below because in dev we mount our
+# local directory via volumes in docker-compose.yaml
+# COPY ./app /usr/src/app/
 
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
