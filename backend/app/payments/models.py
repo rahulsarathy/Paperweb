@@ -41,8 +41,8 @@ class Address(models.Model):
 
 class InviteCode(models.Model):
     key = models.CharField(max_length=100, primary_key=True)
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
-    redeemer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, related_name='owner')
+    redeemer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, related_name='redeemer')
     redeemed = models.BooleanField(default=False)
 
     def __str__(self):
