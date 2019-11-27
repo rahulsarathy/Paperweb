@@ -39,6 +39,15 @@ class Address(models.Model):
             'country': self.country,
         }
 
+class InviteCode(models.Model):
+    key = models.CharField(max_length=100, primary_key=True)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    redeemer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    redeemed = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.key
+
 class BillingInfo(models.Model):
     delivery_address = models.OneToOneField(Address, on_delete=models.CASCADE, default=None, null=True)
     stripe_customer_id = models.CharField(_('Stripe Customer ID'), max_length=100, default=None, null=True)

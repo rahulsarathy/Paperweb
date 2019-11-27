@@ -98,7 +98,7 @@ export default class Profile extends React.Component {
         <div id="contact" className="subsection">
           <SubHeader title="Contact Info"/>
           <label>
-            <b>Email:
+            <b>{"Email: "}
             </b>
             {email}</label>
         </div>
@@ -107,8 +107,7 @@ export default class Profile extends React.Component {
           <label>You are not subscribed to pulp</label>
           <button>Subscribe</button>
         </div>
-        <h2>Invite Codes</h2>
-        <hr></hr>
+        <SubHeader title="Invite Codes"/>
         <div id="address" className="subsection">
           <SubHeader title="Delivery Info"/>
           <label>You have not yet set an address</label>
@@ -117,7 +116,7 @@ export default class Profile extends React.Component {
           <input name="city" placeholder="City"></input>
           <input name="state" placeholder="State"></input>
           <input name="zip" placeholder="Zip"></input>
-          <button>Change address</button>
+          <button>Update address</button>
         </div>
 
         <div id="delivery" className="subsection">
