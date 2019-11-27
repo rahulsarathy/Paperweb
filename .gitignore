@@ -4,6 +4,9 @@
 # Cached files
 backend/app/dump
 
+# Frontend files
+frontend/pulp/node_modules
+
 # Migrations
 backend/app/reading_list/migrations/*.py
 backend/app/payments/migrations/*.py
