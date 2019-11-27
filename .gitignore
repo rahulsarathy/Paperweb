@@ -12,3 +12,4 @@ backend/users/migrations/*.py
 # Directory metadata
 .idea
 celerybeat.pid
+.env.dev
