@@ -211,5 +211,5 @@ SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
+    os.path.join("../static"),
 ]

@@ -21,15 +21,18 @@ RUN pip wheel --wheel-dir=/root/wheels uwsgi psycopg2
 ###
 # Stage 2 - Image WITHOUT C compiler
 #
-FROM python:3.7-alpine as prodimage
+FROM python:3.7-alpine
 
 COPY --from=buildimage /root/wheels /root/wheels
 
 # set work directory
 WORKDIR /usr/src/app
 
+RUN pip install --upgrade pip
+
 # copy code
-COPY . /usr/src/app/
+# handled by volume
+COPY ./app/requirements.txt /usr/src/app/
 
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -41,7 +44,6 @@ RUN apk --update \
     postgresql-client
 
 # Install from pip archive
-RUN pip install --upgrade pip
 RUN pip install -r ./requirements.txt
 
 # Look for archives in # /root/wheels

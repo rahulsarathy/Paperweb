@@ -2,13 +2,14 @@
 .env.dev
 
 # Cached files
-backend/dump
+backend/app/dump
 
 # Migrations
-backend/reading_list/migrations/*.py
-backend/payments/migrations/*.py
-backend/users/migrations/*.py
+backend/app/reading_list/migrations/*.py
+backend/app/payments/migrations/*.py
+backend/app/users/migrations/*.py
 
 # Directory metadata
 .idea
 celerybeat.pid
+.env.dev
