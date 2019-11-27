@@ -39,7 +39,7 @@ def add_to_reading_list(request):
 
     article_json = get_parsed(link)
     title = article_json.get('title')
-    soup = BeautifulSoup(article_json.get('content'), None)
+    soup = BeautifulSoup(article_json.get('content', None), 'html.parser')
     article_text = soup.getText()
     article_json['parsed_text'] = article_text
 

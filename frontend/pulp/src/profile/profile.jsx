@@ -82,13 +82,9 @@ export default class Profile extends React.Component {
           <b>Email:</b>
           {email}
         </p>
+        <p>You are not subscribed</p>
         <div className="subscription-pane">
-          <h3>Subscription Info</h3>
-          <p>You are not subscribed</p>
-					<div className="option">
-						<p>Pulp - <b>6.99 / Month</b></p>
-						<button>Subscribe</button>
-					</div>
+          Subscribe to Pulp
         </div>
         <div className="address">
 					<h3>Delivery Info</h3>

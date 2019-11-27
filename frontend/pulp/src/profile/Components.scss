@@ -22,21 +22,17 @@ label {
 }
 
 .subscription-pane {
-  .option {
+    $box-height:40px;
     text-align: center;
     border-radius: 3px;
     border-width: 1px;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
     width: 200px;
-
-    button {
-      border-radius: 3px;
-      color: #3ac73a;
-      border-color: #3ac73a;
-      background-color: #b0ffc56b;
-      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
-    }
-  }
+    line-height: $box-height;
+    height: $box-height;
+    vertical-align: middle;
+    color: white;
+    background-color: #30d135;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
 }
 
 .paid {

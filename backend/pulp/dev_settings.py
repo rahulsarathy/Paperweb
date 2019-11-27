@@ -20,6 +20,17 @@ SECURE_SSL_REDIRECT = False
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://redis:6379/0",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+
+
 JAVASCRIPT_URLS = {
     'landing': 'http://localhost:8080/landing.js',
     'profile': 'http://localhost:8080/profile.js',
