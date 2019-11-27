@@ -16,7 +16,7 @@ RUN apk --update \
 
 # instead of installing, create a wheel
 RUN pip install --upgrade pip
-RUN pip wheel --wheel-dir=/root/wheels uwsgi psycopg2
+RUN pip wheel --wheel-dir=/root/wheels psycopg2
 
 ###
 # Stage 2 - Image WITHOUT C compiler
@@ -38,6 +38,10 @@ COPY ./requirements.txt /usr/src/app/
 # local directory via volumes in docker-compose.yaml
 # COPY ./app /usr/src/app/
 
+# copy code
+# handled by volume
+>>>>>>> Stashed changes
+
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
@@ -54,8 +58,7 @@ RUN pip install -r ./requirements.txt
 RUN pip install \
       --no-index \
       --find-links=/root/wheels \
-      psycopg2 \
-      uwsgi
+      psycopg2
 
 # run entrypoint-dev.sh
 ENTRYPOINT ["/usr/src/app/entrypoint-dev.sh"]

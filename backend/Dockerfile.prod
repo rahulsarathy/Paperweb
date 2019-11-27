@@ -9,6 +9,8 @@ RUN apk --update \
     linux-headers \
     musl-dev \
     libc-dev \
+    nodejs \
+    npm \
     python3-dev \
     postgresql \
     postgresql-dev
@@ -17,32 +19,45 @@ RUN apk --update \
 RUN pip install --upgrade pip
 RUN pip wheel --wheel-dir=/root/wheels psycopg2
 
+# Build jsx
+ENV PATH /app/pulp/node_modules/.bin:$PATH
+WORKDIR /app
+COPY ./frontend/pulp/package.json /app/package.json 
+COPY ./frontend/pulp/package-lock.json /app/package-lock.json
+COPY ./frontend/pulp/webpack.config.js /app/webpack.config.js
+RUN npm install --silent
+COPY ./frontend/pulp/src ./src
+COPY ./frontend/pulp/public ./public
+RUN npm run --silent build
+
 ###
-# Stage 2 - Image WITHOUT C compiler
-FROM python:3.7-alpine as prodimage
-
-# Create a group and user to run the app
-ARG APP_USER=appuser
-RUN addgroup -S appgroup && adduser -S ${APP_USER} -G appgroup
-
-
-# Copy wheels built in previous stage
-COPY --from=buildimage /root/wheels /root/wheels
-
-# set work directory
-WORKDIR /usr/src/app
-
-# copy code
-COPY . /usr/src/app/
-RUN chown -R ${APP_USER}:appgroup . 
+# Stage 2 - Image WITHOUT dev tools
+FROM python:3.7-alpine
 
 # Get alpine updates
 RUN apk --update \
     add --no-cache --virtual .build-deps \
     postgresql-client
+RUN pip install --upgrade pip
+
+# Create a group and user to run the app
+ARG APP_USER=appuser
+RUN addgroup -S appgroup && adduser -S ${APP_USER} -G appgroup
+
+# Copy wheels built in previous stage
+COPY --from=buildimage /root/wheels /root/wheels
+
+# Copy compiled js files to /static
+RUN mkdir -p /usr/src/app/static/js/build
+COPY --from=buildimage /app/build /usr/src/app/static/js/build
+
+# copy requirements.txt and code
+WORKDIR /usr/src/app
+COPY ./requirements.txt /usr/src/app/
+COPY ./app /usr/src/app/
+RUN chown -R ${APP_USER}:appgroup . 
 
 # Install from pip archive
-RUN pip install --upgrade pip
 RUN pip install -r ./requirements.txt
 
 # Look for archives in # /root/wheels
@@ -59,7 +74,7 @@ ENV PYTHONUNBUFFERED 1
 ENV SERVER_PORT=8000
 ENV NUM_WORKERS=3
 
-# uWSGI will listen on this port
+# gunicorn will listen on this port
 EXPOSE ${SERVER_PORT}
 
 # Change to a non-root user
@@ -71,5 +86,6 @@ ENTRYPOINT ["/usr/src/app/entrypoint-prod.sh"]
 # Start uWSGI
 CMD ["sh", "-c", "gunicorn pulp.wsgi \
                     --access-logfile - \
+                    --error-logfile - \
                     --workers ${NUM_WORKERS} \
                     --bind 0.0.0.0:${SERVER_PORT}"]

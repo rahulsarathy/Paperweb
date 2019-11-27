@@ -30,9 +30,6 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 3000
-        env:
-        - name: NODE_ENV
-          value: development
         resources: {}
       restartPolicy: Always
 status: {}

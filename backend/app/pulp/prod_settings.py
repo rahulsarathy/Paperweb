@@ -17,10 +17,10 @@ ALLOWED_HOSTS = ['*']
 
 DEBUG = False
 
-# sentry_sdk.init(
-#     dsn="https://376f22cb96ba4052a0cb5f47084f452c@sentry.io/1529016",
-#    integrations=[DjangoIntegration()]
-# )
+sentry_sdk.init(
+    dsn="https://376f22cb96ba4052a0cb5f47084f452c@sentry.io/1529016",
+    integrations=[DjangoIntegration()]
+)
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
