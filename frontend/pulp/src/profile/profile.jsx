@@ -14,6 +14,18 @@ import {
   Header
 } from './Components.jsx'
 
+class SubHeader extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return (<div>
+      <h2>{this.props.title}</h2>
+      <hr></hr>
+    </div>);
+  }
+}
+
 export default class Profile extends React.Component {
 
   constructor(props) {
@@ -23,8 +35,14 @@ export default class Profile extends React.Component {
     this.handleChange = this.handleChange.bind(this);
 
     this.state = {
-      changed: false,
-      archive_links: false
+      archive_links: false,
+      paid: false,
+      oldest: false,
+      address_line_1: '',
+      address_line_2: '',
+      city: '',
+      state: '',
+      zip: ''
     };
   }
 
@@ -77,46 +95,53 @@ export default class Profile extends React.Component {
     return (<div>
       <Header/>
       <div className="profile">
-        <h3>Your Info</h3>
-        <p>
-          <b>Email:</b>
-          {email}
-        </p>
-        <p>You are not subscribed</p>
-        <div className="subscription-pane">
-          Subscribe to Pulp
+        <div id="contact" className="subsection">
+          <SubHeader title="Contact Info"/>
+          <label>
+            <b>Email:
+            </b>
+            {email}</label>
         </div>
-        <div className="address">
-					<h3>Delivery Info</h3>
-          <label>
-            <input name="address_1" placeholder='Address Line 1' value={this.state.address_1} onChange={this.handleChange}/>
-          </label>
-          <label>
-            <input name="address_2" placeholder='Address Line 2' value={this.state.address_2} onChange={this.handleChange}/>
-          </label>
-          <label>
-            <input name="street" placeholder={'Zip'} value={this.state.street} onChange={this.handleChange}/>
-          </label>
-          <label>
-            <input name="street" placeholder={'State'} value={this.state.street} onChange={this.handleChange}/>
-          </label>
-          <label>
-            <input name="street" placeholder={'City'} value={this.state.street} onChange={this.handleChange}/>
-          </label>
+        <div id="subscription" className="subsection">
+          <SubHeader title="Subscription Info"/>
+          <label>You are not subscribed to pulp</label>
+          <button>Subscribe</button>
         </div>
-        <h3>Settings</h3>
-        <label>
-          <input name="archive_links" type="checkbox" checked={this.state.archive_links} onChange={this.handleInputChange}/>
-          Archive links once they are delivered
-        </label>
-        <label>
-          Deliver
-          <select name="sort" onChange={this.handleChange}>
-            <option value="oldest">oldest</option>
-            <option value="newest">newest</option>
-          </select>
-          articles first
-        </label>
+        <h2>Invite Codes</h2>
+        <hr></hr>
+        <div id="address" className="subsection">
+          <SubHeader title="Delivery Info"/>
+          <label>You have not yet set an address</label>
+          <input name="address_line_1" placeholder="Address Line 1"></input>
+          <input name="address_line_2" placeholder="Address Line 2"></input>
+          <input name="city" placeholder="City"></input>
+          <input name="state" placeholder="State"></input>
+          <input name="zip" placeholder="Zip"></input>
+          <button>Change address</button>
+        </div>
+
+        <div id="delivery" className="subsection">
+          <SubHeader title="Delivery Settings"/>
+          <div id="archive_links">
+            <label>
+              <input name="archive_links" type="checkbox" checked={this.state.archive_links} onChange={this.handleInputChange}/>
+              Archive links once they are delivered</label>
+          </div>
+          <div id="sortby">
+            <label>Deliver
+            </label>
+            <select name="sort" onChange={this.handleChange}>
+              <option value="oldest">oldest</option>
+              <option value="newest">newest</option>
+            </select>
+            <label>articles first
+            </label>
+          </div>
+        </div>
+        <div id="password" className="subsection">
+          <SubHeader title="Security"/>
+          <a href="../accounts/password/change">Change Password</a>
+        </div>
       </div>
     </div>);
   }

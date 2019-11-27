@@ -1,4 +1,15 @@
-body {}
+body {
+  font-family: helvetica;
+}
+
+h2 {
+  font-weight: bold;
+}
+
+hr {
+  margin-top: 0px;
+  margin-bottom: 1rem;
+}
 
 .profile {
   width: 50%;
@@ -9,7 +20,27 @@ label {
   display: block;
 }
 
-.address {
+#archive_links {
+
+  label {
+    margin-left: 10px;
+    input {
+      position: relative;
+      top: -2px;
+      left: -3px;
+    }
+  }
+}
+
+#sortby {
+  label {
+    display: inline-block;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+}
+
+#address {
   input {
     border-radius: 3px;
     border-style: solid;
@@ -18,22 +49,15 @@ label {
     border-width: 1px;
     border-color: #e4e4e4;
     width: 300px;
+    display: block;
+    margin-bottom: 10px;
   }
 }
 
-.subscription-pane {
-    $box-height:40px;
-    text-align: center;
-    border-radius: 3px;
-    border-width: 1px;
-    width: 200px;
-    line-height: $box-height;
-    height: $box-height;
-    vertical-align: middle;
-    color: white;
-    background-color: #30d135;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
+.subsection {
+  margin-top: 20px;
 }
+
 
 .paid {
   width: 80%;
