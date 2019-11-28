@@ -16,7 +16,7 @@ RUN apk --update \
 
 # instead of installing, create a wheel
 RUN pip install --upgrade pip
-RUN pip wheel --wheel-dir=/root/wheels uwsgi psycopg2
+RUN pip wheel --wheel-dir=/root/wheels psycopg2
 
 ###
 # Stage 2 - Image WITHOUT C compiler
@@ -30,9 +30,13 @@ WORKDIR /usr/src/app
 
 RUN pip install --upgrade pip
 
-# copy code
-# handled by volume
-COPY ./app/requirements.txt /usr/src/app/
+# Copy requirements.txt for cache efficiency
+COPY ./requirements.txt /usr/src/app/
+
+# copy application code
+# commented out below because in dev we mount our
+# local directory via volumes in docker-compose.yaml
+# COPY ./app /usr/src/app/
 
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -50,8 +54,7 @@ RUN pip install -r ./requirements.txt
 RUN pip install \
       --no-index \
       --find-links=/root/wheels \
-      psycopg2 \
-      uwsgi
+      psycopg2
 
 # run entrypoint-dev.sh
 ENTRYPOINT ["/usr/src/app/entrypoint-dev.sh"]

@@ -5,13 +5,11 @@ metadata:
     tier: backend
   name: pulp-backend-config
 data:
-  DEBUG: "1"
   DJANGO_SETTINGS_MODULE: pulp.prod_settings
   SECRET_KEY: '*-4q4au)57$4tz-s@mlt8mm!-ibju'
   SQL_ENGINE: django.db.backends.postgresql
   SQL_HOST: pulp-postgres-db-service
   SQL_PORT: "5432"
   SQL_DATABASE: pulp_db
-  NGROK_HOST: 95c0c850.ngrok.io
   RECAPTCHA_PUBLIC_KEY: "6LdhB8QUAAAAADsIgnDJ2HR4FyNm8MM1q1Xxw9_F"
   RECAPTCHA_PRIVATE_KEY: "6LdhB8QUAAAAAKJPN5j7tYFTohKxjQJ0_gdFt6wB"

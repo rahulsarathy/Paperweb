@@ -1,0 +1,17 @@
+# Stage 1: Buuild 
+FROM node:12.2.0-alpine as buildimage
+ENV PATH /app/pulp/node_modules/.bin:$PATH
+WORKDIR /app
+COPY ./pulp/package.json /app/package.json 
+COPY ./pulp/package-lock.json /app/package-lock.json
+COPY ./pulp/webpack.config.js /app/webpack.config.js
+RUN npm install
+COPY ./pulp/src ./src
+COPY ./pulp/public ./public
+RUN npm run build
+
+# State 2: Production
+FROM nginx:1.16.0-alpine
+COPY --from=buildimage /app/build /usr/share/nginx/html
+EXPOSE 8080
+CMD ["nginx", "-g", "daemon off;"]
