@@ -160,6 +160,7 @@ SITE_ID = 1
 
 AUTH_USER_MODEL = 'users.CustomUser'
 ACCOUNT_SIGNUP_FORM_CLASS = 'users.forms.AllauthSignupForm'
+# ACCOUNT_FORMS = {'signup': 'users.forms.MyCustomSignupForm'}
 ACCOUNT_USER_MODEL_USERNAME_FIELD = 'username'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False

@@ -45,6 +45,9 @@ class InviteCode(models.Model):
     redeemer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, related_name='redeemer')
     redeemed = models.BooleanField(default=False)
 
+    # Boolean to tell if invite code allows free subscription or not
+    premium = models.BooleanField(default=False)
+
     def __str__(self):
         return self.key
 
