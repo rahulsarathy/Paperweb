@@ -2,7 +2,7 @@ from pulp.settings import *
 
 DATABASES = {
     'default': {
-        "ENGINE": "django.db.backends.postgresql", 
+        "ENGINE": "django.db.backends.postgresql",
         "NAME": os.environ.get("SQL_DATABASE", "pulp_db"),
         "USER": os.environ.get("SQL_USER", "admin"),
         "PASSWORD": os.environ.get("SQL_PASSWORD", "password"),
@@ -10,8 +10,6 @@ DATABASES = {
         "PORT": os.environ.get("SQL_PORT", "5432"),
     }
 }
-
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 ALLOWED_HOSTS = ['*']
 
@@ -22,20 +20,9 @@ sentry_sdk.init(
     integrations=[DjangoIntegration()]
 )
 
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://pulp-redis-service:6379/0",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    }
-}
-
-
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
-SECURE_SSL_REDIRECT = False 
+SECURE_SSL_REDIRECT = False
 
 JAVASCRIPT_URLS = {
     'landing': '/static/js/build/landing.js',
@@ -55,4 +42,3 @@ CACHES = {
         }
     }
 }
-

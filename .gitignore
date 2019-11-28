@@ -1,5 +1,6 @@
 *.pyc
 .env.dev
+.idea/
 
 # Cached files
 backend/app/dump
@@ -14,6 +15,12 @@ backend/app/staticfiles/
 backend/app/reading_list/migrations/*.py
 backend/app/payments/migrations/*.py
 backend/app/users/migrations/*.py
+
+# Keep migration __init__.py
+!backend/app/reading_list/migrations/__init__.py
+!backend/app/payments/migrations/__init__.py
+!backend/app/users/migrations/__init__.py
+
 
 # Directory metadata
 .idea

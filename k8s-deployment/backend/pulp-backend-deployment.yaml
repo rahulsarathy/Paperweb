@@ -24,57 +24,22 @@ spec:
       - name: pulp-backend
         image: gcr.io/sandbox-164917/pulp-backend:v1
         imagePullPolicy: Always
-        env:
-        - name: DJANGO_SETTINGS_MODULE
-          valueFrom:
-            configMapKeyRef:
-              key: DJANGO_SETTINGS_MODULE
+        envFrom:
+          - configMapRef:
               name: pulp-backend-config
-        - name: SECRET_KEY
-          valueFrom:
-            configMapKeyRef:
-              key: SECRET_KEY
-              name: pulp-backend-config
-        - name: SQL_DATABASE
-          valueFrom:
-            configMapKeyRef:
-              key: SQL_DATABASE
-              name: pulp-backend-config
-        - name: SQL_ENGINE
-          valueFrom:
-            configMapKeyRef:
-              key: SQL_ENGINE
-              name: pulp-backend-config
-        - name: SQL_HOST
-          valueFrom:
-            configMapKeyRef:
-              key: SQL_HOST
-              name: pulp-backend-config
-        - name: SQL_PORT
-          valueFrom:
-            configMapKeyRef:
-              key: SQL_PORT
-              name: pulp-backend-config
+          - secretRef:
+              name: pulp-backend-credentials
+        env: 
         - name: SQL_USER
           valueFrom:
             secretKeyRef:
                name: pulp-postgres-db-credentials
-               key: user 
+               key: user
         - name: SQL_PASSWORD
           valueFrom:
             secretKeyRef:
                name: pulp-postgres-db-credentials
                key: password
-        - name: RECAPTCHA_PUBLIC_KEY
-          valueFrom:
-            configMapKeyRef:
-              key: RECAPTCHA_PUBLIC_KEY
-              name: pulp-backend-config
-        - name: RECAPTCHA_PRIVATE_KEY
-          valueFrom:
-            configMapKeyRef:
-              key: RECAPTCHA_PRIVATE_KEY
-              name: pulp-backend-config
         livenessProbe:
           httpGet:
             path: ready/

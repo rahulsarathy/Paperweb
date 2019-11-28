@@ -194,15 +194,15 @@ USE_TZ = True
 
 # Recaptcha
 RECAPTCHA_USE_SSL = True     # Defaults to False
-SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
+#SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "../static")
+    os.path.join(BASE_DIR, "static")
 ]
 
 LOGGING = {
@@ -219,4 +219,17 @@ LOGGING = {
             'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
         },
     },
+}
+
+PARSER_HOST = os.environ.get('PARSER_HOST')
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://{REDIS_HOST}:{REDIS_PORT}/0".format(REDIS_HOST=os.environ.get('REDIS_HOST'),
+                                                                 REDIS_PORT=os.environ.get('REDIS_PORT')),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
 }
