@@ -28,6 +28,17 @@ spec:
         - dev
         image: gcr.io/sandbox-164917/pulp-node:v1
         imagePullPolicy: Always
+        env:
+        - name: PARSER_HOST 
+          valueFrom:
+            configMapKeyRef:
+              key: PARSER_HOST 
+              name: pulp-backend-config
+        - name: PARSER_PORT
+          valueFrom:
+            configMapKeyRef:
+              key: PARSER_PORT
+              name: pulp-backend-config
         ports:
         - containerPort: 3000
         resources: {}

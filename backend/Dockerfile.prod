@@ -71,11 +71,11 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 # Define environment variables, and default values if not set
-ENV SERVER_PORT=8000
+ENV BACKEND_PORT=8000
 ENV NUM_WORKERS=3
 
 # gunicorn will listen on this port
-EXPOSE ${SERVER_PORT}
+EXPOSE ${BACKEND_PORT}
 
 # Change to a non-root user
 USER ${APP_USER}:${APP_USER}
@@ -88,4 +88,4 @@ CMD ["sh", "-c", "gunicorn pulp.wsgi \
                     --access-logfile - \
                     --error-logfile - \
                     --workers ${NUM_WORKERS} \
-                    --bind 0.0.0.0:${SERVER_PORT}"]
+                    --bind 0.0.0.0:${BACKEND_PORT}"]

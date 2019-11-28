@@ -20,10 +20,6 @@ sentry_sdk.init(
     integrations=[DjangoIntegration()]
 )
 
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-SECURE_SSL_REDIRECT = False 
-
 JAVASCRIPT_URLS = {
     'landing': '/static/js/build/landing.js',
     'profile': '/static/js/build/profile.js',
@@ -42,6 +38,3 @@ CACHES = {
         }
     }
 }
-
-PARSER_HOST = 'pulp-parser-service'
-
