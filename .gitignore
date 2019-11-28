@@ -10,6 +10,7 @@ frontend/pulp/node_modules
 
 # Staticfiles
 backend/app/staticfiles/
+backend/staticfiles/
 
 # Migrations
 backend/app/reading_list/migrations/*.py
