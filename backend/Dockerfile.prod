@@ -48,11 +48,11 @@ RUN addgroup -S appgroup && adduser -S ${APP_USER} -G appgroup
 COPY --from=buildimage /root/wheels /root/wheels
 
 # Copy compiled js files to /static
-RUN mkdir -p /usr/src/app/static/js/build
+WORKDIR /usr/src/app
+RUN mkdir -p ./static/js/build
 COPY --from=buildimage /app/build /usr/src/app/static/js/build
 
 # copy requirements.txt and code
-WORKDIR /usr/src/app
 COPY ./requirements.txt /usr/src/app/
 COPY ./app /usr/src/app/
 RUN chown -R ${APP_USER}:appgroup . 
