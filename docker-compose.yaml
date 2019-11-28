@@ -37,11 +37,11 @@ services:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=paperweb
       - POSTGRES_DB=pulp_db
-  node:
-    build: ./node
+  parser:
+    build: ./parser
     command: npm run dev
     volumes:
-      - ./node:/usr/src/app/
+      - ./parser:/usr/src/app/
       - /usr/src/app/node_modules
     ports:
       - 3000:3000
