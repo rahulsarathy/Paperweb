@@ -75,6 +75,11 @@ spec:
             configMapKeyRef:
               key: RECAPTCHA_PRIVATE_KEY
               name: pulp-backend-config
+        - name: EMAIL_HOST_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              key: EMAIL_HOST_PASSWORD
+              name: pulp-backend-config
         livenessProbe:
           httpGet:
             path: ready/

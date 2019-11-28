@@ -7,4 +7,13 @@ done
 
 >&2 echo "Postgres is up now - continuing"
 
+echo "Running collectstatic"
+python manage.py collectstatic --noinput
+if [ -d staticfiles ]; then 
+   echo " -> collectstatic was successful!"
+else
+   echo " -> ** ERROR: collectstatic was not successful **"
+fi
+>&2 echo "Finished running collectstatic"
+
 exec "$@"

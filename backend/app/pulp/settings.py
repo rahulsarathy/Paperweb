@@ -193,13 +193,13 @@ USE_TZ = True
 
 # Recaptcha
 RECAPTCHA_USE_SSL = True     # Defaults to False
-SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
+#SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static")
 ]
