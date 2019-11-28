@@ -43,3 +43,5 @@ CACHES = {
     }
 }
 
+PARSER_HOST = 'pulp-parser-service'
+

@@ -10,7 +10,7 @@ import os
 from django.http import JsonResponse
 from reading_list.serializers import ReadingListItemSerializer
 from django.core.cache import cache
-
+from django.conf import settings
 
 def get_reading_list(user, refresh=False):
     key = 'reading_list' + user.email
@@ -38,7 +38,8 @@ def get_parsed(url):
             json_response = my_article.mercury_response
         except:
             data = {'url': url}
-            response = requests.post('http://pulp_node_1:3000/api/mercury', data=data)
+            parser_url = 'http://{}:3000/api/mercury'.format(settings.PARSER_HOST)
+            response = requests.post(parser_url, data=data)
             response_string = response.content.decode("utf-8")
             json_response = json.loads(response_string)
             cache.set(url, response_string)

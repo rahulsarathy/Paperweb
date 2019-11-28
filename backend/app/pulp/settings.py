@@ -219,3 +219,5 @@ LOGGING = {
         },
     },
 }
+
+PARSER_HOST = os.environ.get('PARSER_HOST')
