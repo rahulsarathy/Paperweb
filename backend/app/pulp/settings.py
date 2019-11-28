@@ -221,3 +221,14 @@ LOGGING = {
 }
 
 PARSER_HOST = os.environ.get('PARSER_HOST')
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://{REDIS_HOST}:{REDIS_PORT}/0".format(REDIS_HOST=os.environ.get('REDIS_HOST'),
+                                                                 REDIS_PORT=os.environ.get('REDIS_PORT')),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
