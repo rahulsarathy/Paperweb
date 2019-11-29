@@ -1,5 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from payments.models import InviteCode
+import string
+import random
 
 class Command(BaseCommand):
 
@@ -14,6 +16,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         key = randomString(12)
         new_invite = InviteCode(key=key)
+        new_invite.save()
 
 def randomString(stringLength=10):
     """Generate a random string of fixed length """
