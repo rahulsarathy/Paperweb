@@ -26,6 +26,17 @@ class SubHeader extends React.Component {
   }
 }
 
+class InviteCode extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return (<div className="invitecode">
+      {this.props.invitecode}
+    </div>);
+  }
+}
+
 export default class Profile extends React.Component {
 
   constructor(props) {
@@ -33,6 +44,7 @@ export default class Profile extends React.Component {
     this.cancelPayment = this.cancelPayment.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.getInviteCodes = this.getInviteCodes.bind(this);
 
     this.state = {
       archive_links: false,
@@ -42,7 +54,8 @@ export default class Profile extends React.Component {
       address_line_2: '',
       city: '',
       state: '',
-      zip: ''
+      zip: '',
+      invite_codes: []
     };
   }
 
@@ -56,7 +69,7 @@ export default class Profile extends React.Component {
       url: '../api/users/get_invite_codes',
       type: 'GET',
       success: function(data, statusText, xhr) {
-        console.log(data);
+        this.setState({invite_codes: data});
       }.bind(this)
     });
   }
@@ -118,7 +131,19 @@ export default class Profile extends React.Component {
           <label>You are not subscribed to pulp</label>
           <button>Subscribe</button>
         </div>
-        <SubHeader title="Invite Codes"/>
+        <div id="invitecodes">
+          <SubHeader title="Invite Codes"/>
+          <Row>
+            <Col>
+              {this.state.invite_codes.map((invite_code, index) => <InviteCode key={index} invitecode={invite_code.key}/>)}
+            </Col>
+            <Col>
+              {
+                this.state.invite_codes.map((invite_code) => <div>copy to clipboard</div>)
+              }
+            </Col>
+          </Row>
+        </div>
         <div id="address" className="subsection">
           <SubHeader title="Delivery Info"/>
           <label>You have not yet set an address</label>
@@ -129,7 +154,6 @@ export default class Profile extends React.Component {
           <input name="zip" placeholder="Zip"></input>
           <button>Update address</button>
         </div>
-
         <div id="delivery" className="subsection">
           <SubHeader title="Delivery Settings"/>
           <div id="archive_links">
