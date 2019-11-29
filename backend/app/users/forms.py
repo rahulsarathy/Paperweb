@@ -8,6 +8,7 @@ from django import forms
 from captcha.fields import ReCaptchaField
 from payments.models import InviteCode
 from allauth.compat import ugettext, ugettext_lazy as _
+from payments.management.commands.generate_invite_code import generate_invite_code
 
 class CustomUserCreationForm(UserCreationForm):
 
@@ -50,4 +51,8 @@ class AllauthSignupForm(forms.Form):
             check_invite.save()
         except ObjectDoesNotExist:
             raise ObjectDoesNotExist
+
+        for i in range(5):
+            generate_invite_code(user)
+
         user.save()

@@ -48,6 +48,17 @@ export default class Profile extends React.Component {
 
   componentDidMount() {
     this.checkPaymentStatus();
+    this.getInviteCodes();
+  }
+
+  getInviteCodes() {
+    $.ajax({
+      url: '../api/users/get_invite_codes',
+      type: 'GET',
+      success: function(data, statusText, xhr) {
+        console.log(data);
+      }.bind(this)
+    });
   }
 
   checkPaymentStatus() {

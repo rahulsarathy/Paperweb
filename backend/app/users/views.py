@@ -1,18 +1,9 @@
-from django.contrib.auth import get_user_model
-from rest_framework import viewsets
-from users.serializers import UserSerializer
-from payments.models import BillingInfo, Address
-
+from payments.models import BillingInfo, Address, InviteCode
 from rest_framework.decorators import api_view, parser_classes
 from django.http import JsonResponse, HttpResponse
-from django.views.decorators.csrf import csrf_exempt
-from rest_framework.parsers import JSONParser
+from payments.serializers import InviteCodeSerializer
 import json
-from django.views import generic
-from django.urls import reverse_lazy
-from django.contrib.auth.forms import UserCreationForm
-from django import forms
-from django.shortcuts import render
+
 
 @api_view(['GET'])
 def get_address(request):
@@ -26,6 +17,14 @@ def get_address(request):
         to_send = ''
 
     return JsonResponse(to_send, safe=False)
+
+@api_view(['GET'])
+def get_invite_codes(request):
+    user = request.user
+    invite_codes = InviteCode.objects.filter(owner=user, redeemer=None)
+    serializer = InviteCodeSerializer(invite_codes, many=True)
+    json_response = serializer.data
+    return JsonResponse(json_response, safe=False)
 
 @api_view(['POST'])
 def set_address(request):

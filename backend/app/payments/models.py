@@ -30,6 +30,7 @@ class Address(models.Model):
     state = models.CharField(max_length=100, null=True)
     zip = models.CharField(max_length=100, null=True)
     country = models.CharField(max_length=100)
+    set = models.BooleanField(_('Address set'), default=False)
 
     def to_json(self):
         return {

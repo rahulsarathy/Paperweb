@@ -14,11 +14,19 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
-        key = randomString(12)
-        new_invite = InviteCode(key=key)
-        new_invite.save()
+        generate_invite_code()
 
-def randomString(stringLength=10):
+
+def generate_invite_code(user=None):
+    key = random_string(12)
+    if user is not None:
+        new_invite = InviteCode(key=key, owner=user)
+    else:
+        new_invite = InviteCode(key=key)
+    new_invite.save()
+
+
+def random_string(stringLength=10):
     """Generate a random string of fixed length """
     letters = string.ascii_lowercase
     return ''.join(random.choice(letters) for i in range(stringLength))
