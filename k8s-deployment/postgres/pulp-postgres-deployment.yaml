@@ -24,9 +24,6 @@ spec:
           imagePullPolicy: "IfNotPresent"
           ports:
             - containerPort: 5432
-          envFrom:
-            - configMapRef:
-                name: pulp-postgres-db-config
           env:
             - name: POSTGRES_USER
               valueFrom:
@@ -38,6 +35,11 @@ spec:
                 secretKeyRef:
                   name: pulp-postgres-db-credentials
                   key: password
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: pulp-backend-config
+                  key: SQL_DATABASE
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: pulp-postgres-db-volume

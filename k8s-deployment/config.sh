@@ -1,2 +1,3 @@
+PROJECT_HOME=/home/vijay/Pulp
 PROJECT_ID=sandbox-164917
 IMAGE_VERSION=v1

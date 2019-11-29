@@ -11,8 +11,6 @@ DATABASES = {
     }
 }
 
-ALLOWED_HOSTS = ['*']
-
 DEBUG = False
 
 sentry_sdk.init(
@@ -26,8 +24,6 @@ JAVASCRIPT_URLS = {
     'reading_list': '/static/js/build/reading_list.js',
     'article': '/static/js/build/article.js',
 }
-
-AWS_BUCKET = 'pulpscrapedarticles'
 
 CACHES = {
     "default": {

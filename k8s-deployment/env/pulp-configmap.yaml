@@ -6,14 +6,19 @@ metadata:
   name: pulp-backend-config
 data:
   DJANGO_SETTINGS_MODULE: pulp.prod_settings
+  ALLOWED_HOSTS: "*"
   SQL_ENGINE: django.db.backends.postgresql
   SQL_HOST: pulp-postgres-db-service
   SQL_PORT: "5432"
+  SQL_DATABASE: "pulp_db"
   BACKEND_PORT: "8000"
   PARSER_HOST: pulp-parser-service
   PARSER_PORT: "3000"
   REDIS_HOST: pulp-redis-service 
   REDIS_PORT: "6379"
-  SESSION_COOKIE_SECURE: "False" 
+  SESSION_COOKIE_SECURE: "False"
   CSRF_COOKIE_SECURE: "False" 
   SECURE_SSL_REDIRECT: "False" 
+  AWS_BUCKET: "pulpSscrapedarticlestest"
+  STATICFILES_STORAGE: "whitenoise.storage.CompressedStaticFilesStorage"
+  SILENCED_SYSTEM_CHECKS: "captcha.recaptcha_test_key_error"

@@ -11,12 +11,6 @@ DATABASES = {
     }
 }
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '10.105.80.65']
-
-SESSION_COOKIE_SECURE = False
-CSRF_COOKIE_SECURE = False
-SECURE_SSL_REDIRECT = False
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -28,7 +22,6 @@ JAVASCRIPT_URLS = {
 
 }
 
-AWS_BUCKET = 'pulpscrapedarticlestest'
-
 RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY')
 RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY')
+
