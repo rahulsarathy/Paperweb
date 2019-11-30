@@ -1,0 +1,33 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pulp-django-migrations
+spec:
+  template:
+    spec:
+      containers:
+        - name: django
+          image: gcr.io/sandbox-164917/pulp-backend:v1
+          command: ['python', 'manage.py', 'makemigrations']
+          command: ['python', 'manage.py', 'migrate']
+          envFrom:
+          - configMapRef:
+              name: pulp-backend-config
+          - secretRef:
+              name: pulp-backend-credentials
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: pulp-postgres-db-credentials
+                  key: user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pulp-postgres-db-credentials
+                  key: password
+
+            - name: POSTGRES_HOST
+              value: pulp-postgres-db-service
+      restartPolicy: Never
+  backoffLimit: 5

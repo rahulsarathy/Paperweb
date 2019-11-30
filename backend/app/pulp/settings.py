@@ -2,24 +2,19 @@ import os, sys
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 from celery.schedules import crontab
+from decouple import config, Csv
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = int(os.environ.get("DEBUG", default=0))
-
-# Need to change for production
-ALLOWED_HOSTS = ['*']
+SITE_ID = 1
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
+AWS_BUCKET = os.environ.get("AWS_BUCKET")
 
 # Application definition
-
 INSTALLED_APPS = [
     'health_check',                             # required
     'health_check.db',                          # stock Django health checkers
@@ -98,8 +93,8 @@ TEMPLATES = [
     },
 ]
 
+# Celery
 CELERY_BROKER_URL = 'redis://localhost:6379'
-
 CELERY_BEAT_SCHEDULE = {
  'poll-blogs': {
        'task': 'find_latest',
@@ -114,8 +109,6 @@ CELERY_BEAT_SCHEDULE = {
 WSGI_APPLICATION = 'pulp.wsgi.application'
 
 # Database
-# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
 DATABASES = {
     "default": {
         "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
@@ -129,7 +122,6 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -145,8 +137,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# emaillogin_project/settings.py
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
@@ -155,8 +145,6 @@ AUTHENTICATION_BACKENDS = (
     # `allauth` specific authentication methods, such as login by e-mail
     "allauth.account.auth_backends.AuthenticationBackend",
 )
-
-SITE_ID = 1
 
 AUTH_USER_MODEL = 'users.CustomUser'
 ACCOUNT_SIGNUP_FORM_CLASS = 'users.forms.AllauthSignupForm'
@@ -172,6 +160,9 @@ ACCOUNT_LOGOUT_ON_GET = True
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 10
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_REDIRECT_URL = '/'
+
+# emaillogin_project/settings.py
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'rahul@getpulp.io'
@@ -191,16 +182,13 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-
 # Recaptcha
 RECAPTCHA_USE_SSL = True     # Defaults to False
-#SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.2/howto/static-files/
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-#STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+STATICFILES_STORAGE = os.environ.get('STATICFILES_STORAGE')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static")
 ]
@@ -221,7 +209,11 @@ LOGGING = {
     },
 }
 
+CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default=False, cast=bool)
+SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=False, cast=bool)
+SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default=False, cast=bool)
 PARSER_HOST = os.environ.get('PARSER_HOST')
+PARSER_PORT = os.environ.get('PARSER_PORT')
 
 CACHES = {
     "default": {
@@ -233,3 +225,5 @@ CACHES = {
         }
     }
 }
+
+SILENCED_SYSTEM_CHECKS = config('SILENCED_SYSTEM_CHECKS', cast=Csv())

@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pulp-collect-static
+spec:
+  template:
+    metadata:
+      name: pulp-collect-static
+    spec:
+      containers:
+      - name: pulp-collect-static
+        image: gcr.io/sandbox-164917/pulp-backend:v1
+        imagePullPolicy: Always
+        env:
+        command: [ "/bin/sh", "-c", "python manage.py collectstatic --noinput" ]
+      restartPolicy: Never

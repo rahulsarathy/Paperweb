@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  labels:
-    tier: backend
-  name: pulp-parser-config
-data:
-  PARSER_HOST: pulp-parser-service
-  PARSER_PORT: "3000"
