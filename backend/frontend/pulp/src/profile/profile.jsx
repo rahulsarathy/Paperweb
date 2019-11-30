@@ -55,13 +55,25 @@ export default class Profile extends React.Component {
       city: '',
       state: '',
       zip: '',
-      invite_codes: []
+      country: '',
+      invite_codes: [],
+      show_address: false,
     };
   }
 
   componentDidMount() {
     this.checkPaymentStatus();
     this.getInviteCodes();
+  }
+
+  getAddress() {
+    $.ajax({
+      url: '../api/users/get_address',
+      type: 'GET',
+      success: function(data, statusText, xhr) {
+        console.log(data);
+      }.bind(this)
+    });
   }
 
   getInviteCodes() {
@@ -139,20 +151,14 @@ export default class Profile extends React.Component {
             </Col>
             <Col>
               {
-                this.state.invite_codes.map((invite_code) => <div>copy to clipboard</div>)
+                this.state.invite_codes.map((invite_code) => <div key={invite_code.key}> copy to clipboard</div>)
               }
             </Col>
           </Row>
         </div>
         <div id="address" className="subsection">
           <SubHeader title="Delivery Info"/>
-          <label>You have not yet set an address</label>
-          <input name="address_line_1" placeholder="Address Line 1"></input>
-          <input name="address_line_2" placeholder="Address Line 2"></input>
-          <input name="city" placeholder="City"></input>
-          <input name="state" placeholder="State"></input>
-          <input name="zip" placeholder="Zip"></input>
-          <button>Update address</button>
+          <Address_Pane />
         </div>
         <div id="delivery" className="subsection">
           <SubHeader title="Delivery Settings"/>

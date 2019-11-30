@@ -118,8 +118,6 @@ export default class Address_Pane extends React.Component {
 			<div>
 				<p>Your magazine will be delivered to <span className="highlighted">{this.state.address.line_1}</span> </p>
 				<Address_Modal set={false} handleChange={this.handleChange} setAddress={this.setAddress}/>
-				<h3>Schedule</h3>
-				<h4>Magazines will be delivered the <span className="highlighted">15th of every month</span></h4>
 			</div>
 			);
 		return (
