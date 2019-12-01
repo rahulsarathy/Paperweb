@@ -7,8 +7,6 @@ import classnames from 'classnames';
 import {Row, Col} from 'react-bootstrap';
 import {
   Address_Pane,
-  Payment_Pane,
-  Cancel_Pane,
   Header
 } from './components.jsx'
 
