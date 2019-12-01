@@ -17,6 +17,11 @@ from rest_framework.test import force_authenticate
 
 class ReadingListTest(APITestCase):
   def setUp(self):
+    # API endpoints
+    self.get_reading = '/api/reading_list/get_reading'
+    self.add_reading = '/api/reading_list/add_reading'
+    self.remove_reading = '/api/reading_list/remove_reading'
+
     self.test_user = CustomUser.objects.create(
         username='rsarathy', email='rita@sarathy.org')
     self.factory = APIRequestFactory()
@@ -66,7 +71,7 @@ class ReadingListTest(APITestCase):
     Checks that a valid get_reading() request returns the appropriate
     ReadingListItem objects.
     """
-    request = self.factory.get('/api/reading_list/get_reading')
+    request = self.factory.get(self.get_reading)
     force_authenticate(request, user=self.test_user)
     response = get_reading(request)
     self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -86,7 +91,7 @@ class ReadingListTest(APITestCase):
 
   def test_get_reading_unauthenticated(self):
     """Checks that an unauthenticated get_reading() request returns 403."""
-    request = self.factory.get('/api/reading_list/get_reading')
+    request = self.factory.get(self.get_reading)
     response = get_reading(request)
     self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
@@ -96,7 +101,7 @@ class ReadingListTest(APITestCase):
     Checks that remove_from_reading_list() correctly deletes a ReadingListItem
     from a user's reading list.
     """
-    request = self.factory.post('/api/blogs/remove_reading',
+    request = self.factory.post(self.remove_reading,
                                 {'link': 'rohit.sarathy.org/?p=439'})
     force_authenticate(request, user=self.test_user)
     response = remove_from_reading_list(request)
@@ -114,7 +119,7 @@ class ReadingListTest(APITestCase):
     Checks that an unauthenticated remove_from_reading_list() request
     returns 403.
     """
-    request = self.factory.post('/api/reading_list/remove_reading')
+    request = self.factory.post(self.remove_reading)
     response = remove_from_reading_list(request)
     self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
@@ -123,8 +128,16 @@ class ReadingListTest(APITestCase):
     Checks that remove_from_reading_list() returns 404 if a requested
     link for deletion doesn't exist within a user's reading list.
     """
-    request = self.factory.post('/api/reading_list/remove_reading',
+    request = self.factory.post(self.remove_reading,
                                 {'link': 'https://notnation.com'})
     force_authenticate(request, user=self.test_user)
     response = remove_from_reading_list(request)
     self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+  def test_add_to_reading_list_unauthenticated(self):
+    """
+    Checks that an unauthenticated add_to_reading_list() request returns 403.
+    """
+    request = self.factory.post(self.add_reading)
+    response = remove_from_reading_list(request)
+    self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
