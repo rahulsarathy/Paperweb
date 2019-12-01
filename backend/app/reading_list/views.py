@@ -24,6 +24,8 @@ HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML
 @api_view(['GET'])
 def get_reading(request):
     user = request.user
+    if not user.is_authenticated:
+        return JsonResponse(data={'error': 'Invalid request.'}, status=403)
     return get_reading_list(user)
 
 @api_view(['POST'])
