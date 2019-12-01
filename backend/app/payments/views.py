@@ -42,7 +42,7 @@ def payment_status(request):
 
     #check invite code for premium status first
     try:
-        invite_code = InviteCode.objects.get(owner=current_user)
+        invite_code = InviteCode.objects.get(redeemer=current_user)
         if invite_code.premium:
             return HttpResponse(status=208)
     except InviteCode.DoesNotExist:

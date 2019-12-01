@@ -41,7 +41,6 @@ class AllauthSignupForm(forms.Form):
         return self.cleaned_data
 
     def signup(self, request, user):
-        print("entered saved")
         invite_code = self.cleaned_data.get('invite_code')
         try:
             check_invite = InviteCode.objects.get(key=invite_code)
