@@ -7,6 +7,7 @@ module.exports = {
     reading_list: path.join(__dirname, 'src', 'reading_list', 'reading_list.jsx'),
     profile: path.join(__dirname, 'src', 'profile', 'profile.jsx'),
     article: path.join(__dirname, 'src', 'article', 'article.jsx'),
+    article: path.join(__dirname, 'src', 'subscribe', 'subscribe.jsx'),
   },
   output: {
     path: path.join(__dirname, 'build'),

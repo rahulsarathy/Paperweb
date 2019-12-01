@@ -27,6 +27,7 @@ JAVASCRIPT_URLS = {
     'profile': '/static/js/build/profile.js',
     'reading_list': '/static/js/build/reading_list.js',
     'article': '/static/js/build/article.js',
+    'subscribe': '/static/js/build/subscribe.js',
 }
 
 CACHES = {

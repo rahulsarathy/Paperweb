@@ -170,7 +170,7 @@ export default class Profile extends React.Component {
         <div id="subscription" className="subsection">
           <SubHeader title="Subscription Info"/>
           <label>You are not subscribed to pulp</label>
-          <button>Subscribe</button>
+          <a href="../subscribe">Subscribe</a>
         </div>
         <div id="invitecodes">
           <SubHeader title="Invite Codes"/>
