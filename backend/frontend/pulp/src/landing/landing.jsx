@@ -26,7 +26,7 @@ export default class Landing extends React.Component {
                 <div className="blogcopy">
                     <p>Whatever you don't finish, gets delivered to your doorstep.</p>
                 </div>
-                <button className="getstarted"><a href="/account/signup">Get Started</a></button>
+                <button className="getstarted"><a href="/accounts/signup">Get Started</a></button>
         	</div>
         </div>
     	);

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import $ from 'jquery';
 import { Modal } from 'react-bootstrap';
-import {Address_Modal} from './Components.jsx'
+import {Address_Modal} from './components.jsx'
 
 
 var componentForm = {
@@ -107,7 +107,6 @@ export default class Address_Pane extends React.Component {
 	}
 
 	render () {
-		// const addresses = this.createAddresses()
 		const no_address = (
 			<div>
 				<h3>You have not yet set a delivery address</h3>

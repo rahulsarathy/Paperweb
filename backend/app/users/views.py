@@ -3,6 +3,8 @@ from rest_framework.decorators import api_view, parser_classes
 from django.http import JsonResponse, HttpResponse
 from payments.serializers import InviteCodeSerializer
 import json
+from users.serializers import SettingsSerializer
+from users.models import Settings
 
 
 @api_view(['GET'])
@@ -13,10 +15,24 @@ def get_address(request):
         billing_info = BillingInfo.objects.get(customer=user)
         address = billing_info.delivery_address
         to_send = address.to_json()
-    except:
+    except BillingInfo.DoesNotExist:
         to_send = ''
 
     return JsonResponse(to_send, safe=False)
+
+
+@api_view(['GET'])
+def get_settings(request):
+    user = request.user
+    try:
+        my_settings = Settings.objects.get(setter=user)
+    except Settings.DoesNotExist:
+        my_settings = Settings(setter=user)
+        my_settings.save()
+    serializer = SettingsSerializer(my_settings)
+    json_response = serializer.data
+    return JsonResponse(json_response)
+
 
 @api_view(['GET'])
 def get_invite_codes(request):
@@ -25,6 +41,7 @@ def get_invite_codes(request):
     serializer = InviteCodeSerializer(invite_codes, many=True)
     json_response = serializer.data
     return JsonResponse(json_response, safe=False)
+
 
 @api_view(['POST'])
 def set_address(request):
@@ -52,7 +69,7 @@ def set_address(request):
 
         billing_info.delivery_address = new_address
         billing_info.save()
-    except:
+    except BillingInfo.DoesNotExist:
         billing_info = BillingInfo(customer=current_user, delivery_address=new_address)
         billing_info.save()
 

@@ -26,6 +26,7 @@ def get_reading(request):
     user = request.user
     return get_reading_list(user)
 
+
 @api_view(['POST'])
 def add_to_reading_list(request):
     user = request.user

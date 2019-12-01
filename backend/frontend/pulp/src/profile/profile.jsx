@@ -12,7 +12,7 @@ import {
   Unpaid,
   Paid,
   Header
-} from './Components.jsx'
+} from './components.jsx'
 
 class SubHeader extends React.Component {
   constructor(props) {
@@ -64,13 +64,14 @@ export default class Profile extends React.Component {
   componentDidMount() {
     this.checkPaymentStatus();
     this.getInviteCodes();
+    this.getSettings();
   }
 
-  getAddress() {
+  getSettings() {
     $.ajax({
-      url: '../api/users/get_address',
+      url: '../api/users/get_settings',
       type: 'GET',
-      success: function(data, statusText, xhr) {
+      success: function(data) {
         console.log(data);
       }.bind(this)
     });
@@ -91,7 +92,6 @@ export default class Profile extends React.Component {
       url: '../api/payments/payment_status',
       type: 'GET',
       success: function(data, statusText, xhr) {
-        console.log(xhr)
         if (xhr.status == 208) {
           this.setState({paid: true});
         } else {

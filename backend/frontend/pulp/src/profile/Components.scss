@@ -7,7 +7,7 @@ h2 {
 }
 
 hr {
-  margin-top: 0px;
+  margin-top: 0;
   margin-bottom: 1rem;
 }
 
@@ -20,10 +20,17 @@ label {
   display: block;
 }
 
-#archive_links {
+.address_pane {
+  color: red;
+  h3 {
+    font-size: 20px;
+  }
+}
 
+#archive_links {
   label {
     margin-left: 10px;
+
     input {
       position: relative;
       top: -2px;
@@ -57,7 +64,6 @@ label {
 .subsection {
   margin-top: 20px;
 }
-
 
 .paid {
   width: 80%;

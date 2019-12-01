@@ -12,6 +12,7 @@ from reading_list.serializers import ReadingListItemSerializer
 from django.core.cache import cache
 from django.conf import settings
 
+
 def get_reading_list(user, refresh=False):
     key = 'reading_list' + user.email
     if refresh is False and key in cache:
@@ -22,6 +23,7 @@ def get_reading_list(user, refresh=False):
         json_response = serializer.data
         cache.set(key, serializer.data)
     return JsonResponse(json_response, safe=False)
+
 
 # Check for mercury response in
 # 1. cache
@@ -36,7 +38,7 @@ def get_parsed(url):
             # check if mercury response is already stored in DB
             my_article = Article.objects.get(permalink=url)
             json_response = my_article.mercury_response
-        except:
+        except Article.DoesNotExist:
             data = {'url': url}
             parser_url = 'http://{}:3000/api/mercury'.format(settings.PARSER_HOST)
             response = requests.post(parser_url, data=data)
@@ -44,6 +46,7 @@ def get_parsed(url):
             json_response = json.loads(response_string)
             cache.set(url, response_string)
     return json_response
+
 
 # Create HTML file for article 3 column format and store in AWS S3
 def html_to_s3(url, user, article, json_response):
