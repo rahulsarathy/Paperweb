@@ -1,5 +1,5 @@
-import './Components.scss'
-import Header from './Header.jsx';
+import './components.scss'
+import Header from './header.jsx';
 
 export {
   Header
