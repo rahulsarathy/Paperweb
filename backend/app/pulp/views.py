@@ -39,9 +39,7 @@ def profile(request):
   if not request.user.is_authenticated:
     return HttpResponseRedirect('../')
   context = {
-    'stripe_public_key': STRIPE_PUBLIC_KEY,
     'js_file': settings.JAVASCRIPT_URLS['profile']
-
   }
   return render(request, 'profile.html', context)
 
@@ -82,7 +80,8 @@ def subscribe(request):
   if not request.user.is_authenticated:
     return HttpResponseRedirect('../')
   context = {
-    'js_file': settings.JAVASCRIPT_URLS['subscribe']
+    'js_file': settings.JAVASCRIPT_URLS['subscribe'],
+    'stripe_public_key': STRIPE_PUBLIC_KEY,
   }
   return render(request, 'subscribe.html', context)
 
