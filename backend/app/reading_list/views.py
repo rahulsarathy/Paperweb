@@ -63,6 +63,8 @@ def add_to_reading_list(request):
 @api_view(['POST'])
 def remove_from_reading_list(request):
     user = request.user
+    if not user.is_authenticated:
+        return JsonResponse(data={'error': 'Invalid request.'}, status=403)
     link = request.POST['link']
     try:
         article = Article.objects.get(permalink=link)
