@@ -5,7 +5,7 @@ from utils.google_maps_utils import autocomplete
 from utils import stripe_utils
 from utils.stripe_utils import stripe
 from django.http import JsonResponse, HttpResponse
-from payments.models import BillingInfo
+from payments.models import BillingInfo, InviteCode
 import json
 from datetime import datetime
 from django.utils.timezone import make_aware
@@ -39,11 +39,20 @@ def create_session(request):
 @api_view(['GET'])
 def payment_status(request):
     current_user = request.user
+
+    #check invite code for premium status first
+    try:
+        invite_code = InviteCode.objects.get(owner=current_user)
+        if invite_code.premium:
+            return HttpResponse(status=208)
+    except InviteCode.DoesNotExist:
+        invite_code = None
+
     stripe_customer_id = None
     try:
         current_billing_info = BillingInfo.objects.get(customer=current_user)
         stripe_customer_id = current_billing_info.stripe_customer_id
-    except:
+    except BillingInfo.DoesNotExist:
         # User has not paid yet
         return HttpResponse(status=200)
 
@@ -55,8 +64,10 @@ def payment_status(request):
     subscriptions = stripe_customer.get('subscriptions')
     subscriptions_data = subscriptions.get('data')
     if len(subscriptions_data) >= 1:
+        # User has paid
         return HttpResponse(status=208)
     else:
+        # User has paid
         return HttpResponse(status=200)
 
 @api_view(['GET'])

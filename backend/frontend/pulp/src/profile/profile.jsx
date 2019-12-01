@@ -9,8 +9,6 @@ import {
   Address_Pane,
   Payment_Pane,
   Cancel_Pane,
-  Unpaid,
-  Paid,
   Header
 } from './components.jsx'
 
