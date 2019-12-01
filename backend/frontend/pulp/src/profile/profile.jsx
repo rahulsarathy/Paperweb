@@ -42,14 +42,15 @@ export default class Profile extends React.Component {
   constructor(props) {
     super(props);
     this.cancelPayment = this.cancelPayment.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    this.handleCheck = this.handleCheck.bind(this);
+    this.handleSelector = this.handleSelector.bind(this);
     this.getInviteCodes = this.getInviteCodes.bind(this);
+    this.updateSettings = this.updateSettings.bind(this);
 
     this.state = {
       archive_links: false,
       paid: false,
-      oldest: false,
+      sortby: 'oldest',
       address_line_1: '',
       address_line_2: '',
       city: '',
@@ -57,7 +58,7 @@ export default class Profile extends React.Component {
       zip: '',
       country: '',
       invite_codes: [],
-      show_address: false,
+      show_address: false
     };
   }
 
@@ -67,12 +68,38 @@ export default class Profile extends React.Component {
     this.getSettings();
   }
 
+  updateSettings() {
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    let data = {
+      archive_links: this.state.archive_links,
+      sortby: this.state.sortby,
+      csrfmiddlewaretoken: csrftoken
+    }
+    $.ajax({
+      url: '../api/users/set_settings/',
+      type: 'POST',
+      data: data,
+      success: function(data) {
+        this.setState({
+          changed: false,
+        });
+      }.bind(this)
+    });
+  }
+
   getSettings() {
     $.ajax({
       url: '../api/users/get_settings',
       type: 'GET',
       success: function(data) {
-        console.log(data);
+        let deliver_oldest;
+        if (data.deliver_oldest) {
+          deliver_oldest = 'oldest';
+        }
+        else {
+          deliver_oldest = 'newest';
+        }
+        this.setState({archive_links: data.archive_links, sortby: deliver_oldest});
       }.bind(this)
     });
   }
@@ -111,19 +138,21 @@ export default class Profile extends React.Component {
     });
   }
 
-  handleInputChange(e) {
+  handleCheck(e) {
     const target = event.target;
     const value = target.type === 'checkbox'
       ? target.checked
       : target.value;
     const name = target.name;
-
     this.setState({[name]: value, changed: true});
   }
 
-  handleChange(e) {
+  handleSelector(e) {
     let name = e.target.name;
-    this.setState({[name]: e.target.value, changed: true});
+    this.setState({
+      [name]: e.target.value,
+      changed: true,
+    });
   }
 
   render() {
@@ -151,32 +180,36 @@ export default class Profile extends React.Component {
             </Col>
             <Col>
               {
-                this.state.invite_codes.map((invite_code) => <div key={invite_code.key}> copy to clipboard</div>)
+                this.state.invite_codes.map((invite_code) => <div key={invite_code.key}>
+                  copy to clipboard</div>)
               }
             </Col>
           </Row>
         </div>
         <div id="address" className="subsection">
           <SubHeader title="Delivery Info"/>
-          <Address_Pane />
+          <Address_Pane/>
         </div>
         <div id="delivery" className="subsection">
           <SubHeader title="Delivery Settings"/>
           <div id="archive_links">
             <label>
-              <input name="archive_links" type="checkbox" checked={this.state.archive_links} onChange={this.handleInputChange}/>
+              <input name="archive_links" type="checkbox" checked={this.state.archive_links} onChange={this.handleCheck}/>
               Archive links once they are delivered</label>
           </div>
           <div id="sortby">
             <label>Deliver
             </label>
-            <select name="sort" onChange={this.handleChange}>
+            <select name="sortby" value={this.state.sortby} onChange={this.handleSelector}>
               <option value="oldest">oldest</option>
               <option value="newest">newest</option>
             </select>
             <label>articles first
             </label>
           </div>
+          {
+            this.state.changed ? <div><button onClick={this.updateSettings}>Apply changes</button></div> : <div></div>
+          }
         </div>
         <div id="password" className="subsection">
           <SubHeader title="Security"/>

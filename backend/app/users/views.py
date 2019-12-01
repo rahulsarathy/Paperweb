@@ -5,6 +5,7 @@ from payments.serializers import InviteCodeSerializer
 import json
 from users.serializers import SettingsSerializer
 from users.models import Settings
+import logging
 
 
 @api_view(['GET'])
@@ -32,6 +33,23 @@ def get_settings(request):
     serializer = SettingsSerializer(my_settings)
     json_response = serializer.data
     return JsonResponse(json_response)
+
+
+@api_view(['POST'])
+def set_settings(request):
+    user = request.user
+    archive_links = request.POST.get('archive_links') == 'true'
+    deliver_oldest = request.POST.get('sortby') == 'oldest'
+    try:
+        my_settings = Settings.objects.get(setter=user)
+        my_settings.archive_links = archive_links
+        my_settings.deliver_oldest = deliver_oldest
+        my_settings.save()
+    except Settings.DoesNotExist:
+        logging.warning("")
+        return HttpResponse(status=500)
+
+    return HttpResponse(status=200)
 
 
 @api_view(['GET'])
