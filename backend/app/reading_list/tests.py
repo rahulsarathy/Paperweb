@@ -4,6 +4,7 @@ import json
 from reading_list.models import Article
 from reading_list.models import ReadingListItem
 from reading_list.views import get_reading
+from reading_list.views import add_to_reading_list
 from reading_list.views import remove_from_reading_list
 from users.models import CustomUser
 
@@ -134,10 +135,24 @@ class ReadingListTest(APITestCase):
     response = remove_from_reading_list(request)
     self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
+  def test_add_to_reading_list(self):
+    """TODO(rsarathy): What is this?"""
+    # TODO(rsarathy): Implement.
+    pass
+
   def test_add_to_reading_list_unauthenticated(self):
     """
     Checks that an unauthenticated add_to_reading_list() request returns 403.
     """
     request = self.factory.post(self.add_reading)
-    response = remove_from_reading_list(request)
+    response = add_to_reading_list(request)
     self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+  def test_add_to_reading_list_bad_link(self):
+    """
+    Checks that an add_to_reading_list() request with a bad link returns 400.
+    """
+    request = self.factory.post(self.add_reading, {'link': 'badlink//.com'})
+    force_authenticate(request, user=self.test_user)
+    response = add_to_reading_list(request)
+    self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)

@@ -31,13 +31,15 @@ def get_reading(request):
 @api_view(['POST'])
 def add_to_reading_list(request):
     user = request.user
+    if not user.is_authenticated:
+        return JsonResponse(data={'error': 'Invalid request.'}, status=403)
     link = request.POST['link']
 
     validate = URLValidator()
     try:
         validate(link)
     except ValidationError:
-        return HttpResponse('Invalid URL', status=403)
+        return JsonResponse(data={'error': 'Invalid URL.'}, status=400)
 
     article_json = get_parsed(link)
     title = article_json.get('title')
