@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import $ from 'jquery';
 import shortid from 'shortid';
-import {Header} from './Components.jsx';
+import {Header} from './components.jsx';
 
 // article_json is passed to the dom
 export default class Article extends React.Component {

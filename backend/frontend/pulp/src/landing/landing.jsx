@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import $ from 'jquery';
 import shortid from 'shortid';
 import { Row, Col } from 'react-bootstrap';
-import {Header} from './Components.jsx';
+import {Header} from './components.jsx';
 
 export default class Landing extends React.Component {
 

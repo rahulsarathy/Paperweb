@@ -5,7 +5,7 @@ import shortid from 'shortid';
 import {CSSTransition, TransitionGroup} from "react-transition-group";
 import {Row, Col, Modal} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
-import {Header} from './Components.jsx';
+import {Header} from './components.jsx';
 
 class ReadingListItem extends React.Component {
 
