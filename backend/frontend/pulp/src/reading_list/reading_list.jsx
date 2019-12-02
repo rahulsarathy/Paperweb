@@ -13,25 +13,25 @@ import {
   Link,
   useHistory,
   useLocation,
-  useParams
+  useParams,
+  withRouter,
 } from "react-router-dom";
 
 class MenuItem extends React.Component {
   constructor(props) {
     super(props);
-
   }
 
   render() {
     let className;
     let image_url = '/static/icons/' + this.props.value + '.svg'
-    this.props.selected === this.props.value
+    this.props.location.pathname.split('/')[1] === this.props.value
       ? className = 'menu-item-selected'
       : className = "menu-item"
 
     return (<div className={className} onClick={this.props.onClick}>
       {
-        this.props.value === 'unread'
+        this.props.value === 'reading_list'
           ? (<div className="unread">
             <div className="number">{this.props.unread}</div>
           </div>)
@@ -54,6 +54,7 @@ export default class Switcher extends React.Component {
       article_data: {},
       selected: 'unread'
     };
+
   }
 
   changeSelected(value) {
@@ -61,26 +62,26 @@ export default class Switcher extends React.Component {
   }
 
   render() {
+    const RouterMenuItem = withRouter(MenuItem);
 
     return (<Router>
       <div>
         <Row className="readinglist-container">
           <Col className="sidebar">
             <Link to={'/reading_list'}>
-              <MenuItem onClick={() => this.changeSelected("unread")} unread={this.state.reading_list.length} selected={this.state.selected} value="unread" text={"Unread"}/>
+              <RouterMenuItem onClick={() => this.changeSelected("reading_list")} unread={this.state.reading_list.length} selected={this.state.selected} value="reading_list" text={"Unread"}/>
             </Link>
             <Link to={'/archive'}>
-              <MenuItem onClick={() => this.changeSelected("archive")} selected={this.state.selected} value="archive" text={"Archive"}/>
+              <RouterMenuItem onClick={() => this.changeSelected("archive")} selected={this.state.selected} value="archive" text={"Archive"}/>
             </Link>
             <Link to={'/settings'}>
-              <MenuItem onClick={() => this.changeSelected("settings")} selected={this.state.selected} value="settings" text={"Settings"}/>
+              <RouterMenuItem onClick={() => this.changeSelected("settings")} selected={this.state.selected} value="settings" text={"Settings"}/>
             </Link>
           </Col>
           <Col className="readinglist">
-            <Route path='/reading_list' exact={true} component={ReadingListView}/>
+            <Route path='/reading_list' component={ReadingListView}/>
             <Route path='/archive' component={Archive}/>
             <Route path='/settings' component={Profile}/>
-
           </Col>
         </Row>
       </div>
