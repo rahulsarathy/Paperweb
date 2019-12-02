@@ -12,19 +12,15 @@ export default class ReadingListView extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.addToList = this.addToList.bind(this);
     this.removeArticle = this.removeArticle.bind(this);
+    this.getReadingList = this.getReadingList.bind(this);
 
     this.state = {
       value: "",
-      reading_list: [],
       invalid_url: false,
-      article_data: {},
-      selected: 'unread'
     };
   }
 
-  componentDidMount() {
-    this.getReadingList();
-  }
+
 
   removeArticle(link) {
     var csrftoken = $("[name=csrfmiddlewaretoken]").val();
@@ -37,7 +33,7 @@ export default class ReadingListView extends React.Component {
       data: data,
       type: 'POST',
       success: function(data) {
-        this.setState({reading_list: data});
+        this.props.updateReadingList(data);
       }.bind(this)
     });
   }
@@ -52,7 +48,7 @@ export default class ReadingListView extends React.Component {
       data: data,
       type: 'GET',
       success: function(data) {
-        this.setState({reading_list: data});
+        this.props.updateReadingList(data);
       }.bind(this)
     });
   }
@@ -68,7 +64,8 @@ export default class ReadingListView extends React.Component {
       data: data,
       type: 'POST',
       success: function(data) {
-        this.setState({reading_list: data, value: ''});
+        this.props.updateReadingList(data);
+        // this.setState({value: ''});
       }.bind(this),
       error: function(xhr) {
         if (xhr.responseText == 'Invalid URL') {
@@ -83,7 +80,7 @@ export default class ReadingListView extends React.Component {
   }
 
   render() {
-    return (<div>
+    return (<div className="readinglist">
       <h1>Your Print List</h1>
       {
         this.state.invalid_url
@@ -95,12 +92,12 @@ export default class ReadingListView extends React.Component {
         <input placeholder="Input an article URL" value={this.state.value} onChange={this.handleChange}></input>
       </div>
       {
-        this.state.reading_list.length === 0
+        this.props.reading_list.length === 0
           ? <p className="no-articles">No articles currently saved</p>
           : <div></div>
       }
       <div className="reading-list-items">
-        {this.state.reading_list.map((reading_list_item, index) => <ReadingListItem key={index} added={reading_list_item.date_added} removeArticle={this.removeArticle} article={reading_list_item.article}/>)}
+        {this.props.reading_list.map((reading_list_item, index) => <ReadingListItem key={index} added={reading_list_item.date_added} removeArticle={this.removeArticle} article={reading_list_item.article}/>)}
       </div>
     </div>);
   }

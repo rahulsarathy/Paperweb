@@ -14,7 +14,7 @@ import {
   useHistory,
   useLocation,
   useParams,
-  withRouter,
+  withRouter
 } from "react-router-dom";
 
 class MenuItem extends React.Component {
@@ -47,18 +47,45 @@ export default class Switcher extends React.Component {
   constructor(props) {
     super(props);
     this.changeSelected = this.changeSelected.bind(this);
+    this.updateReadingList = this.updateReadingList.bind(this);
     this.state = {
       value: "",
       reading_list: [],
       invalid_url: false,
       article_data: {},
-      selected: 'unread'
+      selected: 'unread',
+      unread: 0,
     };
-
   }
+
+  componentDidMount() {
+    this.getReadingList();
+  }
+
+  getReadingList() {
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    let data = {
+      csrfmiddlewaretoken: csrftoken
+    }
+    $.ajax({
+      url: '../api/reading_list/get_reading',
+      data: data,
+      type: 'GET',
+      success: function(data) {
+        this.updateReadingList(data);
+      }.bind(this)
+    });
+  }
+
 
   changeSelected(value) {
     this.setState({selected: value});
+  }
+
+  updateReadingList(list) {
+    this.setState({
+      reading_list: list,
+    });
   }
 
   render() {
@@ -69,7 +96,7 @@ export default class Switcher extends React.Component {
         <Row className="readinglist-container">
           <Col className="sidebar">
             <Link to={'/reading_list'}>
-              <RouterMenuItem onClick={() => this.changeSelected("reading_list")} unread={this.state.reading_list.length} selected={this.state.selected} value="reading_list" text={"Unread"}/>
+              <RouterMenuItem onClick={() => this.changeSelected("reading_list")} selected={this.state.selected} unread={this.state.unread} value="reading_list" text={"Unread"}/>
             </Link>
             <Link to={'/archive'}>
               <RouterMenuItem onClick={() => this.changeSelected("archive")} selected={this.state.selected} value="archive" text={"Archive"}/>
@@ -79,7 +106,7 @@ export default class Switcher extends React.Component {
             </Link>
           </Col>
           <Col className="readinglist">
-            <Route path='/reading_list' component={ReadingListView}/>
+            <Route path='/reading_list' component={() => <ReadingListView reading_list={this.state.reading_list} updateReadingList={this.updateReadingList}/>}/>
             <Route path='/archive' component={Archive}/>
             <Route path='/settings' component={Profile}/>
           </Col>

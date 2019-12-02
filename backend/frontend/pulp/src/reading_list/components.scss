@@ -1,12 +1,5 @@
 .readinglist {
-  // width: 50%;
-  // max-width: 1500px;
-  // min-width: 400px;
-  display: inline-block;
-
-  h1 {
-    font-weight: bold;
-  }
+  margin-left: 30px;
 }
 
 .readinglist-container {
@@ -14,8 +7,8 @@
 }
 
 .sidebar {
-  max-width: 150px;
-  background-color: #424242;
+  max-width: 200px;
+  background-color: #000000;
   padding-right: 0;
 }
 $menu-font-size: 25px;
@@ -23,23 +16,25 @@ $menu-item-color: #FFFFFF;
 $menu-item-margin: 20px;
 $menu-item-margin-top: 12px;
 $menu-item-height: 50px;
-
+$menu-item-padding-left: 20px;
 .menu-item {
   color: $menu-item-color;
   font-size: $menu-font-size;
   // margin-top: $menu-item-margin-top;
   height: $menu-item-height;
   line-height: $menu-item-height;
-  // margin-left: $menu-item-margin;
+  padding-left: $menu-item-padding-left;
+  // margin-left: $menu-ictem-margin;
 }
 
 .menu-item-selected {
-  color: $menu-item-color;
+  color: black;
   font-size: $menu-font-size;
-  background-color: #6d6d6d;
+  background-color: #ffffff;
   width: 100%;
   height: $menu-item-height;
   line-height: $menu-item-height;
+  padding-left: $menu-item-padding-left;
   // margin-top: $menu-item-margin-top;
   // margin-left: $menu-item-margin;
 }
@@ -59,7 +54,7 @@ $icon-height: 20px;
 .unread {
   height: $icon-height;
   width: $icon-height;
-  background-color: #F8F7F5;
+  background-color: black;
   display: inline-block;
   border-radius: 3px;
   margin-right: $icon-margin-right;
@@ -69,12 +64,13 @@ $icon-height: 20px;
   bottom: 2px;
 
   .number {
-    color: #424242;
+    color: white;
     // position: absolute;
     // top: 0px;
     text-align: center;
     font-size: 20px;
-    line-height: $icon-height;
+    vertical-align: middle;
+    line-height: 22px;
   }
 
   .circle {
@@ -139,9 +135,10 @@ $image-dim: 130px;
 .first-image {
   width: $image-dim;
   height: $image-dim;
-  position: absolute;
-  right: -180;
-  top: 28;
+  // position: absolute;
+  // right: 30px;
+  // top: 25px;
+  display: inline-block;
   object-fit: cover;
   border-radius: 3px;
 }
@@ -156,6 +153,7 @@ $image-dim: 130px;
   margin-bottom: 10px;
   // width: 80%;
   position: relative;
+  max-width: 800px;
 
   h3 {
     font-family: helvetica;
@@ -193,7 +191,7 @@ $image-dim: 130px;
 
   .faded-content {
     position: relative;
-
+    width: 80%;
     .content {
       height: $excerpt-height;
       overflow-y: hidden;
@@ -201,7 +199,7 @@ $image-dim: 130px;
     }
 
     .gradient {
-      background: linear-gradient(to bottom, rgba(248,247,245,0) 0%,rgba(248,247,245,1) 100%);
+      background: linear-gradient(to bottom, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);
       right: 0;
       bottom: 0;
       left: 0;
