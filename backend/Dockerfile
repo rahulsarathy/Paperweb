@@ -17,6 +17,7 @@ RUN apk --update \
 # instead of installing, create a wheel
 RUN pip install --upgrade pip
 RUN pip wheel --wheel-dir=/root/wheels psycopg2
+RUN pip wheel --wheel-dir=/root/wheels vcrpy
 
 ###
 # Stage 2 - Image WITHOUT C compiler
@@ -55,6 +56,10 @@ RUN pip install \
       --no-index \
       --find-links=/root/wheels \
       psycopg2
+RUN pip install \
+      --no-index \
+      --find-links=/root/wheels \
+      vcrpy
 
 # run entrypoint-dev.sh
 ENTRYPOINT ["/usr/src/app/entrypoint-dev.sh"]
