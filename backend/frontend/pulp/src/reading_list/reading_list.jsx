@@ -6,6 +6,15 @@ import {CSSTransition, TransitionGroup} from "react-transition-group";
 import {Row, Col, Modal} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import {Header} from './components.jsx';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useHistory,
+  useLocation,
+  useParams
+} from "react-router-dom";
 
 class ReadingListItem extends React.Component {
 
@@ -104,7 +113,9 @@ class MenuItem extends React.Component {
     return (<div className={className} onClick={this.props.onClick}>
       {
         this.props.value === 'unread'
-          ? (<div className="unread"><div className="number">{this.props.unread}</div></div>)
+          ? (<div className="unread">
+            <div className="number">{this.props.unread}</div>
+          </div>)
           : (<img className="icon" src={image_url}/>)
       }
       {this.props.text}
@@ -112,7 +123,7 @@ class MenuItem extends React.Component {
   }
 }
 
-export default class ReadingList extends React.Component {
+class ReadingList extends React.Component {
 
   constructor(props) {
     super(props);
@@ -125,7 +136,6 @@ export default class ReadingList extends React.Component {
       value: "",
       reading_list: [],
       invalid_url: false,
-      show_article: false,
       article_data: {},
       selected: 'unread'
     };
@@ -191,42 +201,72 @@ export default class ReadingList extends React.Component {
     this.setState({value: e.target.value});
   }
 
+  render() {
+    return (<div>
+      <h1>Your Print List</h1>
+      {
+        this.state.invalid_url
+          ? <h3>Invalid URL</h3>
+          : <div></div>
+      }
+      <div className="add-article">
+        <button onClick={this.addToList}>+</button>
+        <input placeholder="Input an article URL" value={this.state.value} onChange={this.handleChange}></input>
+      </div>
+      {
+        this.state.reading_list.length === 0
+          ? <p className="no-articles">No articles currently saved</p>
+          : <div></div>
+      }
+      <div className="reading-list-items">
+        {this.state.reading_list.map((reading_list_item, index) => <ReadingListItem key={index} added={reading_list_item.date_added} removeArticle={this.removeArticle} article={reading_list_item.article}/>)}
+      </div>
+    </div>);
+  }
+
+}
+
+export default class Switcher extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.changeSelected = this.changeSelected.bind(this);
+    this.state = {
+      value: "",
+      reading_list: [],
+      invalid_url: false,
+      article_data: {},
+      selected: 'unread'
+    };
+  }
+
   changeSelected(value) {
     this.setState({selected: value});
   }
 
   render() {
 
-    return (<div>
-      <Row className="readinglist-container">
-        <Col className="sidebar">
-          <MenuItem onClick={() => this.changeSelected("unread")} unread={this.state.reading_list.length} selected={this.state.selected} value="unread" text={"Unread"}/>
-          <MenuItem onClick={() => this.changeSelected("archive")} selected={this.state.selected} value="archive" text={"Archive"}/>
-          <MenuItem onClick={() => this.changeSelected("settings")} selected={this.state.selected} value="settings" text={"Settings"}/>
-        </Col>
-        <Col className="readinglist">
-          <h1>Your Print List</h1>
-          {
-            this.state.invalid_url
-              ? <h3>Invalid URL</h3>
-              : <div></div>
-          }
-          <div className="add-article">
-            <button onClick={this.addToList}>+</button>
-            <input placeholder="Input an article URL" value={this.state.value} onChange={this.handleChange}></input>
-          </div>
-          {
-            this.state.reading_list.length === 0
-              ? <p className="no-articles">No articles currently saved</p>
-              : <div></div>
-          }
-          <div className="reading-list-items">
-            {this.state.reading_list.map((reading_list_item, index) => <ReadingListItem key={index} added={reading_list_item.date_added} removeArticle={this.removeArticle} article={reading_list_item.article}/>)}
-          </div>
-        </Col>
-      </Row>
-    </div>);
+    return (<Router>
+      <div>
+        <Row className="readinglist-container">
+          <Col className="sidebar">
+            <Link to={'/'}>
+              <MenuItem onClick={() => this.changeSelected("unread")} unread={this.state.reading_list.length} selected={this.state.selected} value="unread" text={"Unread"}/>
+            </Link>
+            <Link to={'/archive'}>
+              <MenuItem onClick={() => this.changeSelected("archive")} selected={this.state.selected} value="archive" text={"Archive"}/>
+            </Link>
+            <Link to={'/settings'}>
+              <MenuItem onClick={() => this.changeSelected("settings")} selected={this.state.selected} value="settings" text={"Settings"}/>
+            </Link>
+          </Col>
+          <Col className="readinglist">
+            <Route path='/' component={ReadingList}/>
+          </Col>
+        </Row>
+      </div>
+    </Router>);
   }
 }
 
-ReactDOM.render(<ReadingList/>, document.getElementById('reading_list'))
+ReactDOM.render(<Switcher/>, document.getElementById('reading_list'))
