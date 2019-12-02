@@ -24,22 +24,26 @@ HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML
 @api_view(['GET'])
 def get_reading(request):
     user = request.user
+    if not user.is_authenticated:
+        return JsonResponse(data={'error': 'Invalid request.'}, status=403)
     return get_reading_list(user)
 
 
 @api_view(['POST'])
 def add_to_reading_list(request):
     user = request.user
+    if not user.is_authenticated:
+        return JsonResponse(data={'error': 'Invalid request.'}, status=403)
     link = request.POST['link']
 
     validate = URLValidator()
     try:
         validate(link)
     except ValidationError:
-        return HttpResponse('Invalid URL', status=403)
-
+        return JsonResponse(data={'error': 'Invalid URL.'}, status=400)
     article_json = get_parsed(link)
     title = article_json.get('title')
+
     soup = BeautifulSoup(article_json.get('content', None), 'html.parser')
     article_text = soup.getText()
     article_json['parsed_text'] = article_text
@@ -62,6 +66,8 @@ def add_to_reading_list(request):
 @api_view(['POST'])
 def remove_from_reading_list(request):
     user = request.user
+    if not user.is_authenticated:
+        return JsonResponse(data={'error': 'Invalid request.'}, status=403)
     link = request.POST['link']
     try:
         article = Article.objects.get(permalink=link)
