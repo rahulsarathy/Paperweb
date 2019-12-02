@@ -5,7 +5,7 @@ import shortid from 'shortid';
 import {CSSTransition, TransitionGroup} from "react-transition-group";
 import {Row, Col, Modal} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
-import {Header, ReadingListView, ReadingListItem, Archive} from './components.jsx';
+import {Header, ReadingListView, ReadingListItem, Archive, Profile} from './components.jsx';
 import {
   BrowserRouter as Router,
   Switch,
@@ -66,7 +66,7 @@ export default class Switcher extends React.Component {
       <div>
         <Row className="readinglist-container">
           <Col className="sidebar">
-            <Link to={'/'}>
+            <Link to={'/reading_list'}>
               <MenuItem onClick={() => this.changeSelected("unread")} unread={this.state.reading_list.length} selected={this.state.selected} value="unread" text={"Unread"}/>
             </Link>
             <Link to={'/archive'}>
@@ -79,6 +79,8 @@ export default class Switcher extends React.Component {
           <Col className="readinglist">
             <Route path='/reading_list' exact={true} component={ReadingListView}/>
             <Route path='/archive' component={Archive}/>
+            <Route path='/settings' component={Profile}/>
+
           </Col>
         </Row>
       </div>

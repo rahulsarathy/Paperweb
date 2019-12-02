@@ -42,8 +42,10 @@ export default class Profile extends React.Component {
     this.handleSelector = this.handleSelector.bind(this);
     this.getInviteCodes = this.getInviteCodes.bind(this);
     this.updateSettings = this.updateSettings.bind(this);
+    this.getEmail = this.getEmail.bind(this);
 
     this.state = {
+      email: '',
       archive_links: false,
       paid: false,
       sortby: 'oldest',
@@ -62,6 +64,7 @@ export default class Profile extends React.Component {
     this.checkPaymentStatus();
     this.getInviteCodes();
     this.getSettings();
+    this.getEmail();
   }
 
   updateSettings() {
@@ -78,6 +81,18 @@ export default class Profile extends React.Component {
       success: function(data) {
         this.setState({
           changed: false,
+        });
+      }.bind(this)
+    });
+  }
+
+  getEmail() {
+    $.ajax({
+      url: '../api/users/get_email',
+      type: 'GET',
+      success: function(data) {
+        this.setState({
+          email: data,
         });
       }.bind(this)
     });
@@ -154,14 +169,13 @@ export default class Profile extends React.Component {
   render() {
 
     return (<div>
-      <Header/>
       <div className="profile">
         <div id="contact" className="subsection">
           <SubHeader title="Contact Info"/>
           <label>
             <b>{"Email: "}
             </b>
-            {email}</label>
+            {this.state.email}</label>
         </div>
         <div id="subscription" className="subsection">
           <SubHeader title="Subscription Info"/>
@@ -216,4 +230,4 @@ export default class Profile extends React.Component {
   }
 }
 
-ReactDOM.render(<Profile/>, document.getElementById('profile'))
+// ReactDOM.render(<Profile/>, document.getElementById('profile'))

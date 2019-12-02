@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
+import {ReadingListItem, } from './components.jsx';
+
 
 export default class ReadingListView extends React.Component {
 

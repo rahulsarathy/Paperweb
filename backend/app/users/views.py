@@ -35,6 +35,12 @@ def get_settings(request):
     return JsonResponse(json_response)
 
 
+@api_view(['GET'])
+def get_email(request):
+    user = request.user
+    email = user.email
+    return JsonResponse(email, safe=False)
+
 @api_view(['POST'])
 def set_settings(request):
     user = request.user

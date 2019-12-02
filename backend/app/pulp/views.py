@@ -53,6 +53,15 @@ def delivery(request):
   return render(request, 'delivery.html', context)
 
 
+def switcher(request):
+  if not request.user.is_authenticated:
+    return HttpResponseRedirect('../')
+  context = {
+    'js_file': settings.JAVASCRIPT_URLS['reading_list']
+  }
+  return render(request, 'reading_list.html', context)
+
+
 def reading_list(request):
   if not request.user.is_authenticated:
     return HttpResponseRedirect('../')

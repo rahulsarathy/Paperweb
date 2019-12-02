@@ -10,4 +10,5 @@ urlpatterns = [
     path('get_invite_codes/', views.get_invite_codes),
     path('get_settings/', views.get_settings),
     path('set_settings/', views.set_settings),
+    path('get_email/', views.get_email),
 ]
