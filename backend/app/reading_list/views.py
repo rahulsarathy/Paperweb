@@ -40,9 +40,10 @@ def add_to_reading_list(request):
         validate(link)
     except ValidationError:
         return JsonResponse(data={'error': 'Invalid URL.'}, status=400)
-
     article_json = get_parsed(link)
     title = article_json.get('title')
+
+    # Default to HTML parsing.
     soup = BeautifulSoup(article_json.get('content'), None)
     article_text = soup.getText()
     article_json['parsed_text'] = article_text

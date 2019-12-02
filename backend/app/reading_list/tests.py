@@ -1,5 +1,8 @@
 from datetime import datetime
 import json
+from unittest import mock
+import requests
+import vcr
 
 from reading_list.models import Article
 from reading_list.models import ReadingListItem
@@ -27,13 +30,8 @@ class ReadingListTest(APITestCase):
         username='rsarathy', email='rita@sarathy.org')
     self.factory = APIRequestFactory()
 
-    # class Article(models.Model):
-    #     title = models.CharField(_('Article Title'), max_length=255)
-    #     permalink = models.URLField(_('Permalink'), primary_key=True, max_length=500)
-    #     word_count = models.IntegerField(_('Number of Words'), default=1, null=True)
-    #     mercury_response = JSONField()
     self.article1 = Article.objects.create(
-      title='Rent-Seeking and the York Marathon',
+      title='Rent-Seeking and the New York Marathon',
       permalink='rohit.sarathy.org/?p=439',
       word_count=2127,
       mercury_response={'success': 'true'}
@@ -55,19 +53,25 @@ class ReadingListTest(APITestCase):
       article=self.article2,
       date_added=make_aware(datetime(2019, 9, 18))
     )
-    # class ReadingListItem(models.Model):
-    #     reader = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    #     article = models.ForeignKey(Article, on_delete=models.CASCADE, default=None, null=True)
-    #     date_added = models.DateTimeField(_('Date Added'), default=timezone.now)
-    #     archived = models.NullBooleanField(_('Archived'))
-    #     trashed = models.NullBooleanField(_('Trashed'))
-    #     delivered = models.NullBooleanField(_('Delivered'))
-    #
-    #     class Meta:
-    #         unique_together = (("reader", "article"),)
+
+    self.to_add_link = 'https://slatestarcodex.com/2019/11/28/ssc-meetups-everywhere-retrospective/'
 
   @FakeRedis('django_redis.cache.RedisCache')
-  def test_get_reading(self):
+  @mock.patch('django.core.cache.cache.get', return_value=[
+    {
+      'article': {
+        'title': 'Rent-Seeking and the New York Marathon'
+      },
+      'date_added': '2019-11-26'
+    },
+    {
+      'article': {
+        'title': 'Too Much Dark Money In Almonds'
+      },
+      'date_added': '2019-09-18'
+    }
+  ])
+  def test_get_reading(self, mock_cache_get):
     """
     Checks that a valid get_reading() request returns the appropriate
     ReadingListItem objects.
@@ -82,7 +86,7 @@ class ReadingListTest(APITestCase):
 
     # The most recent ReadingListItem should be first...
     self.assertEqual(data[0]['article']['title'],
-                     'Rent-Seeking and the York Marathon')
+                     'Rent-Seeking and the New York Marathon')
     self.assertTrue('2019-11-26' in data[0]['date_added'])
 
     # ...followed by the older ReadingListItem.
@@ -135,10 +139,27 @@ class ReadingListTest(APITestCase):
     response = remove_from_reading_list(request)
     self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-  def test_add_to_reading_list(self):
-    """TODO(rsarathy): What is this?"""
-    # TODO(rsarathy): Implement.
-    pass
+  @FakeRedis('django_redis.cache.RedisCache')
+  @vcr.use_cassette('dump/test_add_to_reading_list.yaml')
+  @mock.patch('threading.Thread', return_value=None)
+  def test_add_to_reading_list(self, mock_thread):
+    request = self.factory.post(self.add_reading, {'link': self.to_add_link})
+    force_authenticate(request, user=self.test_user)
+    response = add_to_reading_list(request)
+
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
+    data = json.loads(response.content)
+    self.assertEqual(len(data), 3)
+
+    # The added article is the newest item in the reading list, so it should
+    # be first.
+    self.assertEqual(data[0]['article']['title'], 'SSC Meetups Everywhere Retrospective')
+    self.assertEqual(data[1]['article']['title'], self.article1.title)
+    self.assertEqual(data[2]['article']['title'], self.article2.title)
+
+    # Since we added one ReadingListItem object, the AWS S3 upload thread
+    # have been called.
+    self.assertEqual(mock_thread.call_count, 1)
 
   def test_add_to_reading_list_unauthenticated(self):
     """
