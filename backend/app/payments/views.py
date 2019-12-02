@@ -134,6 +134,7 @@ def stripe_hook(request):
 
     return HttpResponse(status=200)
 
+
 def handle_checkout_complete(event):
     stripe_response = event.data.object
 

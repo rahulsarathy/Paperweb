@@ -1,18 +1,12 @@
-from django.contrib.auth import get_user_model
-from rest_framework import viewsets
-from users.serializers import UserSerializer
-from payments.models import BillingInfo, Address
-
+from payments.models import BillingInfo, Address, InviteCode
 from rest_framework.decorators import api_view, parser_classes
 from django.http import JsonResponse, HttpResponse
-from django.views.decorators.csrf import csrf_exempt
-from rest_framework.parsers import JSONParser
+from payments.serializers import InviteCodeSerializer
 import json
-from django.views import generic
-from django.urls import reverse_lazy
-from django.contrib.auth.forms import UserCreationForm
-from django import forms
-from django.shortcuts import render
+from users.serializers import SettingsSerializer
+from users.models import Settings
+import logging
+
 
 @api_view(['GET'])
 def get_address(request):
@@ -22,10 +16,50 @@ def get_address(request):
         billing_info = BillingInfo.objects.get(customer=user)
         address = billing_info.delivery_address
         to_send = address.to_json()
-    except:
+    except BillingInfo.DoesNotExist:
         to_send = ''
 
     return JsonResponse(to_send, safe=False)
+
+
+@api_view(['GET'])
+def get_settings(request):
+    user = request.user
+    try:
+        my_settings = Settings.objects.get(setter=user)
+    except Settings.DoesNotExist:
+        my_settings = Settings(setter=user)
+        my_settings.save()
+    serializer = SettingsSerializer(my_settings)
+    json_response = serializer.data
+    return JsonResponse(json_response)
+
+
+@api_view(['POST'])
+def set_settings(request):
+    user = request.user
+    archive_links = request.POST.get('archive_links') == 'true'
+    deliver_oldest = request.POST.get('sortby') == 'oldest'
+    try:
+        my_settings = Settings.objects.get(setter=user)
+        my_settings.archive_links = archive_links
+        my_settings.deliver_oldest = deliver_oldest
+        my_settings.save()
+    except Settings.DoesNotExist:
+        logging.warning("")
+        return HttpResponse(status=500)
+
+    return HttpResponse(status=200)
+
+
+@api_view(['GET'])
+def get_invite_codes(request):
+    user = request.user
+    invite_codes = InviteCode.objects.filter(owner=user, redeemer=None)
+    serializer = InviteCodeSerializer(invite_codes, many=True)
+    json_response = serializer.data
+    return JsonResponse(json_response, safe=False)
+
 
 @api_view(['POST'])
 def set_address(request):
@@ -53,7 +87,7 @@ def set_address(request):
 
         billing_info.delivery_address = new_address
         billing_info.save()
-    except:
+    except BillingInfo.DoesNotExist:
         billing_info = BillingInfo(customer=current_user, delivery_address=new_address)
         billing_info.save()
 

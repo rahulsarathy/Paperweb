@@ -28,6 +28,7 @@ def get_reading(request):
         return JsonResponse(data={'error': 'Invalid request.'}, status=403)
     return get_reading_list(user)
 
+
 @api_view(['POST'])
 def add_to_reading_list(request):
     user = request.user
@@ -43,8 +44,7 @@ def add_to_reading_list(request):
     article_json = get_parsed(link)
     title = article_json.get('title')
 
-    # Default to HTML parsing.
-    soup = BeautifulSoup(article_json.get('content'), None)
+    soup = BeautifulSoup(article_json.get('content', None), 'html.parser')
     article_text = soup.getText()
     article_json['parsed_text'] = article_text
 

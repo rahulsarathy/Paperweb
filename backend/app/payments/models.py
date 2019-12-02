@@ -4,6 +4,7 @@ from django.conf import settings
 
 # Create your models here.
 
+
 class PaymentTier(models.Model):
     TIER0 = 'T0'
     TIER1 = 'T1'
@@ -21,6 +22,7 @@ class PaymentTier(models.Model):
         default=TIER0
     )
 
+
 class Address(models.Model):
     line_1 = models.CharField(max_length=500)
     line_2 = models.CharField(max_length=500, null=True)
@@ -28,6 +30,7 @@ class Address(models.Model):
     state = models.CharField(max_length=100, null=True)
     zip = models.CharField(max_length=100, null=True)
     country = models.CharField(max_length=100)
+    set = models.BooleanField(_('Address set'), default=False)
 
     def to_json(self):
         return {
@@ -38,6 +41,21 @@ class Address(models.Model):
             'zip': self.zip,
             'country': self.country,
         }
+
+
+class InviteCode(models.Model):
+    key = models.CharField(max_length=100, primary_key=True)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, related_name='owner')
+    redeemer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, related_name='redeemer')
+    redeemed = models.BooleanField(default=False)
+    notes = models.CharField(_('Notes Field'), null=True, default='', max_length=500)
+
+    # Boolean to tell if invite code allows free subscription or not
+    premium = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.key
+
 
 class BillingInfo(models.Model):
     delivery_address = models.OneToOneField(Address, on_delete=models.CASCADE, default=None, null=True)

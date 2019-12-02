@@ -1,0 +1,194 @@
+body {
+  font-family: helvetica;
+}
+
+h2 {
+  font-weight: bold;
+}
+
+hr {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.profile {
+  width: 50%;
+  margin: 80px auto auto;
+}
+
+label {
+  display: block;
+}
+
+.address_pane {
+  color: red;
+  h3 {
+    font-size: 20px;
+  }
+}
+
+#archive_links {
+  label {
+    margin-left: 10px;
+
+    input {
+      position: relative;
+      top: -2px;
+      left: -3px;
+    }
+  }
+}
+
+#sortby {
+  label {
+    display: inline-block;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+}
+
+#address {
+  input {
+    border-radius: 3px;
+    border-style: solid;
+    height: 35px;
+    color: black;
+    border-width: 1px;
+    border-color: #e4e4e4;
+    width: 300px;
+    display: block;
+    margin-bottom: 10px;
+  }
+}
+
+.subsection {
+  margin-top: 20px;
+}
+
+.paid {
+  width: 80%;
+  margin: auto;
+
+  .payment-tabs {
+    width: 100%;
+
+    .payment-tab {
+      width: 50%;
+      display: inline-block;
+      padding: 5px;
+      cursor: pointer;
+      border-radius: 4px;
+      border-style: none;
+      font-weight: bold;
+      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+      text-align: center;
+      color: black;
+    }
+
+    .selected {
+      color: white;
+      background-color: #2393FF;
+    }
+  }
+}
+
+.unpaid {
+  text-align: center;
+
+  .pay-card {
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    margin: auto;
+    width: 90%;
+    text-align: center;
+
+    .title {
+      font-size: 95px;
+      font-weight: bold;
+    }
+
+    .description {
+      font-size: 20px;
+      position: relative;
+      top: -25px;
+    }
+
+    .getpulp {
+      position: relative;
+      background-color: #34D058;
+      color: white;
+      border-style: none;
+      border-radius: 3px;
+      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+#modal-change-address {
+  input {
+    display: block;
+    width: 350px;
+  }
+
+  button {
+    border-radius: 2px;
+    border-style: none;
+  }
+
+  .set-address {
+    background-color: #2393FF;
+    color: white;
+  }
+
+  .close-modal {
+    // background-color: #;
+  }
+}
+
+.header {
+  z-index: 4;
+  font-size: 20px;
+  color: black;
+  box-shadow: 0 4px 5px -5px rgba(0, 0, 0, 0.5);
+  position: fixed;
+  width: 100%;
+  padding: 5px 0;
+  height: 45px;
+  /*  padding-right: 100;
+*/
+  top: 0;
+  background-color: white;
+  text-align: right;
+
+  .links {
+    margin-right: 80px;
+  }
+
+  p {
+    display: inline-block;
+    margin-left: 15px;
+    padding: 3px;
+  }
+
+  button {
+    color: #007bff;
+    background-color: Transparent;
+    border-style: none;
+  }
+
+  button:hover {
+    border-radius: 3px;
+    background-color: #2393FF;
+    transition: all 0.2s ease;
+    color: white;
+  };
+
+  p:hover {
+    border-radius: 3px;
+    background-color: #2393FF;
+    transition: all 0.2s ease;
+
+    a {
+      color: white;
+    }
+  };
+}

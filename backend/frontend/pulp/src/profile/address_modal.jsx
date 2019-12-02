@@ -39,19 +39,19 @@ export default class Address_Model extends React.Component {
 
 		return (
 			<div className="address_modal">
-				<button onClick={this.showModal} >{this.props.set ? "Set Address": "Change Address"}</button>
+				<button onClick={this.showModal} >{this.props.set ? "Set Address": "Edit Address"}</button>
 				<Modal show={this.state.show} onHide={this.closeModal} id="modal-change-address">
 					<Modal.Body>
-						<h2>Change Address</h2>
+						<h2>Edit Address</h2>
 						<div>
 						Address Line 1
 						<input id="line_1" onChange={this.props.handleChange} type="text"/>
 						Address Line 2
 						<input id="line_2" onChange={this.props.handleChange} />
 						City
-						<input id="city" onChange={this.props.handleChange}/> 
+						<input id="city" onChange={this.props.handleChange}/>
 						State/Province/Region
-						<input id="state" onChange={this.props.handleChange}/> 
+						<input id="state" onChange={this.props.handleChange}/>
 						Zip
 						<input id="zip" onChange={this.props.handleChange}/>
 						Country

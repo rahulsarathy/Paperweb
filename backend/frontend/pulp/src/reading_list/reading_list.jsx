@@ -5,7 +5,7 @@ import shortid from 'shortid';
 import {CSSTransition, TransitionGroup} from "react-transition-group";
 import {Row, Col, Modal} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
-import {Header} from './Components.jsx';
+import {Header} from './components.jsx';
 
 class ReadingListItem extends React.Component {
 
@@ -38,10 +38,12 @@ class ReadingListItem extends React.Component {
     let href = '../articles/?url=' + encodeURIComponent(article.permalink)
     let has_image = false;
     let style = {}
-    mercury_response.lead_image_url ? has_image = true : has_image = false
+    mercury_response.lead_image_url
+      ? has_image = true
+      : has_image = false
     if (!has_image) {
       style = {
-        width: '125%',
+        width: '125%'
       }
     }
     return (<div className="readinglist-item-container" style={style}>
@@ -51,18 +53,24 @@ class ReadingListItem extends React.Component {
         </h3>
         <div className="extras">
           <div className="domain">
-          <a target="_blank" href={article.permalink}>{host}</a>
+            <a target="_blank" href={article.permalink}>{host}</a>
           </div>
           <div className="author">
-          {mercury_response.author ? <p className="author_text">{'by ' + mercury_response.author}</p> : ''}
-        </div>
+            {
+              mercury_response.author
+                ? <p className="author_text">{'by ' + mercury_response.author}</p>
+                : ''
+            }
+          </div>
         </div>
         {
           this.state.hovered
             ? (<div className="hover-section">
               <button onClick={() => this.props.removeArticle(article.permalink)}>Remove</button>
             </div>)
-            : <div className="hover-section"><p className="date-added">Added on {added.split('T')[0]}</p></div>
+            : <div className="hover-section">
+                <p className="date-added">Added on {added.split('T')[0]}</p>
+              </div>
         }
         <div className="faded-content">
           <div className="content">
@@ -70,7 +78,11 @@ class ReadingListItem extends React.Component {
           </div>
           <div className="gradient"></div>
         </div>
-        {has_image ? <img className="first-image" src={mercury_response.lead_image_url}/> : <div></div>}
+        {
+          has_image
+            ? <img className="first-image" src={mercury_response.lead_image_url}/>
+            : <div></div>
+        }
       </div>
     </div>);
   }
@@ -140,7 +152,7 @@ export default class ReadingList extends React.Component {
       data: data,
       type: 'POST',
       success: function(data) {
-        this.setState({reading_list: data});
+        this.setState({reading_list: data, value: ''});
       }.bind(this),
       error: function(xhr) {
         if (xhr.responseText == 'Invalid URL') {
@@ -159,24 +171,24 @@ export default class ReadingList extends React.Component {
     return (<div>
       <Header/>
       <div className="readinglist">
-          <h1>Your Reading List 📚</h1>
-          {
-            this.state.invalid_url
-              ? <h3>Invalid URL</h3>
-              : <div></div>
-          }
-          <div className="add-article">
-            <button onClick={this.addToList}>+</button>
-            <input placeholder="Input an article URL" value={this.state.value} onChange={this.handleChange}></input>
-          </div>
-          {
-            this.state.reading_list.length === 0
-              ? <p className="no-articles">No articles currently saved</p>
-              : <div></div>
-          }
-          <div className="reading-list-items">
-            {this.state.reading_list.map((reading_list_item, index) => <ReadingListItem key={index} added={reading_list_item.date_added} removeArticle={this.removeArticle} article={reading_list_item.article}/>)}
-          </div>
+        <h1>Your Reading List 📚</h1>
+        {
+          this.state.invalid_url
+            ? <h3>Invalid URL</h3>
+            : <div></div>
+        }
+        <div className="add-article">
+          <button onClick={this.addToList}>+</button>
+          <input placeholder="Input an article URL" value={this.state.value} onChange={this.handleChange}></input>
+        </div>
+        {
+          this.state.reading_list.length === 0
+            ? <p className="no-articles">No articles currently saved</p>
+            : <div></div>
+        }
+        <div className="reading-list-items">
+          {this.state.reading_list.map((reading_list_item, index) => <ReadingListItem key={index} added={reading_list_item.date_added} removeArticle={this.removeArticle} article={reading_list_item.article}/>)}
+        </div>
       </div>
     </div>);
   }

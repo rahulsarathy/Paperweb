@@ -2,7 +2,7 @@ from pulp.settings import *
 
 DATABASES = {
     'default': {
-        "ENGINE": "django.db.backends.postgresql", 
+        "ENGINE": "django.db.backends.postgresql",
         "NAME": os.environ.get("SQL_DATABASE", "pulp_db"),
         "USER": os.environ.get("SQL_USER", "admin"),
         "PASSWORD": os.environ.get("SQL_PASSWORD", "password"),
