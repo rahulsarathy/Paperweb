@@ -1,14 +1,93 @@
 .readinglist {
-  width: 50%;
+  // width: 50%;
   // max-width: 1500px;
-  margin: 80px auto 0;
-  min-width: 400px;
+  // min-width: 400px;
+  display: inline-block;
 
   h1 {
     font-weight: bold;
   }
 }
 
+.readinglist-container {
+  height: 100%;
+}
+
+.sidebar {
+  max-width: 150px;
+  background-color: #424242;
+  padding-right: 0;
+}
+$menu-font-size: 25px;
+$menu-item-color: #FFFFFF;
+$menu-item-margin: 20px;
+$menu-item-margin-top: 12px;
+$menu-item-height: 50px;
+
+.menu-item {
+  color: $menu-item-color;
+  font-size: $menu-font-size;
+  // margin-top: $menu-item-margin-top;
+  height: $menu-item-height;
+  line-height: $menu-item-height;
+  // margin-left: $menu-item-margin;
+}
+
+.menu-item-selected {
+  color: $menu-item-color;
+  font-size: $menu-font-size;
+  background-color: #6d6d6d;
+  width: 100%;
+  height: $menu-item-height;
+  line-height: $menu-item-height;
+  // margin-top: $menu-item-margin-top;
+  // margin-left: $menu-item-margin;
+}
+$icon-margin-right: 5px;
+$icon-margin-left: 5px;
+$icon-height: 20px;
+
+.icon {
+  height: $icon-height;
+  display: inline-block;
+  position: relative;
+  bottom: 2px;
+  margin-right: $icon-margin-right;
+  margin-left: $icon-margin-left;
+}
+
+.unread {
+  height: $icon-height;
+  width: $icon-height;
+  background-color: #F8F7F5;
+  display: inline-block;
+  border-radius: 3px;
+  margin-right: $icon-margin-right;
+  margin-left: $icon-margin-left;
+  position: relative;
+  // top: 1px;
+  bottom: 2px;
+
+  .number {
+    color: #424242;
+    // position: absolute;
+    // top: 0px;
+    text-align: center;
+    font-size: 20px;
+    line-height: $icon-height;
+  }
+
+  .circle {
+    height: 10px;
+    width: 10px;
+    border-radius: 10px;
+    background-color: #424242;
+    position: relative;
+    top: 5px;
+    margin: auto;
+    vertical-align: center;
+  }
+}
 
 .reading-list-items {
   margin-top: 30px;
@@ -25,14 +104,19 @@
 
 .extras {
   font-weight: bold;
+  color: #616161;
+
   .author {
     display: inline-block;
     margin-left: 5px;
-    color: #616161;
   }
 
   .domain {
     display: inline-block;
+
+    a {
+      color: #616161;
+    }
   }
 
   a {
@@ -70,7 +154,7 @@ $image-dim: 130px;
   height: 170px;
   // padding: 5px;
   margin-bottom: 10px;
-  width: 80%;
+  // width: 80%;
   position: relative;
 
   h3 {
@@ -113,10 +197,11 @@ $image-dim: 130px;
     .content {
       height: $excerpt-height;
       overflow-y: hidden;
+      font-family: 'helvetica';
     }
 
     .gradient {
-      background: linear-gradient(to bottom, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);
+      background: linear-gradient(to bottom, rgba(248,247,245,0) 0%,rgba(248,247,245,1) 100%);
       right: 0;
       bottom: 0;
       left: 0;

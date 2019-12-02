@@ -88,6 +88,30 @@ class ReadingListItem extends React.Component {
   }
 }
 
+class MenuItem extends React.Component {
+  constructor(props) {
+    super(props);
+
+  }
+
+  render() {
+    let className;
+    let image_url = '/static/icons/' + this.props.value + '.svg'
+    this.props.selected === this.props.value
+      ? className = 'menu-item-selected'
+      : className = "menu-item"
+
+    return (<div className={className} onClick={this.props.onClick}>
+      {
+        this.props.value === 'unread'
+          ? (<div className="unread"><div className="number">{this.props.unread}</div></div>)
+          : (<img className="icon" src={image_url}/>)
+      }
+      {this.props.text}
+    </div>);
+  }
+}
+
 export default class ReadingList extends React.Component {
 
   constructor(props) {
@@ -102,7 +126,8 @@ export default class ReadingList extends React.Component {
       reading_list: [],
       invalid_url: false,
       show_article: false,
-      article_data: {}
+      article_data: {},
+      selected: 'unread'
     };
   }
 
@@ -166,30 +191,40 @@ export default class ReadingList extends React.Component {
     this.setState({value: e.target.value});
   }
 
+  changeSelected(value) {
+    this.setState({selected: value});
+  }
+
   render() {
 
     return (<div>
-      <Header/>
-      <div className="readinglist">
-        <h1>Your Reading List 📚</h1>
-        {
-          this.state.invalid_url
-            ? <h3>Invalid URL</h3>
-            : <div></div>
-        }
-        <div className="add-article">
-          <button onClick={this.addToList}>+</button>
-          <input placeholder="Input an article URL" value={this.state.value} onChange={this.handleChange}></input>
-        </div>
-        {
-          this.state.reading_list.length === 0
-            ? <p className="no-articles">No articles currently saved</p>
-            : <div></div>
-        }
-        <div className="reading-list-items">
-          {this.state.reading_list.map((reading_list_item, index) => <ReadingListItem key={index} added={reading_list_item.date_added} removeArticle={this.removeArticle} article={reading_list_item.article}/>)}
-        </div>
-      </div>
+      <Row className="readinglist-container">
+        <Col className="sidebar">
+          <MenuItem onClick={() => this.changeSelected("unread")} unread={this.state.reading_list.length} selected={this.state.selected} value="unread" text={"Unread"}/>
+          <MenuItem onClick={() => this.changeSelected("archive")} selected={this.state.selected} value="archive" text={"Archive"}/>
+          <MenuItem onClick={() => this.changeSelected("settings")} selected={this.state.selected} value="settings" text={"Settings"}/>
+        </Col>
+        <Col className="readinglist">
+          <h1>Your Print List</h1>
+          {
+            this.state.invalid_url
+              ? <h3>Invalid URL</h3>
+              : <div></div>
+          }
+          <div className="add-article">
+            <button onClick={this.addToList}>+</button>
+            <input placeholder="Input an article URL" value={this.state.value} onChange={this.handleChange}></input>
+          </div>
+          {
+            this.state.reading_list.length === 0
+              ? <p className="no-articles">No articles currently saved</p>
+              : <div></div>
+          }
+          <div className="reading-list-items">
+            {this.state.reading_list.map((reading_list_item, index) => <ReadingListItem key={index} added={reading_list_item.date_added} removeArticle={this.removeArticle} article={reading_list_item.article}/>)}
+          </div>
+        </Col>
+      </Row>
     </div>);
   }
 }
