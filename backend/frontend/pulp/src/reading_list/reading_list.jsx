@@ -93,8 +93,8 @@ export default class Switcher extends React.Component {
 
     return (<Router>
       <div>
-        <Row className="readinglist-container">
-          <Col className="sidebar">
+        <div className="readinglist-container">
+          <div className="sidebar">
             <Link to={'/reading_list'}>
               <RouterMenuItem onClick={() => this.changeSelected("reading_list")} selected={this.state.selected} unread={this.state.unread} value="reading_list" text={"Unread"}/>
             </Link>
@@ -104,13 +104,13 @@ export default class Switcher extends React.Component {
             <Link to={'/settings'}>
               <RouterMenuItem onClick={() => this.changeSelected("settings")} selected={this.state.selected} value="settings" text={"Settings"}/>
             </Link>
-          </Col>
-          <Col className="readinglist">
+          </div>
+          <div className="readinglist">
             <Route path='/reading_list' component={() => <ReadingListView reading_list={this.state.reading_list} updateReadingList={this.updateReadingList}/>}/>
             <Route path='/archive' component={Archive}/>
             <Route path='/settings' component={Profile}/>
-          </Col>
-        </Row>
+          </div>
+        </div>
       </div>
     </Router>);
   }

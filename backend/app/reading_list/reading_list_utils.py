@@ -18,7 +18,7 @@ def get_reading_list(user, refresh=False):
     if refresh is False and key in cache:
         json_response = cache.get(key)
     else:
-        my_reading = ReadingListItem.objects.filter(reader=user).order_by('-date_added')
+        my_reading = ReadingListItem.objects.filter(reader=user, archived=False).order_by('-date_added')
         serializer = ReadingListItemSerializer(my_reading, many=True)
         json_response = serializer.data
         cache.set(key, serializer.data)

@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
-import {ReadingListItem, } from './components.jsx';
-
+import {ReadingListItem} from './components.jsx';
 
 export default class ReadingListView extends React.Component {
 
@@ -12,15 +11,13 @@ export default class ReadingListView extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.addToList = this.addToList.bind(this);
     this.removeArticle = this.removeArticle.bind(this);
-    this.getReadingList = this.getReadingList.bind(this);
+    this.archiveArticle = this.archiveArticle.bind(this);
 
     this.state = {
       value: "",
-      invalid_url: false,
+      invalid_url: false
     };
   }
-
-
 
   removeArticle(link) {
     var csrftoken = $("[name=csrfmiddlewaretoken]").val();
@@ -38,16 +35,18 @@ export default class ReadingListView extends React.Component {
     });
   }
 
-  getReadingList() {
+  archiveArticle(link) {
     var csrftoken = $("[name=csrfmiddlewaretoken]").val();
     let data = {
+      link: link,
       csrfmiddlewaretoken: csrftoken
     }
     $.ajax({
-      url: '../api/reading_list/get_reading',
+      url: '../api/reading_list/archive_reading',
       data: data,
-      type: 'GET',
+      type: 'POST',
       success: function(data) {
+        console.log(data);
         this.props.updateReadingList(data);
       }.bind(this)
     });
@@ -97,7 +96,7 @@ export default class ReadingListView extends React.Component {
           : <div></div>
       }
       <div className="reading-list-items">
-        {this.props.reading_list.map((reading_list_item, index) => <ReadingListItem key={index} added={reading_list_item.date_added} removeArticle={this.removeArticle} article={reading_list_item.article}/>)}
+        {this.props.reading_list.map((reading_list_item, index) => <ReadingListItem key={index} added={reading_list_item.date_added} archiveArticle={this.archiveArticle} removeArticle={this.removeArticle} article={reading_list_item.article}/>)}
       </div>
     </div>);
   }

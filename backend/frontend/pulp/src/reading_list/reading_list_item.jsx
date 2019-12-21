@@ -61,6 +61,7 @@ export default class ReadingListItem extends React.Component {
           this.state.hovered
             ? (<div className="hover-section">
               <button onClick={() => this.props.removeArticle(article.permalink)}>Remove</button>
+              <button onClick={() => this.props.archiveArticle(article.permalink)}>Archive</button>
             </div>)
             : <div className="hover-section">
                 <p className="date-added">Added on {added.split('T')[0]}</p>
@@ -72,12 +73,12 @@ export default class ReadingListItem extends React.Component {
           </div>
           <div className="gradient"></div>
         </div>
-        {
-          has_image
-            ? <img className="first-image" src={mercury_response.lead_image_url}/>
-            : <div></div>
-        }
       </div>
+      {
+        has_image
+          ? <img className="first-image" src={mercury_response.lead_image_url}/>
+          : <div></div>
+      }
     </div>);
   }
 }

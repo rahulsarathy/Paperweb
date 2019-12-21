@@ -1,15 +1,19 @@
 .readinglist {
   margin-left: 30px;
+  display: inline-block;
+  vertical-align: top;
 }
 
 .readinglist-container {
-  height: 100%;
+
 }
 
 .sidebar {
-  max-width: 200px;
   background-color: #000000;
-  padding-right: 0;
+  width: 170px;
+  height: 100%;
+  display: inline-block;
+  vertical-align: top;
 }
 $menu-font-size: 25px;
 $menu-item-color: #FFFFFF;
@@ -128,7 +132,7 @@ $icon-height: 20px;
 }
 
 .readinglist-item-container {
-  // position: relative;
+  width: 100%;
 }
 $image-dim: 130px;
 
@@ -141,6 +145,7 @@ $image-dim: 130px;
   display: inline-block;
   object-fit: cover;
   border-radius: 3px;
+  vertical-align: top;
 }
 
 .hover-section {
@@ -153,7 +158,8 @@ $image-dim: 130px;
   margin-bottom: 10px;
   // width: 80%;
   position: relative;
-  max-width: 800px;
+  display: inline-block;
+  // vertical-align: top;
 
   h3 {
     font-family: helvetica;

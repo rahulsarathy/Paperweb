@@ -18,7 +18,7 @@ class ReadingListItem(models.Model):
     reader = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     article = models.ForeignKey(Article, on_delete=models.CASCADE, default=None, null=True)
     date_added = models.DateTimeField(_('Date Added'), default=timezone.now)
-    archived = models.NullBooleanField(_('Archived'))
+    archived = models.NullBooleanField(_('Archived'), default=False)
     trashed = models.NullBooleanField(_('Trashed'))
     delivered = models.NullBooleanField(_('Delivered'))
 
