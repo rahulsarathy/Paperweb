@@ -30,6 +30,7 @@ urlpatterns = [
   path('subscribe/', views.subscribe, name='subscribe'),
   path('api/users/', include('users.urls')),
   path('api/reading_list/', include('reading_list.urls')),
+  path('api/newsletters/', include('newsletters.urls')),
   path('api/payments/', include('payments.urls')),
   path('articles/', views.article),
   path('accounts/', include('allauth.urls')),
