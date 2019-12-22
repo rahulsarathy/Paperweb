@@ -15,3 +15,4 @@ from bs4 import BeautifulSoup
 @api_view(['POST'])
 def add_newsletter(request):
     user = request.user
+

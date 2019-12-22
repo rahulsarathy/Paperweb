@@ -25,6 +25,15 @@ def landing(request):
   return render(request, 'landing.html', context)
 
 
+def newsletters(request):
+  if not request.user.is_authenticated:
+    return HttpResponseRedirect('/')
+  context = {
+    'js_file': settings.JAVASCRIPT_URLS['newsletters']
+  }
+  return render(request, 'newsletters.html', context)
+
+
 @cache_page(CACHE_TTL)
 def dashboard(request):
   if not request.user.is_authenticated:

@@ -25,6 +25,7 @@ urlpatterns = [
   path('ready/', include('health_check.urls')),
   path('', views.landing, name='landing'),
   path('reading_list/', views.switcher, name='reading list'),
+  path('newsletters/', views.newsletters, name='newsletters'),
   path('settings/', views.switcher, name='settings'),
   path('archive/', views.switcher, name='archive'),
   path('subscribe/', views.subscribe, name='subscribe'),

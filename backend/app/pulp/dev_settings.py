@@ -31,6 +31,7 @@ JAVASCRIPT_URLS = {
     'reading_list': 'http://localhost:8080/reading_list.js',
     'article': 'http://localhost:8080/article.js',
     'subscribe': 'http://localhost:8080/subscribe.js',
+    'newsletters': 'http://localhost:8080/newsletters.js',
 }
 
 RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY')

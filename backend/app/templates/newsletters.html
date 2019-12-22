@@ -1,0 +1,14 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <title>Pulp - My Account</title>
+</head>
+<body class="newsletters-frame">
+{% csrf_token %}
+<div id="newsletters"></div>
+<script src={{js_file}}></script>
+</body>
+</html>

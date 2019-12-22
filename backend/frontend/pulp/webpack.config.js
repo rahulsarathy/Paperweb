@@ -8,6 +8,7 @@ module.exports = {
     profile: path.join(__dirname, 'src', 'profile', 'profile.jsx'),
     article: path.join(__dirname, 'src', 'article', 'article.jsx'),
     subscribe: path.join(__dirname, 'src', 'subscribe', 'subscribe.jsx'),
+    newsletters: path.join(__dirname, 'src', 'newsletters', 'newsletters.jsx'),
   },
   output: {
     path: path.join(__dirname, 'build'),
