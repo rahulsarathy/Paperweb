@@ -1,11 +1,16 @@
-.readinglist {
+.page-container {
   margin-left: 30px;
   display: inline-block;
   vertical-align: top;
+  width: calc(100% - 200px);
 }
 
 .readinglist-container {
 
+}
+
+.readinglist {
+  display: inline-block;
 }
 
 .sidebar {
@@ -132,7 +137,7 @@ $icon-height: 20px;
 }
 
 .readinglist-item-container {
-  width: 100%;
+
 }
 $image-dim: 130px;
 
@@ -146,6 +151,7 @@ $image-dim: 130px;
   object-fit: cover;
   border-radius: 3px;
   vertical-align: top;
+  margin-left: 20px;
 }
 
 .hover-section {
@@ -156,7 +162,6 @@ $image-dim: 130px;
   height: 170px;
   // padding: 5px;
   margin-bottom: 10px;
-  // width: 80%;
   position: relative;
   display: inline-block;
   // vertical-align: top;
@@ -197,7 +202,6 @@ $image-dim: 130px;
 
   .faded-content {
     position: relative;
-    width: 80%;
     .content {
       height: $excerpt-height;
       overflow-y: hidden;

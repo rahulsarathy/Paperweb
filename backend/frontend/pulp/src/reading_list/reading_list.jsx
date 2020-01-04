@@ -105,7 +105,7 @@ export default class Switcher extends React.Component {
               <RouterMenuItem onClick={() => this.changeSelected("settings")} selected={this.state.selected} value="settings" text={"Settings"}/>
             </Link>
           </div>
-          <div className="readinglist">
+          <div className="page-container">
             <Route path='/reading_list' component={() => <ReadingListView reading_list={this.state.reading_list} updateReadingList={this.updateReadingList}/>}/>
             <Route path='/archive' component={Archive}/>
             <Route path='/settings' component={Profile}/>
