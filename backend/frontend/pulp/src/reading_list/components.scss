@@ -152,6 +152,7 @@ $image-dim: 130px;
   border-radius: 3px;
   vertical-align: top;
   margin-left: 20px;
+  margin-right: 20px;
 }
 
 .hover-section {
@@ -165,6 +166,7 @@ $image-dim: 130px;
   position: relative;
   display: inline-block;
   // vertical-align: top;
+  width: calc(100% - 170px);
 
   h3 {
     font-family: helvetica;
