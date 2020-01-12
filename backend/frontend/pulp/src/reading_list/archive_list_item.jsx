@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-export default class ReadingListItem extends React.Component {
+export default class ArchiveListItem extends React.Component {
 
   constructor(props) {
     super(props);
@@ -41,7 +41,7 @@ export default class ReadingListItem extends React.Component {
       }
     }
     return (<div className="readinglist-item-container" style={style}>
-      <div className="readinglist-item" onMouseEnter={this.handleHover} onMouseLeave={this.handleUnhover}>
+      <div className="archive-list-item" onMouseEnter={this.handleHover} onMouseLeave={this.handleUnhover}>
         <h3>
           <a target="_blank" href={href}>{article.title}</a>
         </h3>
@@ -67,18 +67,7 @@ export default class ReadingListItem extends React.Component {
                 <p className="date-added">Added on {added.split('T')[0]}</p>
               </div>
         }
-        <div className="faded-content">
-          <div className="content">
-            <p>{mercury_response.parsed_text}</p>
-          </div>
-          <div className="gradient"></div>
-        </div>
       </div>
-      {
-        has_image
-          ? <img className="first-image" src={mercury_response.lead_image_url}/>
-          : <div></div>
-      }
     </div>);
   }
 }

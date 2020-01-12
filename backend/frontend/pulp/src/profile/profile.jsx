@@ -168,7 +168,7 @@ export default class Profile extends React.Component {
 
   render() {
 
-    return (<div>
+    return (
       <div className="profile">
         <div id="contact" className="subsection">
           <SubHeader title="Contact Info"/>
@@ -226,7 +226,7 @@ export default class Profile extends React.Component {
           <a href="../accounts/password/change">Change Password</a>
         </div>
       </div>
-    </div>);
+    );
   }
 }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
-import {ReadingListItem} from './components.jsx';
+import {ArchiveListItem} from './components.jsx';
 
 export default class Archive extends React.Component {
 
@@ -31,9 +31,9 @@ export default class Archive extends React.Component {
 
   render() {
     return (<div>
-      <h1>Archive</h1>
+      <h1>Your Archived Articles</h1>
         <div className="reading-list-items">
-          {this.state.archive_list.map((archive_list_item, index) => <ReadingListItem key={index} added={archive_list_item.date_added} archiveArticle={this.archiveArticle} removeArticle={this.removeArticle} article={archive_list_item.article}/>)}
+          {this.state.archive_list.map((archive_list_item, index) => <ArchiveListItem key={index} added={archive_list_item.date_added} archiveArticle={this.archiveArticle} removeArticle={this.removeArticle} article={archive_list_item.article}/>)}
         </div>
     </div>);
   }

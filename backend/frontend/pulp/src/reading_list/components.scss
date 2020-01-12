@@ -1,31 +1,46 @@
+$sidebar-color: white;
+
 .page-container {
-  margin-left: 30px;
-  display: inline-block;
+  // margin-left: 30px;
+  // margin-top: 35px;
+  // display: inline-block;
   vertical-align: top;
-  width: calc(100% - 200px);
+  width: 80%;
+  margin: auto;
+  color: black;
 }
 
-.readinglist-container {
-
-}
+.readinglist-container {}
 
 .readinglist {
-  display: inline-block;
+  width: 80%;
+  max-width: 1000px;
+  margin: 35px auto;
+
+  h1 {
+    font-weight: bold;
+    font-size: 37px;
+  }
 }
 
 .sidebar {
-  background-color: #000000;
-  width: 170px;
-  height: 100%;
+  background-color: $sidebar-color;
+  // width: 140px;
+  // height: 100%;
   display: inline-block;
   vertical-align: top;
+  padding-top: 30px;
+  // border-right: solid;
+  position: fixed;
+  border-width: 1px;
 }
 $menu-font-size: 25px;
-$menu-item-color: #FFFFFF;
+$menu-item-color: black;
 $menu-item-margin: 20px;
-$menu-item-margin-top: 12px;
-$menu-item-height: 50px;
-$menu-item-padding-left: 20px;
+$menu-item-margin-top: 5px;
+$menu-item-height: 40px;
+$menu-item-padding-left: 10px;
+
 .menu-item {
   color: $menu-item-color;
   font-size: $menu-font-size;
@@ -37,13 +52,15 @@ $menu-item-padding-left: 20px;
 }
 
 .menu-item-selected {
-  color: black;
+  color: $sidebar-color;
   font-size: $menu-font-size;
-  background-color: #ffffff;
+  background-color: black;
   width: 100%;
   height: $menu-item-height;
   line-height: $menu-item-height;
   padding-left: $menu-item-padding-left;
+  margin-left: 5px;
+  border-radius: 2px;
   // margin-top: $menu-item-margin-top;
   // margin-left: $menu-item-margin;
 }
@@ -63,7 +80,7 @@ $icon-height: 20px;
 .unread {
   height: $icon-height;
   width: $icon-height;
-  background-color: black;
+  background-color: white;
   display: inline-block;
   border-radius: 3px;
   margin-right: $icon-margin-right;
@@ -73,7 +90,7 @@ $icon-height: 20px;
   bottom: 2px;
 
   .number {
-    color: white;
+    color: black;
     // position: absolute;
     // top: 0px;
     text-align: center;
@@ -95,7 +112,7 @@ $icon-height: 20px;
 }
 
 .reading-list-items {
-  margin-top: 30px;
+  margin-top: 15px;
 }
 
 .no-articles {
@@ -108,8 +125,9 @@ $icon-height: 20px;
 }
 
 .extras {
-  font-weight: bold;
+  // font-weight: bold;
   color: #616161;
+  font-size: 18px;
 
   .author {
     display: inline-block;
@@ -128,7 +146,7 @@ $icon-height: 20px;
     text-decoration: none;
     -webkit-transition: color 0.2s ease-in-out;
     display: inline-block;
-    color: black;
+    color: $sidebar-color;
   }
 
   a:hover {
@@ -137,7 +155,13 @@ $icon-height: 20px;
 }
 
 .readinglist-item-container {
-
+  padding: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 3px;
+  box-shadow: 0 3px 5px -5px rgba(0, 0, 0, 0.5);
+  border-color: #cccccc;
+  margin-bottom: 15px;
 }
 $image-dim: 130px;
 
@@ -150,27 +174,29 @@ $image-dim: 130px;
   display: inline-block;
   object-fit: cover;
   border-radius: 3px;
-  vertical-align: top;
+  vertical-align: bottom;
   margin-left: 20px;
-  margin-right: 20px;
+  // margin-right: 20px;
+  position: relative;
+  top: -15px;
 }
 
 .hover-section {
   height: 30px;
+  font-size: 18px;
 }
 
 .readinglist-item {
   height: 170px;
-  // padding: 5px;
   margin-bottom: 10px;
   position: relative;
   display: inline-block;
-  // vertical-align: top;
-  width: calc(100% - 170px);
+  width: calc(100% - 150px);
 
   h3 {
     font-family: helvetica;
     font-weight: bold;
+    width: 100%;
     height: 32px;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -204,10 +230,13 @@ $image-dim: 130px;
 
   .faded-content {
     position: relative;
+
     .content {
       height: $excerpt-height;
       overflow-y: hidden;
-      font-family: 'helvetica';
+      font-family: 'Garamond';
+      font-size: 18px;
+      color: black;
     }
 
     .gradient {
@@ -228,27 +257,34 @@ $image-dim: 130px;
     display: inline-block;
     border-radius: 3px;
     border-style: none;
-    width: 70%;
-    height: 35px;
-    font-size: 25px;
+    height: 45px;
+    font-size: 20px;
+    padding-left: 10px;
     color: #000000;
-    border-bottom: solid;
-    border-color: #FFFFFF;
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+    width: 100%;
+    // box-shadow: inset 0 0 2px #000000;
   }
 
   input:focus {
     outline: none !important;
-    border-bottom: solid;
+    // border-bottom: solid;
     border-color: #005DFF;
+    color: #005DFF;
   }
 
   button {
     display: inline-block;
-    background-image: linear-gradient(#94BEFF, #005DFF);
+    background-color: black;
     margin-right: 20px;
     border-style: none;
     border-radius: 3px;
     color: white;
+    position: relative;
+    left: calc(100% - 100px);
+    bottom: 35px;
   }
 }
 
