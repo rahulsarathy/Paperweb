@@ -1,21 +1,26 @@
-$sidebar-color: white;
+$sidebar-color: #F6F6F2;
 
 .page-container {
   // margin-left: 30px;
   // margin-top: 35px;
   // display: inline-block;
-  vertical-align: top;
-  width: 80%;
-  margin: auto;
+  // vertical-align: top;
+  // width: 80%;
+  // margin: auto;
   color: black;
+  width: calc(100% - 170px);
 }
 
-.readinglist-container {}
+.readinglist-container {
+  display: flex;
+}
 
 .readinglist {
   width: 80%;
-  max-width: 1000px;
-  margin: 35px auto;
+  margin: auto;
+  // max-width: 1000px;
+  // margin-left: 170px;
+  // margin: 35px auto;
 
   h1 {
     font-weight: bold;
@@ -39,7 +44,7 @@ $sidebar-color: white;
   }
 
   hr {
-    border-color: black;
+    border-color: #4C8FFF;
     position: relative;
     bottom: 10px;
   }
@@ -49,15 +54,21 @@ $sidebar-color: white;
   background-color: $sidebar-color;
   // width: 140px;
   // height: 100%;
-  display: inline-block;
-  vertical-align: top;
+  // display: inline-block;
+  // vertical-align: top;
   padding-top: 30px;
   // border-right: solid;
-  position: fixed;
+  // position: fixed;
   border-width: 1px;
+  height: 100%;
+  width: 100%;
+  // width: 170px;
+  flex-grow: 0;     /* do not grow   - initial value: 0 */
+flex-shrink: 0;   /* do not shrink - initial value: 1 */
+flex-basis: 170px;
 }
-$menu-font-size: 25px;
-$menu-item-color: black;
+$menu-font-size: 20px;
+$menu-item-color: #A8A894;
 $menu-item-margin: 20px;
 $menu-item-margin-top: 5px;
 $menu-item-height: 40px;
@@ -70,13 +81,15 @@ $menu-item-padding-left: 10px;
   height: $menu-item-height;
   line-height: $menu-item-height;
   padding-left: $menu-item-padding-left;
+  font-weight: bold;
   // margin-left: $menu-ictem-margin;
 }
 
 .menu-item-selected {
-  color: $sidebar-color;
+  color: white;
+  font-weight: bold;
   font-size: $menu-font-size;
-  background-color: #4C8FFF;
+  background-color: #A8A894;
   width: 100%;
   height: $menu-item-height;
   line-height: $menu-item-height;
@@ -112,9 +125,10 @@ $icon-height: 20px;
   bottom: 2px;
 
   .number {
-    color: #4C8FFF;
+    color: #A8A894;
     // position: absolute;
     // top: 0px;
+    font-weight: normal;
     text-align: center;
     font-size: 20px;
     vertical-align: middle;
@@ -180,14 +194,14 @@ $icon-height: 20px;
 
 .readinglist-item-container {
   padding: 10px;
-  border-style: none;
+  border-style: solid;
   border-width: 1px;
-  border-radius: 3px;
-  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.5);
-  border-color: #e8e8e8;
+  border-radius: 2px;
+  // box-shadow: 0 1px 4px 0 rgba(246, 246, 242, 1);
+  border-color: #d8d8d8;
   margin-bottom: 15px;
 }
-$image-dim: 130px;
+$image-dim: 120px;
 
 .first-image {
   width: $image-dim;
@@ -200,6 +214,7 @@ $image-dim: 130px;
   border-radius: 3px;
   vertical-align: bottom;
   margin-left: 20px;
+  top: -15px;
   // margin-right: 20px;
   position: relative;
   // top: -10px;
@@ -212,11 +227,8 @@ $image-dim: 130px;
 }
 
 .readinglist-item {
-  height: 155px;
+  height: 160px;
   margin-bottom: 10px;
-  position: relative;
-  display: inline-block;
-  width: calc(100% - 150px);
 
   h3 {
     font-family: helvetica;
@@ -255,6 +267,9 @@ $image-dim: 130px;
 
   .faded-content {
     position: relative;
+    display: inline-block;
+    width: calc(100% - 150px);
+    top: -10px;
 
     .content {
       height: $excerpt-height;

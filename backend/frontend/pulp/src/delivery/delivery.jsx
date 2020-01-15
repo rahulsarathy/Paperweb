@@ -51,25 +51,40 @@ export default class Delivery extends React.Component {
 
   constructor(props) {
     super(props);
-
-    this.state = {};
+    this.state = {
+      sort: 'date_added',
+    };
   }
 
-  createTable(sort) {
+  getLocation(href) {
+    var l = document.createElement("a");
+    l.href = href;
+    return l.hostname;
+  }
+
+
+  createTable() {
     let reading_list = this.props.reading_list;
     let sorted;
-    if (sort === 'deliver') {
+    if (this.state.sort === 'deliver') {
       sorted = this.props.reading_list.sort(deliver_compare);
     }
-    if (sort === 'date_added') {
-      console.log("date added");
+    if (this.state.sort === 'date_added') {
       sorted = this.props.reading_list.sort(date_compare);
     }
-    return sorted;
+    return sorted.map((rlist_item) => <tr key={rlist_item.article.title}>
+      <td>{rlist_item.article.title}
+        {this.getLocation(rlist_item.article.permalink)}</td>
+      <td>
+        <input type="checkbox" onChange={() => this.props.changeDeliver(!(rlist_item.to_deliver))} checked={rlist_item.to_deliver}/>
+      </td>
+      <td>{rlist_item.to_deliver}</td>
+      <td>{rlist_item.article.word_count}</td>
+      <td>{rlist_item.date_added}</td>
+    </tr>)
   }
 
   render() {
-    this.createTable("date_added");
     return (<div className="delivery">
       <h1>Delivery Management</h1>
       <hr></hr>
@@ -81,14 +96,7 @@ export default class Delivery extends React.Component {
             <th>Number of Pages</th>
             <th>Date Added</th>
           </tr>
-          {
-            this.props.reading_list.map((rlist_item) => <tr key={rlist_item.article.title}>
-              <td>{rlist_item.article.title}</td>
-              <td>{rlist_item.to_deliver}</td>
-              <td>{rlist_item.article.word_count}</td>
-              <td>{rlist_item.date_added}</td>
-            </tr>)
-          }
+          {this.createTable()}
         </thead>
       </table>
     </div>);

@@ -98,3 +98,9 @@ def remove_from_reading_list(request):
         return get_reading_list(user, refresh=True)
     except ReadingListItem.DoesNotExist:
         raise NotFound(detail='ReadingListItem with link: %s not found.' % link, code=404)
+
+@api_view(['POST'])
+def update_deliver(request):
+    user = request.user
+    link = request.POST['permalink']
+    to_deliver = request.POST['to_deliver']

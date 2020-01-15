@@ -8,12 +8,24 @@
     font-size: 45px;
   }
 
+  hr {
+    border-color: #4C8FFF;
+  }
+
   th {
     font-weight: normal;
   }
 
-  table, th, td {
-    border: 1px solid #DFDFDE;
+  table,
+  td,
+  th {}
+
+  td {
+    border-top: 1px solid #DFDFDE;
   }
 
+  td,
+  th {
+    border-right: 1px solid #DFDFDE;
+  }
 }

@@ -48,6 +48,8 @@ export default class Switcher extends React.Component {
     super(props);
     this.changeSelected = this.changeSelected.bind(this);
     this.updateReadingList = this.updateReadingList.bind(this);
+    this.changeDeliver = this.changeDeliver.bind(this);
+
     this.state = {
       value: "",
       reading_list: [],
@@ -88,6 +90,20 @@ export default class Switcher extends React.Component {
     });
   }
 
+  changeDeliver(rlist_item) {
+    let data = {
+      to_deliver: !rlist_item.to_deliver,
+      permalink: rlist_item.article.permalink,
+    }
+    $.ajax({
+      url: '../api/reading_list/update_deliver',
+      data: data,
+      success: function(data) {
+
+      }.bind(this)
+    });
+  }
+
   render() {
     const RouterMenuItem = withRouter(MenuItem);
 
@@ -112,7 +128,7 @@ export default class Switcher extends React.Component {
             <Route path='/reading_list' component={() => <ReadingListView reading_list={this.state.reading_list} updateReadingList={this.updateReadingList}/>}/>
             <Route path='/archive' component={Archive}/>
             <Route path='/settings' component={Profile}/>
-            <Route path='/delivery' component={() => <Delivery reading_list={this.state.reading_list}/>}/>
+            <Route path='/delivery' component={() => <Delivery reading_list={this.state.reading_list} changeDeliver={this.changeDeliver} />}/>
           </div>
         </div>
       </div>
