@@ -5,6 +5,7 @@ import ReadingListItem from './reading_list_item.jsx';
 import Archive from './archive.jsx';
 import ArchiveListItem from './archive_list_item.jsx';
 import Profile from '../profile/profile.jsx';
+import Delivery from '../delivery/delivery.jsx';
 
 
 export {
@@ -14,4 +15,5 @@ export {
   Archive,
   Profile,
   ArchiveListItem,
+  Delivery,
 }

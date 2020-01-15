@@ -21,6 +21,7 @@ class ReadingListItem(models.Model):
     archived = models.NullBooleanField(_('Archived'), default=False)
     trashed = models.NullBooleanField(_('Trashed'))
     delivered = models.NullBooleanField(_('Delivered'))
+    to_deliver = models.BooleanField(_('Delivered'), default=False)
 
     class Meta:
         unique_together = (("reader", "article"),)

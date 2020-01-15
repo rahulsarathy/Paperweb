@@ -97,17 +97,19 @@ export default class ReadingListView extends React.Component {
           ? <h3>Invalid URL</h3>
           : <div></div>
       }
+      <h1>Your Print List</h1>
+      <button onClick={this.addArticle}>Add Article</button>
+      <hr></hr>
       <div className="add-article">
-        <button onClick={this.addArticle}>Add Article</button>
         <Modal show={this.state.show_add} onHide={this.handleClose}>
           <input placeholder="Input an article URL" value={this.state.value} onChange={this.handleChange}></input>
+          <button onClick={this.addToList}>Add Article</button>
           <Modal.Footer>
             <Button variant="primary" onClick={this.handleClose}>
               Cancel
             </Button>
           </Modal.Footer>
         </Modal>
-        <h1>Print List</h1>
       </div>
       {
         this.props.reading_list.length === 0

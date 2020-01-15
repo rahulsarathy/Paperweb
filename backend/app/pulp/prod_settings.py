@@ -20,8 +20,7 @@ sentry_sdk.init(
 
 JAVASCRIPT_URLS = {
     'landing': '/static/js/build/landing.js',
-    'profile': '/static/js/build/profile.js',
-    'reading_list': '/static/js/build/reading_list.js',
+    'switcher': '/static/js/build/switcher.js',
     'article': '/static/js/build/article.js',
     'subscribe': '/static/js/build/subscribe.js',
     'newsletters': '/static/js/build/newsletters.js',

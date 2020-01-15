@@ -5,7 +5,7 @@ import shortid from 'shortid';
 import {CSSTransition, TransitionGroup} from "react-transition-group";
 import {Row, Col, Modal} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
-import {Header, ReadingListView, ReadingListItem, Archive, Profile} from './components.jsx';
+import {Header, ReadingListView, ReadingListItem, Archive, Profile, Delivery} from './components.jsx';
 import {
   BrowserRouter as Router,
   Switch,
@@ -104,11 +104,15 @@ export default class Switcher extends React.Component {
             <Link to={'/settings'}>
               <RouterMenuItem onClick={() => this.changeSelected("settings")} selected={this.state.selected} value="settings" text={"Settings"}/>
             </Link>
+            <Link to={'/delivery'}>
+              <RouterMenuItem onClick={() => this.changeSelected("delivery")} selected={this.state.selected} value="delivery" text={"Delivery"}/>
+            </Link>
           </div>
           <div className="page-container">
             <Route path='/reading_list' component={() => <ReadingListView reading_list={this.state.reading_list} updateReadingList={this.updateReadingList}/>}/>
             <Route path='/archive' component={Archive}/>
             <Route path='/settings' component={Profile}/>
+            <Route path='/delivery' component={() => <Delivery reading_list={this.state.reading_list}/>}/>
           </div>
         </div>
       </div>

@@ -64,7 +64,7 @@ export default class ReadingListItem extends React.Component {
               <button onClick={() => this.props.archiveArticle(article.permalink)}>Archive</button>
             </div>)
             : <div className="hover-section">
-                <p className="date-added">Added on {added.split('T')[0]}</p>
+                <p className="date-added">| Added on {added.split('T')[0]}</p>
               </div>
         }
         <div className="faded-content">
