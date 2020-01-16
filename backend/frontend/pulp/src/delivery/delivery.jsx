@@ -51,6 +51,8 @@ export default class Delivery extends React.Component {
 
   constructor(props) {
     super(props);
+
+    this.changeSort = this.changeSort.bind(this);
     this.state = {
       sort: 'date_added',
     };
@@ -60,6 +62,12 @@ export default class Delivery extends React.Component {
     var l = document.createElement("a");
     l.href = href;
     return l.hostname;
+  }
+
+  changeSort(sort) {
+    this.setState({
+      sort: sort,
+    });
   }
 
 
@@ -72,13 +80,18 @@ export default class Delivery extends React.Component {
     if (this.state.sort === 'date_added') {
       sorted = this.props.reading_list.sort(date_compare);
     }
+    if (this.state.sort === 'title') {
+      sorted = this.props.reading_list.sort(title_compare);
+    }
+    if (this.state.sort === 'pages_compare') {
+      sorted = this.props.reading_list.sort(pages_compare);
+    }
     return sorted.map((rlist_item) => <tr key={rlist_item.article.title}>
       <td>{rlist_item.article.title}
         {this.getLocation(rlist_item.article.permalink)}</td>
       <td>
         <input type="checkbox" onChange={() => this.props.changeDeliver(rlist_item)} checked={rlist_item.to_deliver}/>
       </td>
-      <td>{rlist_item.to_deliver}</td>
       <td>{rlist_item.article.word_count}</td>
       <td>{rlist_item.date_added}</td>
     </tr>)
@@ -91,10 +104,10 @@ export default class Delivery extends React.Component {
       <table>
         <thead>
           <tr>
-            <th>Title</th>
-            <th>To Deliver?</th>
-            <th>Number of Pages</th>
-            <th>Date Added</th>
+            <th onClick={() => this.changeSort("title")}>Title</th>
+            <th onClick={() => this.changeSort("deliver")}>To Deliver?</th>
+            <th onClick={() => this.changeSort("pages_compare")}>Number of Pages</th>
+            <th onClick={() => this.changeSort("date_added")}>Date Added</th>
           </tr>
           {this.createTable()}
         </thead>
