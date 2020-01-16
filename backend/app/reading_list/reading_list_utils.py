@@ -24,7 +24,6 @@ def get_reading_list(user, refresh=False):
         cache.set(key, serializer.data)
     return JsonResponse(json_response, safe=False)
 
-
 # Check for mercury response in
 # 1. cache
 # 2. DB

@@ -91,15 +91,18 @@ export default class Switcher extends React.Component {
   }
 
   changeDeliver(rlist_item) {
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
     let data = {
       to_deliver: !rlist_item.to_deliver,
       permalink: rlist_item.article.permalink,
+      csrfmiddlewaretoken: csrftoken,
     }
     $.ajax({
       url: '../api/reading_list/update_deliver',
       data: data,
+      type: 'POST',
       success: function(data) {
-
+        this.updateReadingList(data);
       }.bind(this)
     });
   }

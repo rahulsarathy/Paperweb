@@ -99,8 +99,22 @@ def remove_from_reading_list(request):
     except ReadingListItem.DoesNotExist:
         raise NotFound(detail='ReadingListItem with link: %s not found.' % link, code=404)
 
+
 @api_view(['POST'])
 def update_deliver(request):
     user = request.user
     link = request.POST['permalink']
-    to_deliver = request.POST['to_deliver']
+    to_deliver = request.POST.get('to_deliver') == 'true'
+    # Get Article to get Reading list item
+    try:
+        article = Article.objects.get(permalink=link)
+    except Article.DoesNotExist:
+        raise NotFound(detail='Article not found', code=404)
+    try:
+        reading_list_item = ReadingListItem.objects.get(article=article, reader=user)
+        reading_list_item.to_deliver = to_deliver
+        reading_list_item.save()
+        return get_reading_list(user, refresh=True)
+    except ReadingListItem.DoesNotExist:
+        raise NotFound(detail='ReadingListItem with link: %s not found.' % link, code=404)
+

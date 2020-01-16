@@ -76,7 +76,7 @@ export default class Delivery extends React.Component {
       <td>{rlist_item.article.title}
         {this.getLocation(rlist_item.article.permalink)}</td>
       <td>
-        <input type="checkbox" onChange={() => this.props.changeDeliver(!(rlist_item.to_deliver))} checked={rlist_item.to_deliver}/>
+        <input type="checkbox" onChange={() => this.props.changeDeliver(rlist_item)} checked={rlist_item.to_deliver}/>
       </td>
       <td>{rlist_item.to_deliver}</td>
       <td>{rlist_item.article.word_count}</td>

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-export default class ArchiveListItem extends React.Component {
+export default class ArchiveItem extends React.Component {
 
   constructor(props) {
     super(props);
@@ -60,7 +60,7 @@ export default class ArchiveListItem extends React.Component {
         {
           this.state.hovered
             ? (<div className="hover-section">
-              <button onClick={() => this.props.removeArticle(article.permalink)}>Remove</button>
+              <button onClick={() => this.props.removeArticle(article.permalink)}>Delete</button>
               <button onClick={() => this.props.archiveArticle(article.permalink)}>Archive</button>
             </div>)
             : <div className="hover-section">
