@@ -7,10 +7,6 @@ import classnames from 'classnames';
 import {Row, Col} from 'react-bootstrap';
 import {
   Address_Pane,
-  Payment_Pane,
-  Cancel_Pane,
-  Unpaid,
-  Paid,
   Header
 } from './components.jsx'
 
@@ -46,8 +42,10 @@ export default class Profile extends React.Component {
     this.handleSelector = this.handleSelector.bind(this);
     this.getInviteCodes = this.getInviteCodes.bind(this);
     this.updateSettings = this.updateSettings.bind(this);
+    this.getEmail = this.getEmail.bind(this);
 
     this.state = {
+      email: '',
       archive_links: false,
       paid: false,
       sortby: 'oldest',
@@ -66,6 +64,7 @@ export default class Profile extends React.Component {
     this.checkPaymentStatus();
     this.getInviteCodes();
     this.getSettings();
+    this.getEmail();
   }
 
   updateSettings() {
@@ -82,6 +81,18 @@ export default class Profile extends React.Component {
       success: function(data) {
         this.setState({
           changed: false,
+        });
+      }.bind(this)
+    });
+  }
+
+  getEmail() {
+    $.ajax({
+      url: '../api/users/get_email',
+      type: 'GET',
+      success: function(data) {
+        this.setState({
+          email: data,
         });
       }.bind(this)
     });
@@ -157,20 +168,19 @@ export default class Profile extends React.Component {
 
   render() {
 
-    return (<div>
-      <Header/>
+    return (
       <div className="profile">
         <div id="contact" className="subsection">
           <SubHeader title="Contact Info"/>
           <label>
             <b>{"Email: "}
             </b>
-            {email}</label>
+            {this.state.email}</label>
         </div>
         <div id="subscription" className="subsection">
           <SubHeader title="Subscription Info"/>
           <label>You are not subscribed to pulp</label>
-          <button>Subscribe</button>
+          <a href="../subscribe">Subscribe</a>
         </div>
         <div id="invitecodes">
           <SubHeader title="Invite Codes"/>
@@ -216,8 +226,8 @@ export default class Profile extends React.Component {
           <a href="../accounts/password/change">Change Password</a>
         </div>
       </div>
-    </div>);
+    );
   }
 }
 
-ReactDOM.render(<Profile/>, document.getElementById('profile'))
+// ReactDOM.render(<Profile/>, document.getElementById('profile'))

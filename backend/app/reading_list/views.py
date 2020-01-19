@@ -28,7 +28,6 @@ def get_reading(request):
         return JsonResponse(data={'error': 'Invalid request.'}, status=403)
     return get_reading_list(user)
 
-
 @api_view(['POST'])
 def add_to_reading_list(request):
     user = request.user
@@ -63,6 +62,32 @@ def add_to_reading_list(request):
 
     return get_reading_list(user, refresh=True)
 
+
+@api_view(['GET'])
+def get_archive(request):
+    user = request.user
+    my_reading = ReadingListItem.objects.filter(reader=user, archived=True).order_by('-date_added')
+    serializer = ReadingListItemSerializer(my_reading, many=True)
+    json_response = serializer.data
+    return JsonResponse(json_response, safe=False)
+
+
+@api_view(['POST'])
+def archive_item(request):
+    user = request.user
+    link = request.POST['link']
+    try:
+        article = Article.objects.get(permalink=link)
+    except Article.DoesNotExist:
+        raise NotFound(detail='Article not found', code=404)
+    try:
+        reading_list_item = ReadingListItem.objects.get(article=article, reader=user)
+        reading_list_item.archived = True
+        reading_list_item.save()
+        return get_reading_list(user, refresh=True)
+    except ReadingListItem.DoesNotExist:
+        raise NotFound(detail='ReadingListItem with link: %s not found.' % link, code=404)
+
 @api_view(['POST'])
 def remove_from_reading_list(request):
     user = request.user
@@ -79,3 +104,23 @@ def remove_from_reading_list(request):
         return get_reading_list(user, refresh=True)
     except ReadingListItem.DoesNotExist:
         raise NotFound(detail='ReadingListItem with link: %s not found.' % link, code=404)
+
+
+@api_view(['POST'])
+def update_deliver(request):
+    user = request.user
+    link = request.POST['permalink']
+    to_deliver = request.POST.get('to_deliver') == 'true'
+    # Get Article to get Reading list item
+    try:
+        article = Article.objects.get(permalink=link)
+    except Article.DoesNotExist:
+        raise NotFound(detail='Article not found', code=404)
+    try:
+        reading_list_item = ReadingListItem.objects.get(article=article, reader=user)
+        reading_list_item.to_deliver = to_deliver
+        reading_list_item.save()
+        return get_reading_list(user, refresh=True)
+    except ReadingListItem.DoesNotExist:
+        raise NotFound(detail='ReadingListItem with link: %s not found.' % link, code=404)
+

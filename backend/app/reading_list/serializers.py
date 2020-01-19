@@ -19,5 +19,4 @@ class ReadingListItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ReadingListItem
-        fields = ['article', 'date_added', 'archived', 'delivered', 'trashed']
-    
+        fields = ['article', 'date_added', 'archived', 'delivered', 'trashed', 'to_deliver']

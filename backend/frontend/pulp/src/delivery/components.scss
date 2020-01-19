@@ -1,0 +1,31 @@
+.delivery {
+  width: 80%;
+  max-width: 1000px;
+  margin: 35px auto;
+
+  h1 {
+    font-weight: bold;
+    font-size: 45px;
+  }
+
+  hr {
+    border-color: #4C8FFF;
+  }
+
+  th {
+    font-weight: normal;
+  }
+
+  table,
+  td,
+  th {}
+
+  td {
+    border-top: 1px solid #DFDFDE;
+  }
+
+  td,
+  th {
+    border-right: 1px solid #DFDFDE;
+  }
+}

@@ -1,0 +1,30 @@
+.unpaid {
+  text-align: center;
+
+  .pay-card {
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    margin: auto;
+    width: 90%;
+    text-align: center;
+
+    .title {
+      font-size: 95px;
+      font-weight: bold;
+    }
+
+    .description {
+      font-size: 20px;
+      position: relative;
+      top: -25px;
+    }
+
+    .getpulp {
+      position: relative;
+      background-color: #34D058;
+      color: white;
+      border-style: none;
+      border-radius: 3px;
+      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+    }
+  }
+}

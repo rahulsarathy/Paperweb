@@ -11,8 +11,10 @@ import json
 
 CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 
+
 def error_404(request, exception=None):
     return render(request, '404.html', status=404)
+
 
 def landing(request):
   if request.user.is_authenticated:
@@ -21,6 +23,16 @@ def landing(request):
     'js_file': settings.JAVASCRIPT_URLS['landing']
   }
   return render(request, 'landing.html', context)
+
+
+def newsletters(request):
+  if not request.user.is_authenticated:
+    return HttpResponseRedirect('/')
+  context = {
+    'js_file': settings.JAVASCRIPT_URLS['newsletters']
+  }
+  return render(request, 'newsletters.html', context)
+
 
 @cache_page(CACHE_TTL)
 def dashboard(request):
@@ -31,15 +43,15 @@ def dashboard(request):
   }
   return render(request, 'dashboard.html', context)
 
+
 def profile(request):
   if not request.user.is_authenticated:
     return HttpResponseRedirect('../')
   context = {
-    'stripe_public_key': STRIPE_PUBLIC_KEY,
     'js_file': settings.JAVASCRIPT_URLS['profile']
-
   }
   return render(request, 'profile.html', context)
+
 
 def delivery(request):
   if not request.user.is_authenticated:
@@ -49,19 +61,29 @@ def delivery(request):
   }
   return render(request, 'delivery.html', context)
 
+
+def switcher(request):
+  if not request.user.is_authenticated:
+    return HttpResponseRedirect('../')
+  context = {
+    'js_file': settings.JAVASCRIPT_URLS['switcher']
+  }
+  return render(request, 'reading_list.html', context)
+
+
 def reading_list(request):
   if not request.user.is_authenticated:
     return HttpResponseRedirect('../')
   context = {
-    'js_file': settings.JAVASCRIPT_URLS['reading_list']
+    'js_file': settings.JAVASCRIPT_URLS['switcher']
   }
   return render(request, 'reading_list.html', context)
+
 
 def article(request):
   if not request.user.is_authenticated:
     return HttpResponseRedirect('../')
   url = request.GET.get('url')
-  print("url is ", url)
   article_response = get_parsed(url)
   json_response = json.dumps(article_response)
   context = {
@@ -70,6 +92,16 @@ def article(request):
 
   }
   return render(request, 'article.html', context)
+
+
+def subscribe(request):
+  if not request.user.is_authenticated:
+    return HttpResponseRedirect('../')
+  context = {
+    'js_file': settings.JAVASCRIPT_URLS['subscribe'],
+    'stripe_public_key': STRIPE_PUBLIC_KEY,
+  }
+  return render(request, 'subscribe.html', context)
 
 
 @api_view(['GET'])

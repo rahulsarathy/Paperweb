@@ -10,4 +10,7 @@ urlpatterns = [
     path('add_reading', views.add_to_reading_list),
     path('get_reading', views.get_reading),
     path('remove_reading', views.remove_from_reading_list),
+    path('get_archive', views.get_archive),
+    path('archive_reading', views.archive_item),
+    path('update_deliver', views.update_deliver),
 ]
