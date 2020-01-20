@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
-import {ReadingListItem} from './components.jsx';
+import {ReadingListItem, NoArticles} from './components.jsx';
 import {Modal, Button} from 'react-bootstrap';
 
 export default class ReadingListView extends React.Component {
@@ -113,7 +113,7 @@ export default class ReadingListView extends React.Component {
       </div>
       {
         this.props.reading_list.length === 0
-          ? <p className="no-articles">No articles currently saved</p>
+          ? <NoArticles/>
           : <div></div>
       }
       <div className="reading-list-items">

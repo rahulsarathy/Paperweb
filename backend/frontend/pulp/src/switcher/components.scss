@@ -30,7 +30,7 @@ $sidebar-color: #F6F6F2;
 
   button {
     display: inline-block;
-    background-color: black;
+    background-color: #4C8FFF;
     border-style: none;
     border-radius: 3px;
     color: white;
@@ -152,8 +152,12 @@ $icon-height: 20px;
 }
 
 .no-articles {
-  margin-top: 20px;
   font-size: 20px;
+  width: 500px;
+  margin: auto;
+  margin-top: 20px;
+  text-align: center;
+  font-weight: bold;
 }
 
 .date-added {

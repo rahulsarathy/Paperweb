@@ -5,6 +5,7 @@ import shortid from 'shortid';
 import {CSSTransition, TransitionGroup} from "react-transition-group";
 import {Row, Col, Modal, Table} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
+import {NoArticles} from '../switcher/components.jsx';
 import {} from './components.jsx';
 
 function pages_compare(a, b) {
@@ -54,7 +55,7 @@ export default class Delivery extends React.Component {
 
     this.changeSort = this.changeSort.bind(this);
     this.state = {
-      sort: 'date_added',
+      sort: 'date_added'
     };
   }
 
@@ -65,11 +66,8 @@ export default class Delivery extends React.Component {
   }
 
   changeSort(sort) {
-    this.setState({
-      sort: sort,
-    });
+    this.setState({sort: sort});
   }
-
 
   createTable() {
     let reading_list = this.props.reading_list;
@@ -101,17 +99,24 @@ export default class Delivery extends React.Component {
     return (<div className="delivery">
       <h1>Delivery Management</h1>
       <hr></hr>
-      <table>
-        <thead>
-          <tr>
-            <th onClick={() => this.changeSort("title")}>Title</th>
-            <th onClick={() => this.changeSort("deliver")}>To Deliver?</th>
-            <th onClick={() => this.changeSort("pages_compare")}>Number of Pages</th>
-            <th onClick={() => this.changeSort("date_added")}>Date Added</th>
-          </tr>
-          {this.createTable()}
-        </thead>
-      </table>
+      {
+        this.props.reading_list.length === 0
+          ? <NoArticles/>
+          : <div>
+              <table>
+                <thead>
+                  <tr>
+                    <th onClick={() => this.changeSort("title")}>Title</th>
+                    <th onClick={() => this.changeSort("deliver")}>To Deliver?</th>
+                    <th onClick={() => this.changeSort("pages_compare")}>Number of Pages</th>
+                    <th onClick={() => this.changeSort("date_added")}>Date Added</th>
+                  </tr>
+                  {this.createTable()}
+                </thead>
+              </table>
+            </div>
+      }
+
     </div>);
   }
 }

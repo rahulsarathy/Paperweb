@@ -6,7 +6,7 @@ import Archive from './archive.jsx';
 import ArchiveItem from './archive_item.jsx';
 import Profile from '../profile/profile.jsx';
 import Delivery from '../delivery/delivery.jsx';
-
+import NoArticles from './NoArticles.jsx';
 
 export {
   Header,
@@ -16,4 +16,5 @@ export {
   Profile,
   ArchiveItem,
   Delivery,
+  NoArticles,
 }
