@@ -54,8 +54,10 @@ export default class Delivery extends React.Component {
     super(props);
 
     this.changeSort = this.changeSort.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
     this.state = {
-      sort: 'date_added'
+      sort: 'date_added',
+      // search: undefined,
     };
   }
 
@@ -69,8 +71,7 @@ export default class Delivery extends React.Component {
     this.setState({sort: sort});
   }
 
-  createTable() {
-    let reading_list = this.props.reading_list;
+  chooseSort() {
     let sorted;
     if (this.state.sort === 'deliver') {
       sorted = this.props.reading_list.sort(deliver_compare);
@@ -84,7 +85,21 @@ export default class Delivery extends React.Component {
     if (this.state.sort === 'pages_compare') {
       sorted = this.props.reading_list.sort(pages_compare);
     }
-    return sorted.map((rlist_item) => <tr key={rlist_item.article.title}>
+    return sorted;
+  }
+
+  createTable() {
+    let search = this.state.search;
+    let reading_list = this.props.reading_list;
+    let sorted = this.chooseSort();
+    let filtered = [];
+    for (let i = 0; i < sorted.length; i++) {
+      if (search === undefined || sorted[i].article.title.toLowerCase().includes(search.toLowerCase())) {
+        filtered.push(sorted[i]);
+      }
+    }
+
+    return filtered.map((rlist_item) => <tr key={rlist_item.article.title}>
       <td>{rlist_item.article.title}
         {this.getLocation(rlist_item.article.permalink)}</td>
       <td>
@@ -95,6 +110,10 @@ export default class Delivery extends React.Component {
     </tr>)
   }
 
+  handleSearch(e) {
+    this.setState({search: e.target.value});
+  }
+
   render() {
     return (<div className="delivery">
       <h1>Delivery Management</h1>
@@ -103,6 +122,7 @@ export default class Delivery extends React.Component {
         this.props.reading_list.length === 0
           ? <NoArticles/>
           : <div>
+              <input type="text" onChange={this.handleSearch} />
               <table>
                 <thead>
                   <tr>

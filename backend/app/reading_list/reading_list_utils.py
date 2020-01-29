@@ -46,6 +46,17 @@ def get_parsed(url):
             cache.set(url, response_string)
     return json_response
 
+def get_cache_archive(user, refresh=False):
+    key = 'archive' + user.email
+    if refresh is False and key in cache:
+        json_response = cache.get(key)
+    else:
+        my_archive = ReadingListItem.objects.filter(reader=user, archived=True).order_by('-date_added')
+        serializer = ReadingListItemSerializer(my_archive, many=True)
+        json_response = serializer.data
+        cache.set(key, serializer.data)
+    return JsonResponse(json_response, safe=False)
+
 
 # Create HTML file for article 3 column format and store in AWS S3
 def html_to_s3(url, user, article, json_response):

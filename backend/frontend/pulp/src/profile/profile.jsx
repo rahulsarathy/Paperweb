@@ -170,6 +170,8 @@ export default class Profile extends React.Component {
 
     return (
       <div className="profile">
+        <h1>Settings</h1>
+        <hr className="divider"></hr>
         <div id="contact" className="subsection">
           <SubHeader title="Contact Info"/>
           <label>

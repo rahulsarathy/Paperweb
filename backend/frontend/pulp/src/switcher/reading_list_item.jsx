@@ -52,21 +52,14 @@ export default class ReadingListItem extends React.Component {
           <div className="author">
             {
               mercury_response.author
-                ? <p className="author_text">{'by ' + mercury_response.author}</p>
+                ? <p className="author_text">{'by ' + mercury_response.author + ' '}</p>
                 : ''
             }
           </div>
         </div>
-        {
-          this.state.hovered
-            ? (<div className="hover-section">
-              <button onClick={() => this.props.removeArticle(article.permalink)}>Remove</button>
-              <button onClick={() => this.props.archiveArticle(article.permalink)}>Archive</button>
-            </div>)
-            : <div className="hover-section">
-                <p className="date-added">| Added on {added.split('T')[0]}</p>
-              </div>
-        }
+        <div className="hover-section">
+          <p className="date-added">| Added on {added.split('T')[0]}</p>
+        </div>
         <div className="faded-content">
           <div className="content">
             <p>{mercury_response.parsed_text}</p>

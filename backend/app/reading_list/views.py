@@ -8,7 +8,7 @@ from rest_framework.exceptions import NotFound
 
 from reading_list.serializers import ReadingListItemSerializer, ArticleSerializer
 from reading_list.models import Article, ReadingListItem
-from reading_list.reading_list_utils import get_parsed, html_to_s3, get_reading_list
+from reading_list.reading_list_utils import get_parsed, html_to_s3, get_reading_list, get_cache_archive
 import requests
 import json
 import threading
@@ -66,10 +66,7 @@ def add_to_reading_list(request):
 @api_view(['GET'])
 def get_archive(request):
     user = request.user
-    my_reading = ReadingListItem.objects.filter(reader=user, archived=True).order_by('-date_added')
-    serializer = ReadingListItemSerializer(my_reading, many=True)
-    json_response = serializer.data
-    return JsonResponse(json_response, safe=False)
+    return get_cache_archive(user, refresh=False)
 
 
 @api_view(['POST'])
@@ -87,6 +84,23 @@ def archive_item(request):
         return get_reading_list(user, refresh=True)
     except ReadingListItem.DoesNotExist:
         raise NotFound(detail='ReadingListItem with link: %s not found.' % link, code=404)
+
+@api_view(['POST'])
+def unarchive(request):
+    user = request.user
+    link = request.POST['link']
+    try:
+        article = Article.objects.get(permalink=link)
+    except Article.DoesNotExist:
+        raise NotFound(detail='Article not found', code=404)
+    try:
+        reading_list_item = ReadingListItem.objects.get(article=article, reader=user)
+        reading_list_item.archived = False
+        reading_list_item.save()
+        return get_cache_archive(user=user, refresh=True)
+    except ReadingListItem.DoesNotExist:
+        raise NotFound(detail='Archived Reading List Item with link: %s not found.' % link, code=404)
+
 
 @api_view(['POST'])
 def remove_from_reading_list(request):

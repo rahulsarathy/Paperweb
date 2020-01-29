@@ -30,13 +30,13 @@ class MenuItem extends React.Component {
       : className = "menu-item"
 
     return (<div className={className} onClick={this.props.onClick}>
-      {
+      {/*
         this.props.value === 'reading_list'
           ? (<div className="unread">
             <div className="number">{this.props.unread}</div>
           </div>)
           : (<img className="icon" src={image_url}/>)
-      }
+      */}
       {this.props.text}
     </div>);
   }

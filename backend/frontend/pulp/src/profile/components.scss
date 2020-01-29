@@ -11,9 +11,22 @@ hr {
   margin-bottom: 1rem;
 }
 
+.divider {
+  border-color: #4C8FFF;
+  position: relative;
+  // bottom: 10px;
+}
+
 .profile {
   // width: 50%;
-  // margin: 80px auto auto;
+  margin: 35px auto;
+  width: 80%;
+
+  h1 {
+    margin: auto;
+    font-weight: bold;
+    font-size: 45px;
+  }
 }
 
 label {
