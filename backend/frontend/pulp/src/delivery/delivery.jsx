@@ -122,7 +122,7 @@ export default class Delivery extends React.Component {
         this.props.reading_list.length === 0
           ? <NoArticles/>
           : <div>
-              <input type="text" onChange={this.handleSearch} />
+              <input placeholder="Search" type="text" onChange={this.handleSearch} />
               <table>
                 <thead>
                   <tr>
