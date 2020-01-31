@@ -13,13 +13,12 @@ export default class Checkbox extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-    };
+    this.state = {};
   }
 
   render() {
     return (<div className="checkbox">
-    <span class="checkmark"></span>
+      <span className="checkmark"></span>
     </div>);
   }
 }

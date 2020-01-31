@@ -57,9 +57,6 @@ export default class ReadingListItem extends React.Component {
             }
           </div>
         </div>
-        <div className="hover-section">
-          <p className="date-added">| Added on {added.split('T')[0]}</p>
-        </div>
         <div className="faded-content">
           <div className="content">
             <p>{mercury_response.parsed_text}</p>

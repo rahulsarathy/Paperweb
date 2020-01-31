@@ -107,7 +107,7 @@ export default class Delivery extends React.Component {
       <td className="to-deliver">
         <input type="checkbox" onChange={() => this.props.changeDeliver(rlist_item)} checked={rlist_item.to_deliver}/>
       </td>
-      <td>{rlist_item.article.word_count}</td>
+      <td className="">{rlist_item.article.word_count}</td>
       <td className="rightmost">{(new Date(rlist_item.date_added)).toDateString().split(' ').slice(1).join(' ')}</td>
     </tr>)
   }
