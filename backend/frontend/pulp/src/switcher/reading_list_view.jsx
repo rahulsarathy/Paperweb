@@ -98,7 +98,7 @@ export default class ReadingListView extends React.Component {
           : <div></div>
       }
       <h1>Your Print List</h1>
-      <button onClick={this.addArticle}>Add Article</button>
+      <button className="add-article-button" onClick={this.addArticle}>Add Article</button>
       <hr></hr>
       <div className="add-article">
         <Modal show={this.state.show_add} onHide={this.handleClose}>

@@ -40,8 +40,16 @@ export default class ReadingListItem extends React.Component {
         width: '100%'
       }
     }
-    return (<div className="readinglist-item-container" style={style}>
-      <div className="readinglist-item" onMouseEnter={this.handleHover} onMouseLeave={this.handleUnhover}>
+    return (<div onMouseEnter={this.handleHover} onMouseLeave={this.handleUnhover} className="readinglist-item-container" style={style}>
+      {
+        this.state.hovered
+          ? <div className="hover-section">
+              <button onClick={() => this.props.removeArticle(article.permalink)}>Remove</button>
+              <button onClick={() => this.props.archiveArticle(article.permalink)}>Archive</button>
+            </div>
+          : <div></div>
+      }
+      <div className="readinglist-item">
         <h3>
           <a target="_blank" href={href}>{article.title}</a>
         </h3>

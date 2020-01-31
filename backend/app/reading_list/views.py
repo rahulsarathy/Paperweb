@@ -81,6 +81,8 @@ def archive_item(request):
         reading_list_item = ReadingListItem.objects.get(article=article, reader=user)
         reading_list_item.archived = True
         reading_list_item.save()
+        key = 'archive' + user.email
+        cache.delete(key)
         return get_reading_list(user, refresh=True)
     except ReadingListItem.DoesNotExist:
         raise NotFound(detail='ReadingListItem with link: %s not found.' % link, code=404)

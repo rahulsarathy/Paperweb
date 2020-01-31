@@ -22,10 +22,10 @@ function deliver_compare(a, b) {
     if (b.to_deliver) {
       return date_compare(a, b);
     }
-    return 1;
+    return -1;
   }
   if (b.to_deliver) {
-    return -1;
+    return 1;
   }
   return 0;
 }
@@ -121,7 +121,7 @@ export default class Delivery extends React.Component {
       case 'title':
         return 'Title';
       case 'deliver':
-        return 'Delivery By?';
+        return 'To Deliver?';
       case 'pages_compare':
         return 'Number of Pages';
       case 'date_added':
