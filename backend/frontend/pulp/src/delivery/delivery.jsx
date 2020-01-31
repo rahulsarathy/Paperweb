@@ -57,7 +57,6 @@ export default class Delivery extends React.Component {
     this.handleSearch = this.handleSearch.bind(this);
     this.state = {
       sort: 'date_added',
-      // search: undefined,
     };
   }
 
@@ -72,20 +71,18 @@ export default class Delivery extends React.Component {
   }
 
   chooseSort() {
-    let sorted;
-    if (this.state.sort === 'deliver') {
-      sorted = this.props.reading_list.sort(deliver_compare);
+    switch (this.state.sort) {
+      case 'title':
+        return this.props.reading_list.sort(title_compare);
+      case 'deliver':
+        return this.props.reading_list.sort(deliver_compare);
+      case 'pages_compare':
+        return this.props.reading_list.sort(pages_compare);
+      case 'date_added':
+        return this.props.reading_list.sort(date_compare);
+      default:
+        return this.props.reading_list.sort(title_compare);
     }
-    if (this.state.sort === 'date_added') {
-      sorted = this.props.reading_list.sort(date_compare);
-    }
-    if (this.state.sort === 'title') {
-      sorted = this.props.reading_list.sort(title_compare);
-    }
-    if (this.state.sort === 'pages_compare') {
-      sorted = this.props.reading_list.sort(pages_compare);
-    }
-    return sorted;
   }
 
   createTable() {
