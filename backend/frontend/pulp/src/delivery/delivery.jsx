@@ -3,16 +3,16 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import shortid from 'shortid';
 import {CSSTransition, TransitionGroup} from "react-transition-group";
-import {Row, Col, Modal, Table} from 'react-bootstrap';
+import {Table, DropdownButton, Dropdown} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import {NoArticles} from '../switcher/components.jsx';
-import {} from './components.jsx';
+import {Checkbox} from './components.jsx';
 
 function pages_compare(a, b) {
   if (a.article.word_count > b.article.word_count)
-    return 1;
-  if (b.article.word_count > a.article.word_count)
     return -1;
+  if (b.article.word_count > a.article.word_count)
+    return 1;
   return 0;
 }
 
@@ -100,18 +100,35 @@ export default class Delivery extends React.Component {
     }
 
     return filtered.map((rlist_item) => <tr key={rlist_item.article.title}>
-      <td>{rlist_item.article.title}
-        {this.getLocation(rlist_item.article.permalink)}</td>
       <td>
+        <p className="title">{rlist_item.article.title}</p>
+        <p className="domain">{this.getLocation(rlist_item.article.permalink)}</p>
+      </td>
+      <td className="to-deliver">
         <input type="checkbox" onChange={() => this.props.changeDeliver(rlist_item)} checked={rlist_item.to_deliver}/>
       </td>
       <td>{rlist_item.article.word_count}</td>
-      <td>{rlist_item.date_added}</td>
+      <td className="rightmost">{(new Date(rlist_item.date_added)).toDateString().split(' ').slice(1).join(' ')}</td>
     </tr>)
   }
 
   handleSearch(e) {
     this.setState({search: e.target.value});
+  }
+
+  changeSortLabel() {
+    switch (this.state.sort) {
+      case 'title':
+        return 'Title';
+      case 'deliver':
+        return 'Delivery By?';
+      case 'pages_compare':
+        return 'Number of Pages';
+      case 'date_added':
+        return 'Date Added';
+      default:
+        return 'Title';
+    }
   }
 
   render() {
@@ -122,18 +139,30 @@ export default class Delivery extends React.Component {
         this.props.reading_list.length === 0
           ? <NoArticles/>
           : <div>
-              <input placeholder="Search" type="text" onChange={this.handleSearch} />
-              <table>
-                <thead>
-                  <tr>
-                    <th onClick={() => this.changeSort("title")}>Title</th>
-                    <th onClick={() => this.changeSort("deliver")}>To Deliver?</th>
-                    <th onClick={() => this.changeSort("pages_compare")}>Number of Pages</th>
-                    <th onClick={() => this.changeSort("date_added")}>Date Added</th>
-                  </tr>
-                  {this.createTable()}
-                </thead>
-              </table>
+              <div className="filter">
+                <input placeholder="Search" type="text" onChange={this.handleSearch}/>
+              </div>
+              <label className="sort-label">Sort By</label>
+              <DropdownButton className="sort-button" title={this.changeSortLabel()}>
+                <Dropdown.Item onClick={() => this.changeSort("title")}>Title</Dropdown.Item>
+                <Dropdown.Item onClick={() => this.changeSort("deliver")}>To Deliver?</Dropdown.Item>
+                <Dropdown.Item onClick={() => this.changeSort("pages_compare")}>Number of Pages</Dropdown.Item>
+                <Dropdown.Item onClick={() => this.changeSort("date_added")}>Date Added</Dropdown.Item>
+              </DropdownButton>
+              <Checkbox/>
+              <div className="table-container">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Title</th>
+                      <th>To Deliver?</th>
+                      <th>Number of Pages</th>
+                      <th className="rightmost">Date Added</th>
+                    </tr>
+                    {this.createTable()}
+                  </thead>
+                </table>
+              </div>
             </div>
       }
 

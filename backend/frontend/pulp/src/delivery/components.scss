@@ -16,6 +16,21 @@
     font-weight: normal;
   }
 
+  .table-container {
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    border-radius: 3px;
+    padding: 5px;
+    // padding: 5px 5px 5px 5px;
+  }
+
+  .rightmost {
+    border-right: none;
+  }
+
+  tr {
+    border-right: none;
+  }
+
   table,
   td,
   th {}
@@ -27,5 +42,60 @@
   td,
   th {
     border-right: 1px solid #DFDFDE;
+  }
+}
+
+.title {
+  display: inline-block;
+}
+
+.domain {
+  color: grey;
+  display: inline-block;
+}
+
+.to-deliver {
+  $side: 20px;
+
+  input {
+    margin-left: 5px;
+    border-radius: 0;
+    height: $side;
+    width: $side;
+  }
+}
+
+.sort-label {
+  display: inline-block;
+  margin-left: 10px;
+}
+
+.sort-button {
+  display: inline-block;
+  margin-left: 5px;
+
+  button {
+    height: 30px;
+    line-height: 15px;
+    background-color: #4C8FFF;
+    border-color: #4C8FFF;
+  }
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+}
+
+.filter {
+  display: inline-block;
+
+  input {
+    border-radius: 5px;
+    border: 1px solid #dddddd;
   }
 }

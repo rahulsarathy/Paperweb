@@ -20,6 +20,8 @@ services:
     depends_on:
       - db
       - redis
+    links:
+      - db:db
   redis:
     image: redis:5.0.6-alpine
     command: redis-server
