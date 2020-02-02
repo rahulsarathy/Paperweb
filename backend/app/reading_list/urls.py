@@ -13,4 +13,5 @@ urlpatterns = [
     path('get_archive', views.get_archive),
     path('archive_reading', views.archive_item),
     path('update_deliver', views.update_deliver),
+    path('unarchive', views.unarchive),
 ]

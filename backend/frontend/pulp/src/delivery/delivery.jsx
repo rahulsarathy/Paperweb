@@ -8,6 +8,12 @@ import 'bootstrap/dist/css/bootstrap.css';
 import {NoArticles} from '../switcher/components.jsx';
 import {Checkbox} from './components.jsx';
 
+function getLocation(href) {
+  var l = document.createElement("a");
+  l.href = href;
+  return l.hostname;
+}
+
 function pages_compare(a, b) {
   if (a.article.word_count > b.article.word_count)
     return -1;
@@ -60,12 +66,6 @@ export default class Delivery extends React.Component {
     };
   }
 
-  getLocation(href) {
-    var l = document.createElement("a");
-    l.href = href;
-    return l.hostname;
-  }
-
   changeSort(sort) {
     this.setState({sort: sort});
   }
@@ -99,7 +99,7 @@ export default class Delivery extends React.Component {
     return filtered.map((rlist_item) => <tr key={rlist_item.article.title}>
       <td>
         <p className="title">{rlist_item.article.title}</p>
-        <p className="domain">{this.getLocation(rlist_item.article.permalink)}</p>
+        <p className="domain">{getLocation(rlist_item.article.permalink)}</p>
       </td>
       <td className="to-deliver">
         <input type="checkbox" onChange={() => this.props.changeDeliver(rlist_item)} checked={rlist_item.to_deliver}/>
