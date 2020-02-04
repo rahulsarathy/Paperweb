@@ -28,6 +28,11 @@ def get_reading(request):
         return JsonResponse(data={'error': 'Invalid request.'}, status=403)
     return get_reading_list(user)
 
+# 1. Validate URL
+# 2. Parse article content
+# 3. Add Article to DB
+# 4. Create new thread that uploads article HTML to S3 Bucket
+# 5. Return new reading list to user while threaded process runs
 @api_view(['POST'])
 def add_to_reading_list(request):
     user = request.user

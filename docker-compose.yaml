@@ -22,6 +22,13 @@ services:
       - redis
     links:
       - db:db
+  formatter:
+    build: ./formatter
+    command: ./boot.sh
+    env_file:
+      - ./.env
+    ports:
+      - 5000:5000
   redis:
     image: redis:5.0.6-alpine
     command: redis-server

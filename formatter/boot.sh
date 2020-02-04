@@ -1,0 +1,3 @@
+#!/bin/sh
+flask translate compile
+exec gunicorn -b :5000 --access-logfile - --error-logfile - printer_start:app
