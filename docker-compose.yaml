@@ -26,7 +26,7 @@ services:
     build: ./formatter
     command: ./boot.sh
     env_file:
-      - ./.env
+      - ./formatter/.env
     ports:
       - 5000:5000
   redis:
