@@ -25,6 +25,8 @@ services:
   formatter:
     build: ./formatter
     command: ./boot.sh
+    volumes:
+      - ./formatter:/home/printer_start
     env_file:
       - ./formatter/.env
     ports:

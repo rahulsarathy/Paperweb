@@ -1,3 +1,2 @@
 #!/bin/sh
-flask translate compile
-exec gunicorn -b :5000 --access-logfile - --error-logfile - printer_start:app
+exec flask run -h 0.0.0.0

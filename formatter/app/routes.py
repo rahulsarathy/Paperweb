@@ -6,7 +6,7 @@ import os
 @app.route('/')
 @app.route('/index')
 def index():
-    return "Hello, World!"
+    return "Hello, Worl!"
 
 
 @app.route('/html_to_pdf', methods=['POST'])
@@ -19,4 +19,4 @@ def html_to_pdf():
     # upload new pdf to s3
     # return to main server with PDF ID
 
-    return "Hello, World!"
+    return "Hello, Word"
