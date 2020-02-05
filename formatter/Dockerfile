@@ -1,5 +1,8 @@
 FROM python:3.7.4-alpine
 
+RUN apk add chromium-chromedriver
+RUN apk add chromium
+
 RUN adduser -D printer_start
 
 WORKDIR /home/printer_start
@@ -14,6 +17,8 @@ RUN chmod +x boot.sh
 
 ENV FLASK_APP printer_start.py
 ENV FLASK_ENV development
+ENV CHROME_BIN=/usr/bin/chromium-browser \
+    CHROME_PATH=/usr/lib/chromium/
 
 RUN chown -R printer_start:printer_start ./
 USER printer_start

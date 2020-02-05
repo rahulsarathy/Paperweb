@@ -1,8 +1,8 @@
 import time
-from formatter import webdriver
-import json
+from selenium import webdriver
+import json, base64
 
-image_source = 'file:///Users/Rahul/Developer/selenium_server/dump/-8989687746741444906.html'
+image_source = 'file:///home/printer_start/dump/-8989687746741444906.html'
 
 appState = {
     "recentDestinations": [
@@ -21,9 +21,11 @@ chrome_options = webdriver.ChromeOptions()
 chrome_options.add_experimental_option('prefs', profile)
 chrome_options.add_argument('--kiosk-printing')
 chrome_options.add_argument('--no-margins')
-# chrome_options.add_argument('--headless')
-# chrome_options.add_argument('window-size=1200x600')
-driver = webdriver.Chrome('/Users/Rahul/Developer/selenium_server/extra/chromedriver', options=chrome_options)  # Optional argument, if not specified will search path.
+chrome_options.add_argument('--headless')
+chrome_options.add_argument('--disable-dev-shm-usage')
+chrome_options.add_argument('--no-sandbox')
+chrome_options.add_argument('window-size=1200x600')
+driver = webdriver.Chrome(options=chrome_options)  # Optional argument, if not specified will search path.
 driver.get(image_source);
 driver.execute_script('window.print();')
 # time.sleep(5) # Let the user actually see something!
