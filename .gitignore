@@ -29,7 +29,9 @@ backend/app/newsletters/migrations/*.py
 .idea
 celerybeat.pid
 .env.dev
+formatter/dump
 formatter/.python_history
 formatter/.ash_history
 formatter/.cache
 formatter/.pki
+formatter/.config

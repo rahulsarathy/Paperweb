@@ -8,5 +8,4 @@ s3_client = boto3.client('s3', aws_access_key_id=S3_USER_ACCESS_ID, aws_secret_a
 
 
 def download_link(bucket_name, s3_file_path, output_file_path):
-    s3 = boto3.client('s3')
-    s3.download_file(bucket_name, s3_file_path, output_file_path)
+    s3_client.download_file(bucket_name, s3_file_path, output_file_path)
