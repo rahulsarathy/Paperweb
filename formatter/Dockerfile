@@ -1,7 +1,8 @@
 FROM python:3.7.4-alpine
 
-RUN apk add chromium-chromedriver
 RUN apk add chromium
+RUN apk add ttf-linux-libertine
+RUN apk add ttf-liberation
 RUN set -ex && apk --no-cache add sudo
 
 RUN adduser -D printer_start

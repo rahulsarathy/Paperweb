@@ -11,7 +11,7 @@ from datetime import datetime
 class Article(models.Model):
     title = models.CharField(_('Article Title'), max_length=255)
     permalink = models.URLField(_('Permalink'), primary_key=True, max_length=500)
-    word_count = models.IntegerField(_('Number of Words'), default=1, null=True)
+    page_count = models.IntegerField(_('Number of Words'), default=None, null=True)
     mercury_response = JSONField()
 
 class ReadingListItem(models.Model):

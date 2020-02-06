@@ -96,10 +96,26 @@ def html_to_s3(url, user, article, json_response):
     }
     put_object('pulppdfs', "{}.html".format(id), "./{}.html".format(id), metadata)
     os.remove("./{}.html".format(id))
-
-    article.word_count = word_count
+    page_count = get_page_count(id)
+    article.page_count = page_count
     article.save()
     ReadingListItem.objects.get_or_create(
         reader=user, article=article
     )
+    # Purge Reading List Cache
+    key = 'reading_list' + user.email
+    cache.delete(key)
     return
+
+
+def get_page_count(id):
+    data = {'html_id': id}
+    formatter_url = 'http://{}:5000/html_to_pdf'.format(settings.FORMATTER_HOST)
+    response = requests.post(formatter_url, data=data)
+    response_string = response.content.decode("utf-8")
+    json_response = json.loads(response_string)
+    pages = json_response.get('pages')
+    html_id = json_response.get('html_id')
+    if html_id != id:
+        return None
+    return pages

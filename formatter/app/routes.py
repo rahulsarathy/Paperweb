@@ -3,6 +3,7 @@ from flask import request, Response
 from app.s3_utils import download_link
 import os
 import PyPDF2
+import json
 import sys
 
 @app.route('/')
@@ -12,25 +13,31 @@ def index():
 
 @app.route('/html_to_pdf', methods=['POST'])
 def html_to_pdf():
-    print("current dir is", file=sys.stderr)
-    print(os.getcwd(), file=sys.stderr)
-    for root, dirs, files in os.walk("./dump"):
-        for filename in files:
-            print(filename, file=sys.stderr)
     html_id = request.values.get('html_id')
     file_name = '{}.html'.format(html_id)
     download_link('pulppdfs', file_name, os.path.join('dump', file_name))
-    os.system('chromium-browser --headless --no-sandbox --print-to-pdf=/home/printer_start/dump/{}.pdf file:///home/printer_'
+
+    # convert html into pdf
+    # Chrome flag descriptions
+    # --headless: run chrome without UI
+    # --run-all-compositor-stages-before-draw: make sure html content is fully loaded before PDF generation
+    # --print-to-pdf={}: Print to PDF at file output
+    os.system('chromium-browser --disable-dev-shm-usage --headless --no-sandbox  --run-all-compositor-stages-before-draw --print-to-pdf='
+              '/home/printer_start/dump/{}.pdf file:///home/printer_'
               'start/dump/{}'.format(html_id, file_name))
+
     # get number of pages of pdf
-    # reader = PyPDF2.PdfFileReader(open(os.path.join('home', 'printer_start', 'dump', '{}.pdf'.format(html_id))))
     reader = PyPDF2.PdfFileReader(open(os.path.join('dump', '{}.pdf'.format(html_id)), mode="rb"))
     num_pages = reader.getNumPages()
+
+    # delete pdf and downloaded html file
     os.remove(os.path.join('dump', '{}.pdf'.format(html_id)))
-    # return to main server with PDF ID and pdf count
+    os.remove(os.path.join('dump', '{}.html'.format(html_id)))
+
+    # return to main server with article ID and pdf page count
     output = {
-        'pages': num_pages,
-        'html_id': html_id,
+        'pages': int(num_pages),
+        'html_id': int(html_id),
     }
-    r = Response(str(output), status=200)
+    r = Response(json.dumps(output), status=200)
     return r

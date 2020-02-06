@@ -213,6 +213,7 @@ LOGGING = {
 CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default=False, cast=bool)
 SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=False, cast=bool)
 SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default=False, cast=bool)
+FORMATTER_HOST = os.environ.get('FORMATTER_HOST')
 PARSER_HOST = os.environ.get('PARSER_HOST')
 PARSER_PORT = os.environ.get('PARSER_PORT')
 

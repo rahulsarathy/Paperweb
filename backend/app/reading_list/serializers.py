@@ -6,7 +6,7 @@ from rest_framework import serializers
 class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
-        fields = ['title', 'permalink', 'word_count', 'mercury_response']
+        fields = ['title', 'permalink', 'page_count', 'mercury_response']
 
     mercury_response = serializers.SerializerMethodField()
 

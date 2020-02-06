@@ -15,9 +15,9 @@ function getLocation(href) {
 }
 
 function pages_compare(a, b) {
-  if (a.article.word_count > b.article.word_count)
+  if (a.article.page_count > b.article.page_count)
     return -1;
-  if (b.article.word_count > a.article.word_count)
+  if (b.article.page_count > a.article.page_count)
     return 1;
   return 0;
 }
@@ -61,13 +61,19 @@ export default class Delivery extends React.Component {
 
     this.changeSort = this.changeSort.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
+    this.calculateTotal = this.calculateTotal.bind(this);
     this.state = {
       sort: 'date_added',
+      total: 0,
     };
   }
 
   changeSort(sort) {
     this.setState({sort: sort});
+  }
+
+  componentDidMount() {
+    this.calculateTotal();
   }
 
   chooseSort() {
@@ -104,7 +110,7 @@ export default class Delivery extends React.Component {
       <td className="to-deliver">
         <input type="checkbox" onChange={() => this.props.changeDeliver(rlist_item)} checked={rlist_item.to_deliver}/>
       </td>
-      <td className="">{rlist_item.article.word_count}</td>
+      <td className="">{rlist_item.article.page_count}</td>
       <td className="rightmost">{(new Date(rlist_item.date_added)).toDateString().split(' ').slice(1).join(' ')}</td>
     </tr>)
   }
@@ -128,6 +134,21 @@ export default class Delivery extends React.Component {
     }
   }
 
+  calculateTotal() {
+    let reading_list = this.props.reading_list;
+    let total = 0;
+    for (let i =0; i < reading_list.length; i++) {
+      if (reading_list[i].to_deliver) {
+        total += reading_list[i].article.page_count;
+      }
+    }
+    console.log(total);
+    this.setState({
+      total: total,
+    });
+  }
+
+
   render() {
     return (<div className="delivery">
       <h1>Delivery Management</h1>
@@ -140,6 +161,7 @@ export default class Delivery extends React.Component {
                 <input placeholder="Search" type="text" onChange={this.handleSearch}/>
               </div>
               <label className="sort-label">Sort By</label>
+              <p>{this.state.total}/50 Pages</p>
               <DropdownButton className="sort-button" title={this.changeSortLabel()}>
                 <Dropdown.Item onClick={() => this.changeSort("title")}>Title</Dropdown.Item>
                 <Dropdown.Item onClick={() => this.changeSort("deliver")}>To Deliver?</Dropdown.Item>
