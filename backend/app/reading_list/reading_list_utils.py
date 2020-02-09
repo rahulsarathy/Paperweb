@@ -11,6 +11,9 @@ from django.http import JsonResponse
 from reading_list.serializers import ReadingListItemSerializer
 from django.core.cache import cache
 from django.conf import settings
+from django.core.validators import URLValidator
+from django.core.exceptions import ValidationError
+import threading
 
 
 def get_reading_list(user, refresh=False):
@@ -23,6 +26,34 @@ def get_reading_list(user, refresh=False):
         json_response = serializer.data
         cache.set(key, serializer.data)
     return JsonResponse(json_response, safe=False)
+
+
+def add_to_reading_list(user, link):
+    validate = URLValidator()
+    try:
+        validate(link)
+    except ValidationError:
+        return JsonResponse(data={'error': 'Invalid URL.'}, status=400)
+    article_json = get_parsed(link)
+    title = article_json.get('title')
+
+    soup = BeautifulSoup(article_json.get('content', None), 'html.parser')
+    article_text = soup.getText()
+    article_json['parsed_text'] = article_text
+
+    article, created = Article.objects.get_or_create(
+         title=title, permalink=link, mercury_response=article_json
+     )
+    reading_list_item, created = ReadingListItem.objects.get_or_create(
+        reader=user, article=article
+    )
+
+    try:
+        upload_article = threading.Thread(target=html_to_s3, args=(link, user, article, article_json, ))
+        upload_article.start()
+    except:
+        logging.warning("Threading failed")
+    return get_reading_list(user, refresh=True)
 
 # Check for mercury response in
 # 1. cache

@@ -7,11 +7,12 @@ from . import views
 app_name = 'reading_list'
 
 urlpatterns = [
-    path('add_reading', views.add_to_reading_list),
+    path('add_reading', views.handle_add_to_reading_list),
     path('get_reading', views.get_reading),
     path('remove_reading', views.remove_from_reading_list),
     path('get_archive', views.get_archive),
     path('archive_reading', views.archive_item),
     path('update_deliver', views.update_deliver),
     path('unarchive', views.unarchive),
+    path('instapaper', views.import_from_instapaper),
 ]

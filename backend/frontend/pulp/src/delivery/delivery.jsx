@@ -91,30 +91,6 @@ export default class Delivery extends React.Component {
     }
   }
 
-  createTable() {
-    let search = this.state.search;
-    let reading_list = this.props.reading_list;
-    let sorted = this.chooseSort();
-    let filtered = [];
-    for (let i = 0; i < sorted.length; i++) {
-      if (search === undefined || sorted[i].article.title.toLowerCase().includes(search.toLowerCase())) {
-        filtered.push(sorted[i]);
-      }
-    }
-
-    return filtered.map((rlist_item) => <tr key={rlist_item.article.title}>
-      <td>
-        <p className="title">{rlist_item.article.title}</p>
-        <p className="domain">{getLocation(rlist_item.article.permalink)}</p>
-      </td>
-      <td className="to-deliver">
-        <input type="checkbox" onChange={() => this.props.changeDeliver(rlist_item)} checked={rlist_item.to_deliver}/>
-      </td>
-      <td className="">{rlist_item.article.page_count}</td>
-      <td className="rightmost">{(new Date(rlist_item.date_added)).toDateString().split(' ').slice(1).join(' ')}</td>
-    </tr>)
-  }
-
   handleSearch(e) {
     this.setState({search: e.target.value});
   }
@@ -148,6 +124,29 @@ export default class Delivery extends React.Component {
     });
   }
 
+  createTable() {
+    let search = this.state.search;
+    let reading_list = this.props.reading_list;
+    let sorted = this.chooseSort();
+    let filtered = [];
+    for (let i = 0; i < sorted.length; i++) {
+      if (search === undefined || sorted[i].article.title.toLowerCase().includes(search.toLowerCase())) {
+        filtered.push(sorted[i]);
+      }
+    }
+
+    return filtered.map((rlist_item) => <tr key={rlist_item.article.title}>
+      <td>
+        <p className="title">{rlist_item.article.title}</p>
+        <p className="domain">{getLocation(rlist_item.article.permalink)}</p>
+      </td>
+      <td className="to-deliver">
+        <input type="checkbox" onChange={() => this.props.changeDeliver(rlist_item)} checked={rlist_item.to_deliver}/>
+      </td>
+      <td className="">{rlist_item.article.page_count}</td>
+      <td className="rightmost">{(new Date(rlist_item.date_added)).toDateString().split(' ').slice(1).join(' ')}</td>
+    </tr>)
+  }
 
   render() {
     return (<div className="delivery">
@@ -174,8 +173,8 @@ export default class Delivery extends React.Component {
                   <thead>
                     <tr>
                       <th>Title</th>
-                      <th>To Deliver?</th>
-                      <th>Number of Pages</th>
+                      <th className="center-th">To Deliver?</th>
+                      <th className="center-th">Number of Pages</th>
                       <th className="rightmost">Date Added</th>
                     </tr>
                     {this.createTable()}

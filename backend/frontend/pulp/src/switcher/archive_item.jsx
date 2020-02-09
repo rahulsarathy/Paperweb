@@ -51,7 +51,7 @@ export default class ArchiveItem extends React.Component {
           </div>
           <div className="date">
             <p className="date-added">Added on {added.split('T')[0]}</p>
-          </div>
+          </div>w
         </div>
         {
           this.state.hovered

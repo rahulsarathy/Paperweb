@@ -36,7 +36,6 @@ export default class Address_Model extends React.Component {
 
 	render () {
 
-
 		return (
 			<div className="address_modal">
 				<button onClick={this.showModal} >{this.props.set ? "Set Address": "Edit Address"}</button>

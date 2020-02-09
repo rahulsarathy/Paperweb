@@ -49,6 +49,7 @@ export default class Switcher extends React.Component {
     this.changeSelected = this.changeSelected.bind(this);
     this.updateReadingList = this.updateReadingList.bind(this);
     this.changeDeliver = this.changeDeliver.bind(this);
+    this.importFromInstapaper = this.importFromInstapaper.bind(this);
 
     this.state = {
       value: "",
@@ -107,6 +108,24 @@ export default class Switcher extends React.Component {
     });
   }
 
+  importFromInstapaper(username, password) {
+    console.log(username);
+    // var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    // let data = {
+    //   username: username,
+    //   password: password,
+    //   csrfmiddlewaretoken: csrftoken,
+    // }
+    // $.ajax({
+    //   url: '../api/reading_list/instapaper',
+    //   data: data,
+    //   type: 'POST',
+    //   success: function(data) {
+    //     this.updateReadingList(data);
+    //   }.bind(this)
+    // });
+  }
+
   render() {
     const RouterMenuItem = withRouter(MenuItem);
 
@@ -130,7 +149,7 @@ export default class Switcher extends React.Component {
           <div className="page-container">
             <Route path='/reading_list' component={() => <ReadingListView reading_list={this.state.reading_list} updateReadingList={this.updateReadingList}/>}/>
             <Route path='/archive' component={Archive}/>
-            <Route path='/settings' component={Profile}/>
+            <Route path='/settings' component={() => <Profile instapaper={this.importFromInstapaper}/>}/>
             <Route path='/delivery' component={() => <Delivery reading_list={this.state.reading_list} changeDeliver={this.changeDeliver} />}/>
           </div>
         </div>

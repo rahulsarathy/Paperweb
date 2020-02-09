@@ -7,7 +7,8 @@ import classnames from 'classnames';
 import {Row, Col} from 'react-bootstrap';
 import {
   Address_Pane,
-  Header
+  Header,
+  Instapaper_Pane,
 } from './components.jsx'
 
 class SubHeader extends React.Component {
@@ -49,14 +50,8 @@ export default class Profile extends React.Component {
       archive_links: false,
       paid: false,
       sortby: 'oldest',
-      address_line_1: '',
-      address_line_2: '',
-      city: '',
-      state: '',
-      zip: '',
-      country: '',
       invite_codes: [],
-      show_address: false
+
     };
   }
 
@@ -155,7 +150,7 @@ export default class Profile extends React.Component {
       ? target.checked
       : target.value;
     const name = target.name;
-    this.setState({[name]: value, changed: true});
+    this.setState({[name]: value, changed: true})
   }
 
   handleSelector(e) {
@@ -197,6 +192,10 @@ export default class Profile extends React.Component {
               }
             </Col>
           </Row>
+        </div>
+        <div id="import" className="subsection">
+          <SubHeader title="Import Articles" />
+          <Instapaper_Pane instapaper={this.props.instapaper}/>
         </div>
         <div id="address" className="subsection">
           <SubHeader title="Delivery Info"/>

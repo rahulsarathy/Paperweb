@@ -1,19 +1,11 @@
-from django.http import JsonResponse, HttpResponse
-from django.core.validators import URLValidator
-from django.core.exceptions import ValidationError
+from django.http import JsonResponse
 from django.core.cache import cache
 
 from rest_framework.decorators import api_view
 from rest_framework.exceptions import NotFound
 
-from reading_list.serializers import ReadingListItemSerializer, ArticleSerializer
 from reading_list.models import Article, ReadingListItem
-from reading_list.reading_list_utils import get_parsed, html_to_s3, get_reading_list, get_cache_archive
-import requests
-import json
-import threading
-import logging
-from bs4 import BeautifulSoup
+from reading_list.reading_list_utils import get_parsed, html_to_s3, get_reading_list, get_cache_archive, add_to_reading_list
 
 
 CATEGORIES = ["Rationality", "Economics", "Technology", "Think Tanks"]
@@ -34,38 +26,13 @@ def get_reading(request):
 # 4. Create new thread that uploads article HTML to S3 Bucket
 # 5. Return new reading list to user while threaded process runs
 @api_view(['POST'])
-def add_to_reading_list(request):
+def handle_add_to_reading_list(request):
     user = request.user
     if not user.is_authenticated:
         return JsonResponse(data={'error': 'Invalid request.'}, status=403)
     link = request.POST['link']
 
-    validate = URLValidator()
-    try:
-        validate(link)
-    except ValidationError:
-        return JsonResponse(data={'error': 'Invalid URL.'}, status=400)
-    article_json = get_parsed(link)
-    title = article_json.get('title')
-
-    soup = BeautifulSoup(article_json.get('content', None), 'html.parser')
-    article_text = soup.getText()
-    article_json['parsed_text'] = article_text
-
-    article, created = Article.objects.get_or_create(
-         title=title, permalink=link, mercury_response=article_json
-     )
-    reading_list_item, created = ReadingListItem.objects.get_or_create(
-        reader=user, article=article
-    )
-
-    try:
-        upload_article = threading.Thread(target=html_to_s3, args=(link, user, article, article_json, ))
-        upload_article.start()
-    except:
-        logging.warning("Threading failed")
-
-    return get_reading_list(user, refresh=True)
+    return add_to_reading_list(user, link)
 
 
 @api_view(['GET'])
@@ -145,3 +112,12 @@ def update_deliver(request):
     except ReadingListItem.DoesNotExist:
         raise NotFound(detail='ReadingListItem with link: %s not found.' % link, code=404)
 
+
+@api_view(['POST'])
+def import_from_instapaper(request):
+    user = request.user
+    username = request.POST['username']
+    password = request.POST['password']
+    import_from_instapaper(user, username, password)
+
+    return
