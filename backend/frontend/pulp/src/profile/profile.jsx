@@ -51,7 +51,6 @@ export default class Profile extends React.Component {
       paid: false,
       sortby: 'oldest',
       invite_codes: [],
-
     };
   }
 
@@ -195,7 +194,7 @@ export default class Profile extends React.Component {
         </div>
         <div id="import" className="subsection">
           <SubHeader title="Import Articles" />
-          <Instapaper_Pane instapaper={this.props.instapaper}/>
+          <Instapaper_Pane/>
         </div>
         <div id="address" className="subsection">
           <SubHeader title="Delivery Info"/>

@@ -135,7 +135,7 @@ export default class Delivery extends React.Component {
       }
     }
 
-    return filtered.map((rlist_item) => <tr key={rlist_item.article.title}>
+    return filtered.map((rlist_item) => <tr key={rlist_item.article.permalink}>
       <td>
         <p className="title">{rlist_item.article.title}</p>
         <p className="domain">{getLocation(rlist_item.article.permalink)}</p>

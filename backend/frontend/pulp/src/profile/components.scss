@@ -17,6 +17,22 @@ hr {
   // bottom: 10px;
 }
 
+#instapaper-modal {
+  .modal-content {
+    padding: 10px;
+  }
+
+  .invalid {
+    color: red;
+    // background-color: #ffa2a2;
+    // border-color: red;
+    // border-style: solid;
+    // border-radius: 3px;
+    // border-width: 1px;
+  }
+
+}
+
 .profile {
   // width: 50%;
   margin: 35px auto;
@@ -35,6 +51,7 @@ label {
 
 .address_pane {
   color: red;
+
   h3 {
     font-size: 20px;
   }

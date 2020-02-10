@@ -16,19 +16,18 @@ from django.core.exceptions import ValidationError
 import threading
 
 
-def get_reading_list(user, refresh=False):
-    key = 'reading_list' + user.email
-    if refresh is False and key in cache:
-        json_response = cache.get(key)
-    else:
-        my_reading = ReadingListItem.objects.filter(reader=user, archived=False).order_by('-date_added')
-        serializer = ReadingListItemSerializer(my_reading, many=True)
-        json_response = serializer.data
-        cache.set(key, serializer.data)
+def get_reading_list(user, all=False):
+    my_reading = None
+    # if all:
+    my_reading = ReadingListItem.objects.filter(reader=user, archived=False).order_by('-date_added')
+    # else:
+    #     my_reading = ReadingListItem.objects.filter(reader=user, archived=False).order_by('-date_added')[:10]
+    serializer = ReadingListItemSerializer(my_reading, many=True)
+    json_response = serializer.data
     return JsonResponse(json_response, safe=False)
 
 
-def add_to_reading_list(user, link):
+def add_to_reading_list(user, link, date_added=None):
     validate = URLValidator()
     try:
         validate(link)
@@ -53,7 +52,7 @@ def add_to_reading_list(user, link):
         upload_article.start()
     except:
         logging.warning("Threading failed")
-    return get_reading_list(user, refresh=True)
+    return get_reading_list(user)
 
 # Check for mercury response in
 # 1. cache
@@ -76,17 +75,6 @@ def get_parsed(url):
             json_response = json.loads(response_string)
             cache.set(url, response_string)
     return json_response
-
-def get_cache_archive(user, refresh=False):
-    key = 'archive' + user.email
-    if refresh is False and key in cache:
-        json_response = cache.get(key)
-    else:
-        my_archive = ReadingListItem.objects.filter(reader=user, archived=True).order_by('-date_added')
-        serializer = ReadingListItemSerializer(my_archive, many=True)
-        json_response = serializer.data
-        cache.set(key, serializer.data)
-    return JsonResponse(json_response, safe=False)
 
 
 # Create HTML file for article 3 column format and store in AWS S3

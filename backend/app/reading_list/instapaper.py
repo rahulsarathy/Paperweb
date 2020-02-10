@@ -2,8 +2,8 @@ from getpass import getpass
 from bs4 import BeautifulSoup
 import csv
 import mechanicalsoup
-from reading_list.models import Reading
 from reading_list.reading_list_utils import add_to_reading_list, get_reading_list
+from django.http import HttpResponse
 
 
 def import_from_instapaper(user, username, password):
@@ -12,9 +12,14 @@ def import_from_instapaper(user, username, password):
     browser.open('https://www.instapaper.com/')
     browser.follow_link('user/login')
     browser.select_form('form[action="/user/login"]')
-    browser['username'] = 'rahul@sarathy.org'
-    browser['password'] = 'q3vu8ktnqdli'
+    browser['username'] = username
+    browser['password'] = password
     response = browser.submit_selected()
+
+    response_soup = BeautifulSoup(response.text, 'html.parser')
+    response_error = response_soup.find_all('div', _class="flash_error")
+    if len(response_error) is 0:
+        return HttpResponse("Invalid username or password", status=401)
 
     browser.follow_link('user')
     browser.select_form('form[action="/export/csv"]')

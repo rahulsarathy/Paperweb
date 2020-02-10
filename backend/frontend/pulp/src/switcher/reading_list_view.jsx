@@ -15,11 +15,14 @@ export default class ReadingListView extends React.Component {
     this.archiveArticle = this.archiveArticle.bind(this);
     this.addArticle = this.addArticle.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.nextPage = this.nextPage.bind(this);
+    this.previousPage = this.previousPage.bind(this);
 
     this.state = {
       value: "",
       invalid_url: false,
-      show_add: false
+      show_add: false,
+      page: 0,
     };
   }
 
@@ -90,7 +93,27 @@ export default class ReadingListView extends React.Component {
     this.setState({value: e.target.value});
   }
 
+  nextPage() {
+    this.setState({
+      page: this.state.page + 1,
+    });
+  }
+
+  previousPage() {
+    this.setState({
+      page: this.state.page - 1,
+    });
+  }
+
+  calculateSlice() {
+    let start_index = this.state.page * 15;
+    let end_index = (this.state.page + 1) * 15;
+    let reading_list = this.props.reading_list.slice(start_index, end_index);
+    return reading_list;
+  }
+
   render() {
+    let reading_list = this.calculateSlice();
     return (<div className="readinglist">
       {
         this.state.invalid_url
@@ -112,13 +135,19 @@ export default class ReadingListView extends React.Component {
         </Modal>
       </div>
       {
-        this.props.reading_list.length === 0
+        reading_list.length === 0
           ? <NoArticles/>
           : <div></div>
       }
       <div className="reading-list-items">
-        {this.props.reading_list.map((reading_list_item, index) => <ReadingListItem key={index} added={reading_list_item.date_added} archiveArticle={this.archiveArticle} removeArticle={this.removeArticle} article={reading_list_item.article}/>)}
+        {reading_list.map((reading_list_item, index) => <ReadingListItem key={index} added={reading_list_item.date_added} archiveArticle={this.archiveArticle} removeArticle={this.removeArticle} article={reading_list_item.article}/>)}
       </div>
+      {
+        this.state.page > 0 ? <button onClick={this.previousPage}>Previous Page</button> : <div></div>
+      }
+      {
+        this.props.reading_list.length > 0 ? <button onClick={this.nextPage}>Next Page</button> : <div></div>
+      }
     </div>);
   }
 

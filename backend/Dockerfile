@@ -48,6 +48,11 @@ RUN apk --update \
     add --no-cache --virtual .build-deps \
     postgresql-client
 
+# install mechanicalsoup
+RUN apk add g++ libxml2 libxslt-dev \
+	&& pip install mechanicalsoup \
+	&& apk del g++
+
 # Install from pip archive
 RUN pip install -r ./requirements.txt
 
