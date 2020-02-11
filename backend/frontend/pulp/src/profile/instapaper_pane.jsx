@@ -20,7 +20,7 @@ class Instapaper_Modal extends React.Component {
     this.state = {
       username: '',
       password: '',
-      show: true,
+      show: false,
       invalid: false,
       loading: false,
       success: false

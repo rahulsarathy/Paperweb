@@ -24,6 +24,10 @@ CACHES = {
     }
 }
 
+CELERY_BROKER_URL = 'redis://redis:6379'
+CELERY_RESULT_BACKEND = 'redis://redis:6379'
+
+# CELERY_BROKER_URL = 'http://pulp_redis_1:6379'
 
 JAVASCRIPT_URLS = {
     'landing': 'http://localhost:8080/landing.js',

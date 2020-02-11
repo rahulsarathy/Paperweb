@@ -8,6 +8,7 @@ from django.http import HttpResponse
 
 def import_from_instapaper(user, username, password):
 
+    # use credentials to sign into instapaper
     browser = mechanicalsoup.StatefulBrowser()
     browser.open('https://www.instapaper.com/')
     browser.follow_link('user/login')
@@ -16,11 +17,13 @@ def import_from_instapaper(user, username, password):
     browser['password'] = password
     response = browser.submit_selected()
 
+    # check if successfully signed in. If not, return error to user
     response_soup = BeautifulSoup(response.text, 'html.parser')
     response_error = response_soup.find_all('div', _class="flash_error")
     if len(response_error) is 0:
         return HttpResponse("Invalid username or password", status=401)
 
+    # Parse Instapaper data dump into a list
     browser.follow_link('user')
     browser.select_form('form[action="/export/csv"]')
     response = browser.submit_selected()
@@ -28,6 +31,7 @@ def import_from_instapaper(user, username, password):
     result = csv.reader(csv_data.splitlines())
     final_list = list(result)
 
+    # Add all unread items to a user's reading list
     links = []
     for item in final_list:
         if item[3] == 'Unread':

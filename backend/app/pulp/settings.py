@@ -95,16 +95,14 @@ TEMPLATES = [
 ]
 
 # Celery
-CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
 CELERY_BEAT_SCHEDULE = {
- 'poll-blogs': {
-       'task': 'find_latest',
-       'schedule': 3600.0,
+ 'send_notification': {
+       'task': 'reading_list.tasks.send_notification',
+       'schedule': crontab()
     },
-    'summary': {
-        'task': 'summary',
-        'schedule': 5.0,
-    }
 }
 
 WSGI_APPLICATION = 'pulp.wsgi.application'

@@ -56,6 +56,9 @@ export default class ReadingListView extends React.Component {
       link: link,
       csrfmiddlewaretoken: csrftoken
     }
+    for (let i = 0; i < this.state.reading_list.length; i++) {
+
+    }
     $.ajax({
       url: '../api/reading_list/archive_reading',
       data: data,
