@@ -53,6 +53,9 @@ RUN apk add g++ libxml2 libxslt-dev \
 	&& pip install mechanicalsoup \
 	&& apk del g++
 
+# for psutil
+RUN apk add --update gcc libc-dev fortify-headers linux-headers && rm -rf
+
 # Install from pip archive
 RUN pip install -r ./requirements.txt
 

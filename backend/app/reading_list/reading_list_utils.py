@@ -16,7 +16,7 @@ from django.core.exceptions import ValidationError
 import threading
 
 
-def get_reading_list(user, all=False):
+def get_reading_list(user):
     my_reading = None
     # if all:
     my_reading = ReadingListItem.objects.filter(reader=user, archived=False).order_by('-date_added')
@@ -28,6 +28,8 @@ def get_reading_list(user, all=False):
 
 
 def add_to_reading_list(user, link, date_added=None):
+    print("user is")
+    print(user)
     validate = URLValidator()
     try:
         validate(link)
@@ -41,18 +43,24 @@ def add_to_reading_list(user, link, date_added=None):
     article_json['parsed_text'] = article_text
 
     article, created = Article.objects.get_or_create(
-         title=title, permalink=link, mercury_response=article_json
-     )
-    reading_list_item, created = ReadingListItem.objects.get_or_create(
-        reader=user, article=article
+        title=title, permalink=link, mercury_response=article_json
     )
+
+    if date_added is not None:
+        reading_list_item, created = ReadingListItem.objects.get_or_create(
+            reader=user, article=article, date_added=date_added
+        )
+    else:
+        reading_list_item, created = ReadingListItem.objects.get_or_create(
+            reader=user, article=article
+        )
 
     try:
         upload_article = threading.Thread(target=html_to_s3, args=(link, user, article, article_json, ))
         upload_article.start()
     except:
         logging.warning("Threading failed")
-    return get_reading_list(user)
+    return
 
 # Check for mercury response in
 # 1. cache
@@ -81,7 +89,7 @@ def get_parsed(url):
 def html_to_s3(url, user, article, json_response):
     id = hash(url)
     if check_file('{}.html'.format(id), 'pulppdfs'):
-        logging.warning("File already uploaded, exiting")
+        logging.warning("{} already uploaded, exiting".format(id))
         return
 
     date_string = None

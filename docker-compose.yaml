@@ -24,7 +24,7 @@ services:
       - db:db
   celery:
     build: ./backend
-    command: celery -A pulp worker -l info
+    command: python ./celery-reload.py
     volumes:
       - ./backend/app/:/usr/src/app/
     depends_on:
@@ -34,7 +34,7 @@ services:
       - ./.env.dev
   celery-beat:
     build: ./backend
-    command: celery -A pulp beat -l info
+    command: python ./celery-beat-reload.py
     volumes:
       - ./backend/app/:/usr/src/app/
     depends_on:

@@ -33,8 +33,8 @@ def handle_add_to_reading_list(request):
     if not user.is_authenticated:
         return JsonResponse(data={'error': 'Invalid request.'}, status=403)
     link = request.POST['link']
-
-    return add_to_reading_list(user, link)
+    add_to_reading_list(user, link)
+    return get_reading_list(user)
 
 @api_view(['GET'])
 def get_archive(request):

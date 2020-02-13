@@ -104,7 +104,7 @@ CELERY_ROUTES = {
 CELERY_BEAT_SCHEDULE = {
  'send_notification': {
        'task': 'reading_list.tasks.send_notification',
-       'schedule': crontab()
+       'schedule': crontab(minute=0, hour='*/1')
     },
 }
 
