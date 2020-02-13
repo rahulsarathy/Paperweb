@@ -98,6 +98,9 @@ TEMPLATES = [
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
+CELERY_ROUTES = {
+    'reading_list.tasks.instapaper': {'queue: import_queue'},
+}
 CELERY_BEAT_SCHEDULE = {
  'send_notification': {
        'task': 'reading_list.tasks.send_notification',

@@ -22,22 +22,26 @@ services:
       - redis
     links:
       - db:db
-#  celery:
-#    build: ./backend
-#    command: celery -A pulp worker -l info
-#    volumes:
-#      - ./backend/app/:/usr/src/app/
-#    depends_on:
-#      - db
-#      - redis
-#  celery-beat:
-#    build: ./backend
-#    command: celery -A pulp beat -l info
-#    volumes:
-#      - ./backend/app/:/usr/src/app/
-#    depends_on:
-#      - db
-#      - redis
+  celery:
+    build: ./backend
+    command: celery -A pulp worker -l info
+    volumes:
+      - ./backend/app/:/usr/src/app/
+    depends_on:
+      - db
+      - redis
+    env_file:
+      - ./.env.dev
+  celery-beat:
+    build: ./backend
+    command: celery -A pulp beat -l info
+    volumes:
+      - ./backend/app/:/usr/src/app/
+    depends_on:
+      - db
+      - redis
+    env_file:
+      - ./.env.dev
   formatter:
     build: ./formatter
     command: ./boot.sh
@@ -70,5 +74,5 @@ services:
       - /usr/src/app/node_modules
     ports:
       - 3000:3000
-volumes:
-  postgres_data:
+#volumes:
+#  postgres_data:

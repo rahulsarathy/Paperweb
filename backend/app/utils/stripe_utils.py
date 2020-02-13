@@ -4,12 +4,12 @@ from pulp.globals import STRIPE_API_KEY, NGROK_HOST, PULP_STRIPE_PLAN
 stripe.api_key = STRIPE_API_KEY
 
 # Setup Stripe Webhook
-for webhook in stripe.WebhookEndpoint.list(limit=16).data:
-    id = webhook.get("id")
-    stripe.WebhookEndpoint.delete(id)
-stripe_webhook_url = 'https://' + NGROK_HOST + '/api/payments/stripehook/'
-stripe.WebhookEndpoint.create(url=stripe_webhook_url, enabled_events=['checkout.session.completed'])
-
+# for webhook in stripe.WebhookEndpoint.list(limit=16).data:
+#     id = webhook.get("id")
+#     stripe.WebhookEndpoint.delete(id)
+# stripe_webhook_url = 'https://' + NGROK_HOST + '/api/payments/stripehook/'
+# stripe.WebhookEndpoint.create(url=stripe_webhook_url, enabled_events=['checkout.session.completed'])
+#
 
 def create_session(client_reference_id, customer_email=None, stripe_customer_id=None):
     pulp_url = 'https://getpulp.io'
