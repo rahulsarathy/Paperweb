@@ -24,10 +24,12 @@ class MyHandler(PatternMatchingEventHandler):
             proc_cmdline = self._get_proc_cmdline(proc)
             if not proc_cmdline or len(proc_cmdline) < len(celery_cmdline):
                 continue
+            #
+            # is_celery_worker = 'python' in proc_cmdline[0].lower() \
+            #                    and celery_cmdline[0] == proc_cmdline[1] \
+            #                    and celery_cmdline[1] == proc_cmdline[2]
 
-            is_celery_worker = 'python' in proc_cmdline[0].lower() \
-                               and celery_cmdline[0] == proc_cmdline[1] \
-                               and celery_cmdline[1] == proc_cmdline[2]
+            is_celery_worker = proc.name() == 'celery'
 
             if not is_celery_worker:
                 continue
@@ -45,10 +47,7 @@ class MyHandler(PatternMatchingEventHandler):
 
 
 def run_worker():
-    print("Ready to call {} ".format(celery_cmdline))
     os.chdir(celery_working_dir)
-    print("working dir is!")
-    print(os.getcwd())
     subprocess.Popen(celery_cmdline)
     print("Done callling {} ".format(celery_cmdline))
 

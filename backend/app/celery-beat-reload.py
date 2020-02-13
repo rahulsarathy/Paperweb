@@ -12,7 +12,7 @@ import subprocess
 
 code_dir_to_monitor = "./"
 celery_working_dir = code_dir_to_monitor  # happen to be the same. It may be different on your machine
-celery_cmdline = 'celery -A pulp beat -l info'.split(" ")
+celery_cmdline = '/usr/local/bin/celery -A pulp beat -l info'.split(" ")
 
 
 class MyHandler(PatternMatchingEventHandler):
@@ -25,9 +25,11 @@ class MyHandler(PatternMatchingEventHandler):
             if not proc_cmdline or len(proc_cmdline) < len(celery_cmdline):
                 continue
 
-            is_celery_worker = 'python' in proc_cmdline[0].lower() \
-                               and celery_cmdline[0] == proc_cmdline[1] \
-                               and celery_cmdline[1] == proc_cmdline[2]
+            # is_celery_worker = '/usr/bin/python' in proc_cmdline[0].lower() \
+            #                    and celery_cmdline[0] == proc_cmdline[1] \
+            #                    and celery_cmdline[1] == proc_cmdline[2]
+
+            is_celery_worker = proc.name() == 'celery'
 
             if not is_celery_worker:
                 continue

@@ -15,17 +15,17 @@ def send_notification():
 
 @task(name='parse_instapaper_csv')
 def parse_instapaper_csv(csv_list, email):
-    print("entered parse")
-    try:
-        user = CustomUser.objects.get(email=email)
-    except CustomUser.DoesNotExist:
-        logging.warning('User {} does not exist'.format(email))
-        return
-    for item in csv_list:
-        if item[3] == 'Unread':
-            timestamp = int(item[4])
-            dt_object = datetime.fromtimestamp(timestamp)
-            add_to_reading_list(user=user, link=item[0], date_added=dt_object)
+    print("entered parse1")
+    # try:
+    #     user = CustomUser.objects.get(email=email)
+    # except CustomUser.DoesNotExist:
+    #     logging.warning('User {} does not exist'.format(email))
+    #     return
+    # for item in csv_list:
+    #     if item[3] == 'Unread':
+    #         timestamp = int(item[4])
+    #         dt_object = datetime.fromtimestamp(timestamp)
+    #         add_to_reading_list(user=user, link=item[0], date_added=dt_object)
     return
 
 
