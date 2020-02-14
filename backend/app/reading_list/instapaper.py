@@ -7,6 +7,7 @@ from django.http import HttpResponse
 from reading_list.tasks import parse_instapaper_csv, send_notification
 import os
 
+
 def import_from_instapaper(user, username, password):
 
     # use credentials to sign into instapaper
@@ -20,8 +21,9 @@ def import_from_instapaper(user, username, password):
 
     # check if successfully signed in. If not, return error to user
     response_soup = BeautifulSoup(response.text, 'html.parser')
-    response_error = response_soup.find_all('div', _class="flash_error")
-    if len(response_error) is 0:
+    # response_error = response_soup.find_all('div', _class="flash_error")
+    response_error = response_soup.select('.flash_error')
+    if len(response_error) > 0:
         return HttpResponse("Invalid username or password", status=401)
 
     # Parse Instapaper data dump into a list
@@ -36,8 +38,4 @@ def import_from_instapaper(user, username, password):
     final_list = list(result)
     parse_instapaper_csv.delay(final_list, user.email)
 
-    # Add all unread items to a user's reading list
-    # for item in final_list:
-    #     if item[3] == 'Unread':
-    #         add_to_reading_list(user, item[0])
     return HttpResponse(status=200)

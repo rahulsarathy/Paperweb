@@ -122,6 +122,5 @@ def start_instapaper_import(request):
     user = request.user
     username = request.POST['username']
     password = request.POST['password']
-    # return HttpResponse(status=200)
     return import_from_instapaper(user, username, password)
 

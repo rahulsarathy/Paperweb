@@ -53,8 +53,7 @@ class Instapaper_Modal extends React.Component {
       data: data,
       type: 'POST',
       success: function(data) {
-        this.setState({loading: false});
-        console.log(data);
+        this.setState({loading: false, success: true, invalid: false});
         // this.updateReadingList(data);
       }.bind(this),
       error: function(data) {
@@ -74,7 +73,7 @@ class Instapaper_Modal extends React.Component {
         Username
         <input id="username" onChange={this.handleChange}></input>
         Password
-        <input id="password" onChange={this.handleChange}></input>
+        <input type="password" id="password" onChange={this.handleChange}></input>
         <Modal.Footer>
           {
             this.state.invalid
@@ -90,7 +89,11 @@ class Instapaper_Modal extends React.Component {
                 </div>
               : <div></div>
           }
-
+          {
+            this.state.success
+              ? <div className="success">Your articles will be imported over the next half hour.</div>
+              : <div></div>
+          }
           <button onClick={() => this.importFromInstapaper(this.state.username, this.state.password)}>Import from Instapaper</button>
         </Modal.Footer>
       </Modal>

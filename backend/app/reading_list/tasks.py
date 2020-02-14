@@ -4,7 +4,7 @@ import logging
 from reading_list.reading_list_utils import add_to_reading_list
 from datetime import datetime
 from users.models import CustomUser
-
+from django.utils.timezone import make_aware
 
 # or
 @shared_task
@@ -23,7 +23,7 @@ def parse_instapaper_csv(csv_list, email):
     for item in csv_list:
         if item[3] == 'Unread':
             timestamp = int(item[4])
-            dt_object = datetime.fromtimestamp(timestamp)
+            dt_object = make_aware(datetime.fromtimestamp(timestamp))
             add_to_reading_list(user=user, link=item[0], date_added=dt_object)
     return
 

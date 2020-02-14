@@ -99,7 +99,7 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_ROUTES = {
-    'reading_list.tasks.instapaper': {'queue: import_queue'},
+    'reading_list.tasks.parse_instapaper_csv': {'queue: import_queue'},
 }
 CELERY_BEAT_SCHEDULE = {
  'send_notification': {
