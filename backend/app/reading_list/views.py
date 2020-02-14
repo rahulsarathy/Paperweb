@@ -1,4 +1,4 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.core.cache import cache
 
 from rest_framework.decorators import api_view
@@ -122,5 +122,6 @@ def start_instapaper_import(request):
     user = request.user
     username = request.POST['username']
     password = request.POST['password']
+    # return HttpResponse(status=200)
     return import_from_instapaper(user, username, password)
 

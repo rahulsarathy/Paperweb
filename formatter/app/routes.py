@@ -37,7 +37,7 @@ def html_to_pdf():
     # return to main server with article ID and pdf page count
     output = {
         'pages': int(num_pages),
-        'html_id': int(html_id),
+        'html_id': html_id,
     }
     r = Response(json.dumps(output), status=200)
     return r

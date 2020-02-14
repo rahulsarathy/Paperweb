@@ -17,6 +17,7 @@ from pulp.globals import S3_USER_ACCESS_ID, S3_USER_SECRET
 import logging
 from django.conf import settings
 from boto3.s3.transfer import S3Transfer
+import hashlib
 import traceback
 
 BUCKET_NAME = settings.AWS_BUCKET
@@ -148,11 +149,11 @@ def create_article_url(blog_name, article_id):
 
 def get_html_url(link):
     location = get_location('pulppdfs')['LocationConstraint']
-    id = hash(link)
+    hash_id = get_id(link)
     object_url = "https://s3-{bucket_location}.amazonaws.com/{bucket_name}/{article_id}.html".format(
         bucket_location=location,
         bucket_name='pulppdfs',
-        article_id=id
+        article_id=hash_id,
     )
 
     return object_url
@@ -216,3 +217,9 @@ def clear_all(bucket_name):
     bucket = s3.Bucket(bucket_name)
     bucket.objects.all().delete()
     logging.debug("Cleared out %s S3 Bucket", bucket_name)
+
+
+def get_id(url):
+    encoded = url.encode('utf-8')
+    final_id = hashlib.sha224(encoded).hexdigest()[:20]
+    return final_id

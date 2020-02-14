@@ -74,7 +74,7 @@ class Instapaper_Modal extends React.Component {
         Username
         <input id="username" onChange={this.handleChange}></input>
         Password
-        <input id="password"></input>
+        <input id="password" onChange={this.handleChange}></input>
         <Modal.Footer>
           {
             this.state.invalid

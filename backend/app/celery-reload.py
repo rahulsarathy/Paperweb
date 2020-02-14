@@ -34,8 +34,8 @@ class MyHandler(PatternMatchingEventHandler):
             if not is_celery_worker:
                 continue
 
-            proc.kill()
             print("Just killed {} on working dir {}".format(proc_cmdline, proc.cwd()))
+            proc.kill()
 
         run_worker()
 

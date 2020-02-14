@@ -1,7 +1,7 @@
 from django.core.cache import cache
 import json
 import requests
-from utils.s3_utils import put_object, check_file
+from utils.s3_utils import put_object, check_file, get_id
 from reading_list.models import ReadingListItem, Article
 from bs4 import BeautifulSoup
 from datetime import datetime
@@ -28,8 +28,6 @@ def get_reading_list(user):
 
 
 def add_to_reading_list(user, link, date_added=None):
-    print("user is")
-    print(user)
     validate = URLValidator()
     try:
         validate(link)
@@ -87,9 +85,9 @@ def get_parsed(url):
 
 # Create HTML file for article 3 column format and store in AWS S3
 def html_to_s3(url, user, article, json_response):
-    id = hash(url)
-    if check_file('{}.html'.format(id), 'pulppdfs'):
-        logging.warning("{} already uploaded, exiting".format(id))
+    article_id = get_id(url)
+    if check_file('{}.html'.format(article_id), 'pulppdfs'):
+        logging.warning("{} already uploaded, exiting".format(article_id))
         return
 
     date_string = None
@@ -113,17 +111,16 @@ def html_to_s3(url, user, article, json_response):
 
     soup = BeautifulSoup(content, 'html.parser')
     template_soup.select_one('.main-content').insert(0, soup)
-    id = hash(url)
-    f = open("./{}.html".format(id), "w+")
+    f = open("./{}.html".format(article_id), "w+")
     f.write(str(template_soup))
     f.close()
 
     metadata = {
         'url': url
     }
-    put_object('pulppdfs', "{}.html".format(id), "./{}.html".format(id), metadata)
-    os.remove("./{}.html".format(id))
-    page_count = get_page_count(id)
+    put_object('pulppdfs', "{}.html".format(article_id), "./{}.html".format(article_id), metadata)
+    os.remove("./{}.html".format(article_id))
+    page_count = get_page_count(article_id)
     article.page_count = page_count
     article.save()
     ReadingListItem.objects.get_or_create(
@@ -135,14 +132,14 @@ def html_to_s3(url, user, article, json_response):
     return
 
 
-def get_page_count(id):
-    data = {'html_id': id}
+def get_page_count(article_id):
+    data = {'html_id': article_id}
     formatter_url = 'http://{}:5000/html_to_pdf'.format(settings.FORMATTER_HOST)
     response = requests.post(formatter_url, data=data)
     response_string = response.content.decode("utf-8")
     json_response = json.loads(response_string)
     pages = json_response.get('pages')
     html_id = json_response.get('html_id')
-    if html_id != id:
+    if html_id != article_id:
         return None
     return pages

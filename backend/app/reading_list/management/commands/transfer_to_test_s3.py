@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand, CommandError
 from blogs.models import Article
 from utils.blog_utils import blog_from_url
 import os
-from utils.s3_utils import transfer_file, create_article_url
+from utils.s3_utils import transfer_file, create_article_url, get_id
 
 class Command(BaseCommand):
 
@@ -17,7 +17,7 @@ class Command(BaseCommand):
 
             transfer_content(article.file_link)
 
-            article_id = hash(permalink)
+            article_id = get_id(permalink)
             new_article_url = create_article_url(blog.name, article_id)
             new_article = Article(title=title, permalink=permalink, date_published=date_published, author=author,
                                   file_link=new_article_url, blog=blog)
