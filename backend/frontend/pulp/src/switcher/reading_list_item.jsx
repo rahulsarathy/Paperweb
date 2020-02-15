@@ -71,11 +71,11 @@ export default class ReadingListItem extends React.Component {
           </div>
           <div className="gradient"></div>
         </div>
-        {
+        {/*
           has_image
             ? <img className="first-image" src={mercury_response.lead_image_url}/>
             : <div></div>
-        }
+        */}
       </div>
     </div>);
   }

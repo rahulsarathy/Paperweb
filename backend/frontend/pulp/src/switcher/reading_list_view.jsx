@@ -4,6 +4,8 @@ import $ from 'jquery';
 import {ReadingListItem, NoArticles} from './components.jsx';
 import {Modal, Button} from 'react-bootstrap';
 
+const num_of_items = 10;
+
 export default class ReadingListView extends React.Component {
 
   constructor(props) {
@@ -97,9 +99,15 @@ export default class ReadingListView extends React.Component {
   }
 
   nextPage() {
-    this.setState({
-      page: this.state.page + 1,
-    });
+    let end_index = (this.state.page + 2) * num_of_items;
+    if (end_index > this.props.reading_list.length) {
+      return
+    }
+    else {
+      this.setState({
+        page: this.state.page + 1,
+      });
+    }
   }
 
   previousPage() {
@@ -109,8 +117,8 @@ export default class ReadingListView extends React.Component {
   }
 
   calculateSlice() {
-    let start_index = this.state.page * 15;
-    let end_index = (this.state.page + 1) * 15;
+    let start_index = this.state.page * num_of_items;
+    let end_index = (this.state.page + 1) * num_of_items;
     let reading_list = this.props.reading_list.slice(start_index, end_index);
     return reading_list;
   }

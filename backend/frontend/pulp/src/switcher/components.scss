@@ -286,6 +286,7 @@ $image-dim: 120px;
     font-size: 18px;
     display: inline-block;
     width: 100%;
+    padding-bottom: 5px;
 
     .author {
       display: inline-block;
@@ -351,7 +352,8 @@ $image-dim: 120px;
   .faded-content {
     position: relative;
     display: inline-block;
-    width: calc(100% - 150px);
+    // width: calc(100% - 150px);
+    width: 100%;
     top: -10px;
 
     .content {

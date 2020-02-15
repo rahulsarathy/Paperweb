@@ -14,7 +14,7 @@ from django.conf import settings
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 import threading
-
+import celery
 
 def get_reading_list(user):
     my_reading = None
@@ -28,22 +28,25 @@ def get_reading_list(user):
 
 
 def add_to_reading_list(user, link, date_added=None):
+
+    # Validate url
     validate = URLValidator()
     try:
         validate(link)
     except ValidationError:
         return JsonResponse(data={'error': 'Invalid URL.'}, status=400)
+
+    # get article json and populate DB fields
     article_json = get_parsed(link)
     title = article_json.get('title')
-
     soup = BeautifulSoup(article_json.get('content', None), 'html.parser')
     article_text = soup.getText()
     article_json['parsed_text'] = article_text
-
     article, created = Article.objects.get_or_create(
         title=title, permalink=link, mercury_response=article_json
     )
 
+    # Some instapaper links come with a timestamp
     if date_added is not None:
         reading_list_item, created = ReadingListItem.objects.get_or_create(
             reader=user, article=article, date_added=date_added
@@ -52,12 +55,13 @@ def add_to_reading_list(user, link, date_added=None):
         reading_list_item, created = ReadingListItem.objects.get_or_create(
             reader=user, article=article
         )
+    # handle PDF count in new thread
+    # handle_pages_process = threading.Thread(target=handle_pages, args=(user, article))
+    # handle_pages_process.start()
 
-    try:
-        upload_article = threading.Thread(target=html_to_s3, args=(link, user, article, article_json, ))
-        upload_article.start()
-    except:
-        logging.warning("Threading failed")
+    from reading_list.tasks import handle_pages_task
+    handle_pages_task.delay(user.email, link)
+    # celery.current_app.send_task('reading_list.tasks.handle_pages_task', (user.email, link))
     return
 
 # Check for mercury response in
@@ -82,13 +86,11 @@ def get_parsed(url):
             cache.set(url, response_string)
     return json_response
 
-
 # Create HTML file for article 3 column format and store in AWS S3
-def html_to_s3(url, user, article, json_response):
+def html_to_s3(article):
+    url = article.permalink
     article_id = get_id(url)
-    if check_file('{}.html'.format(article_id), 'pulppdfs'):
-        logging.warning("{} already uploaded, exiting".format(article_id))
-        return
+    json_response = get_parsed(url)
 
     date_string = None
     content = json_response.get('content')
@@ -96,10 +98,13 @@ def html_to_s3(url, user, article, json_response):
     date_published = json_response.get('date_published')
     title = json_response.get('title')
     domain = json_response.get('domain')
-    word_count = json_response.get('word_count')
-    if date_published is not None:
-        date_object = datetime.strptime(date_published[:10], '%Y-%m-%d')
-        date_string = date_object.strftime('Originally published on %B %-d, %Y')
+
+    try:
+        if date_published is not None:
+            date_object = datetime.strptime(date_published[:10], '%Y-%m-%d')
+            date_string = date_object.strftime('Originally published on %B %-d, %Y')
+    except:
+        date_string = None
 
     template_soup = BeautifulSoup(open('./pdf/template.html'), 'html.parser')
     if title is not None:
@@ -120,16 +125,56 @@ def html_to_s3(url, user, article, json_response):
     }
     put_object('pulppdfs', "{}.html".format(article_id), "./{}.html".format(article_id), metadata)
     os.remove("./{}.html".format(article_id))
+    return
+
+def handle_pages(user, article):
+    url = article.permalink
+    article_id = get_id(url)
+
+    # If file is not uploaded, then uploaded
+    if not check_file('{}.html'.format(article_id), 'pulppdfs'):
+        html_to_s3(article)
+
+    # Count pages of article
     page_count = get_page_count(article_id)
     article.page_count = page_count
     article.save()
-    ReadingListItem.objects.get_or_create(
+
+    # Set to_deliver for ReadingListItem
+    rlist_item, created = ReadingListItem.objects.get_or_create(
         reader=user, article=article
     )
-    # Purge Reading List Cache
-    key = 'reading_list' + user.email
-    cache.delete(key)
-    return
+    # Check if we should check this article to to_deliver
+    to_deliver = False
+    current_pages = get_selected_pages(user, url)
+    total_pages = page_count + current_pages
+    if total_pages > 50:
+        to_deliver = False
+    else:
+        to_deliver = True
+    rlist_item.to_deliver = to_deliver
+    rlist_item.save()
+
+def get_selected_pages(user, permalink):
+    rlist_items = ReadingListItem.objects.filter(reader=user)
+    total_pages = 0
+    for item in rlist_items:
+        if item.to_deliver:
+            if item.article.page_count is None:
+                item.to_deliver = False
+                item.save()
+            else:
+                total_pages = total_pages + item.article.page_count
+
+    article, created = Article.objects.get_or_create(
+        permalink=permalink
+    )
+
+    reading_list_item, created = ReadingListItem.objects.get_or_create(
+        reader=user, article=article
+    )
+
+    return total_pages
 
 
 def get_page_count(article_id):
