@@ -1,7 +1,7 @@
 from celery import task
 from users.models import CustomUser
 import logging
-from reading_list.models import Article
+from reading_list.models import Article, ReadingListItem
 from celery import task
 from celery import shared_task
 import logging
@@ -20,16 +20,31 @@ def handle_pages_task(email, link):
         return
     try:
         article = Article.objects.get(permalink=link)
-    except CustomUser.DoesNotExist:
+    except Article.DoesNotExist:
         logging.warning('Article {} does not exist'.format(link))
         return
     handle_pages(user, article)
     return
 
-# or
+@task(name='import_pocket')
+def import_pocket(email, article_json):
+    try:
+        user = CustomUser.objects.get(email=email)
+    except CustomUser.DoesNotExist:
+        logging.warning('User {} does not exist'.format(email))
+        return
+    print(article_json)
+    for key, article in article_json.items():
+        permalink = article.get('given_url')
+        unix_timestamp = article.get('time_added')
+        timestamp = int(unix_timestamp)
+        dt_object = make_aware(datetime.fromtimestamp(timestamp))
+        add_to_reading_list(user, permalink, dt_object)
+    return
+
 @shared_task
 def send_notification():
-    print('Here I\’m2')
+    print('Here I\’m3')
     print("this is the task that is sending a notification")
 
 
@@ -45,4 +60,30 @@ def parse_instapaper_csv(csv_list, email):
             timestamp = int(item[4])
             dt_object = make_aware(datetime.fromtimestamp(timestamp))
             add_to_reading_list(user=user, link=item[0], date_added=dt_object)
+    return
+
+@task(name='start_create_magazine')
+def start_create_magazine():
+    users = CustomUser.objects.all()
+    for user in users:
+        create_user_magazine.delay(user.email)
+    return
+
+@task(name='create_user_magazine')
+def create_user_magazine(email):
+    try:
+        user = CustomUser.objects.get(email=email)
+    except CustomUser.DoesNotExist:
+        logging.warning('User {} does not exist'.format(email))
+        return
+    reading_list_items = ReadingListItem.objects.filter(reader=user)
+    total = 0
+    staged = []
+    for item in reading_list_items:
+        if item.to_deliver:
+            new_total = total + item.article.num_pages
+            if new_total > 50:
+                return
+            staged.append(item)
+
     return

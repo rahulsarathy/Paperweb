@@ -15,4 +15,6 @@ urlpatterns = [
     path('update_deliver', views.update_deliver),
     path('unarchive', views.unarchive),
     path('instapaper', views.start_instapaper_import),
+    path('pocket', views.pocket),
+    path('authenticate_pocket', views.authenticate_pocket),
 ]

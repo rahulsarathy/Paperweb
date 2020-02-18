@@ -58,9 +58,9 @@ def add_to_reading_list(user, link, date_added=None):
     # handle PDF count in new thread
     # handle_pages_process = threading.Thread(target=handle_pages, args=(user, article))
     # handle_pages_process.start()
-
-    from reading_list.tasks import handle_pages_task
-    handle_pages_task.delay(user.email, link)
+    if article is created:
+        from reading_list.tasks import handle_pages_task
+        handle_pages_task.delay(user.email, link)
     # celery.current_app.send_task('reading_list.tasks.handle_pages_task', (user.email, link))
     return
 

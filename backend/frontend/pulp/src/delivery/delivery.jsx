@@ -40,9 +40,9 @@ function date_compare(a, b) {
   let date_a = new Date(a.date_added);
   let date_b = new Date(b.date_added);
   if (date_a > date_b)
-    return 1;
-  if (date_b > date_a)
     return -1;
+  if (date_b > date_a)
+    return 1;
   return 0;
 }
 
@@ -113,14 +113,16 @@ export default class Delivery extends React.Component {
   calculateTotal() {
     let reading_list = this.props.reading_list;
     let total = 0;
+    let total_articles = 0;
     for (let i =0; i < reading_list.length; i++) {
       if (reading_list[i].to_deliver) {
         total += reading_list[i].article.page_count;
+        total_articles +=1;
       }
     }
-    console.log(total);
     this.setState({
       total: total,
+      total_articles: total_articles,
     });
   }
 
@@ -160,6 +162,7 @@ export default class Delivery extends React.Component {
                 <input placeholder="Search" type="text" onChange={this.handleSearch}/>
               </div>
               <label className="sort-label">Sort By</label>
+              <p>{this.state.total}/50 Pages</p>
               <p>{this.state.total}/50 Pages</p>
               <DropdownButton className="sort-button" title={this.changeSortLabel()}>
                 <Dropdown.Item onClick={() => this.changeSort("title")}>Title</Dropdown.Item>

@@ -65,8 +65,10 @@ def delivery(request):
 def switcher(request):
   if not request.user.is_authenticated:
     return HttpResponseRedirect('../')
+  pocket = request.GET.get('pocket', 'null')
   context = {
-    'js_file': settings.JAVASCRIPT_URLS['switcher']
+    'js_file': settings.JAVASCRIPT_URLS['switcher'],
+    'pocket': pocket,
   }
   return render(request, 'reading_list.html', context)
 

@@ -44,7 +44,6 @@ export default class Profile extends React.Component {
     this.getInviteCodes = this.getInviteCodes.bind(this);
     this.updateSettings = this.updateSettings.bind(this);
     this.getEmail = this.getEmail.bind(this);
-
     this.state = {
       email: '',
       archive_links: false,
