@@ -33,7 +33,6 @@ def import_pocket(email, article_json):
     except CustomUser.DoesNotExist:
         logging.warning('User {} does not exist'.format(email))
         return
-    print(article_json)
     for key, article in article_json.items():
         permalink = article.get('given_url')
         unix_timestamp = article.get('time_added')

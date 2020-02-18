@@ -1,0 +1,47 @@
+@page { size: auto;  margin: 10mm; }
+
+@media print {
+  /* @page { margin: 5mm; } */
+/}
+
+body {
+  /*margin: 10mm 15mm 10mm 15mm; !* margin you want for the content *!*/
+  /*font-family: Linux Libertine;*/
+  font-family: georgia;
+  font-size: 16px;
+}
+
+img {
+  max-height: 100%;
+  max-width: 100%;
+}
+
+h4 {
+  font-family: helvetica;
+  /*font-family: Liberation Sans;*/
+}
+
+.header {
+  font-family: helvetica;
+  /*font-family: Liberation Sans;*/
+  line-height: 8px;
+}
+
+.main-content {
+  column-count: 2;
+  line-height: 20px;
+}
+
+.date {
+  color: gray;
+}
+
+.author {
+  color: gray;
+}
+
+blockquote {
+  margin-left: 0px;
+  border-left: 3px solid #eee;
+  padding-left: 10px;
+}

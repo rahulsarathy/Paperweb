@@ -1,0 +1,18 @@
+{
+  "name": "docker_web_app",
+  "version": "1.0.0",
+  "description": "Pulp Node.js server running mercury",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon ./server.js",
+    "start": "node ./server.js"
+  },
+  "author": "Rahul Sarathy <rahul@sarathy.org>",
+  "dependencies": {
+    "express": "^4.17.1",
+    "puppeteer": "^2.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.4"
+  }
+}

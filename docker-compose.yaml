@@ -74,3 +74,12 @@ services:
       - /usr/src/app/node_modules
     ports:
       - 3000:3000
+  puppeteer:
+    build: ./puppeteer
+    command: npm run dev
+    privileged: true
+    volumes:
+      - ./puppeteer:/usr/src/app/
+      - /usr/src/app/node_modules
+    ports:
+      - 4000:4000
