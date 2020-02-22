@@ -1,18 +1,22 @@
 {
   "name": "docker_web_app",
   "version": "1.0.0",
-  "description": "Pulp Node.js server running mercury",
+  "description": "Pulp Node.js server running puppeteer",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon ./server.js",
+    "dev": "nodemon dotenv/config ./server.js",
     "start": "node ./server.js"
   },
   "author": "Rahul Sarathy <rahul@sarathy.org>",
   "dependencies": {
     "express": "^4.17.1",
-    "puppeteer": "^2.1.1"
+    "puppeteer": "^2.1.1",
+    "aws-sdk": "^2.620.0",
+    "pdfkit": "^0.11.0",
+    "pdfjs-dist": "^2.2.228"
   },
   "devDependencies": {
-    "nodemon": "^1.19.4"
+    "nodemon": "^1.19.4",
+    "dotenv": "^8.2.0"
   }
 }

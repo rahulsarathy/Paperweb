@@ -78,6 +78,8 @@ services:
     build: ./puppeteer
     command: npm run dev
     privileged: true
+    env_file:
+      - ./.env.dev
     volumes:
       - ./puppeteer:/usr/src/app/
       - /usr/src/app/node_modules

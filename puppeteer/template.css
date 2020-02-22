@@ -1,8 +1,8 @@
-@page { size: auto;  margin: 10mm; }
+/* @page { size: auto;  margin: 10mm; } */
 
-@media print {
-  /* @page { margin: 5mm; } */
-/}
+/* @media print {
+  @page { margin: 5mm; }
+/} */
 
 body {
   /*margin: 10mm 15mm 10mm 15mm; !* margin you want for the content *!*/
@@ -24,7 +24,7 @@ h4 {
 .header {
   font-family: helvetica;
   /*font-family: Liberation Sans;*/
-  line-height: 8px;
+  /* line-height: 8px; */
 }
 
 .main-content {

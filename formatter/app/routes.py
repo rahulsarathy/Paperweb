@@ -15,7 +15,7 @@ def index():
 def html_to_pdf():
     html_id = request.values.get('html_id')
     file_name = '{}.html'.format(html_id)
-    download_link('pulppdfs', file_name, os.path.join('dump', file_name))
+    download_link('pulphtml-test', file_name, os.path.join('dump', file_name))
 
     # convert html into pdf
     # Chrome flag descriptions

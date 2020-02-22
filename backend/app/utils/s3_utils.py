@@ -13,14 +13,12 @@
 import boto3
 from botocore.exceptions import ClientError
 import os
-from pulp.globals import S3_USER_ACCESS_ID, S3_USER_SECRET
+from pulp.globals import S3_USER_ACCESS_ID, S3_USER_SECRET, PDF_BUCKET, HTML_BUCKET
 import logging
 from django.conf import settings
 from boto3.s3.transfer import S3Transfer
 import hashlib
 import traceback
-
-BUCKET_NAME = settings.AWS_BUCKET
 
 s3_client = boto3.client('s3', aws_access_key_id=S3_USER_ACCESS_ID, aws_secret_access_key=S3_USER_SECRET)
 session = boto3.Session(
@@ -30,6 +28,7 @@ session = boto3.Session(
 )
 resource = session.resource('s3')
 
+
 def transfer_file(src_bucket, src_path, dst_bucket):
     s3 = session.resource('s3')
     copy_source = {
@@ -38,6 +37,7 @@ def transfer_file(src_bucket, src_path, dst_bucket):
     }
 
     s3.meta.client.copy(copy_source, dst_bucket, src_path)
+
 
 def get_object(bucket_name, object_name):
     """Retrieve an object from an Amazon S3 bucket
@@ -127,16 +127,19 @@ def upload_file(file_name, bucket, object_name=None):
         return False
     return True
 
+
 def get_location(bucket_name):
     bucket_location = s3_client.get_bucket_location(Bucket=bucket_name)
     return bucket_location
 
-def download_link(s3_file_path, output_file_path):
-    s3 = boto3.client('s3')
-    s3.download_file(BUCKET_NAME, s3_file_path, output_file_path)
 
-def create_article_url(blog_name, article_id):
-    location = get_location(BUCKET_NAME)['LocationConstraint']
+def download_link(s3_file_path, output_file_path, bucket_name):
+    s3 = boto3.client('s3')
+    s3.download_file(bucket_name, s3_file_path, output_file_path)
+
+
+def create_article_url(blog_name, article_id, bucket_name):
+    location = get_location(bucket_name)['LocationConstraint']
 
     object_url = "https://s3-{bucket_location}.amazonaws.com/{bucket_name}/{blog_name}/{article_id}.html".format(
         bucket_location=location,
@@ -146,6 +149,7 @@ def create_article_url(blog_name, article_id):
     )
 
     return object_url
+
 
 def get_html_url(link):
     location = get_location('pulppdfs')['LocationConstraint']
@@ -158,11 +162,13 @@ def get_html_url(link):
 
     return object_url
 
+
 def set_public(bucket, path):
     transfer = S3T
     key = conn
     transfer = S3Transfer(s3_client)
     transfer.upload_file()
+
 
 def create_pdf_url(bucket_name, blog_name, article_id):
     location = get_location(bucket_name)['LocationConstraint']
@@ -177,7 +183,7 @@ def create_pdf_url(bucket_name, blog_name, article_id):
     return object_url
 
 
-def upload_article(blog_name, article_id, content, bucket_name=BUCKET_NAME):
+def upload_article(blog_name, article_id, content, bucket_name):
     id_path = '{}.html'.format(article_id)
     try:
         os.mkdir('dump')
@@ -197,7 +203,8 @@ def upload_article(blog_name, article_id, content, bucket_name=BUCKET_NAME):
 
     put_object(dest_bucket_name=bucket_name, dest_object_name=os.path.join(blog_name, id_path), src_data=local_path)
 
-def check_file(path, bucket_name=BUCKET_NAME):
+
+def check_file(path, bucket_name):
     try:
         resource.Object(bucket_name, path).load()
         return True
@@ -207,10 +214,12 @@ def check_file(path, bucket_name=BUCKET_NAME):
     logging.warning("Check File failed")
     return True
 
+
 def delete_file(bucket_name, path):
 
     s3 = boto3.resource('s3')
     s3.Object(bucket_name, path).delete()
+
 
 def clear_all(bucket_name):
     s3 = boto3.resource('s3')

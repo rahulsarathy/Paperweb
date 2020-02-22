@@ -5,6 +5,7 @@ from utils.s3_utils import put_object, check_file, get_id
 from reading_list.models import ReadingListItem, Article
 from bs4 import BeautifulSoup
 from datetime import datetime
+from pulp.globals import HTML_BUCKET
 import logging
 import os
 from django.http import JsonResponse
@@ -15,6 +16,7 @@ from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 import threading
 import celery
+
 
 def get_reading_list(user):
     my_reading = None
@@ -27,6 +29,11 @@ def get_reading_list(user):
     return JsonResponse(json_response, safe=False)
 
 
+# 1. Validate URL
+# 2. Get Parsed Article JSON
+# 3. Add Article to DB
+# 4. Convert article to PDF and count pages
+# 5. Choose if Article should be set to deliver
 def add_to_reading_list(user, link, date_added=None):
 
     # Validate url
@@ -42,7 +49,7 @@ def add_to_reading_list(user, link, date_added=None):
     soup = BeautifulSoup(article_json.get('content', None), 'html.parser')
     article_text = soup.getText()
     article_json['parsed_text'] = article_text
-    article, created = Article.objects.get_or_create(
+    article, article_created = Article.objects.get_or_create(
         title=title, permalink=link, mercury_response=article_json
     )
 
@@ -55,14 +62,13 @@ def add_to_reading_list(user, link, date_added=None):
         reading_list_item, created = ReadingListItem.objects.get_or_create(
             reader=user, article=article
         )
-    # handle PDF count in new thread
-    # handle_pages_process = threading.Thread(target=handle_pages, args=(user, article))
-    # handle_pages_process.start()
-    if article is created:
+
+    if article_created:
         from reading_list.tasks import handle_pages_task
         handle_pages_task.delay(user.email, link)
-    # celery.current_app.send_task('reading_list.tasks.handle_pages_task', (user.email, link))
+
     return
+
 
 # Check for mercury response in
 # 1. cache
@@ -85,6 +91,7 @@ def get_parsed(url):
             json_response = json.loads(response_string)
             cache.set(url, response_string)
     return json_response
+
 
 # Create HTML file for article 3 column format and store in AWS S3
 def html_to_s3(article):
@@ -123,16 +130,20 @@ def html_to_s3(article):
     metadata = {
         'url': url
     }
-    put_object('pulppdfs', "{}.html".format(article_id), "./{}.html".format(article_id), metadata)
+    put_object(HTML_BUCKET, "{}.html".format(article_id), "./{}.html".format(article_id), metadata)
     os.remove("./{}.html".format(article_id))
     return
 
+
+# 1. Upload to s3 if not already
+# 2. Get page count of PDF via conversion
+#
 def handle_pages(user, article):
     url = article.permalink
     article_id = get_id(url)
 
     # If file is not uploaded, then uploaded
-    if not check_file('{}.html'.format(article_id), 'pulppdfs'):
+    if not check_file('{}.html'.format(article_id), HTML_BUCKET):
         html_to_s3(article)
 
     # Count pages of article
@@ -154,6 +165,7 @@ def handle_pages(user, article):
         to_deliver = True
     rlist_item.to_deliver = to_deliver
     rlist_item.save()
+
 
 def get_selected_pages(user, permalink):
     rlist_items = ReadingListItem.objects.filter(reader=user)
@@ -179,8 +191,12 @@ def get_selected_pages(user, permalink):
 
 def get_page_count(article_id):
     data = {'html_id': article_id}
-    formatter_url = 'http://{}:5000/html_to_pdf'.format(settings.FORMATTER_HOST)
-    response = requests.post(formatter_url, data=data)
+    formatter_url = 'http://{}:4000/api/print'.format(settings.PUPPETEER_HOST)
+    try:
+        response = requests.post(formatter_url, data=data)
+    except requests.exceptions.ConnectionError:
+        logging.warning("failed to connect to puppeteer for {}".format(article_id))
+        return {"pages": 0}
     response_string = response.content.decode("utf-8")
     json_response = json.loads(response_string)
     pages = json_response.get('pages')

@@ -12,7 +12,6 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 
 SITE_ID = 1
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
-AWS_BUCKET = os.environ.get("AWS_BUCKET")
 
 # Application definition
 INSTALLED_APPS = [
@@ -215,7 +214,7 @@ LOGGING = {
 CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default=False, cast=bool)
 SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=False, cast=bool)
 SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default=False, cast=bool)
-FORMATTER_HOST = os.environ.get('FORMATTER_HOST')
+PUPPETEER_HOST = os.environ.get('PUPPETEER_HOST')
 PARSER_HOST = os.environ.get('PARSER_HOST')
 PARSER_PORT = os.environ.get('PARSER_PORT')
 
