@@ -99,6 +99,7 @@ def html_to_s3(article):
     article_id = get_id(url)
     json_response = get_parsed(url)
 
+    # Extract variables from json source
     date_string = None
     content = json_response.get('content')
     author = json_response.get('author')
@@ -106,6 +107,7 @@ def html_to_s3(article):
     title = json_response.get('title')
     domain = json_response.get('domain')
 
+    # Format Date String
     try:
         if date_published is not None:
             date_object = datetime.strptime(date_published[:10], '%Y-%m-%d')
@@ -113,13 +115,15 @@ def html_to_s3(article):
     except:
         date_string = None
 
+    # Populate html template with extracted variables
     template_soup = BeautifulSoup(open('./pdf/template.html'), 'html.parser')
     if title is not None:
         template_soup.select_one('.title').string = title
     if author is not None:
-        template_soup.select_one('.author').string = 'By ' + author + ' on ' + domain
+        template_soup.select_one('#author').string = 'By ' + author
     if date_string is not None:
-        template_soup.select_one('.date').string = date_string
+        template_soup.select_one('#date').string = date_string
+    template_soup.select_one('#domain').string = domain
 
     soup = BeautifulSoup(content, 'html.parser')
     template_soup.select_one('.main-content').insert(0, soup)
@@ -127,6 +131,7 @@ def html_to_s3(article):
     f.write(str(template_soup))
     f.close()
 
+    # upload object to S3 with permalink as metadata
     metadata = {
         'url': url
     }
@@ -191,9 +196,9 @@ def get_selected_pages(user, permalink):
 
 def get_page_count(article_id):
     data = {'html_id': article_id}
-    formatter_url = 'http://{}:4000/api/print'.format(settings.PUPPETEER_HOST)
+    puppeteer_url = 'http://{}:4000/api/print'.format(settings.PUPPETEER_HOST)
     try:
-        response = requests.post(formatter_url, data=data)
+        response = requests.post(puppeteer_url, data=data)
     except requests.exceptions.ConnectionError:
         logging.warning("failed to connect to puppeteer for {}".format(article_id))
         return {"pages": 0}

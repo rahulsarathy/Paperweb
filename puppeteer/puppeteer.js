@@ -50,9 +50,9 @@ app.post('/api/print', function(req, res) {
           page_count = doc.numPages;
 
           // Delete PDF
-          fs.unlink(pdfFileName, (err) => {
-            if (err) throw err;
-          });
+          // fs.unlink(pdfFileName, (err) => {
+          //   if (err) throw err;
+          // });
 
           // Delete HTML
           fs.unlink(htmlFileName, (err) => {

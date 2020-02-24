@@ -4,8 +4,8 @@
   "description": "Pulp Node.js server running puppeteer",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon dotenv/config ./server.js",
-    "start": "node ./server.js"
+    "dev": "nodemon dotenv/config ./puppeteer.js",
+    "start": "node ./puppeteer.js"
   },
   "author": "Rahul Sarathy <rahul@sarathy.org>",
   "dependencies": {

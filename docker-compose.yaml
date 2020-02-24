@@ -42,15 +42,6 @@ services:
       - redis
     env_file:
       - ./.env.dev
-  formatter:
-    build: ./formatter
-    command: ./boot.sh
-    volumes:
-      - ./formatter:/home/printer_start
-    env_file:
-      - ./formatter/.env
-    ports:
-      - 5000:5000
   redis:
     image: redis:5.0.6-alpine
     command: redis-server
