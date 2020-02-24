@@ -126,6 +126,13 @@ def html_to_s3(article):
     template_soup.select_one('#domain').string = domain
 
     soup = BeautifulSoup(content, 'html.parser')
+
+    # find one layer of links and remove them, but preserve inner content
+    # for link in soup.findAll('a'):
+    #     innerhtml = "".join([str(x) for x in link.contents])
+    #     link.insert_after(BeautifulSoup(innerhtml, 'html.parser'))
+    #     link.extract()
+
     template_soup.select_one('.main-content').insert(0, soup)
     f = open("./{}.html".format(article_id), "w+")
     f.write(str(template_soup))

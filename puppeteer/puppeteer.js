@@ -55,9 +55,9 @@ app.post('/api/print', function(req, res) {
           // });
 
           // Delete HTML
-          fs.unlink(htmlFileName, (err) => {
-            if (err) throw err;
-          });
+          // fs.unlink(htmlFileName, (err) => {
+          //   if (err) throw err;
+          // });
 
           // Jsonize Result
           let result = {

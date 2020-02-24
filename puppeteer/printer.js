@@ -4,7 +4,7 @@ const printFile = (file_id, callback) => {
   (async () => {
     const browser = await puppeteer.launch({
       args: ['--disable-dev-shm-usage'],
-      executablePath: '/usr/bin/google-chrome-unstable'
+      executablePath: '/usr/bin/google-chrome'
     });
     const page = await browser.newPage();
     await page.setViewport({
