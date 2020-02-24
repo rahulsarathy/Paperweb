@@ -94,7 +94,9 @@ $menu-item-margin: 20px;
 $menu-item-margin-top: 5px;
 $menu-item-height: 40px;
 $menu-item-padding-left: 10px;
-
+$menu-item-padding-right: 10px;
+$menu-item-margin-right: 10px;
+$text-align: right;
 .menu-item {
   color: $menu-item-color;
   font-size: $menu-font-size;
@@ -102,19 +104,28 @@ $menu-item-padding-left: 10px;
   height: $menu-item-height;
   line-height: $menu-item-height;
   padding-left: $menu-item-padding-left;
+  padding-right: $menu-item-padding-right;
   font-weight: bold;
+  margin-right: $menu-item-margin-right;
+  // text-align: $text-align;
+  float: right;
   // margin-left: $menu-ictem-margin;
 }
 
 .menu-item-selected {
   color: white;
+  // text-align: $text-align;
   font-weight: bold;
   font-size: $menu-font-size;
-  background-color: #A8A894;
-  width: 100%;
+  background-color: #a9a995;
+  // width: 100%;
+  // min-width: 100px;
+  float: right;
   height: $menu-item-height;
   line-height: $menu-item-height;
   padding-left: $menu-item-padding-left;
+  padding-right: $menu-item-padding-right;
+  margin-right: $menu-item-margin-right;
   margin-left: 5px;
   border-radius: 2px;
   // margin-top: $menu-item-margin-top;
@@ -286,7 +297,7 @@ $image-dim: 120px;
     font-size: 18px;
     display: inline-block;
     width: 100%;
-    padding-bottom: 5px;
+    padding-bottom: 9px;
 
     .author {
       display: inline-block;

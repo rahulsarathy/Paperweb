@@ -9,7 +9,7 @@ from reading_list.reading_list_utils import add_to_reading_list, handle_pages
 from datetime import datetime
 from users.models import CustomUser
 from django.utils.timezone import make_aware
-
+from utils.s3_utils import check_file
 
 @task(name='handle_pages')
 def handle_pages_task(email, link):
@@ -78,6 +78,8 @@ def create_user_magazine(email):
     reading_list_items = ReadingListItem.objects.filter(reader=user)
     total = 0
     staged = []
+
+    # Find out which articles we want to include in the magazine
     for item in reading_list_items:
         if item.to_deliver:
             new_total = total + item.article.num_pages
@@ -86,3 +88,4 @@ def create_user_magazine(email):
             staged.append(item)
 
     return
+
