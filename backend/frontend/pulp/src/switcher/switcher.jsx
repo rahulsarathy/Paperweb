@@ -117,14 +117,14 @@ export default class Switcher extends React.Component {
             <Link to={'/reading_list'}>
               <RouterMenuItem onClick={() => this.changeSelected("reading_list")} selected={this.state.selected} unread={this.state.unread} value="reading_list" text={"Unread"}/>
             </Link>
-            <Link to={'/archive'}>
-              <RouterMenuItem onClick={() => this.changeSelected("archive")} selected={this.state.selected} value="archive" text={"Archive"}/>
-            </Link>
             <Link to={'/settings'}>
               <RouterMenuItem onClick={() => this.changeSelected("settings")} selected={this.state.selected} value="settings" text={"Settings"}/>
             </Link>
             <Link to={'/delivery'}>
               <RouterMenuItem onClick={() => this.changeSelected("delivery")} selected={this.state.selected} value="delivery" text={"Delivery"}/>
+            </Link>
+            <Link to={'/archive'}>
+              <RouterMenuItem onClick={() => this.changeSelected("archive")} selected={this.state.selected} value="archive" text={"Archive"}/>
             </Link>
           </div>
           <div className="page-container">
