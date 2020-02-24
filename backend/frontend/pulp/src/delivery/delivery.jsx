@@ -163,7 +163,6 @@ export default class Delivery extends React.Component {
               </div>
               <label className="sort-label">Sort By</label>
               <p>{this.state.total}/50 Pages</p>
-              <p>{this.state.total}/50 Pages</p>
               <DropdownButton className="sort-button" title={this.changeSortLabel()}>
                 <Dropdown.Item onClick={() => this.changeSort("title")}>Title</Dropdown.Item>
                 <Dropdown.Item onClick={() => this.changeSort("deliver")}>To Deliver?</Dropdown.Item>
