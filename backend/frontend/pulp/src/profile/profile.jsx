@@ -23,17 +23,6 @@ class SubHeader extends React.Component {
   }
 }
 
-class InviteCode extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-  render() {
-    return (<div className="invitecode">
-      {this.props.invitecode}
-    </div>);
-  }
-}
-
 export default class Profile extends React.Component {
 
   constructor(props) {
@@ -41,7 +30,6 @@ export default class Profile extends React.Component {
     this.cancelPayment = this.cancelPayment.bind(this);
     this.handleCheck = this.handleCheck.bind(this);
     this.handleSelector = this.handleSelector.bind(this);
-    this.getInviteCodes = this.getInviteCodes.bind(this);
     this.updateSettings = this.updateSettings.bind(this);
     this.getEmail = this.getEmail.bind(this);
     this.state = {
@@ -55,7 +43,6 @@ export default class Profile extends React.Component {
 
   componentDidMount() {
     this.checkPaymentStatus();
-    this.getInviteCodes();
     this.getSettings();
     this.getEmail();
   }
@@ -104,16 +91,6 @@ export default class Profile extends React.Component {
           deliver_oldest = 'newest';
         }
         this.setState({archive_links: data.archive_links, sortby: deliver_oldest});
-      }.bind(this)
-    });
-  }
-
-  getInviteCodes() {
-    $.ajax({
-      url: '../api/users/get_invite_codes',
-      type: 'GET',
-      success: function(data, statusText, xhr) {
-        this.setState({invite_codes: data});
       }.bind(this)
     });
   }
@@ -176,20 +153,6 @@ export default class Profile extends React.Component {
           <SubHeader title="Subscription Info"/>
           <label>You are not subscribed to pulp</label>
           <a href="../subscribe">Subscribe</a>
-        </div>
-        <div id="invitecodes">
-          <SubHeader title="Invite Codes"/>
-          <Row>
-            <Col>
-              {this.state.invite_codes.map((invite_code, index) => <InviteCode key={index} invitecode={invite_code.key}/>)}
-            </Col>
-            <Col>
-              {
-                this.state.invite_codes.map((invite_code) => <div key={invite_code.key}>
-                  copy to clipboard</div>)
-              }
-            </Col>
-          </Row>
         </div>
         <div id="import" className="subsection">
           <SubHeader title="Import Articles" />

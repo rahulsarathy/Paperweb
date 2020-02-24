@@ -1,7 +1,6 @@
-from payments.models import BillingInfo, Address, InviteCode
+from payments.models import BillingInfo, Address
 from rest_framework.decorators import api_view, parser_classes
 from django.http import JsonResponse, HttpResponse
-from payments.serializers import InviteCodeSerializer
 import json
 from users.serializers import SettingsSerializer
 from users.models import Settings
@@ -56,15 +55,6 @@ def set_settings(request):
         return HttpResponse(status=500)
 
     return HttpResponse(status=200)
-
-
-@api_view(['GET'])
-def get_invite_codes(request):
-    user = request.user
-    invite_codes = InviteCode.objects.filter(owner=user, redeemer=None)
-    serializer = InviteCodeSerializer(invite_codes, many=True)
-    json_response = serializer.data
-    return JsonResponse(json_response, safe=False)
 
 
 @api_view(['POST'])
