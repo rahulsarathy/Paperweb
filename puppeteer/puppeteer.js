@@ -85,13 +85,13 @@ app.post('/api/print_magazine', function(req, res) {
 
   // AWS methods are async so they are done synchronously using callbacks
   // Download HTML
-  s3_utils.downloadFile(htmlFileName, 'pulpmagazine', htmlKey).then(
+  s3_utils.downloadFile(htmlFileName, 'pulpmagazines', htmlKey).then(
     function(data) {
       // Convert HTML into PDF
       printer.printFile(html_id, function() {
 
         // Upload PDF to S3
-        s3_utils.uploadFile(pdfFileName, 'pulpmagazine', pdfKey);
+        s3_utils.uploadFile(pdfFileName, 'pulpmagazines', pdfKey);
 
         // Count number of pages
         let countPages = pdfjsLib.getDocument(pdfFileName);

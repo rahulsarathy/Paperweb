@@ -91,7 +91,6 @@ def create_user_magazine(email):
                 return
             staged.append(item.article)
 
-    f = open("./pdf/assembly.html", "w+")
     assembly_soup = BeautifulSoup(open('./pdf/assembly.html'), 'html.parser')
     assembly_body = assembly_soup.find('body')
     magazine_id = get_magazine_id(staged[0].permalink)
@@ -144,7 +143,7 @@ def create_user_magazine(email):
     f = open("./{}.html".format(magazine_id), "w+")
     f.write(str(assembly_soup))
     f.close()
-    put_object('pulpmagazines', "{}.html".format(article_id), "./{}.html".format(article_id))
+    put_object('pulpmagazines', "{}.html".format(magazine_id), "./{}.html".format(magazine_id))
     os.remove("./{}.html".format(magazine_id))
 
     return
