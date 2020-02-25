@@ -33,6 +33,7 @@ def import_from_instapaper(user, username, password):
     csv_data = response.text
     result = csv.reader(csv_data.splitlines())
 
+    # Load local csv for testing
     # with open(os.path.join('reading_list', 'instapaper.csv'), newline='') as f:
     #     result = csv.reader(f)
     #     final_list = list(result)

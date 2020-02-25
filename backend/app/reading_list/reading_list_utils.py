@@ -1,7 +1,7 @@
 from django.core.cache import cache
 import json
 import requests
-from utils.s3_utils import put_object, check_file, get_id
+from utils.s3_utils import put_object, check_file, get_article_id
 from reading_list.models import ReadingListItem, Article
 from bs4 import BeautifulSoup
 from datetime import datetime
@@ -96,7 +96,7 @@ def get_parsed(url):
 # Create HTML file for article 3 column format and store in AWS S3
 def html_to_s3(article):
     url = article.permalink
-    article_id = get_id(url)
+    article_id = get_article_id(url)
     json_response = get_parsed(url)
 
     # Extract variables from json source
@@ -152,7 +152,7 @@ def html_to_s3(article):
 #
 def handle_pages(user, article):
     url = article.permalink
-    article_id = get_id(url)
+    article_id = get_article_id(url)
 
     # If file is not uploaded, then uploaded
     if not check_file('{}.html'.format(article_id), HTML_BUCKET):

@@ -5,11 +5,15 @@ from reading_list.models import Article, ReadingListItem
 from celery import task
 from celery import shared_task
 import logging
-from reading_list.reading_list_utils import add_to_reading_list, handle_pages
+from reading_list.reading_list_utils import add_to_reading_list, handle_pages, html_to_s3, get_parsed
 from datetime import datetime
 from users.models import CustomUser
 from django.utils.timezone import make_aware
-from utils.s3_utils import check_file
+from utils.s3_utils import check_file, get_article_id, download_link, get_magazine_id, put_object
+from pulp.globals import HTML_BUCKET
+import os
+from bs4 import BeautifulSoup
+
 
 @task(name='handle_pages')
 def handle_pages_task(email, link):
@@ -82,10 +86,66 @@ def create_user_magazine(email):
     # Find out which articles we want to include in the magazine
     for item in reading_list_items:
         if item.to_deliver:
-            new_total = total + item.article.num_pages
+            new_total = total + item.article.page_count
             if new_total > 50:
                 return
-            staged.append(item)
+            staged.append(item.article)
+
+    f = open("./pdf/assembly.html", "w+")
+    assembly_soup = BeautifulSoup(open('./pdf/assembly.html'), 'html.parser')
+    assembly_body = assembly_soup.find('body')
+    magazine_id = get_magazine_id(staged[0].permalink)
+
+    for item in staged:
+        permalink = item.permalink
+        json_response = get_parsed(permalink)
+
+        # Extract variables from json source
+        date_string = None
+        content = json_response.get('content')
+        author = json_response.get('author')
+        date_published = json_response.get('date_published')
+        title = json_response.get('title')
+        domain = json_response.get('domain')
+        soup = BeautifulSoup(content, 'html.parser')
+        article_id = get_article_id(permalink)
+
+        # Format Date String
+        try:
+            if date_published is not None:
+                date_object = datetime.strptime(date_published[:10], '%Y-%m-%d')
+                date_string = date_object.strftime('Originally published on %B %-d, %Y')
+        except:
+            date_string = None
+
+        # get article and check if uploaded
+        article, article_created = Article.objects.get_or_create(
+            permalink=permalink
+        )
+        if not check_file('{}.html'.format(article_id), HTML_BUCKET):
+            html_to_s3(article)
+
+        # populate template soup w/ content
+        template_soup = BeautifulSoup(open('./pdf/template.html'), 'html.parser')
+        template_container = template_soup.select_one('.container')
+        if title is not None:
+            template_container.select_one('.title').string = title
+        if author is not None:
+            template_container.select_one('#author').string = 'By ' + author
+        if date_string is not None:
+            template_container.select_one('#date').string = date_string
+        template_container.select_one('#domain').string = domain
+        template_container.select_one('.main-content').insert(0, soup)
+        template_container['id'] = article_id
+
+        # Add populated template soup to assembly soup
+        assembly_body.append(template_container)
+
+    f = open("./{}.html".format(magazine_id), "w+")
+    f.write(str(assembly_soup))
+    f.close()
+    put_object('pulpmagazines', "{}.html".format(article_id), "./{}.html".format(article_id))
+    os.remove("./{}.html".format(magazine_id))
 
     return
 

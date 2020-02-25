@@ -153,7 +153,7 @@ def create_article_url(blog_name, article_id, bucket_name):
 
 def get_html_url(link):
     location = get_location('pulppdfs')['LocationConstraint']
-    hash_id = get_id(link)
+    hash_id = get_article_id(link)
     object_url = "https://s3-{bucket_location}.amazonaws.com/{bucket_name}/{article_id}.html".format(
         bucket_location=location,
         bucket_name='pulppdfs',
@@ -228,7 +228,15 @@ def clear_all(bucket_name):
     logging.debug("Cleared out %s S3 Bucket", bucket_name)
 
 
-def get_id(url):
+def get_article_id(url):
     encoded = url.encode('utf-8')
     final_id = hashlib.sha224(encoded).hexdigest()[:20]
     return final_id
+
+
+def get_magazine_id(url):
+    hash_string = 'magazine' + url
+    encoded = hash_string.encode('utf-8')
+    final_id = hashlib.sha224(encoded).hexdigest()[:20]
+    return final_id
+
