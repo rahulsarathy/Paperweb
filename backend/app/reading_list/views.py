@@ -156,6 +156,7 @@ def authenticate_pocket(request):
 
     return HttpResponseRedirect('/settings/?pocket=true')
 
+
 @api_view(['POST'])
 def start_instapaper_import(request):
     user = request.user

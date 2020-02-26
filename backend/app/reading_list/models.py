@@ -3,6 +3,7 @@ from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 from jsonfield import JSONField
+from pgcrypto import fields
 
 from datetime import datetime
 
@@ -27,3 +28,14 @@ class ReadingListItem(models.Model):
 
     class Meta:
         unique_together = (("reader", "article"),)
+
+
+class InstapaperCredentials(models.Model):
+    username = models.CharField(_('Username'), max_length=255)
+    password = fields.CharPGPPublicKeyField(max_length=255)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+
+class PocketCredentials(models.Model):
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    token = fields.CharPGPPublicKeyField(max_length=35)
