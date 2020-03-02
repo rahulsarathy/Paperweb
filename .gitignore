@@ -4,6 +4,7 @@
 .env
 backend/app/private-dev.key
 backend/app/public-dev.key
+backend/app/celerybeat-schedule
 
 # Cached files
 backend/app/dump

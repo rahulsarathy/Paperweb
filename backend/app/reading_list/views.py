@@ -5,7 +5,7 @@ from rest_framework.decorators import api_view
 from rest_framework.exceptions import NotFound
 
 from reading_list.serializers import ReadingListItemSerializer
-from reading_list.models import Article, ReadingListItem, PocketCredentials
+from reading_list.models import Article, ReadingListItem, PocketCredentials, InstapaperCredentials
 from reading_list.reading_list_utils import get_parsed, html_to_s3, get_reading_list, add_to_reading_list
 from reading_list.instapaper import import_from_instapaper
 from reading_list.tasks import import_pocket
@@ -120,8 +120,34 @@ def update_deliver(request):
         raise NotFound(detail='ReadingListItem with link: %s not found.' % link, code=404)
 
 
+@api_view(['GET'])
+def service_status(request):
+    user = request.user
+    status = {
+        'instapaper': False,
+        'pocket': False,
+    }
+    try:
+        instapaper_credentials = InstapaperCredentials.objects.get(owner=user)
+        status['instapaper'] = True
+    except InstapaperCredentials.DoesNotExist:
+        status['instapaper'] = False
+
+    try:
+        pocket_credentials = PocketCredentials.objects.get(owner=user)
+        status['pocket'] = True
+    except PocketCredentials.DoesNotExist:
+        status['pocket'] = False
+
+    return JsonResponse(status)
+
+
 @api_view(['POST'])
 def pocket(request):
+
+    # check if have token
+    # if have token already,
+
     # Get pocket code from consumer key
     redirect_uri = 'http://127.0.0.1:8000/api/reading_list/authenticate_pocket'
     url = 'https://getpocket.com/v3/oauth/request'
