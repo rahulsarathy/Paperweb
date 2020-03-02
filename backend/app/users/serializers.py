@@ -1,10 +1,11 @@
-from users.models import CustomUser, Settings
+from users.models import Settings
 from rest_framework import serializers
+from django.contrib.auth.models import User
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = CustomUser
+        model = User
         fields = ['email', 'first_name', 'last_name', 'date_joined', 'kindle_email_address', 'billing_information']
 
 

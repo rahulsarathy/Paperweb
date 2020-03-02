@@ -1,6 +1,9 @@
 *.pyc
 .env.dev
 .idea/
+.env
+backend/app/private-dev.key
+backend/app/public-dev.key
 
 # Cached files
 backend/app/dump

@@ -6,12 +6,8 @@ from decouple import config, Csv
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("SECRET_KEY")
-
-PUBLIC_PGP_KEY_PATH = os.path.abspath(os.path.join(BASE_DIR, 'public_pgp.key'))
-PRIVATE_GPG_KEY_PATH = os.path.abspath(os.path.join(BASE_DIR, 'private_pgp.key'))
 
 SITE_ID = 1
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
@@ -44,6 +40,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'coverage',
     'django_celery_beat',
+    'encrypted_model_fields',
 ]
 
 MIDDLEWARE = [
@@ -122,7 +119,6 @@ DATABASES = {
         "PASSWORD": os.environ.get("SQL_PASSWORD", "password"),
         "HOST": os.environ.get("SQL_HOST", "localhost"),
         "PORT": os.environ.get("SQL_PORT", "5432"),
-	"PGCRYPTO_KEY": os.environ.get('PGCRYPTO_KEY'),
     }
 }
 
@@ -152,7 +148,6 @@ AUTHENTICATION_BACKENDS = (
     "allauth.account.auth_backends.AuthenticationBackend",
 )
 
-AUTH_USER_MODEL = 'users.CustomUser'
 ACCOUNT_SIGNUP_FORM_CLASS = 'users.forms.AllauthSignupForm'
 # ACCOUNT_FORMS = {'signup': 'users.forms.MyCustomSignupForm'}
 ACCOUNT_USER_MODEL_USERNAME_FIELD = 'username'

@@ -1,5 +1,4 @@
 from celery import task
-from users.models import CustomUser
 import logging
 from reading_list.models import Article, ReadingListItem
 from celery import task
@@ -7,7 +6,7 @@ from celery import shared_task
 import logging
 from reading_list.reading_list_utils import add_to_reading_list, handle_pages, html_to_s3, get_parsed
 from datetime import datetime
-from users.models import CustomUser
+from django.contrib.auth.models import User
 from django.utils.timezone import make_aware
 from utils.s3_utils import check_file, get_article_id, download_link, get_magazine_id, put_object
 from pulp.globals import HTML_BUCKET
@@ -18,8 +17,8 @@ from bs4 import BeautifulSoup
 @task(name='handle_pages')
 def handle_pages_task(email, link):
     try:
-        user = CustomUser.objects.get(email=email)
-    except CustomUser.DoesNotExist:
+        user = User.objects.get(email=email)
+    except User.DoesNotExist:
         logging.warning('User {} does not exist'.format(email))
         return
     try:
@@ -33,8 +32,8 @@ def handle_pages_task(email, link):
 @task(name='import_pocket')
 def import_pocket(email, article_json):
     try:
-        user = CustomUser.objects.get(email=email)
-    except CustomUser.DoesNotExist:
+        user = User.objects.get(email=email)
+    except User.DoesNotExist:
         logging.warning('User {} does not exist'.format(email))
         return
     for key, article in article_json.items():
@@ -54,8 +53,8 @@ def send_notification():
 @task(name='parse_instapaper_csv')
 def parse_instapaper_csv(csv_list, email):
     try:
-        user = CustomUser.objects.get(email=email)
-    except CustomUser.DoesNotExist:
+        user = User.objects.get(email=email)
+    except User.DoesNotExist:
         logging.warning('User {} does not exist'.format(email))
         return
     for item in csv_list:
@@ -65,9 +64,10 @@ def parse_instapaper_csv(csv_list, email):
             add_to_reading_list(user=user, link=item[0], date_added=dt_object)
     return
 
+
 @task(name='start_create_magazine')
 def start_create_magazine():
-    users = CustomUser.objects.all()
+    users = User.objects.all()
     for user in users:
         create_user_magazine.delay(user.email)
     return
@@ -75,8 +75,8 @@ def start_create_magazine():
 @task(name='create_user_magazine')
 def create_user_magazine(email):
     try:
-        user = CustomUser.objects.get(email=email)
-    except CustomUser.DoesNotExist:
+        user = User.objects.get(email=email)
+    except User.DoesNotExist:
         logging.warning('User {} does not exist'.format(email))
         return
     reading_list_items = ReadingListItem.objects.filter(reader=user)

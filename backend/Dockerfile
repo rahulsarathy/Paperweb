@@ -53,8 +53,10 @@ RUN apk add g++ libxml2 libxslt-dev \
 	&& pip install mechanicalsoup \
 	&& apk del g++
 
+sudo apt-get install build-essential libssl-dev libffi-dev python-dev
+
 # for psutil
-RUN apk add --update gcc libc-dev fortify-headers linux-headers && rm -rf
+RUN apk add --update gcc libc-dev fortify-headers linux-headers && rm -rf 
 
 # Install from pip archive
 RUN pip install -r ./requirements.txt

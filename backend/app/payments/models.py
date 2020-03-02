@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext as _
 from django.conf import settings
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -47,7 +48,7 @@ class BillingInfo(models.Model):
     delivery_address = models.OneToOneField(Address, on_delete=models.CASCADE, default=None, null=True)
     stripe_customer_id = models.CharField(_('Stripe Customer ID'), max_length=100, default=None, null=True)
     payment_tier = models.OneToOneField(PaymentTier, on_delete=models.CASCADE, default=None, null=True)
-    customer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    customer = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.delivery_address

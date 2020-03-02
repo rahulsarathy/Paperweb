@@ -3,11 +3,9 @@ from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 from jsonfield import JSONField
-from pgcrypto import fields
+from encrypted_model_fields.fields import EncryptedCharField
 
-from datetime import datetime
-
-# Create your models here.
+from django.contrib.auth.models import User
 
 
 class Article(models.Model):
@@ -18,7 +16,7 @@ class Article(models.Model):
 
 
 class ReadingListItem(models.Model):
-    reader = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    reader = models.ForeignKey(User, on_delete=models.CASCADE)
     article = models.ForeignKey(Article, on_delete=models.CASCADE, default=None, null=True)
     date_added = models.DateTimeField(_('Date Added'), default=timezone.now)
     archived = models.NullBooleanField(_('Archived'), default=False)
@@ -32,10 +30,10 @@ class ReadingListItem(models.Model):
 
 class InstapaperCredentials(models.Model):
     username = models.CharField(_('Username'), max_length=255)
-    password = fields.CharPGPPublicKeyField(max_length=255)
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    password = EncryptedCharField(_('Password'), max_length=255)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 class PocketCredentials(models.Model):
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    token = fields.CharPGPPublicKeyField(max_length=35)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    token = EncryptedCharField(max_length=35)

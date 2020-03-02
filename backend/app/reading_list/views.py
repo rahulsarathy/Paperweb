@@ -5,7 +5,7 @@ from rest_framework.decorators import api_view
 from rest_framework.exceptions import NotFound
 
 from reading_list.serializers import ReadingListItemSerializer
-from reading_list.models import Article, ReadingListItem
+from reading_list.models import Article, ReadingListItem, PocketCredentials
 from reading_list.reading_list_utils import get_parsed, html_to_s3, get_reading_list, add_to_reading_list
 from reading_list.instapaper import import_from_instapaper
 from reading_list.tasks import import_pocket
@@ -122,6 +122,7 @@ def update_deliver(request):
 
 @api_view(['POST'])
 def pocket(request):
+    # Get pocket code from consumer key
     redirect_uri = 'http://127.0.0.1:8000/api/reading_list/authenticate_pocket'
     url = 'https://getpocket.com/v3/oauth/request'
     data = {'consumer_key': POCKET_CONSUMER_KEY, 'redirect_uri': redirect_uri}
@@ -133,18 +134,27 @@ def pocket(request):
           '{redirect_uri}'.format(code=code, redirect_uri=redirect_uri)
     key = request.user.email + 'pocket'
     cache.set(key, code)
+    # Send the user a url w/ code that links the user to our consumer key
     return HttpResponse(url)
 
 
+# this method is hit as a webhook
 def authenticate_pocket(request):
+    # Get code linking user to our consumer key from cache
     key = request.user.email + 'pocket'
     code = cache.get(key)
+
+    # get access token for user
     url = 'https://getpocket.com/v3/oauth/authorize'
     data = {'consumer_key': POCKET_CONSUMER_KEY, 'code': code}
     response = requests.post(url, data=data)
     response_string = response.text
     result = re.search('access_token=(.*)&username', response_string)
     access_token = result.group(1)
+
+    pocket_credentials, created = PocketCredentials.objects.get_or_create(
+        owner=request.user, token=access_token
+    )
 
     url = 'https://getpocket.com/v3/get'
     data = {'consumer_key': POCKET_CONSUMER_KEY, 'access_token': access_token, 'state': 'unread'}
