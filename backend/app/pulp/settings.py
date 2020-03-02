@@ -9,6 +9,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
+FIELD_ENCRYPTION_KEY=os.environ.get('FIELD_ENCRYPTION_KEY')
+
 SITE_ID = 1
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
@@ -31,7 +33,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'allauth',  # new
     'allauth.account',  # new
-    'allauth.socialaccount',
+    # 'allauth.socialaccount',
     'corsheaders',
     'rest_framework',
     'reading_list.apps.ReadingListConfig',
