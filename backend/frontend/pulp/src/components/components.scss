@@ -1,0 +1,93 @@
+#instapaper-modal {
+  .modal-content {
+    padding: 10px;
+  }
+
+  .invalid {
+    color: red;
+    // background-color: #ffa2a2;
+    // border-color: red;
+    // border-style: solid;
+    // border-radius: 3px;
+    // border-width: 1px;
+  }
+}
+
+.integration-button {
+  $height: 45px;
+  display: block;
+  border-radius: 3px;
+  background-color: white;
+  border-color: #4c8fff;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+  width: 150px;
+  height: $height;
+  line-height: $height;
+  font-size: 22px;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.5);
+  -webkit-transition: all 0.2s ease-in-out;
+}
+
+.pocket {
+  border-color: #ef4056;
+
+  .pocket-image {
+    height: 28px;
+  }
+}
+
+.instapaper {
+  font-family: "LyonText";
+  border-color: black;
+  color: white;
+  background-color: black;
+  font-size: 23px;
+
+  $side-length: 25px;
+
+  .instapaper-image {
+    width: $side-length;
+    height: $side-length;
+    margin-right: 10px;
+    margin-bottom: 8px;
+  }
+}
+
+.no-articles {
+  text-align: center;
+  width: 500px;
+  margin: 20px auto auto;
+  color: #363634;
+
+  .pulp-gray {
+    margin-top: 20px;
+    height: 105px;
+    margin-bottom: 20px;
+  }
+
+  p {
+    font-size: 22px;
+    // text-decoration: underline;
+    margin-bottom: 5px;
+  }
+
+  .empty {
+    font-size: 33px;
+    font-weight: bold;
+    text-decoration: none;
+  }
+
+  .add-article-button {
+    margin-top: 0px;
+    background-color: #4c8fff;
+    color: white;
+    font-weight: bold;
+  }
+
+  button:hover {
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.8);
+    -webkit-transition: all 0.2s ease-in-out;
+  }
+}

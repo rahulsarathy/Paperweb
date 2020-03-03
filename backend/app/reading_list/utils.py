@@ -2,10 +2,10 @@ from django.core.cache import cache
 import json
 import requests
 from utils.s3_utils import put_object, check_file, get_article_id
-from reading_list.models import ReadingListItem, Article
+from reading_list.models import ReadingListItem, Article, PocketCredentials
 from bs4 import BeautifulSoup
 from datetime import datetime
-from pulp.globals import HTML_BUCKET
+from pulp.globals import HTML_BUCKET, POCKET_CONSUMER_KEY
 import logging
 import os
 from django.http import JsonResponse
@@ -16,6 +16,7 @@ from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 import threading
 import celery
+from datetime import datetime
 
 
 def get_reading_list(user):
@@ -199,6 +200,29 @@ def get_selected_pages(user, permalink):
     )
 
     return total_pages
+
+
+def retrieve_pocket(user, access_token, since=None):
+    url = 'https://getpocket.com/v3/get'
+    if since is None:
+        data = {'consumer_key': POCKET_CONSUMER_KEY, 'access_token': access_token, 'state': 'unread'}
+    else:
+        timestamp = datetime.utcfromtimestamp(since)
+        data = {'since': timestamp, 'consumer_key': POCKET_CONSUMER_KEY, 'access_token': access_token, 'state': 'unread'}
+    response = requests.post(url, data=data)
+    response_string = response.content.decode("utf-8")
+    json_response = json.loads(response_string)
+    articles = json_response.get('list')
+
+    try:
+        pocket_credential = PocketCredentials.objects.get(owner=user)
+        pocket_credential.token = access_token
+        pocket_credential.last_polled = datetime.now()
+        pocket_credential.save()
+    except PocketCredentials.DoesNotExist:
+        PocketCredentials(owner=user, token=access_token, last_polled=datetime.now()).save()
+
+    return articles
 
 
 def get_page_count(article_id):
