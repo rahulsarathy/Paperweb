@@ -4,7 +4,8 @@ from reading_list.models import Article, ReadingListItem
 from celery import task
 from celery import shared_task
 import logging
-from reading_list.reading_list_utils import add_to_reading_list, handle_pages, html_to_s3, get_parsed
+from reading_list.utils import add_to_reading_list, handle_pages, html_to_s3, get_parsed, retrieve_pocket
+from reading_list.models import PocketCredentials, InstapaperCredentials
 from datetime import datetime
 from django.contrib.auth.models import User
 from django.utils.timezone import make_aware
@@ -31,18 +32,40 @@ def handle_pages_task(email, link):
 
 @task(name='import_pocket')
 def import_pocket(email, article_json):
+    if not article_json:
+        return
     try:
         user = User.objects.get(email=email)
     except User.DoesNotExist:
         logging.warning('User {} does not exist'.format(email))
         return
     for key, article in article_json.items():
-        permalink = article.get('given_url')
-        unix_timestamp = article.get('time_added')
-        timestamp = int(unix_timestamp)
-        dt_object = make_aware(datetime.fromtimestamp(timestamp))
-        add_to_reading_list(user, permalink, dt_object)
+        add_from_pocket(user, article)
     return
+
+
+@task(name='sync_pocket')
+def sync_pocket():
+    users = User.objects.all()
+    for user in users:
+        try:
+            pocket_credentials = PocketCredentials.objects.get(owner=user)
+        except PocketCredentials.DoesNotExist:
+            # this user does not have pocket setup, nothing to do here
+            continue
+
+        token = pocket_credentials.token
+        last_polled = pocket_credentials.last_polled
+        new_articles = retrieve_pocket(user, token, last_polled)
+        import_pocket.delay(user.email, new_articles)
+
+
+def add_from_pocket(user, article):
+    permalink = article.get('given_url')
+    unix_timestamp = article.get('time_added')
+    timestamp = int(unix_timestamp)
+    dt_object = make_aware(datetime.fromtimestamp(timestamp))
+    add_to_reading_list(user, permalink, dt_object)
 
 @shared_task
 def send_notification():

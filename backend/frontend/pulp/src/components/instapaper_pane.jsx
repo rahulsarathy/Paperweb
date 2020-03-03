@@ -128,5 +128,3 @@ export default class Instapaper_Pane extends React.Component {
     );
   }
 }
-
-// ReactDOM.render(<Profile/>, document.getElementById('profile'))

@@ -19,13 +19,8 @@ import {
   Route,
   Link,
   useHistory,
-  useLocation,
-  useParams,
   withRouter
 } from "react-router-dom";
-
-const images_url = "../static/images/";
-const icon_url = "../static/icons/";
 
 class MenuItem extends React.Component {
   constructor(props) {
@@ -61,7 +56,6 @@ export default class Switcher extends React.Component {
     this.updateReadingList = this.updateReadingList.bind(this);
     this.changeDeliver = this.changeDeliver.bind(this);
     this.changeSelected = this.changeSelected.bind(this);
-    this.getEmail = this.getEmail.bind(this);
 
     this.state = {
       value: "",
@@ -69,23 +63,9 @@ export default class Switcher extends React.Component {
       invalid_url: false,
       article_data: {},
       selected: "unread",
-      unread: 0
+      unread: 0,
+      email: ""
     };
-  }
-
-  componentDidMount() {
-    this.getEmail();
-  }
-
-  getEmail() {
-    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
-    $.ajax({
-      url: "../api/users/get_email",
-      type: "GET",
-      success: function(data) {
-        console.log(data);
-      }
-    });
   }
 
   updateReadingList(list) {
@@ -119,11 +99,7 @@ export default class Switcher extends React.Component {
     return (
       <Router>
         <div>
-          <div className="header">
-            <img className="logo" src={images_url + "pulp_header_logo.svg"} />
-            <div className="profile-circle"></div>
-            <img className="chevron" src={icon_url + "chevron.svg"} />
-          </div>
+          <Header />
           <div className="pulp-container">
             <div className="sidebar-container">
               <div className="sidebar">

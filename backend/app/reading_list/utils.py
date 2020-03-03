@@ -16,7 +16,7 @@ from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 import threading
 import celery
-from datetime import datetime
+import time
 
 
 def get_reading_list(user):
@@ -202,12 +202,12 @@ def get_selected_pages(user, permalink):
     return total_pages
 
 
-def retrieve_pocket(user, access_token, since=None):
+def retrieve_pocket(user, access_token, last_polled=None):
     url = 'https://getpocket.com/v3/get'
-    if since is None:
+    if last_polled is None:
         data = {'consumer_key': POCKET_CONSUMER_KEY, 'access_token': access_token, 'state': 'unread'}
     else:
-        timestamp = datetime.utcfromtimestamp(since)
+        timestamp = time.mktime(last_polled.timetuple())
         data = {'since': timestamp, 'consumer_key': POCKET_CONSUMER_KEY, 'access_token': access_token, 'state': 'unread'}
     response = requests.post(url, data=data)
     response_string = response.content.decode("utf-8")

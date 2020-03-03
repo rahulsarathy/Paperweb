@@ -4,9 +4,11 @@ from django.core.cache import cache
 from rest_framework.decorators import api_view
 from rest_framework.exceptions import NotFound
 
-from reading_list.serializers import ReadingListItemSerializer
+from reading_list.serializers import ReadingListItemSerializer, PocketCredentialsSerializer, \
+    InstapaperCredentialsSerializer
 from reading_list.models import Article, ReadingListItem, PocketCredentials, InstapaperCredentials
-from reading_list.reading_list_utils import get_parsed, html_to_s3, get_reading_list, add_to_reading_list
+from reading_list.utils import get_parsed, html_to_s3, get_reading_list, \
+    add_to_reading_list, retrieve_pocket
 from reading_list.instapaper import import_from_instapaper
 from reading_list.tasks import import_pocket
 import json
@@ -124,30 +126,40 @@ def update_deliver(request):
 @api_view(['GET'])
 def service_status(request):
     user = request.user
-    status = {
-        'instapaper': False,
-        'pocket': False,
+    response = {
+        'instapaper': {"signed_in": False},
+        'pocket': {"signed_in": False},
     }
     try:
-        InstapaperCredentials.objects.get(owner=user)
-        status['instapaper'] = True
+        credentials = InstapaperCredentials.objects.get(owner=user)
+        instapaper_serializer = InstapaperCredentialsSerializer(credentials)
+        response['instapaper'] = instapaper_serializer.data
+        response['instapaper']['signed_in'] = True
     except InstapaperCredentials.DoesNotExist:
-        status['instapaper'] = False
-
+        response['instapaper']['signed_in'] = False
     try:
-        PocketCredentials.objects.get(owner=user)
-        status['pocket'] = True
+        credentials = PocketCredentials.objects.get(owner=user)
+        pocket_serializer = PocketCredentialsSerializer(credentials)
+        response['pocket'] = pocket_serializer.data
+        response['pocket']['signed_in'] = True
     except PocketCredentials.DoesNotExist:
-        status['pocket'] = False
+        response['pocket']['signed_in'] = False
 
-    return JsonResponse(status)
+    return JsonResponse(response)
 
 
+# Method is triggered when user starts pocket integration from frontend modal
 @api_view(['POST'])
 def pocket(request):
 
     # check if have token
     # if have token already,
+
+    # try:
+    #     PocketCredentials.objects.get(owner=request.user)
+    #     return HttpResponse(status=400)
+    # except PocketCredentials.DoesNotExist:
+    #     pass
 
     # Get pocket code from consumer key
     redirect_uri = 'http://127.0.0.1:8000/api/reading_list/authenticate_pocket'
@@ -162,6 +174,7 @@ def pocket(request):
     key = request.user.email + 'pocket'
     cache.set(key, code)
     # Send the user a url w/ code that links the user to our consumer key
+    # User will redirect to this URL
     return HttpResponse(url)
 
 
@@ -170,6 +183,7 @@ def authenticate_pocket(request):
     # Get code linking user to our consumer key from cache
     key = request.user.email + 'pocket'
     code = cache.get(key)
+    user = request.user
 
     # get access token for user
     url = 'https://getpocket.com/v3/oauth/authorize'
@@ -179,19 +193,10 @@ def authenticate_pocket(request):
     result = re.search('access_token=(.*)&username', response_string)
     access_token = result.group(1)
 
-    pocket_credentials, created = PocketCredentials.objects.get_or_create(
-        owner=request.user, token=access_token
-    )
-
-    url = 'https://getpocket.com/v3/get'
-    data = {'consumer_key': POCKET_CONSUMER_KEY, 'access_token': access_token, 'state': 'unread'}
-    response = requests.post(url, data=data)
-    response_string = response.content.decode("utf-8")
-    json_response = json.loads(response_string)
-    articles = json_response.get('list')
+    articles = retrieve_pocket(user, access_token)
     import_pocket.delay(request.user.email, articles)
 
-    return HttpResponseRedirect('/settings/?pocket=true')
+    return HttpResponseRedirect('/')
 
 
 @api_view(['POST'])
@@ -199,5 +204,14 @@ def start_instapaper_import(request):
     user = request.user
     username = request.POST['username']
     password = request.POST['password']
+    authenticate_url = 'https://www.instapaper.com/api/authenticate'
+    data = {
+        'username': username,
+        'password': password,
+    }
+    response = requests.post(authenticate_url, data=data)
+    if response.text is not '200':
+        return HttpResponse("Invalid username or password", status=401)
+
     return import_from_instapaper(user, username, password)
 
