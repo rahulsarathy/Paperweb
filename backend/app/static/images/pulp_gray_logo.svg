@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="423px" height="208px" viewBox="0 0 423 208" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>Gray Logo</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="229" y="52" width="208" height="208" rx="2"></rect>
+    </defs>
+    <g id="Gray-Logo" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="final" transform="translate(-14.000000, -52.000000)">
+            <text id="pu" font-family="Futura-Medium, Futura" font-size="200" font-weight="400" fill="#D2D2D2">
+                <tspan x="0" y="208">pu</tspan>
+            </text>
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <use id="Mask" fill="#D2D2D2" xlink:href="#path-1"></use>
+            <text id="lp" mask="url(#mask-2)" font-family="Futura-Medium, Futura" font-size="200" font-weight="400" fill="#FFFFFF">
+                <tspan x="247" y="209">lp</tspan>
+            </text>
+        </g>
+    </g>
+</svg>

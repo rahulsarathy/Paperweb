@@ -12,7 +12,7 @@ hr {
 }
 
 .divider {
-  border-color: #4C8FFF;
+  border-color: #4c8fff;
   position: relative;
   // bottom: 10px;
 }
@@ -30,7 +30,6 @@ hr {
     // border-radius: 3px;
     // border-width: 1px;
   }
-
 }
 
 .profile {
@@ -117,7 +116,7 @@ label {
 
     .selected {
       color: white;
-      background-color: #2393FF;
+      background-color: #2393ff;
     }
   }
 }
@@ -134,60 +133,11 @@ label {
   }
 
   .set-address {
-    background-color: #2393FF;
+    background-color: #2393ff;
     color: white;
   }
 
   .close-modal {
     // background-color: #;
   }
-}
-
-.header {
-  z-index: 4;
-  font-size: 20px;
-  color: black;
-  box-shadow: 0 4px 5px -5px rgba(0, 0, 0, 0.5);
-  position: fixed;
-  width: 100%;
-  padding: 5px 0;
-  height: 45px;
-  /*  padding-right: 100;
-*/
-  top: 0;
-  background-color: white;
-  text-align: right;
-
-  .links {
-    margin-right: 80px;
-  }
-
-  p {
-    display: inline-block;
-    margin-left: 15px;
-    padding: 3px;
-  }
-
-  button {
-    color: #007bff;
-    background-color: Transparent;
-    border-style: none;
-  }
-
-  button:hover {
-    border-radius: 3px;
-    background-color: #2393FF;
-    transition: all 0.2s ease;
-    color: white;
-  };
-
-  p:hover {
-    border-radius: 3px;
-    background-color: #2393FF;
-    transition: all 0.2s ease;
-
-    a {
-      color: white;
-    }
-  };
 }

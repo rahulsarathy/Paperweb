@@ -120,6 +120,7 @@ def update_deliver(request):
         raise NotFound(detail='ReadingListItem with link: %s not found.' % link, code=404)
 
 
+# Tell the user whether they have integrated reading list services
 @api_view(['GET'])
 def service_status(request):
     user = request.user
@@ -128,13 +129,13 @@ def service_status(request):
         'pocket': False,
     }
     try:
-        instapaper_credentials = InstapaperCredentials.objects.get(owner=user)
+        InstapaperCredentials.objects.get(owner=user)
         status['instapaper'] = True
     except InstapaperCredentials.DoesNotExist:
         status['instapaper'] = False
 
     try:
-        pocket_credentials = PocketCredentials.objects.get(owner=user)
+        PocketCredentials.objects.get(owner=user)
         status['pocket'] = True
     except PocketCredentials.DoesNotExist:
         status['pocket'] = False
