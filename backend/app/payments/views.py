@@ -10,9 +10,7 @@ import json
 from datetime import datetime
 from django.utils.timezone import make_aware
 from dateutil.relativedelta import relativedelta
-
-
-from users.models import CustomUser
+from django.contrib.auth.models import User
 
 # Create your views here.
 @api_view(['GET'])
@@ -145,7 +143,7 @@ def handle_checkout_complete(event):
     stripe_customer_id = stripe_response.get('customer')
 
     try:
-        current_user = CustomUser.objects.get(id=client_reference_id)
+        current_user = User.objects.get(id=client_reference_id)
     except:
         return HttpResponse(status=400)
 

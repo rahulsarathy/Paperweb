@@ -1,12 +1,11 @@
-*.pyc
-.env.dev
-.idea/
 
 # Cached files
 backend/app/dump
+*.pyc
 
 # Frontend files
 frontend/pulp/node_modules
+.eslintrc
 
 # Staticfiles
 backend/app/staticfiles/
@@ -24,15 +23,18 @@ backend/app/newsletters/migrations/*.py
 !backend/app/users/migrations/__init__.py
 !backend/app/newsletters/migrations/__init__.py
 
+# Celery
+backend/app/celerybeat-schedule
+
+# Pulp Blog Archive
+blog_archive
 
 # Directory metadata
 .idea
 celerybeat.pid
 .env.dev
-
+.env
 
 # Puppeteer
 puppeteer/.env
 puppeteer/dump
-.env
-.env~

@@ -1,9 +1,7 @@
-
 .landing {
   padding-left: 50px;
   margin-top: 50px;
 }
-
 
 .page {
   width: 400px;
@@ -40,11 +38,11 @@
   }
 
   ul {
-    color: #2393FF;
+    color: #2393ff;
     font-weight: bold;
     list-style-type: none;
-    list-style-position:inside;
-    padding:0;
+    list-style-position: inside;
+    padding: 0;
     position: relative;
     top: -5px;
   }
@@ -70,14 +68,13 @@
 }
 
 .getstarted {
-  background-color: #2393FF;
+  background-color: #2393ff;
   color: white;
   border-radius: 3px;
   padding: 5px;
   border-style: none;
   font-size: 25px;
   margin-bottom: 25px;
-
 
   a {
     color: white;
@@ -87,43 +84,9 @@
 
 .getstarted:hover {
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
-};
+}
 
 .logo {
   font-size: 100px;
   font-weight: bold;
-}
-
-.header {
-  z-index: 4;
-  font-size: 20px;
-  color: black;
-  position: fixed;
-  width: 100%;
-  padding: 5px 0;
-  height: 45px;
-/*  padding-right: 100;
-*/  top: 0;
-  background-color: white;
-  text-align: right;
-
-  .links {
-    margin-right: 80px;
-  }
-
-  p {
-    display: inline-block;
-    margin-left: 15px;
-    padding: 3px;
-  }
-
-  p:hover {
-    border-radius: 3px;
-    background-color: #2393FF;
-    transition: all 0.2s ease;
-    a {
-      color: white;
-    }
-  };
-
 }

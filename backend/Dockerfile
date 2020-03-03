@@ -53,6 +53,9 @@ RUN apk add g++ libxml2 libxslt-dev \
 	&& pip install mechanicalsoup \
 	&& apk del g++
 
+# for django-encrypted-model-fields
+RUN apk add gcc musl-dev libffi-dev openssl-dev python3-dev && pip install django-encrypted-model-fields
+
 # for psutil
 RUN apk add --update gcc libc-dev fortify-headers linux-headers && rm -rf
 

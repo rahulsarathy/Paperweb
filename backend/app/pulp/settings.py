@@ -6,9 +6,10 @@ from decouple import config, Csv
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("SECRET_KEY")
+
+FIELD_ENCRYPTION_KEY=os.environ.get('FIELD_ENCRYPTION_KEY')
 
 SITE_ID = 1
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
@@ -32,7 +33,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'allauth',  # new
     'allauth.account',  # new
-    'allauth.socialaccount',
+    # 'allauth.socialaccount',
     'corsheaders',
     'rest_framework',
     'reading_list.apps.ReadingListConfig',
@@ -41,6 +42,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'coverage',
     'django_celery_beat',
+    'encrypted_model_fields',
 ]
 
 MIDDLEWARE = [
@@ -148,7 +150,6 @@ AUTHENTICATION_BACKENDS = (
     "allauth.account.auth_backends.AuthenticationBackend",
 )
 
-AUTH_USER_MODEL = 'users.CustomUser'
 ACCOUNT_SIGNUP_FORM_CLASS = 'users.forms.AllauthSignupForm'
 # ACCOUNT_FORMS = {'signup': 'users.forms.MyCustomSignupForm'}
 ACCOUNT_USER_MODEL_USERNAME_FIELD = 'username'
