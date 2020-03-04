@@ -4,7 +4,7 @@ import NoArticles from "../components/NoArticles.jsx";
 import AddArticle from "./add_article.jsx";
 import ReadingListItems from "./reading_list_items.jsx";
 import Pages from "./pages.jsx";
-import ArchiveItem from "./warnings.jsx";
+import ArchiveItem from "./archive_item.jsx";
 import Warnings from "./warnings.jsx";
 import Instapaper_Pane from "../components/instapaper_pane.jsx";
 import Pocket_Modal from "../components/pocket_modal.jsx";

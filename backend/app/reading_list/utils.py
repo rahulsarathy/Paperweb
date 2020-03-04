@@ -36,13 +36,12 @@ def get_reading_list(user):
 # 4. Convert article to PDF and count pages
 # 5. Choose if Article should be set to deliver
 def add_to_reading_list(user, link, date_added=None):
-
     # Validate url
     validate = URLValidator()
     try:
         validate(link)
     except ValidationError:
-        return JsonResponse(data={'error': 'Invalid URL.'}, status=400)
+        return False
 
     # get article json and populate DB fields
     article_json = get_parsed(link)
@@ -68,7 +67,7 @@ def add_to_reading_list(user, link, date_added=None):
         from reading_list.tasks import handle_pages_task
         handle_pages_task.delay(user.email, link)
 
-    return
+    return True
 
 
 # Check for mercury response in

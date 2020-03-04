@@ -1,3 +1,22 @@
+.top-add-article-button {
+  display: inline-block;
+
+  position: relative;
+  // left: calc(100% - 430px);
+  float: right;
+  vertical-align: top;
+  top: 10px;
+  // bottom: 50px;
+  -webkit-transition: all 0.2s ease-in-out;
+  font-weight: bold;
+  font-size: 20px;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.5);
+  background-color: #4c8fff;
+  border-style: none;
+  border-radius: 3px;
+  color: white;
+}
+
 .add-article {
   .base-add:hover {
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.8);
@@ -6,25 +25,6 @@
 
   .add-article-empty {
     margin: auto;
-  }
-
-  .add-article-button {
-    display: inline-block;
-
-    position: relative;
-    // left: calc(100% - 430px);
-    float: right;
-    vertical-align: top;
-    // top: 10px;
-    bottom: 50px;
-    -webkit-transition: all 0.2s ease-in-out;
-    font-weight: bold;
-    font-size: 20px;
-    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.5);
-    background-color: #4c8fff;
-    border-style: none;
-    border-radius: 3px;
-    color: white;
   }
 
   input {

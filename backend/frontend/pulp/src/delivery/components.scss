@@ -7,62 +7,6 @@
     font-weight: bold;
     font-size: 45px;
   }
-
-  hr {
-    border-color: #4C8FFF;
-  }
-
-  th {
-    font-weight: normal;
-  }
-
-  .table-container {
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-    border-radius: 3px;
-    padding: 5px;
-    // padding: 5px 5px 5px 5px;
-  }
-
-  .rightmost {
-    border-right: none;
-  }
-
-  tr {
-    border-right: none;
-  }
-
-  table,
-  td,
-  th {}
-
-  td {
-    border-top: 1px solid #DFDFDE;
-  }
-
-  td,
-  th {
-    border-right: 1px solid #DFDFDE;
-  }
-}
-
-.title {
-  display: inline-block;
-}
-
-.domain {
-  color: grey;
-  display: inline-block;
-}
-
-.to-deliver {
-  $side: 20px;
-
-  input {
-    margin-left: 5px;
-    border-radius: 0;
-    height: $side;
-    width: $side;
-  }
 }
 
 .sort-label {
@@ -77,8 +21,8 @@
   button {
     height: 30px;
     line-height: 15px;
-    background-color: #4C8FFF;
-    border-color: #4C8FFF;
+    background-color: #4c8fff;
+    border-color: #4c8fff;
   }
 }
 
@@ -99,3 +43,96 @@
     border: 1px solid #dddddd;
   }
 }
+
+.table-header {
+  display: flex;
+
+  .title-header {
+    flex-grow: 1;
+  }
+
+  .subheader {
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 50px;
+  }
+}
+
+.delivery-items {
+  .delivery-item {
+    display: flex;
+
+    .article-title {
+      flex-grow: 1;
+    }
+
+    .to-deliver {
+      flex-grow: 0;
+      flex-shrink: 0;
+      flex-basis: 50px;
+    }
+
+    .page-count {
+      flex-grow: 0;
+      flex-shrink: 0;
+      flex-basis: 50px;
+    }
+
+    .date-added {
+      flex-grow: 0;
+      flex-shrink: 0;
+      flex-basis: 50px;
+      max-width: 50px;
+    }
+  }
+}
+
+// .table-container {
+//   $date-cell-width: 75px;
+//   .table-header {
+//     display: flex;
+//     .title-header {
+//       flex-grow: 1;
+//     }
+//     .subheader {
+//       flex-grow: 0;
+//       flex-shrink: 0;
+//       flex-basis: 50px;
+//     }
+
+//     .date-header {
+//       flex-grow: 0;
+//       flex-shrink: 0;
+//       flex-basis: $date-cell-width;
+//     }
+//   }
+
+//   .delivery-items {
+//     width: 100%;
+//     .delivery-item {
+//       display: flex;
+//       border-style: solid;
+//       border-radius: 3px;
+//       margin-bottom: 3px;
+//       border-width: 1px;
+//       // flex-direction: row;
+
+//       .cell {
+//         flex-grow: 0;
+//         flex-shrink: 0;
+//         flex-basis: 50px;
+//       }
+
+//       .date-added {
+//         flex-grow: 0;
+//         flex-shrink: 0;
+//         flex-basis: $date-cell-width;
+//         min-width: 0px;
+//       }
+
+//       .article-title {
+//         flex-grow: 1;
+//       }
+//     }
+//   }
+// }

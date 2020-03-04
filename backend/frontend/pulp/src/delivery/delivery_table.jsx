@@ -1,7 +1,7 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import { Table, DropdownButton, Dropdown } from "react-bootstrap";
-import { Checkbox } from "./components.jsx";
+import { Checkbox, TableGrid } from "./components.jsx";
 
 function getLocation(href) {
 	var l = document.createElement("a");
@@ -159,6 +159,9 @@ export default class DeliveryTable extends React.Component {
 	}
 
 	render() {
+		if (this.props.empty) {
+			return <div></div>;
+		}
 		return (
 			<div>
 				<div className="filter">
@@ -192,19 +195,11 @@ export default class DeliveryTable extends React.Component {
 					</Dropdown.Item>
 				</DropdownButton>
 				<Checkbox />
-				<div className="table-container">
-					<table>
-						<thead>
-							<tr>
-								<th>Title</th>
-								<th className="center-th">To Deliver?</th>
-								<th className="center-th">Number of Pages</th>
-								<th className="rightmost">Date Added</th>
-							</tr>
-							{this.createTable()}
-						</thead>
-					</table>
-				</div>
+				<TableGrid
+					search={this.state.search}
+					reading_list={this.props.reading_list}
+					sort={this.state.sort}
+				/>
 			</div>
 		);
 	}
