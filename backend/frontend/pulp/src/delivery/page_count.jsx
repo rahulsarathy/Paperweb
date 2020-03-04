@@ -3,14 +3,6 @@ import React, { Component } from "react";
 export default class PageCount extends Component {
 	constructor(props) {
 		super(props);
-
-		this.state = {
-			total: 0
-		};
-	}
-
-	componentDidMount() {
-		this.calculateTotal();
 	}
 
 	calculateTotal() {
@@ -23,16 +15,13 @@ export default class PageCount extends Component {
 				total_articles += 1;
 			}
 		}
-		this.setState({
-			total: total,
-			total_articles: total_articles
-		});
+		return total;
 	}
 
 	render() {
 		return (
 			<div>
-				<p>{this.state.total}/50 Pages</p>
+				<p>{this.calculateTotal()}/50 Pages</p>
 			</div>
 		);
 	}

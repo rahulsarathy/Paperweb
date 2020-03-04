@@ -11,7 +11,6 @@ export default class DeliveryItem extends Component {
 	}
 
 	render() {
-		console.log("rendered");
 		return (
 			<div className="delivery-item">
 				<Title title={this.props.title} />
