@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {} from "./components.jsx";
+import { DeliveryRow } from "./components.jsx";
 
 function getLocation(href) {
 	var l = document.createElement("a");
@@ -77,58 +77,16 @@ export default class TableGrid extends Component {
 			}
 		}
 
-		return filtered.map(rlist_item => (
-			<tr key={rlist_item.article.permalink}>
-				<td>
-					<p className="title">{rlist_item.article.title}</p>
-					<p className="domain">
-						{getLocation(rlist_item.article.permalink)}
-					</p>
-				</td>
-				<td className="to-deliver">
-					<input
-						type="checkbox"
-						onChange={() => this.props.changeDeliver(rlist_item)}
-						checked={rlist_item.to_deliver}
-					/>
-				</td>
-				<td className="">{rlist_item.article.page_count}</td>
-				<td className="rightmost">
-					{new Date(rlist_item.date_added)
-						.toDateString()
-						.split(" ")
-						.slice(1)
-						.join(" ")}
-				</td>
-			</tr>
-		));
-	}
-
-	createTable1() {
-		return this.props.reading_list.map(rlist_item => (
-			<div key={rlist_item.article.permalink} className="new-table">
-				<div className="title">
-					<p className="">{rlist_item.article.title}</p>
-					<p className="">
-						{getLocation(rlist_item.article.permalink)}
-					</p>
-				</div>
-				<div>
-					<input
-						type="checkbox"
-						onChange={() => this.props.changeDeliver(rlist_item)}
-						checked={rlist_item.to_deliver}
-					/>
-				</div>
-				<div>{rlist_item.article.page_count}</div>
-				<div>
-					{new Date(rlist_item.date_added)
-						.toDateString()
-						.split(" ")
-						.slice(1)
-						.join(" ")}
-				</div>
-			</div>
+		return filtered.map(reading_list_item => (
+			<DeliveryRow
+				key={reading_list_item.article.permalink}
+				title={reading_list_item.article.title}
+				page_count={reading_list_item.article.page_count}
+				date_added={reading_list_item.date_added}
+				checked={reading_list_item.to_deliver}
+				permalink={reading_list_item.article.permalink}
+				changeDeliver={this.props.changeDeliver}
+			/>
 		));
 	}
 
@@ -138,36 +96,10 @@ export default class TableGrid extends Component {
 				<div className="table-header">
 					<div className="title-header">Title</div>
 					<div className="subheader">To Deliver?</div>
-					<div className="subheader">Number of Pages</div>
-					<div className="subheader">Date Added</div>
+					<div className="page-header">Number of Pages</div>
+					<div className="date-header">Date Added</div>
 				</div>
-				<div className="delivery-items">
-					{this.props.reading_list.map(rlist_item => (
-						<div
-							className="delivery-item"
-							key={rlist_item.article.permalink}
-						>
-							<div className="article-title">
-								{rlist_item.article.title}
-							</div>
-							<div className="to-deliver">
-								<input
-									type="checkbox"
-									onChange={() =>
-										this.props.changeDeliver(rlist_item)
-									}
-									checked={rlist_item.to_deliver}
-								/>{" "}
-							</div>
-							<div className="page-count">
-								{rlist_item.article.page_count}
-							</div>
-							<div className="date-added">
-								{rlist_item.date_added}
-							</div>
-						</div>
-					))}
-				</div>
+				<div className="delivery-items">{this.createTable()}</div>
 			</div>
 		);
 	}

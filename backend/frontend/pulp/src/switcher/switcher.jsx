@@ -169,11 +169,11 @@ export default class Switcher extends React.Component {
     this.setState({ selected: value });
   }
 
-  changeDeliver(rlist_item) {
+  changeDeliver(to_deliver, permalink) {
     var csrftoken = $("[name=csrfmiddlewaretoken]").val();
     let data = {
-      to_deliver: !rlist_item.to_deliver,
-      permalink: rlist_item.article.permalink,
+      to_deliver: !to_deliver,
+      permalink: permalink,
       csrfmiddlewaretoken: csrftoken
     };
     $.ajax({

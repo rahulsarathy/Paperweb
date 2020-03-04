@@ -1,7 +1,7 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import { Table, DropdownButton, Dropdown } from "react-bootstrap";
-import { Checkbox, TableGrid } from "./components.jsx";
+import { TableGrid } from "./components.jsx";
 
 function getLocation(href) {
 	var l = document.createElement("a");
@@ -194,11 +194,11 @@ export default class DeliveryTable extends React.Component {
 						Date Added
 					</Dropdown.Item>
 				</DropdownButton>
-				<Checkbox />
 				<TableGrid
 					search={this.state.search}
 					reading_list={this.props.reading_list}
 					sort={this.state.sort}
+					changeDeliver={this.props.changeDeliver}
 				/>
 			</div>
 		);
