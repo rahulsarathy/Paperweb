@@ -42,6 +42,7 @@ def handle_add_to_reading_list(request):
         return JsonResponse(data={'error': 'Invalid URL.'}, status=400)
     return get_reading_list(user)
 
+
 @api_view(['GET'])
 def get_archive(request):
     user = request.user

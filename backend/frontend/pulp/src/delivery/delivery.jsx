@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import $ from "jquery";
 import shortid from "shortid";
 import "bootstrap/dist/css/bootstrap.css";
-import { NoArticles, DeliveryTable } from "./components.jsx";
+import { NoArticles, DeliveryContainer } from "./components.jsx";
 
 export default class Delivery extends React.Component {
   constructor(props) {
@@ -24,7 +24,7 @@ export default class Delivery extends React.Component {
           pocket={this.props.pocket}
           instapaper={this.props.instapaper}
         />
-        <DeliveryTable
+        <DeliveryContainer
           empty={this.props.reading_list.length === 0}
           reading_list={this.props.reading_list}
           changeDeliver={this.props.changeDeliver}

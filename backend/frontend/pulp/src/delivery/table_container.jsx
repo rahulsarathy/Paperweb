@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { DeliveryRow, TableHeader, DeliveryItems } from "./components.jsx";
+import { TableHeader, DeliveryItems } from "./components.jsx";
 var Infinite = require("react-infinite");
 
 export default class TableContainer extends Component {
@@ -10,11 +10,15 @@ export default class TableContainer extends Component {
 	render() {
 		return (
 			<div className="table-container">
-				<TableHeader sort={this.props.sort} />
+				<TableHeader
+					changeSort={this.props.changeSort}
+					sort={this.props.sort}
+				/>
 				<DeliveryItems
 					reading_list={this.props.reading_list}
 					search={this.props.search}
 					sort={this.props.sort}
+					changeDeliver={this.props.changeDeliver}
 				/>
 			</div>
 		);
