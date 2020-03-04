@@ -26,17 +26,6 @@
   }
 }
 
-.checkbox {
-  border-style: solid;
-  height: 20px;
-  width: 20px;
-}
-
-.selected {
-  background-color: #4c8fff;
-  border-color: #4c8fff;
-}
-
 .filter {
   display: inline-block;
 
@@ -118,6 +107,33 @@
         border-right-style: solid;
         border-right-width: 1px;
         border-right-color: $border-color;
+        position: relative;
+
+        .checkbox {
+          border-style: solid;
+          height: 20px;
+          width: 20px;
+          margin: 0;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+        }
+
+        .selected {
+          background-color: #4c8fff;
+          border-color: #4c8fff;
+        }
+
+        .spinner {
+          margin: 0;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+        }
       }
 
       .page-count {

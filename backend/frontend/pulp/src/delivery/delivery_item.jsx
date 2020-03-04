@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import { CheckBox } from "./components.jsx";
+import { Spinner } from "../components/components.jsx";
+
+const static_icon = "../static/icons/";
 
 export default class DeliveryItem extends Component {
 	constructor(props) {
@@ -27,18 +30,47 @@ export default class DeliveryItem extends Component {
 }
 
 class ToDeliver extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			loading: false
+		};
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if (prevProps.checked !== this.props.checked) {
+			this.setState({
+				loading: false
+			});
+		}
+	}
+
+	startToggleDeliver() {
+		this.setState(
+			{
+				loading: true
+			},
+			() =>
+				this.props.changeDeliver(
+					this.props.checked,
+					this.props.permalink
+				)
+		);
+	}
+
 	render() {
 		return (
 			<div className="to-deliver">
-				<CheckBox
-					onChange={() =>
-						this.props.changeDeliver(
-							this.props.checked,
-							this.props.permalink
-						)
-					}
-					checked={this.props.checked}
-				/>
+				{this.state.loading ? (
+					<div className="spinner">
+						<Spinner scale={0.4} />
+					</div>
+				) : (
+					<CheckBox
+						onChange={() => this.startToggleDeliver()}
+						checked={this.props.checked}
+					/>
+				)}
 			</div>
 		);
 	}
