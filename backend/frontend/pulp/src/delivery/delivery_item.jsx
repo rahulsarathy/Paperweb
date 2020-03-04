@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { CheckBox } from "./components.jsx";
 
-export default class DeliveryRow extends Component {
+export default class DeliveryItem extends Component {
 	constructor(props) {
 		super(props);
 	}
@@ -11,6 +11,7 @@ export default class DeliveryRow extends Component {
 	}
 
 	render() {
+		console.log("rendered");
 		return (
 			<div className="delivery-item">
 				<Title title={this.props.title} />

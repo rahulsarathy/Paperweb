@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { DeliveryRow, TableHeader, DeliveryItems } from "./components.jsx";
 var Infinite = require("react-infinite");
 
-export default class TableGrid extends Component {
+export default class TableContainer extends Component {
 	constructor(props) {
 		super(props);
 	}
@@ -10,7 +10,7 @@ export default class TableGrid extends Component {
 	render() {
 		return (
 			<div className="table-container">
-				<TableHeader />
+				<TableHeader sort={this.props.sort} />
 				<DeliveryItems
 					reading_list={this.props.reading_list}
 					search={this.props.search}

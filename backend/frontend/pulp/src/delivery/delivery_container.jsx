@@ -1,14 +1,15 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import { Table, DropdownButton, Dropdown } from "react-bootstrap";
-import { TableGrid } from "./components.jsx";
+import { TableContainer } from "./components.jsx";
 
-export default class DeliveryTable extends React.Component {
+export default class DeliveryContainer extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.handleSearch = this.handleSearch.bind(this);
 		this.calculateTotal = this.calculateTotal.bind(this);
+		this.changeSort = this.changeSort.bind(this);
 
 		this.state = {
 			sort: "date_added",
@@ -18,6 +19,10 @@ export default class DeliveryTable extends React.Component {
 
 	componentDidMount() {
 		this.calculateTotal();
+	}
+
+	changeSort(sort) {
+		this.setState({ sort: sort });
 	}
 
 	calculateTotal() {
@@ -91,11 +96,12 @@ export default class DeliveryTable extends React.Component {
 						Date Added
 					</Dropdown.Item>
 				</DropdownButton>
-				<TableGrid
+				<TableContainer
 					search={this.state.search}
 					reading_list={this.props.reading_list}
 					sort={this.state.sort}
 					changeDeliver={this.props.changeDeliver}
+					changeSort={this.changeSort}
 				/>
 			</div>
 		);
