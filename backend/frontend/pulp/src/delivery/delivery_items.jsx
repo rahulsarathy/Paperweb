@@ -12,17 +12,10 @@ import { DeliveryItem } from "./components.jsx";
 export default class DeliveryItems extends Component {
 	constructor(props) {
 		super(props);
-
-		this.changeDeliver = this.changeDeliver.bind(this);
-		this.getReadingList = this.getReadingList.bind(this);
-
-		this.state = {
-			reading_list: []
-		};
 	}
 
 	chooseSort() {
-		let reading_list = this.state.reading_list;
+		let reading_list = this.props.reading_list;
 
 		switch (this.props.sort) {
 			case "title":
@@ -38,51 +31,9 @@ export default class DeliveryItems extends Component {
 		}
 	}
 
-	componentDidMount() {
-		this.getReadingList();
-	}
-
-	getReadingList() {
-		var csrftoken = $("[name=csrfmiddlewaretoken]").val();
-		let data = {
-			csrfmiddlewaretoken: csrftoken
-		};
-		$.ajax({
-			url: "../api/reading_list/get_reading",
-			data: data,
-			type: "GET",
-			success: function(data) {
-				this.setState({
-					reading_list: data
-				});
-				console.log(data[0].to_deliver);
-			}.bind(this)
-		});
-	}
-
-	changeDeliver(to_deliver, permalink) {
-		var csrftoken = $("[name=csrfmiddlewaretoken]").val();
-		let data = {
-			to_deliver: !to_deliver,
-			permalink: permalink,
-			csrfmiddlewaretoken: csrftoken
-		};
-		$.ajax({
-			url: "../api/reading_list/update_deliver",
-			data: data,
-			type: "POST",
-			success: function(data) {
-				this.setState({
-					reading_list: data
-				});
-				console.log(data[0].to_deliver);
-			}.bind(this)
-		});
-	}
-
 	createFiltered() {
 		let search = this.props.search;
-		let reading_list = this.state.reading_list;
+		let reading_list = this.props.reading_list;
 		let sorted = this.chooseSort();
 		let filtered = [];
 		for (let i = 0; i < sorted.length; i++) {
@@ -110,7 +61,7 @@ export default class DeliveryItems extends Component {
 						date_added={item.date_added}
 						checked={item.to_deliver}
 						permalink={item.article.permalink}
-						changeDeliver={this.changeDeliver}
+						changeDeliver={this.props.changeDeliver}
 					/>
 				))}
 			</div>
