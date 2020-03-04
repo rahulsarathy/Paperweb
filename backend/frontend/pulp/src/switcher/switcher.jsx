@@ -217,7 +217,6 @@ export default class Switcher extends React.Component {
 
   render() {
     const RouterMenuItem = withRouter(MenuItem);
-
     return (
       <Router>
         <div>
@@ -288,7 +287,7 @@ export default class Switcher extends React.Component {
                 <Route path="/settings" component={Profile} />
                 <Route
                   path="/delivery"
-                  component={() => (
+                  render={() => (
                     <Delivery
                       pocket={this.state.pocket}
                       instapaper={this.state.instapaper}

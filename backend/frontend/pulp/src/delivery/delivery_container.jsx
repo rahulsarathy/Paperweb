@@ -10,11 +10,9 @@ export default class DeliveryContainer extends React.Component {
 
 		this.handleSearch = this.handleSearch.bind(this);
 		this.changeSort = this.changeSort.bind(this);
-		this.changeDeliver = this.changeDeliver.bind(this);
 
 		this.state = {
-			sort: "date_added",
-			reading_list: []
+			sort: "date_added"
 		};
 	}
 
@@ -24,48 +22,6 @@ export default class DeliveryContainer extends React.Component {
 
 	handleSearch(e) {
 		this.setState({ search: e.target.value });
-	}
-
-	componentDidMount() {
-		this.getReadingList();
-	}
-
-	getReadingList() {
-		var csrftoken = $("[name=csrfmiddlewaretoken]").val();
-		let data = {
-			csrfmiddlewaretoken: csrftoken
-		};
-		$.ajax({
-			url: "../api/reading_list/get_reading",
-			data: data,
-			type: "GET",
-			success: function(data) {
-				this.setState({
-					reading_list: data
-				});
-				console.log(data[0].to_deliver);
-			}.bind(this)
-		});
-	}
-
-	changeDeliver(to_deliver, permalink) {
-		var csrftoken = $("[name=csrfmiddlewaretoken]").val();
-		let data = {
-			to_deliver: !to_deliver,
-			permalink: permalink,
-			csrfmiddlewaretoken: csrftoken
-		};
-		$.ajax({
-			url: "../api/reading_list/update_deliver",
-			data: data,
-			type: "POST",
-			success: function(data) {
-				this.setState({
-					reading_list: data
-				});
-				console.log(data[0].to_deliver);
-			}.bind(this)
-		});
 	}
 
 	render() {
@@ -78,9 +34,9 @@ export default class DeliveryContainer extends React.Component {
 				<PageCount reading_list={this.props.reading_list} />
 				<TableContainer
 					search={this.state.search}
-					reading_list={this.state.reading_list}
+					reading_list={this.props.reading_list}
 					sort={this.state.sort}
-					changeDeliver={this.changeDeliver}
+					changeDeliver={this.props.changeDeliver}
 					changeSort={this.changeSort}
 				/>
 			</div>

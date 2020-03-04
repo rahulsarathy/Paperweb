@@ -40,6 +40,10 @@ export default class NoArticles extends React.Component {
     this.state = {};
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.empty !== this.props.empty;
+  }
+
   render() {
     if (this.props.loading_list) {
       return <div></div>;
