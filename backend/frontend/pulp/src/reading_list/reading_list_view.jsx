@@ -14,10 +14,6 @@ export default class ReadingListView extends React.Component {
     super(props);
   }
 
-  componentWillMount() {
-    console.log("rlist view remounted");
-  }
-
   render() {
     return (
       <div className="readinglist">

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'coverage',
     'django_celery_beat',
     'encrypted_model_fields',
+    'django_nose',
 ]
 
 MIDDLEWARE = [
@@ -211,6 +212,8 @@ LOGGING = {
         },
     },
 }
+
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
 CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default=False, cast=bool)
 SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=False, cast=bool)
