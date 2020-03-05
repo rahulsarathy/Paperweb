@@ -38,6 +38,8 @@ def handle_add_to_reading_list(request):
     if not user.is_authenticated:
         return JsonResponse(data={'error': 'Invalid request.'}, status=403)
     link = request.POST['link']
+
+    # handle validation error
     if not add_to_reading_list(user, link):
         return JsonResponse(data={'error': 'Invalid URL.'}, status=400)
     return get_reading_list(user)

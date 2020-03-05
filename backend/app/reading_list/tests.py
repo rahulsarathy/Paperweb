@@ -7,9 +7,9 @@ import vcr
 from reading_list.models import Article
 from reading_list.models import ReadingListItem
 from reading_list.views import get_reading
-from reading_list.views import add_to_reading_list
+from reading_list.views import handle_add_to_reading_list
 from reading_list.views import remove_from_reading_list
-from users.models import CustomUser
+from django.contrib.auth.models import User
 
 from django.utils.timezone import make_aware
 from django_fakeredis import FakeRedis
@@ -20,21 +20,20 @@ from rest_framework.test import force_authenticate
 
 
 class ReadingListTest(APITestCase):
+
   def setUp(self):
     # API endpoints
     self.get_reading = '/api/reading_list/get_reading'
     self.add_reading = '/api/reading_list/add_reading'
     self.remove_reading = '/api/reading_list/remove_reading'
 
-    self.test_user = CustomUser.objects.create(
-        username='rsarathy', email='rita@sarathy.org')
+    self.test_user = User.objects.create(
+      email='rita@sarathy.org')
     self.factory = APIRequestFactory()
 
     self.article1 = Article.objects.create(
       title='Rent-Seeking and the New York Marathon',
       permalink='rohit.sarathy.org/?p=439',
-      word_count=2127,
-      mercury_response={'success': 'true'}
     )
     self.reading_item1 = ReadingListItem.objects.create(
       reader=self.test_user,
@@ -45,8 +44,6 @@ class ReadingListTest(APITestCase):
     self.article2 = Article.objects.create(
       title='Too Much Dark Money In Almonds',
       permalink='https://slatestarcodex.com/2019/09/18/too-much-dark-money-in-almonds/',
-      word_count=1825,
-      mercury_response={'success': 'true'}
     )
     self.reading_item2 = ReadingListItem.objects.create(
       reader=self.test_user,
@@ -54,24 +51,21 @@ class ReadingListTest(APITestCase):
       date_added=make_aware(datetime(2019, 9, 18))
     )
 
+    self.article3 = Article.objects.create(
+      title='Landmark Computer Science Proof Cascades Through Physics and Math',
+      permalink='https://www.quantamagazine.org/landmark-computer-science-proof-cascades-through-physics-'
+                'and-math-20200304/',
+    )
+    self.reading_item3 = ReadingListItem.objects.create(
+      reader=self.test_user,
+      article=self.article3,
+      date_added=make_aware(datetime(2019, 9, 18)),
+      archived=True
+    )
+
     self.to_add_link = 'https://slatestarcodex.com/2019/11/28/ssc-meetups-everywhere-retrospective/'
 
-  @FakeRedis('django_redis.cache.RedisCache')
-  @mock.patch('django.core.cache.cache.get', return_value=[
-    {
-      'article': {
-        'title': 'Rent-Seeking and the New York Marathon'
-      },
-      'date_added': '2019-11-26'
-    },
-    {
-      'article': {
-        'title': 'Too Much Dark Money In Almonds'
-      },
-      'date_added': '2019-09-18'
-    }
-  ])
-  def test_get_reading(self, mock_cache_get):
+  def test_get_reading(self):
     """
     Checks that a valid get_reading() request returns the appropriate
     ReadingListItem objects.
@@ -141,11 +135,10 @@ class ReadingListTest(APITestCase):
 
   @FakeRedis('django_redis.cache.RedisCache')
   @vcr.use_cassette('dump/test_add_to_reading_list.yaml')
-  @mock.patch('threading.Thread', return_value=None)
-  def test_add_to_reading_list(self, mock_thread):
+  def test_add_to_reading_list(self):
     request = self.factory.post(self.add_reading, {'link': self.to_add_link})
     force_authenticate(request, user=self.test_user)
-    response = add_to_reading_list(request)
+    response = handle_add_to_reading_list(request)
 
     self.assertEqual(response.status_code, status.HTTP_200_OK)
     data = json.loads(response.content)
@@ -157,23 +150,19 @@ class ReadingListTest(APITestCase):
     self.assertEqual(data[1]['article']['title'], self.article1.title)
     self.assertEqual(data[2]['article']['title'], self.article2.title)
 
-    # Since we added one ReadingListItem object, the AWS S3 upload thread
-    # have been called.
-    self.assertEqual(mock_thread.call_count, 1)
-
   def test_add_to_reading_list_unauthenticated(self):
     """
     Checks that an unauthenticated add_to_reading_list() request returns 403.
     """
     request = self.factory.post(self.add_reading)
-    response = add_to_reading_list(request)
+    response = handle_add_to_reading_list(request)
     self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
-  def test_add_to_reading_list_bad_link(self):
+  def test_handle_add_to_reading_list_bad_link(self):
     """
     Checks that an add_to_reading_list() request with a bad link returns 400.
     """
     request = self.factory.post(self.add_reading, {'link': 'badlink//.com'})
     force_authenticate(request, user=self.test_user)
-    response = add_to_reading_list(request)
+    response = handle_add_to_reading_list(request)
     self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)

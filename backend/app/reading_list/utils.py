@@ -20,11 +20,7 @@ import time
 
 
 def get_reading_list(user):
-    my_reading = None
-    # if all:
     my_reading = ReadingListItem.objects.filter(reader=user, archived=False).order_by('-date_added')
-    # else:
-    #     my_reading = ReadingListItem.objects.filter(reader=user, archived=False).order_by('-date_added')[:10]
     serializer = ReadingListItemSerializer(my_reading, many=True)
     json_response = serializer.data
     return JsonResponse(json_response, safe=False)
