@@ -22,24 +22,13 @@ export default class AddArticle extends React.Component {
   render() {
     return (
       <div className="add-article">
-        {this.props.empty ? (
-          <div></div>
-        ) : (
-          <button className="add-article-button" onClick={this.props.showModal}>
-            Add Article
-          </button>
-        )}
         <Modal show={this.props.show_add} onHide={this.props.closeModal}>
           <input
             placeholder="Input an article URL"
-            value={this.props.value}
+            value={this.state.value}
             onChange={this.handleChange}
           ></input>
-          <button
-            onClick={() => {
-              this.props.AddArticle();
-            }}
-          >
+          <button onClick={() => this.props.addArticle(this.state.value)}>
             Add Article
           </button>
           <Modal.Footer>

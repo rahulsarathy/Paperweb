@@ -5,5 +5,14 @@ import Archive from "../reading_list/archive.jsx";
 import ArchiveItem from "../reading_list/archive_item.jsx";
 import Profile from "../profile/profile.jsx";
 import Delivery from "../delivery/delivery.jsx";
+import AddArticle from "./add_article.jsx";
 
-export { Header, ReadingListView, Archive, Profile, ArchiveItem, Delivery };
+export {
+	Header,
+	ReadingListView,
+	Archive,
+	Profile,
+	ArchiveItem,
+	Delivery,
+	AddArticle
+};

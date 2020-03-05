@@ -3,38 +3,13 @@ import ReactDOM from "react-dom";
 import $ from "jquery";
 import shortid from "shortid";
 import "bootstrap/dist/css/bootstrap.css";
-import { NoArticles, DeliveryTable } from "./components.jsx";
+import { NoArticles, DeliveryContainer } from "./components.jsx";
 
 export default class Delivery extends React.Component {
   constructor(props) {
     super(props);
-    this.getReadingList.bind(this);
 
-    this.state = {
-      reading_list: []
-    };
-  }
-
-  componentDidMount() {
-    this.getReadingList();
-  }
-
-  getReadingList() {
-    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
-    let data = {
-      csrfmiddlewaretoken: csrftoken
-    };
-    $.ajax({
-      url: "../api/reading_list/get_reading",
-      data: data,
-      type: "GET",
-      success: function(data) {
-        console.log(data);
-        this.setState({
-          reading_list: data
-        });
-      }.bind(this)
-    });
+    this.state = {};
   }
 
   render() {
@@ -42,8 +17,18 @@ export default class Delivery extends React.Component {
       <div className="delivery">
         <h1>Delivery Management</h1>
         <hr></hr>
-        <NoArticles length={this.state.reading_list.length} />
-        <DeliveryTable reading_list={this.state.reading_list} />
+        <NoArticles
+          showModal={this.props.showModal}
+          empty={this.props.reading_list.length === 0}
+          loading_list={this.props.loading_list}
+          pocket={this.props.pocket}
+          instapaper={this.props.instapaper}
+        />
+        <DeliveryContainer
+          empty={this.props.reading_list.length === 0}
+          reading_list={this.props.reading_list}
+          changeDeliver={this.props.changeDeliver}
+        />
       </div>
     );
   }

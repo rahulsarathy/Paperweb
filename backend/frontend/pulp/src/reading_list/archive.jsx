@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import $ from "jquery";
-import { ArchiveItem, NoArticles } from "./components.jsx";
+import { ArchiveItem } from "./components.jsx";
 
 function getLocation(href) {
   var l = document.createElement("a");
@@ -13,6 +13,7 @@ export default class Archive extends React.Component {
   constructor(props) {
     super(props);
     this.getArchive = this.getArchive.bind(this);
+    this.unArchiveArticle = this.unArchiveArticle.bind(this);
 
     this.state = {
       archive_list: []
@@ -32,7 +33,8 @@ export default class Archive extends React.Component {
     });
   }
 
-  unArchive() {
+  unArchiveArticle(permalink) {
+    data = {};
     $.ajax({
       url: "../api/reading_list/unarchive",
       success: function(data) {
@@ -65,14 +67,14 @@ export default class Archive extends React.Component {
         <hr></hr>
         <div className="reading-list-items">
           {this.state.archive_list.length === 0 ? (
-            <NoArticles />
+            <div></div>
           ) : (
             <div>
               {this.state.archive_list.map((archive_list_item, index) => (
                 <ArchiveItem
                   key={index}
                   added={archive_list_item.date_added}
-                  archiveArticle={this.archiveArticle}
+                  unarchiveArticle={this.unArchiveArticle}
                   removeArticle={this.removeArticle}
                   article={archive_list_item.article}
                 />

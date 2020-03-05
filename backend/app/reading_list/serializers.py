@@ -5,14 +5,20 @@ from users.serializers import UserSerializer
 
 
 class ArticleSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Article
-        fields = ['title', 'permalink', 'page_count', 'mercury_response']
+        fields = ['title', 'permalink', 'page_count', 'preview_text', 'image_url', 'author']
 
-    mercury_response = serializers.SerializerMethodField()
+    image_url = serializers.SerializerMethodField()
+    author = serializers.SerializerMethodField()
 
-    def get_mercury_response(self, obj):
-        return obj.mercury_response
+
+    def get_image_url(self, obj):
+        return obj.mercury_response.get('lead_image_url')
+
+    def get_author(self, obj):
+        return obj.mercury_response.get('author')
 
 
 class ReadingListItemSerializer(serializers.ModelSerializer):

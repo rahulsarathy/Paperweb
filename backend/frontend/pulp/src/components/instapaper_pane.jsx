@@ -49,7 +49,6 @@ export default class Instapaper_Pane extends React.Component {
       password: password,
       csrfmiddlewaretoken: csrftoken
     };
-    console.log(data);
     $.ajax({
       url: "../api/reading_list/instapaper",
       data: data,

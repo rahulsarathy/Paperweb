@@ -16,18 +16,19 @@ from bs4 import BeautifulSoup
 
 
 @task(name='handle_pages')
-def handle_pages_task(email, link):
-    try:
-        user = User.objects.get(email=email)
-    except User.DoesNotExist:
-        logging.warning('User {} does not exist'.format(email))
-        return
+def handle_pages_task(link, email=None):
     try:
         article = Article.objects.get(permalink=link)
     except Article.DoesNotExist:
         logging.warning('Article {} does not exist'.format(link))
         return
-    handle_pages(user, article)
+
+    try:
+        user = User.objects.get(email=email)
+    except User.DoesNotExist:
+        return handle_pages(article)
+
+    handle_pages(article, user)
     return
 
 @task(name='import_pocket')

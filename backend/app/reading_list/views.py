@@ -38,8 +38,10 @@ def handle_add_to_reading_list(request):
     if not user.is_authenticated:
         return JsonResponse(data={'error': 'Invalid request.'}, status=403)
     link = request.POST['link']
-    add_to_reading_list(user, link)
+    if not add_to_reading_list(user, link):
+        return JsonResponse(data={'error': 'Invalid URL.'}, status=400)
     return get_reading_list(user)
+
 
 @api_view(['GET'])
 def get_archive(request):
@@ -80,7 +82,7 @@ def unarchive(request):
         reading_list_item = ReadingListItem.objects.get(article=article, reader=user)
         reading_list_item.archived = False
         reading_list_item.save()
-        return get_cache_archive(user=user, refresh=True)
+        return get_reading_list(user)
     except ReadingListItem.DoesNotExist:
         raise NotFound(detail='Archived Reading List Item with link: %s not found.' % link, code=404)
 
@@ -152,15 +154,6 @@ def service_status(request):
 @api_view(['POST'])
 def pocket(request):
 
-    # check if have token
-    # if have token already,
-
-    # try:
-    #     PocketCredentials.objects.get(owner=request.user)
-    #     return HttpResponse(status=400)
-    # except PocketCredentials.DoesNotExist:
-    #     pass
-
     # Get pocket code from consumer key
     redirect_uri = 'http://127.0.0.1:8000/api/reading_list/authenticate_pocket'
     url = 'https://getpocket.com/v3/oauth/request'
@@ -209,8 +202,9 @@ def start_instapaper_import(request):
         'username': username,
         'password': password,
     }
+    print(data)
     response = requests.post(authenticate_url, data=data)
-    if response.text is not '200':
+    if response.text != '200':
         return HttpResponse("Invalid username or password", status=401)
 
     return import_from_instapaper(user, username, password)

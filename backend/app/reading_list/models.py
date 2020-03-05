@@ -13,6 +13,7 @@ class Article(models.Model):
     permalink = models.URLField(_('Permalink'), primary_key=True, max_length=500)
     page_count = models.IntegerField(_('Number of Words'), default=None, null=True)
     mercury_response = JSONField()
+    preview_text = models.CharField(_('Preview Text'), null=True, max_length=350)
 
 
 class ReadingListItem(models.Model):

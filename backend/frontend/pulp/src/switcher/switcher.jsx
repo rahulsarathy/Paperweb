@@ -11,7 +11,8 @@ import {
   Archive,
   Profile,
   Delivery,
-  Sidebar
+  Sidebar,
+  AddArticle
 } from "./components.jsx";
 import {
   BrowserRouter as Router,
@@ -53,34 +54,126 @@ export default class Switcher extends React.Component {
   constructor(props) {
     super(props);
     this.changeSelected = this.changeSelected.bind(this);
-    this.updateReadingList = this.updateReadingList.bind(this);
     this.changeDeliver = this.changeDeliver.bind(this);
     this.changeSelected = this.changeSelected.bind(this);
+    this.addArticle = this.addArticle.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.showModal = this.showModal.bind(this);
+    this.removeArticle = this.removeArticle.bind(this);
+    this.archiveArticle = this.archiveArticle.bind(this);
 
     this.state = {
       value: "",
       reading_list: [],
-      invalid_url: false,
-      article_data: {},
+      error_name: "",
       selected: "unread",
-      unread: 0,
-      email: ""
+      show_add: false,
+      loading_list: true
     };
   }
 
-  updateReadingList(list) {
-    this.setState({ reading_list: list });
+  componentDidMount() {
+    this.getReadingList();
+    this.getServices();
+  }
+
+  getReadingList() {
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    let data = {
+      csrfmiddlewaretoken: csrftoken
+    };
+    $.ajax({
+      url: "../api/reading_list/get_reading",
+      data: data,
+      type: "GET",
+      success: function(data) {
+        this.setState({
+          reading_list: data,
+          loading_list: false
+        });
+      }.bind(this)
+    });
+  }
+
+  removeArticle(link) {
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    let data = {
+      link: link,
+      csrfmiddlewaretoken: csrftoken
+    };
+    $.ajax({
+      url: "../api/reading_list/remove_reading",
+      data: data,
+      type: "POST",
+      success: function(data) {
+        this.setState({
+          reading_list: data
+        });
+      }.bind(this)
+    });
+  }
+
+  archiveArticle(link) {
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    let data = {
+      link: link,
+      csrfmiddlewaretoken: csrftoken
+    };
+
+    $.ajax({
+      url: "../api/reading_list/archive_reading",
+      data: data,
+      type: "POST",
+      success: function(data) {
+        this.setState({
+          reading_list: data
+        });
+      }.bind(this)
+    });
+  }
+
+  addArticle(link) {
+    if (link === "") {
+      this.setState({
+        error_name: "empty"
+      });
+    }
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    let data = {
+      link: link,
+      csrfmiddlewaretoken: csrftoken
+    };
+    $.ajax({
+      url: "../api/reading_list/add_reading",
+      data: data,
+      type: "POST",
+      success: function(data) {
+        this.setState({
+          reading_list: data,
+          show_add: false
+        });
+      }.bind(this),
+      error: function(xhr) {
+        console.log(xhr);
+        if (xhr.responseText == "Invalid URL") {
+          this.setState({
+            error_name: "invalid_url",
+            show_add: false
+          });
+        }
+      }.bind(this)
+    });
   }
 
   changeSelected(value) {
     this.setState({ selected: value });
   }
 
-  changeDeliver(rlist_item) {
+  changeDeliver(to_deliver, permalink) {
     var csrftoken = $("[name=csrfmiddlewaretoken]").val();
     let data = {
-      to_deliver: !rlist_item.to_deliver,
-      permalink: rlist_item.article.permalink,
+      to_deliver: !to_deliver,
+      permalink: permalink,
       csrfmiddlewaretoken: csrftoken
     };
     $.ajax({
@@ -88,14 +181,42 @@ export default class Switcher extends React.Component {
       data: data,
       type: "POST",
       success: function(data) {
-        this.updateReadingList(data);
+        this.setState({
+          reading_list: data
+        });
       }.bind(this)
+    });
+  }
+
+  showModal() {
+    this.setState({
+      show_add: true
+    });
+  }
+
+  getServices() {
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+
+    $.ajax({
+      url: "../api/reading_list/services_status",
+      type: "GET",
+      success: function(data) {
+        this.setState({
+          pocket: data.pocket,
+          instapaper: data.instapaper
+        });
+      }.bind(this)
+    });
+  }
+
+  closeModal() {
+    this.setState({
+      show_add: false
     });
   }
 
   render() {
     const RouterMenuItem = withRouter(MenuItem);
-
     return (
       <Router>
         <div>
@@ -139,17 +260,39 @@ export default class Switcher extends React.Component {
               </div>
             </div>
             <div className="page-container">
+              <AddArticle
+                addArticle={this.addArticle}
+                show_add={this.state.show_add}
+                showModal={this.showModal}
+                closeModal={this.closeModal}
+                empty={this.state.reading_list.length === 0}
+              />
               <Switch>
                 <Route
                   path="/reading_list"
-                  component={() => <ReadingListView />}
+                  render={() => (
+                    <ReadingListView
+                      reading_list={this.state.reading_list}
+                      removeArticle={this.removeArticle}
+                      archiveArticle={this.archiveArticle}
+                      showModal={this.showModal}
+                      pocket={this.state.pocket}
+                      instapaper={this.state.instapaper}
+                      loading_list={this.state.loading_list}
+                      empty={this.state.reading_list.length === 0}
+                    />
+                  )}
                 />
                 <Route path="/archive" component={Archive} />
                 <Route path="/settings" component={Profile} />
                 <Route
                   path="/delivery"
-                  component={() => (
+                  render={() => (
                     <Delivery
+                      pocket={this.state.pocket}
+                      instapaper={this.state.instapaper}
+                      loading_list={this.state.loading_list}
+                      showModal={this.showModal}
                       reading_list={this.state.reading_list}
                       changeDeliver={this.changeDeliver}
                     />

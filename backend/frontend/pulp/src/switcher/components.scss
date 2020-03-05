@@ -18,34 +18,32 @@ hr {
   bottom: 10px;
 }
 
+$sidebar-width: 170px;
 .page-container {
-  // margin-left: 30px;
-  // margin-top: 35px;
-  // display: inline-block;
-  // vertical-align: top;
   color: black;
-  width: calc(100% - 170px);
-  min-width: 800px;
+  width: calc(100% - #{$sidebar-width});
+  // min-width: 800px;
   margin-left: auto;
   margin-right: auto;
 }
 
-$sidebar-width: 170px;
 .sidebar-container {
   // border-right: solid;
-  // width: 170px;
   flex-grow: 0;
   /* do not grow   - initial value: 0 */
-  flex-shrink: 0;
+  flex-shrink: 1;
   /* do not shrink - initial value: 1 */
   flex-basis: $sidebar-width;
+  // box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
 
   .sidebar {
     padding-top: 30px;
     position: fixed;
+    z-index: 4;
     width: $sidebar-width;
     height: 100%;
     background-color: $sidebar-color;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   }
 }
 $menu-font-size: 20px;
@@ -147,10 +145,6 @@ $icon-height: 20px;
     margin: auto;
     vertical-align: center;
   }
-}
-
-.date-added {
-  color: #616161;
 }
 
 .pulp-container {

@@ -1,3 +1,22 @@
+.top-add-article-button {
+  display: inline-block;
+
+  position: relative;
+  // left: calc(100% - 430px);
+  float: right;
+  vertical-align: top;
+  top: 10px;
+  // bottom: 50px;
+  -webkit-transition: all 0.2s ease-in-out;
+  font-weight: bold;
+  font-size: 20px;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.5);
+  background-color: #4c8fff;
+  border-style: none;
+  border-radius: 3px;
+  color: white;
+}
+
 .add-article {
   .base-add:hover {
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.8);
@@ -6,25 +25,6 @@
 
   .add-article-empty {
     margin: auto;
-  }
-
-  .add-article-button {
-    display: inline-block;
-
-    position: relative;
-    // left: calc(100% - 430px);
-    float: right;
-    vertical-align: top;
-    // top: 10px;
-    bottom: 50px;
-    -webkit-transition: all 0.2s ease-in-out;
-    font-weight: bold;
-    font-size: 20px;
-    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.5);
-    background-color: #4c8fff;
-    border-style: none;
-    border-radius: 3px;
-    color: white;
   }
 
   input {
@@ -170,15 +170,15 @@ $sidebar-color: #f6f6f2;
   .faded-content {
     position: relative;
     display: inline-block;
-    // width: calc(100% - 150px);
-    width: 100%;
+    width: calc(100% - 150px);
+    // width: 100%;
     top: -10px;
 
     .content {
       height: $excerpt-height;
       overflow-y: hidden;
       font-family: "Garamond";
-      font-size: 18px;
+      font-size: 22px;
       color: #4e4e4e;
     }
 
@@ -199,22 +199,26 @@ $sidebar-color: #f6f6f2;
   }
 }
 
-.first-image {
-  $image-dim: 120px;
-  width: $image-dim;
-  height: $image-dim;
-  // position: absolute;
-  // right: 30px;
-  // top: 25px;
+.reading-list-image {
   display: inline-block;
-  object-fit: cover;
-  border-radius: 3px;
-  vertical-align: bottom;
-  margin-left: 20px;
-  top: -15px;
-  // margin-right: 20px;
-  position: relative;
-  // top: -10px;
+
+  .first-image {
+    $image-dim: 120px;
+    width: $image-dim;
+    height: $image-dim;
+    // position: absolute;
+    // right: 30px;
+    // top: 25px;
+    object-fit: cover;
+    border-radius: 3px;
+    vertical-align: bottom;
+    margin-left: 20px;
+    top: -15px;
+    // float: right;
+    // margin-right: 20px;
+    position: relative;
+    // top: -10px;
+  }
 }
 
 .archivelist-item-container {

@@ -36,13 +36,12 @@ def get_reading_list(user):
 # 4. Convert article to PDF and count pages
 # 5. Choose if Article should be set to deliver
 def add_to_reading_list(user, link, date_added=None):
-
     # Validate url
     validate = URLValidator()
     try:
         validate(link)
     except ValidationError:
-        return JsonResponse(data={'error': 'Invalid URL.'}, status=400)
+        return False
 
     # get article json and populate DB fields
     article_json = get_parsed(link)
@@ -50,8 +49,9 @@ def add_to_reading_list(user, link, date_added=None):
     soup = BeautifulSoup(article_json.get('content', None), 'html.parser')
     article_text = soup.getText()
     article_json['parsed_text'] = article_text
+    preview_text = article_text[:347] + '...'
     article, article_created = Article.objects.get_or_create(
-        title=title, permalink=link, mercury_response=article_json
+        title=title, permalink=link, mercury_response=article_json, preview_text=preview_text
     )
 
     # Some instapaper links come with a timestamp
@@ -64,11 +64,12 @@ def add_to_reading_list(user, link, date_added=None):
             reader=user, article=article
         )
 
-    if article_created:
+    article_id = get_article_id(article.permalink)
+    if article.page_count is None or created or not check_file('{}.html'.format(article_id), HTML_BUCKET):
         from reading_list.tasks import handle_pages_task
-        handle_pages_task.delay(user.email, link)
+        handle_pages_task.delay(link, user.email)
 
-    return
+    return True
 
 
 # Check for mercury response in
@@ -151,7 +152,7 @@ def html_to_s3(article):
 # 1. Upload to s3 if not already
 # 2. Get page count of PDF via conversion
 #
-def handle_pages(user, article):
+def handle_pages(article, user=None):
     url = article.permalink
     article_id = get_article_id(url)
 
@@ -160,9 +161,13 @@ def handle_pages(user, article):
         html_to_s3(article)
 
     # Count pages of article
-    page_count = get_page_count(article_id)
-    article.page_count = page_count
-    article.save()
+    if article.page_count is None:
+        page_count = get_page_count(article_id)
+        article.page_count = page_count
+        article.save()
+
+    if user is None:
+        return
 
     # Set to_deliver for ReadingListItem
     rlist_item, created = ReadingListItem.objects.get_or_create(
@@ -178,6 +183,7 @@ def handle_pages(user, article):
         to_deliver = True
     rlist_item.to_deliver = to_deliver
     rlist_item.save()
+    return
 
 
 def get_selected_pages(user, permalink):
