@@ -28,7 +28,6 @@ export default class Archive extends React.Component {
     $.ajax({
       url: "../api/reading_list/get_archive",
       success: function(data) {
-        console.log(data);
         this.setState({ archive_list: data });
       }.bind(this)
     });

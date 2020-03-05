@@ -8,6 +8,7 @@ import TableHeader from "./table_header.jsx";
 import DeliveryItems from "./delivery_items.jsx";
 import PageCount from "./page_count.jsx";
 import Filter from "./filter.jsx";
+import Footer from "./footer.jsx";
 
 export {
 	CheckBox,
@@ -18,5 +19,6 @@ export {
 	DeliveryItem,
 	DeliveryItems,
 	PageCount,
-	Filter
+	Filter,
+	Footer
 };

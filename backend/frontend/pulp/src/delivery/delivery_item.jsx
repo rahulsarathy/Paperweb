@@ -21,6 +21,7 @@ export default class DeliveryItem extends Component {
 					changeDeliver={this.props.changeDeliver}
 					checked={this.props.checked}
 					permalink={this.props.permalink}
+					page_count={this.props.page_count}
 				/>
 				<PageCount page_count={this.props.page_count} />
 				<DateAdded date_added={this.props.date_added} />
@@ -53,7 +54,8 @@ class ToDeliver extends Component {
 			() =>
 				this.props.changeDeliver(
 					this.props.checked,
-					this.props.permalink
+					this.props.permalink,
+					this.props.page_count
 				)
 		);
 	}
@@ -62,7 +64,7 @@ class ToDeliver extends Component {
 		return (
 			<div className="to-deliver">
 				{this.state.loading ? (
-					<div className="spinner">
+					<div className="center">
 						<Spinner scale={0.4} />
 					</div>
 				) : (
@@ -102,6 +104,20 @@ class DateAdded extends Component {
 
 class PageCount extends Component {
 	render() {
-		return <div className="page-count">{this.props.page_count}</div>;
+		if (this.props.page_count == null) {
+			return (
+				<div className="page-count">
+					<div className="center">
+						<Spinner scale={0.4} />
+					</div>
+				</div>
+			);
+		}
+
+		return (
+			<div className="page-count">
+				<div className="center">{this.props.page_count}</div>
+			</div>
+		);
 	}
 }

@@ -170,15 +170,15 @@ $sidebar-color: #f6f6f2;
   .faded-content {
     position: relative;
     display: inline-block;
-    // width: calc(100% - 150px);
-    width: 100%;
+    width: calc(100% - 150px);
+    // width: 100%;
     top: -10px;
 
     .content {
       height: $excerpt-height;
       overflow-y: hidden;
       font-family: "Garamond";
-      font-size: 18px;
+      font-size: 22px;
       color: #4e4e4e;
     }
 
@@ -199,22 +199,26 @@ $sidebar-color: #f6f6f2;
   }
 }
 
-.first-image {
-  $image-dim: 120px;
-  width: $image-dim;
-  height: $image-dim;
-  // position: absolute;
-  // right: 30px;
-  // top: 25px;
+.reading-list-image {
   display: inline-block;
-  object-fit: cover;
-  border-radius: 3px;
-  vertical-align: bottom;
-  margin-left: 20px;
-  top: -15px;
-  // margin-right: 20px;
-  position: relative;
-  // top: -10px;
+
+  .first-image {
+    $image-dim: 120px;
+    width: $image-dim;
+    height: $image-dim;
+    // position: absolute;
+    // right: 30px;
+    // top: 25px;
+    object-fit: cover;
+    border-radius: 3px;
+    vertical-align: bottom;
+    margin-left: 20px;
+    top: -15px;
+    // float: right;
+    // margin-right: 20px;
+    position: relative;
+    // top: -10px;
+  }
 }
 
 .archivelist-item-container {

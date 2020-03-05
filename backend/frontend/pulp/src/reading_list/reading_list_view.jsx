@@ -12,16 +12,15 @@ import { Modal, Button } from "react-bootstrap";
 export default class ReadingListView extends React.Component {
   constructor(props) {
     super(props);
+  }
 
-    this.state = {
-      page: 0
-    };
+  componentWillMount() {
+    console.log("rlist view remounted");
   }
 
   render() {
     return (
       <div className="readinglist">
-        {this.state.invalid_url ? <h3>Invalid URL</h3> : <div></div>}
         <h1>Your Print List</h1>
         {!this.props.empty ? (
           <button
@@ -44,7 +43,6 @@ export default class ReadingListView extends React.Component {
         <ReadingListItems
           reading_list={this.props.reading_list}
           removeArticle={this.props.removeArticle}
-          page={this.state.page}
           archiveArticle={this.props.archiveArticle}
         />
       </div>

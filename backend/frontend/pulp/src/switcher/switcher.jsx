@@ -270,7 +270,7 @@ export default class Switcher extends React.Component {
               <Switch>
                 <Route
                   path="/reading_list"
-                  component={() => (
+                  render={() => (
                     <ReadingListView
                       reading_list={this.state.reading_list}
                       removeArticle={this.removeArticle}

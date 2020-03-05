@@ -8,7 +8,7 @@ export default class TableHeader extends Component {
 					onClick={() => this.props.changeSort("title")}
 					className="title-header"
 				>
-					Title
+					Article Title
 				</div>
 				<div
 					onClick={() => this.props.changeSort("deliver")}

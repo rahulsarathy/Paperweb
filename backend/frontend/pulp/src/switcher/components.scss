@@ -34,14 +34,16 @@ $sidebar-width: 170px;
   flex-shrink: 1;
   /* do not shrink - initial value: 1 */
   flex-basis: $sidebar-width;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  // box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
 
   .sidebar {
     padding-top: 30px;
     position: fixed;
+    z-index: 4;
     width: $sidebar-width;
     height: 100%;
     background-color: $sidebar-color;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   }
 }
 $menu-font-size: 20px;
@@ -143,10 +145,6 @@ $icon-height: 20px;
     margin: auto;
     vertical-align: center;
   }
-}
-
-.date-added {
-  color: #616161;
 }
 
 .pulp-container {
