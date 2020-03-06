@@ -87,7 +87,6 @@ def get_parsed(url):
         validate(url)
     except ValidationError:
         raise
-
     if url in cache:
         json_response = json.loads(cache.get(url))
         return json_response
