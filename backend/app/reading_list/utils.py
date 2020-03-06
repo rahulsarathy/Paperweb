@@ -17,11 +17,20 @@ from django.core.exceptions import ValidationError
 import threading
 import celery
 import time
+from django.utils import timezone
+from rest_framework import status
 
 
 def get_reading_list(user):
     my_reading = ReadingListItem.objects.filter(reader=user, archived=False).order_by('-date_added')
     serializer = ReadingListItemSerializer(my_reading, many=True)
+    json_response = serializer.data
+    return JsonResponse(json_response, safe=False)
+
+
+def get_archive_list(user):
+    my_archive = ReadingListItem.objects.filter(reader=user, archived=True).order_by('-date_added')
+    serializer = ReadingListItemSerializer(my_archive, many=True)
     json_response = serializer.data
     return JsonResponse(json_response, safe=False)
 
@@ -37,7 +46,7 @@ def add_to_reading_list(user, link, date_added=None):
     try:
         validate(link)
     except ValidationError:
-        return False
+        raise
 
     # get article json and populate DB fields
     article_json = get_parsed(link)
@@ -73,6 +82,12 @@ def add_to_reading_list(user, link, date_added=None):
 # 2. DB
 # 3. create mercury response
 def get_parsed(url):
+    validate = URLValidator()
+    try:
+        validate(url)
+    except ValidationError:
+        raise
+
     if url in cache:
         json_response = json.loads(cache.get(url))
         return json_response
@@ -81,13 +96,24 @@ def get_parsed(url):
             # check if mercury response is already stored in DB
             my_article = Article.objects.get(permalink=url)
             json_response = my_article.mercury_response
+            return json_response
         except Article.DoesNotExist:
-            data = {'url': url}
-            parser_url = 'http://{}:3000/api/mercury'.format(settings.PARSER_HOST)
+            pass
+
+        data = {'url': url}
+        parser_url = 'http://{}:3000/api/mercury'.format(settings.PARSER_HOST)
+
+        try:
             response = requests.post(parser_url, data=data)
-            response_string = response.content.decode("utf-8")
-            json_response = json.loads(response_string)
+        except requests.exceptions.RequestException as e:  # This is the correct syntax
+            logging.warning("Could not connect to parser with {}".format(e))
+            raise
+
+        response_string = response.content.decode("utf-8")
+        json_response = json.loads(response_string)
+        if not json_response.get('error', False):
             cache.set(url, response_string)
+
     return json_response
 
 
@@ -219,10 +245,10 @@ def retrieve_pocket(user, access_token, last_polled=None):
     try:
         pocket_credential = PocketCredentials.objects.get(owner=user)
         pocket_credential.token = access_token
-        pocket_credential.last_polled = datetime.now()
+        pocket_credential.last_polled = timezone.now()
         pocket_credential.save()
     except PocketCredentials.DoesNotExist:
-        PocketCredentials(owner=user, token=access_token, last_polled=datetime.now()).save()
+        PocketCredentials(owner=user, token=access_token, last_polled=timezone.now()).save()
 
     return articles
 

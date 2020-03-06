@@ -121,7 +121,7 @@ export default class Switcher extends React.Component {
     };
 
     $.ajax({
-      url: "../api/reading_list/archive_reading",
+      url: "../api/reading_list/archive_item",
       data: data,
       type: "POST",
       success: function(data) {

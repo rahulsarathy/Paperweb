@@ -35,9 +35,6 @@ urlpatterns = [
   path('api/payments/', include('payments.urls')),
   path('articles/', views.article),
   path('accounts/', include('allauth.urls')),
-
-  # Google Maps API Key
-  path('api/gmaps', views.google_maps_key, name='google_maps_key'),
 ]
 
 handler404 = views.error_404

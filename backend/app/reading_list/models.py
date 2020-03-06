@@ -15,6 +15,11 @@ class Article(models.Model):
     mercury_response = JSONField()
     preview_text = models.CharField(_('Preview Text'), null=True, max_length=350)
 
+    def __eq__(self, obj):
+        if self.permalink == obj.permalink:
+            return True
+        else:
+            return False
 
 class ReadingListItem(models.Model):
     reader = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -34,6 +39,7 @@ class InstapaperCredentials(models.Model):
     password = EncryptedCharField(_('Password'), max_length=255)
     owner = models.OneToOneField(User, on_delete=models.CASCADE)
     last_polled = models.DateTimeField(default=None, null=True)
+
 
 class PocketCredentials(models.Model):
     owner = models.OneToOneField(User, on_delete=models.CASCADE)

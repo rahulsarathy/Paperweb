@@ -8,7 +8,7 @@ from django.http import JsonResponse, HttpResponse
 from payments.models import BillingInfo
 import json
 from datetime import datetime
-from django.utils.timezone import make_aware
+from django.utils import timezone
 from dateutil.relativedelta import relativedelta
 from django.contrib.auth.models import User
 
@@ -102,7 +102,7 @@ def next_billing_date(request):
 
 @api_view(['GET'])
 def next_delivery_date(request):
-    current_date = datetime.now()
+    current_date = timezone.now()
 
     last_date_of_month = datetime(current_date.year, current_date.month, 1) + relativedelta(months=1, days=-1)
     next_delivery_date = {
