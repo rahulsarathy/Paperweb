@@ -56,7 +56,6 @@ def get_object(bucket_name, object_name):
         logging.error(e)
         return None
     # Return an open StreamingBody object
-    print(response)
     return response['Body']
 
 

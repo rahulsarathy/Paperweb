@@ -70,7 +70,6 @@ def add_from_pocket(user, article):
 
 @shared_task
 def send_notification():
-    print('Here I\’m3')
     print("this is the task that is sending a notification")
 
 

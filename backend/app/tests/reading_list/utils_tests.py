@@ -15,11 +15,14 @@ import requests
 
 class AddToReadingList(TestCase):
 
-    def setUp(self):
+    @vcr.use_cassette('dump/AddToReadingList.yaml')
+    @mock.patch('reading_list.tasks.handle_pages_task.delay')
+    def setUp(self, mock_handle_pages_task):
         self.user = baker.make('User')
         self.permalink = 'http://paulgraham.com/ds.html'
 
         add_to_reading_list(self.user, self.permalink)
+        self.assertTrue(mock_handle_pages_task.called)
 
     def test_add_invalid_url(self):
         brokenlink = 'http://brokenlink'
@@ -27,7 +30,6 @@ class AddToReadingList(TestCase):
             add_to_reading_list(self.user, brokenlink)
 
     # Test that add_to_reading_list succesfully saves an article
-    @vcr.use_cassette('dump/test_save_article.yaml')
     def test_save_article(self):
 
         article, article_created = Article.objects.get_or_create(
@@ -36,14 +38,13 @@ class AddToReadingList(TestCase):
         self.assertFalse(article_created)
         self.assertEquals(self.permalink, article.permalink)
 
-    @vcr.use_cassette('dump/test_save_article.yaml')
     def test_save_reading_list(self):
         article = Article.objects.get(permalink=self.permalink)
 
         reading_list_item, created = ReadingListItem.objects.get_or_create(
             reader=self.user, article=article
         )
-        
+
         self.assertFalse(created)
         self.assertEquals(reading_list_item.article, article)
 

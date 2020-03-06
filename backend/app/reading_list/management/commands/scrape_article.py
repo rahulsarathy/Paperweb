@@ -14,7 +14,6 @@ class Command(BaseCommand):
             correct_scraper = find_scraper(permalink)
             article = correct_scraper.parse_permalink(permalink)
             serializer = ArticleSerializer(article)
-            print(serializer.data)
 
         # for scraper in SCRAPERS:
         #     current_scraper = scraper()

@@ -4,7 +4,7 @@ import csv
 import mechanicalsoup
 from reading_list.utils import add_to_reading_list, get_reading_list
 from django.http import HttpResponse
-from reading_list.tasks import parse_instapaper_csv, send_notification
+from reading_list import tasks
 import os
 from reading_list.models import InstapaperCredentials
 from django.utils import timezone
@@ -39,6 +39,6 @@ def import_from_instapaper(user, username, password):
         owner=user,
         last_polled=timezone.now()
     )
-    parse_instapaper_csv.delay(final_list, user.email)
+    tasks.parse_instapaper_csv.delay(final_list, user.email)
 
     return HttpResponse(status=200)

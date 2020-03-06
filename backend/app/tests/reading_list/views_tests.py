@@ -152,7 +152,8 @@ class ReadingListTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     @vcr.use_cassette('dump/test_add_to_reading_list.yaml')
-    def test_add_to_reading_list(self):
+    @mock.patch('reading_list.tasks.handle_pages_task.delay')
+    def test_add_to_reading_list(self, mock_handle_pages_task):
         request = self.factory.post(self.add_reading, {'link': self.to_add_link})
         force_authenticate(request, user=self.test_user)
         response = handle_add_to_reading_list(request)
@@ -166,6 +167,7 @@ class ReadingListTest(APITestCase):
         self.assertEqual(data[0]['article']['title'], 'SSC Meetups Everywhere Retrospective')
         self.assertEqual(data[1]['article']['title'], self.article1.title)
         self.assertEqual(data[2]['article']['title'], self.article2.title)
+        self.assertTrue(mock_handle_pages_task.called)
 
     def test_handle_add_to_reading_list_bad_link(self):
         """
@@ -305,7 +307,8 @@ class ReadingListTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     @vcr.use_cassette('dump/test_start_instapaper_import.yaml')
-    def test_start_instapaper_import(self):
+    @mock.patch('reading_list.tasks.parse_instapaper_csv.delay')
+    def test_start_instapaper_import(self, mock_parse_instapaper_csv):
         """Checks that an authenticated start_instapaper_import() with good instapaper credentials request
          returns 200."""
 
@@ -315,4 +318,5 @@ class ReadingListTest(APITestCase):
         force_authenticate(request, user=self.test_user)
         response = start_instapaper_import(request)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(mock_parse_instapaper_csv.called)
 
