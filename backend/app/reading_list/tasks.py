@@ -26,6 +26,7 @@ def handle_pages_task(link, email=None):
     try:
         user = User.objects.get(email=email)
     except User.DoesNotExist:
+        # triggered from backfill_pages command
         return handle_pages(article)
 
     handle_pages(article, user)

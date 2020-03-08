@@ -151,7 +151,7 @@ class ReadingListTest(APITestCase):
         response = remove_from_reading_list(request)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    @vcr.use_cassette('dump/test_add_to_reading_list.yaml')
+    @vcr.use_cassette('reading_list/tests/__snapshots__/test_add_to_reading_list.yaml')
     @mock.patch('reading_list.tasks.handle_pages_task.delay')
     def test_add_to_reading_list(self, mock_handle_pages_task):
         request = self.factory.post(self.add_reading, {'link': self.to_add_link})
@@ -289,7 +289,7 @@ class ReadingListTest(APITestCase):
         response = unarchive(request)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    @vcr.use_cassette('dump/test_start_instapaper_import_wrong_password.yaml')
+    @vcr.use_cassette('reading_list/tests/__snapshots__/test_start_instapaper_import_wrong_password.yaml')
     def test_start_instapaper_import_wrong_password(self):
         """Checks that a start_instapaper_import() with wrong instapaper credentials request returns 401."""
 
@@ -306,7 +306,7 @@ class ReadingListTest(APITestCase):
         response = start_instapaper_import(request)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
-    @vcr.use_cassette('dump/test_start_instapaper_import.yaml')
+    @vcr.use_cassette('reading_list/tests/__snapshots__/mock_parse_instapaper_csv.yaml')
     @mock.patch('reading_list.tasks.parse_instapaper_csv.delay')
     def test_start_instapaper_import(self, mock_parse_instapaper_csv):
         """Checks that an authenticated start_instapaper_import() with good instapaper credentials request

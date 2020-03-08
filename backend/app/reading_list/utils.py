@@ -70,7 +70,8 @@ def add_to_reading_list(user, link, date_added=None):
 # decide whether or not to undergo the expensive task of counting article pages
 def delegate_task(article, article_created):
     article_id = get_article_id(article.permalink)
-    if article.page_count is None or article_created or not check_file('{}.html'.format(article_id), HTML_BUCKET):
+    article_key = "./{}.html".format(article_id)
+    if article.page_count is None or article_created or not check_file(article_key, HTML_BUCKET):
         return True
     else:
         return False
@@ -140,6 +141,23 @@ def get_parsed(url):
 def html_to_s3(article):
     url = article.permalink
     article_id = get_article_id(url)
+    template_soup = inject_json_into_html(article)
+
+    article_key = "{}.html".format(article_id)
+    f = open(article_key, "w+")
+    f.write(str(template_soup))
+    f.close()
+
+    # upload object to S3 with permalink as metadata
+    metadata = {
+        'url': url
+    }
+    put_object(HTML_BUCKET, article_key, article_key, metadata)
+    os.remove(article_key)
+    return
+
+def inject_json_into_html(article):
+    url = article.permalink
     json_response = get_parsed(url)
 
     # Extract variables from json source
@@ -177,37 +195,25 @@ def html_to_s3(article):
     #     link.extract()
 
     template_soup.select_one('.main-content').insert(0, soup)
-    article_key = "./{}.html".format(article_id)
-    f = open(article_key, "w+")
-    f.write(str(template_soup))
-    f.close()
+    return template_soup
 
-    # upload object to S3 with permalink as metadata
-    metadata = {
-        'url': url
-    }
-    put_object(HTML_BUCKET, article_key, article_key, metadata)
-    os.remove("./{}.html".format(article_id))
-    return
-
-
-# 1. Upload to s3 if not already
-# 2. Get page count of PDF via conversion
-#
+# get pages for article if not done already
+# decide whether to set reading list item to deliver or not
 def handle_pages(article, user=None):
     url = article.permalink
-    article_id = get_article_id(url)
-
-    # If file is not uploaded, then uploaded
-    if not check_file('{}.html'.format(article_id), HTML_BUCKET):
-        html_to_s3(article)
 
     # Count pages of article
     if article.page_count is None:
         page_count = get_page_count(url)
+        if page_count is None:
+            logging.warning("Puppeteer failed for {}".format(url))
+            return
         article.page_count = page_count
         article.save()
+    else:
+        page_count = article.page_count
 
+    # for backfill_pages command
     if user is None:
         return
 
@@ -275,6 +281,14 @@ def retrieve_pocket(user, access_token, last_polled=None):
 
 def get_page_count(url):
     article_id = get_article_id(url)
+    # If file is not uploaded, then uploaded
+    if not check_file('{}.html'.format(article_id), HTML_BUCKET):
+        try:
+            article = Article.objects.get(permalink=url)
+            html_to_s3(article)
+        except Article.DoesNotExist:
+            return None
+
     data = {'html_id': article_id}
     puppeteer_url = 'http://{}:4000/api/print'.format(settings.PUPPETEER_HOST)
     try:
