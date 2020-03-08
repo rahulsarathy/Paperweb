@@ -1,3 +1,6 @@
+# Coverage
+backend/app/htmlcov
+backend/app/.coverage
 
 # Cached files
 backend/app/dump

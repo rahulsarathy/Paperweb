@@ -1,0 +1,63 @@
+interactions:
+- request:
+    body: url=https%3A%2F%2Fabout.fb.com%2Fnews%2F2020%2F03%2Fdomain-name-lawsuit%2F
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '74'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - python-requests/2.22.0
+    method: POST
+    uri: http://pulp_parser_1:3000/api/mercury
+  response:
+    body:
+      string: '{"title":"Fighting Domain Name Fraud","author":null,"date_published":"2020-03-06T01:00:45.000Z","dek":null,"lead_image_url":null,"content":"<article
+        id=\"post-21865\" class=\"post-21865 post type-post status-publish format-standard
+        hentry category-company-news category-facebook category-integrity-security
+        category-recent-news category-featured\"> <div class=\"entry-content\"> <div
+        class=\"content uk-width-4-5@m uk-width-1-1@s\"> <p><span>This week we filed
+        a lawsuit in Arizona against Namecheap, a domain name registrar, as well as
+        its </span><span>proxy service, Whoisguard, for registering domain names that
+        aim to deceive people by pretending to be affiliated with Facebook apps. These
+        domain names can trick people into believing they are legitimate and are often
+        used for phishing, fraud and scams.&#xA0;</span></p>\n<p><span>We regularly
+        scan for domain names and apps that infringe our trademarks to protect people
+        from abuse. We found that Namecheap&#x2019;s proxy service, Whoisguard, registered
+        or used 45 domain names that impersonated Facebook and our services, such
+        as instagrambusinesshelp.com, facebo0k-login.com and whatsappdownload.site.
+        We sent notices to Whoisguard between October 2018 and February 2020, and
+        despite their obligation to provide information about these infringing domain
+        names, they declined to cooperate.&#xA0;</span><span>&#xA0;</span></p>\n<p><span>We
+        don&#x2019;t want people to be deceived by these web addresses, so we&#x2019;ve
+        taken legal action. We filed a similar </span><a href=\"https://about.fb.com/news/2019/10/fighting-domain-name-fraud/\"><span>lawsuit</span></a><span>
+        in October 2019 against OnlineNIC, another domain registrar, and its proxy
+        service. Our goal is to create consequences for those who seek to do harm
+        and we will continue to take legal action to protect people from domain name
+        fraud and abuse.</span></p> </div> </div> </article>","next_page_url":null,"url":"https://about.fb.com/news/2020/03/domain-name-lawsuit/","domain":"about.fb.com","excerpt":"This
+        week we filed a lawsuit in Arizona against Namecheap, a domain name registrar,
+        as well as its proxy service, Whoisguard, for registering domain names that
+        aim to deceive people by pretending to&hellip;","word_count":190,"direction":"ltr","total_pages":1,"rendered_pages":1}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '2304'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sat, 07 Mar 2020 23:29:46 GMT
+      ETag:
+      - W/"900-+j9kOtAdzcHvDB4oa5BDs6pKX9w"
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

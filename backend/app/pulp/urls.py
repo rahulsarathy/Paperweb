@@ -25,19 +25,14 @@ urlpatterns = [
   path('', views.landing, name='landing'),
   path('reading_list/', views.switcher, name='switcher'),
   path('delivery/', views.switcher, name='delivery'),
-  path('newsletters/', views.newsletters, name='newsletters'),
   path('settings/', views.switcher, name='settings'),
   path('archive/', views.switcher, name='archive'),
   path('subscribe/', views.subscribe, name='subscribe'),
   path('api/users/', include('users.urls')),
   path('api/reading_list/', include('reading_list.urls')),
-  path('api/newsletters/', include('newsletters.urls')),
   path('api/payments/', include('payments.urls')),
   path('articles/', views.article),
   path('accounts/', include('allauth.urls')),
-
-  # Google Maps API Key
-  path('api/gmaps', views.google_maps_key, name='google_maps_key'),
 ]
 
 handler404 = views.error_404

@@ -1,31 +1,36 @@
-from django.core.cache import cache
-import json
-import requests
-from utils.s3_utils import put_object, check_file, get_article_id
-from reading_list.models import ReadingListItem, Article, PocketCredentials
-from bs4 import BeautifulSoup
-from datetime import datetime
-from pulp.globals import HTML_BUCKET, POCKET_CONSUMER_KEY
 import logging
 import os
-from django.http import JsonResponse
+from datetime import datetime
+import json
+import time
+
+from utils.s3_utils import put_object, check_file, get_article_id
+from reading_list.models import ReadingListItem, Article, PocketCredentials
+from pulp.globals import HTML_BUCKET, POCKET_CONSUMER_KEY
 from reading_list.serializers import ReadingListItemSerializer
 from django.core.cache import cache
 from django.conf import settings
+
+
+import requests
+from rest_framework import status
+from django.utils import timezone
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
-import threading
-import celery
-import time
+from django.http import JsonResponse
+from bs4 import BeautifulSoup
 
 
 def get_reading_list(user):
-    my_reading = None
-    # if all:
     my_reading = ReadingListItem.objects.filter(reader=user, archived=False).order_by('-date_added')
-    # else:
-    #     my_reading = ReadingListItem.objects.filter(reader=user, archived=False).order_by('-date_added')[:10]
     serializer = ReadingListItemSerializer(my_reading, many=True)
+    json_response = serializer.data
+    return JsonResponse(json_response, safe=False)
+
+
+def get_archive_list(user):
+    my_archive = ReadingListItem.objects.filter(reader=user, archived=True).order_by('-date_added')
+    serializer = ReadingListItemSerializer(my_archive, many=True)
     json_response = serializer.data
     return JsonResponse(json_response, safe=False)
 
@@ -41,18 +46,9 @@ def add_to_reading_list(user, link, date_added=None):
     try:
         validate(link)
     except ValidationError:
-        return False
+        raise
 
-    # get article json and populate DB fields
-    article_json = get_parsed(link)
-    title = article_json.get('title')
-    soup = BeautifulSoup(article_json.get('content', None), 'html.parser')
-    article_text = soup.getText()
-    article_json['parsed_text'] = article_text
-    preview_text = article_text[:347] + '...'
-    article, article_created = Article.objects.get_or_create(
-        title=title, permalink=link, mercury_response=article_json, preview_text=preview_text
-    )
+    article, article_created = fill_article_fields(link)
 
     # Some instapaper links come with a timestamp
     if date_added is not None:
@@ -64,34 +60,80 @@ def add_to_reading_list(user, link, date_added=None):
             reader=user, article=article
         )
 
-    article_id = get_article_id(article.permalink)
-    if article.page_count is None or created or not check_file('{}.html'.format(article_id), HTML_BUCKET):
+    article_id = get_article_id(link)
+    if delegate_task(article, article_created):
         from reading_list.tasks import handle_pages_task
         handle_pages_task.delay(link, user.email)
 
     return True
 
+# decide whether or not to undergo the expensive task of counting article pages
+def delegate_task(article, article_created):
+    article_id = get_article_id(article.permalink)
+    article_key = "./{}.html".format(article_id)
+    if article.page_count is None or article_created or not check_file(article_key, HTML_BUCKET):
+        return True
+    else:
+        return False
+
+
+def fill_article_fields(link):
+    try:
+        article = Article.objects.get(permalink=link)
+        return article, False
+    except Article.DoesNotExist:
+        pass
+
+    article_json = get_parsed(link)
+    title = article_json.get('title')
+    soup = BeautifulSoup(article_json.get('content', None), 'html.parser')
+    article_text = soup.getText()
+    article_json['parsed_text'] = article_text
+    preview_text = article_text[:347] + '...'
+    article, article_created = Article.objects.get_or_create(
+        title=title, permalink=link, mercury_response=article_json, preview_text=preview_text
+    )
+    return article, article_created
 
 # Check for mercury response in
 # 1. cache
 # 2. DB
 # 3. create mercury response
 def get_parsed(url):
+    # validate url
+    validate = URLValidator()
+    try:
+        validate(url)
+    except ValidationError:
+        raise
+
+    # check cache for URL
     if url in cache:
         json_response = json.loads(cache.get(url))
         return json_response
+    # check if mercury response is already stored in DB
     else:
         try:
-            # check if mercury response is already stored in DB
             my_article = Article.objects.get(permalink=url)
             json_response = my_article.mercury_response
+            return json_response
         except Article.DoesNotExist:
-            data = {'url': url}
-            parser_url = 'http://{}:3000/api/mercury'.format(settings.PARSER_HOST)
-            response = requests.post(parser_url, data=data)
-            response_string = response.content.decode("utf-8")
-            json_response = json.loads(response_string)
-            cache.set(url, response_string)
+            pass
+
+    # generate mercury response via parser express server
+    data = {'url': url}
+    parser_url = 'http://{}:3000/api/mercury'.format(settings.PARSER_HOST)
+    try:
+        response = requests.post(parser_url, data=data)
+    except requests.exceptions.RequestException as e:  # This is the correct syntax
+        logging.warning("Could not connect to parser with {}".format(e))
+        raise
+
+    response_string = response.content.decode("utf-8")
+    json_response = json.loads(response_string)
+    if not json_response.get('error', False):
+        cache.set(url, response_string)
+
     return json_response
 
 
@@ -99,6 +141,23 @@ def get_parsed(url):
 def html_to_s3(article):
     url = article.permalink
     article_id = get_article_id(url)
+    template_soup = inject_json_into_html(article)
+
+    article_key = "{}.html".format(article_id)
+    f = open(article_key, "w+")
+    f.write(str(template_soup))
+    f.close()
+
+    # upload object to S3 with permalink as metadata
+    metadata = {
+        'url': url
+    }
+    put_object(HTML_BUCKET, article_key, article_key, metadata)
+    os.remove(article_key)
+    return
+
+def inject_json_into_html(article):
+    url = article.permalink
     json_response = get_parsed(url)
 
     # Extract variables from json source
@@ -136,36 +195,25 @@ def html_to_s3(article):
     #     link.extract()
 
     template_soup.select_one('.main-content').insert(0, soup)
-    f = open("./{}.html".format(article_id), "w+")
-    f.write(str(template_soup))
-    f.close()
+    return template_soup
 
-    # upload object to S3 with permalink as metadata
-    metadata = {
-        'url': url
-    }
-    put_object(HTML_BUCKET, "{}.html".format(article_id), "./{}.html".format(article_id), metadata)
-    os.remove("./{}.html".format(article_id))
-    return
-
-
-# 1. Upload to s3 if not already
-# 2. Get page count of PDF via conversion
-#
+# get pages for article if not done already
+# decide whether to set reading list item to deliver or not
 def handle_pages(article, user=None):
     url = article.permalink
-    article_id = get_article_id(url)
-
-    # If file is not uploaded, then uploaded
-    if not check_file('{}.html'.format(article_id), HTML_BUCKET):
-        html_to_s3(article)
 
     # Count pages of article
     if article.page_count is None:
-        page_count = get_page_count(article_id)
+        page_count = get_page_count(url)
+        if page_count is None:
+            logging.warning("Puppeteer failed for {}".format(url))
+            return
         article.page_count = page_count
         article.save()
+    else:
+        page_count = article.page_count
 
+    # for backfill_pages command
     if user is None:
         return
 
@@ -223,26 +271,51 @@ def retrieve_pocket(user, access_token, last_polled=None):
     try:
         pocket_credential = PocketCredentials.objects.get(owner=user)
         pocket_credential.token = access_token
-        pocket_credential.last_polled = datetime.now()
+        pocket_credential.last_polled = timezone.now()
         pocket_credential.save()
     except PocketCredentials.DoesNotExist:
-        PocketCredentials(owner=user, token=access_token, last_polled=datetime.now()).save()
+        PocketCredentials(owner=user, token=access_token, last_polled=timezone.now()).save()
 
     return articles
 
 
-def get_page_count(article_id):
+def get_page_count(url):
+    article_id = get_article_id(url)
+    # If file is not uploaded, then uploaded
+    if not check_file('{}.html'.format(article_id), HTML_BUCKET):
+        try:
+            article = Article.objects.get(permalink=url)
+            html_to_s3(article)
+        except Article.DoesNotExist:
+            return None
+
+    data = {'html_id': article_id}
+    puppeteer_url = 'http://{}:4000/api/print'.format(settings.PUPPETEER_HOST)
+    try:
+        response = contact_puppeteer(url)
+    except requests.exceptions.ConnectionError:
+        logging.warning("failed to connect to puppeteer for {}".format(url))
+        return None
+    try:
+        response_string = response.content.decode("utf-8")
+        json_response = json.loads(response_string)
+        pages = json_response.get('pages')
+        html_id = json_response.get('html_id')
+    except json.decoder.JSONDecodeError:
+        logging.warning("JSON decode error from {}".format(response_string))
+        return None
+    except AttributeError:
+        logging.warning("attribute error from {}".format(url))
+        return None
+
+    return pages
+
+def contact_puppeteer(url):
+    article_id = get_article_id(url)
     data = {'html_id': article_id}
     puppeteer_url = 'http://{}:4000/api/print'.format(settings.PUPPETEER_HOST)
     try:
         response = requests.post(puppeteer_url, data=data)
     except requests.exceptions.ConnectionError:
-        logging.warning("failed to connect to puppeteer for {}".format(article_id))
-        return {"pages": 0}
-    response_string = response.content.decode("utf-8")
-    json_response = json.loads(response_string)
-    pages = json_response.get('pages')
-    html_id = json_response.get('html_id')
-    if html_id != article_id:
-        return None
-    return pages
+        raise
+    return response

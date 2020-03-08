@@ -26,6 +26,7 @@ def handle_pages_task(link, email=None):
     try:
         user = User.objects.get(email=email)
     except User.DoesNotExist:
+        # triggered from backfill_pages command
         return handle_pages(article)
 
     handle_pages(article, user)
@@ -70,7 +71,6 @@ def add_from_pocket(user, article):
 
 @shared_task
 def send_notification():
-    print('Here I\’m3')
     print("this is the task that is sending a notification")
 
 

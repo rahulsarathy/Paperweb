@@ -50,7 +50,7 @@ export default class Instapaper_Pane extends React.Component {
       csrfmiddlewaretoken: csrftoken
     };
     $.ajax({
-      url: "../api/reading_list/instapaper",
+      url: "../api/reading_list/start_instapaper_import",
       data: data,
       type: "POST",
       success: function(data) {
