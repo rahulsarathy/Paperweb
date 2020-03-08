@@ -112,6 +112,10 @@ def remove_from_reading_list(request):
 @api_view(['POST'])
 def update_deliver(request):
     user = request.user
+
+    if not user.is_authenticated:
+        return JsonResponse(data={'error': 'Invalid request.'}, status=403)
+
     link = request.POST['permalink']
     to_deliver = request.POST.get('to_deliver') == 'true'
     # Get Article to get Reading list item

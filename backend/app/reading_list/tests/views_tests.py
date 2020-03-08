@@ -6,7 +6,8 @@ import vcr
 
 from reading_list.models import Article
 from reading_list.models import ReadingListItem
-from reading_list.views import get_reading, get_archive, unarchive, archive_item, start_instapaper_import
+from reading_list.views import get_reading, get_archive, unarchive, archive_item, \
+    start_instapaper_import, update_deliver
 from reading_list.views import handle_add_to_reading_list
 from reading_list.views import remove_from_reading_list
 from django.contrib.auth.models import User
@@ -83,6 +84,11 @@ class ReadingListTest(APITestCase):
         )
 
         self.to_add_link = 'https://slatestarcodex.com/2019/11/28/ssc-meetups-everywhere-retrospective/'
+
+    def tearDown(self):
+        ReadingListItem.objects.all().delete()
+        Article.objects.all().delete()
+
 
     def test_get_reading(self):
         """
@@ -320,3 +326,32 @@ class ReadingListTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(mock_parse_instapaper_csv.called)
 
+    def test_unauthenticated_update_deliver(self):
+        """Checks that an unauthenticated update_deliver() request returns 403."""
+
+        request = self.factory.post(self.update_deliver)
+        response = update_deliver(request)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_update_deliver_false_to_true(self):
+        self.reading_item1.to_deliver = False
+        self.reading_item1.save()
+        request = self.factory.post(self.update_deliver, {
+            'to_deliver': 'true',
+            'permalink': self.reading_item1.article.permalink
+        })
+        force_authenticate(request, user=self.test_user)
+        response = update_deliver(request)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        my_article = Article.objects.get(permalink=self.reading_item1.article.permalink)
+        updated_readinglist_item = ReadingListItem.objects.get(reader=self.test_user, article=my_article)
+        self.assertTrue(updated_readinglist_item.to_deliver)
+
+    def test_update_deliver_false_to_false(self):
+        pass
+
+    def test_update_deliver_true_to_false(self):
+        pass
+
+    def test_update_deliver_true_to_true(self):
+        pass

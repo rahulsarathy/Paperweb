@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'reading_list.apps.ReadingListConfig',
-    'newsletters.apps.NewslettersConfig',
     'payments.apps.PaymentsConfig',
     'users.apps.UsersConfig',
     'coverage',
