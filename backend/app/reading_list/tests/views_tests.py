@@ -388,3 +388,9 @@ class ReadingListTest(APITestCase):
         my_article = Article.objects.get(permalink=self.reading_item1.article.permalink)
         updated_readinglist_item = ReadingListItem.objects.get(reader=self.test_user, article=my_article)
         self.assertTrue(updated_readinglist_item.to_deliver)
+
+    def test_services_status_unauthenticated(self):
+        pass
+
+    def test_services_status(self):
+        pass
