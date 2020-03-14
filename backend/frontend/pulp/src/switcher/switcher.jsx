@@ -9,10 +9,10 @@ import {
   Header,
   ReadingListView,
   Archive,
-  Profile,
   Delivery,
   Sidebar,
-  AddArticle
+  AddArticle,
+  Profile
 } from "./components.jsx";
 import {
   BrowserRouter as Router,
@@ -220,7 +220,7 @@ export default class Switcher extends React.Component {
     return (
       <Router>
         <div>
-          <Header />
+          <Header changeSelected={this.changeSelected} />
           <div className="pulp-container">
             <div className="sidebar-container">
               <div className="sidebar">
@@ -231,14 +231,6 @@ export default class Switcher extends React.Component {
                     unread={this.state.unread}
                     value="reading_list"
                     text={"Unread"}
-                  />
-                </Link>
-                <Link to={"/settings"}>
-                  <RouterMenuItem
-                    onClick={() => this.changeSelected("settings")}
-                    selected={this.state.selected}
-                    value="settings"
-                    text={"Settings"}
                   />
                 </Link>
                 <Link to={"/delivery"}>
@@ -284,7 +276,12 @@ export default class Switcher extends React.Component {
                   )}
                 />
                 <Route path="/archive" component={Archive} />
-                <Route path="/settings" component={Profile} />
+                <Route
+                  path="/settings"
+                  render={() => (
+                    <Profile changeSelected={this.changeSelected} />
+                  )}
+                />
                 <Route
                   path="/delivery"
                   render={() => (

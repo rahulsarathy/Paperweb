@@ -140,7 +140,7 @@ export default class Profile extends React.Component {
 
   render() {
     return (
-      <div className="profile">
+      <div className="profile-container">
         <h1>Settings</h1>
         <hr className="divider"></hr>
         <div id="contact" className="subsection">

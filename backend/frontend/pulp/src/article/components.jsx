@@ -1,6 +1,3 @@
-import './components.scss';
-import Header from './header.jsx';
+import "./components.scss";
 
-export {
-	Header,
-}
+export {};
