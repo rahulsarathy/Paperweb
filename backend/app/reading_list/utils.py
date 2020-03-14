@@ -178,13 +178,14 @@ def inject_json_into_html(article):
 
     # Populate html template with extracted variables
     template_soup = BeautifulSoup(open('./pdf/template.html'), 'html.parser')
+    template_container = template_soup.select_one('.container')
     if title is not None:
-        template_soup.select_one('.title').string = title
+        template_container.select_one('.title').string = title
     if author is not None:
-        template_soup.select_one('#author').string = 'By ' + author
+        template_container.select_one('#author').string = 'By ' + author
     if date_string is not None:
-        template_soup.select_one('#date').string = date_string
-    template_soup.select_one('#domain').string = domain
+        template_container.select_one('#date').string = date_string
+    template_container.select_one('#domain').string = domain
 
     soup = BeautifulSoup(content, 'html.parser')
 
@@ -194,7 +195,7 @@ def inject_json_into_html(article):
     #     link.insert_after(BeautifulSoup(innerhtml, 'html.parser'))
     #     link.extract()
 
-    template_soup.select_one('.main-content').insert(0, soup)
+    template_container.select_one('.main-content').insert(0, soup)
     return template_soup
 
 # get pages for article if not done already
@@ -254,6 +255,22 @@ def get_selected_pages(user, permalink):
     )
 
     return total_pages
+
+# Get articles staged for delivery
+def get_staged_articles(user):
+    total = 0
+    staged = []
+    reading_list_items = ReadingListItem.objects.filter(reader=user)
+    # Find out which articles we want to include in the magazine
+    for item in reading_list_items:
+        if item.to_deliver:
+            new_total = total + item.article.page_count
+            if new_total > 50:
+                return
+            staged.append(item.article)
+    return staged
+
+
 
 
 def retrieve_pocket(user, access_token, last_polled=None):

@@ -1,6 +1,4 @@
-import './components.scss';
-import Header from './header.jsx';
+import "./components.scss";
+import LandingHeader from "./landing_header.jsx";
 
-export {
-	Header,
-}
+export { LandingHeader };

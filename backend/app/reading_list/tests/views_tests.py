@@ -348,10 +348,49 @@ class ReadingListTest(APITestCase):
         self.assertTrue(updated_readinglist_item.to_deliver)
 
     def test_update_deliver_false_to_false(self):
-        pass
+        self.reading_item1.to_deliver = False
+        self.reading_item1.save()
+        request = self.factory.post(self.update_deliver, {
+            'to_deliver': 'false',
+            'permalink': self.reading_item1.article.permalink
+        })
+        force_authenticate(request, user=self.test_user)
+        response = update_deliver(request)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        my_article = Article.objects.get(permalink=self.reading_item1.article.permalink)
+        updated_readinglist_item = ReadingListItem.objects.get(reader=self.test_user, article=my_article)
+        self.assertFalse(updated_readinglist_item.to_deliver)
 
     def test_update_deliver_true_to_false(self):
-        pass
+        self.reading_item1.to_deliver = True
+        self.reading_item1.save()
+        request = self.factory.post(self.update_deliver, {
+            'to_deliver': 'false',
+            'permalink': self.reading_item1.article.permalink
+        })
+        force_authenticate(request, user=self.test_user)
+        response = update_deliver(request)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        my_article = Article.objects.get(permalink=self.reading_item1.article.permalink)
+        updated_readinglist_item = ReadingListItem.objects.get(reader=self.test_user, article=my_article)
+        self.assertFalse(updated_readinglist_item.to_deliver)
 
     def test_update_deliver_true_to_true(self):
+        self.reading_item1.to_deliver = True
+        self.reading_item1.save()
+        request = self.factory.post(self.update_deliver, {
+            'to_deliver': 'true',
+            'permalink': self.reading_item1.article.permalink
+        })
+        force_authenticate(request, user=self.test_user)
+        response = update_deliver(request)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        my_article = Article.objects.get(permalink=self.reading_item1.article.permalink)
+        updated_readinglist_item = ReadingListItem.objects.get(reader=self.test_user, article=my_article)
+        self.assertTrue(updated_readinglist_item.to_deliver)
+
+    def test_services_status_unauthenticated(self):
+        pass
+
+    def test_services_status(self):
         pass

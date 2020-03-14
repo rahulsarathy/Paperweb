@@ -1,5 +1,5 @@
 $sidebar-color: #f6f6f2;
-$header-height: 40px;
+$header-height: 50px;
 
 .archive-body {
   width: 80%;
@@ -153,6 +153,7 @@ $icon-height: 20px;
   margin-top: $header-height;
 }
 
+$header-background-color: #363634;
 .header {
   z-index: 4;
   font-size: 20px;
@@ -161,40 +162,88 @@ $icon-height: 20px;
   width: 100%;
   padding: 5px 0;
   height: $header-height;
-  background-color: #363634;
+  background-color: $header-background-color;
   top: 0;
   text-align: right;
   // min-width: 970px;
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.5);
 
-  .profile-circle {
-    $height: 30px;
-    background-color: white;
-    width: 30px;
-    height: $height;
-    border-radius: 50%;
-    display: inline-block;
-    color: #4c8fff;
-    text-transform: uppercase;
-    text-align: center;
-    line-height: $height;
-    // vertical-align: top;
+  button {
+    background-color: $header-background-color !important;
+    border-color: $header-background-color !important;
   }
 
-  .chevron {
+  .profile {
     float: right;
     margin-right: 30px;
-    display: inline-block;
-    vertical-align: middle;
-    margin-top: 10px;
-    margin-left: 5px;
-    height: 8px;
+    margin-top: auto;
+    margin-bottom: auto;
+    border-radius: 3px;
+    -webkit-transition: all 0.2s ease-in-out;
+    padding: 5px;
+    cursor: pointer;
+    position: relative;
+    // background-color: #525252;
+    // border-color: #525252;
+
+    .profile-circle {
+      $height: 30px;
+      background-color: white;
+      width: 30px;
+      height: $height;
+      border-radius: 50%;
+      display: inline-block;
+      color: #4c8fff;
+      text-transform: uppercase;
+      text-align: center;
+      line-height: $height;
+      vertical-align: middle;
+    }
+
+    .chevron {
+      display: inline-block;
+      margin-left: 3px;
+      img {
+        height: 10px;
+        margin: auto;
+      }
+    }
+  }
+
+  // To remove bootstrap dropdown arrow
+  .dropdown-toggle:after {
+    display: none;
+  }
+
+  .header-menu {
+    height: 150px;
+    background-color: black;
+    width: 200px;
+    position: absolute;
+    right: 30px;
+    top: $header-height;
+  }
+
+  .profile:hover {
+    background-color: #525252 !important;
+    -webkit-transition: all 0.2s ease-in-out;
+    border-color: #525252 !important;
+  }
+
+  .profile:focus {
+    background-color: #525252 !important;
+    border-color: #525252 !important;
+
+    .profile-circle {
+      color: black;
+      background-color: white;
+    }
   }
 
   .logo {
     float: left;
     margin-left: calc(#{$sidebar-width} - 70px);
-    height: calc(#{$header-height} - 10px);
+    height: calc(#{$header-height} - 13px);
     vertical-align: top;
   }
 }

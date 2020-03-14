@@ -1,6 +1,10 @@
+$page-margin-left: 50px;
+$page-margin-right: 50px;
+
 .landing {
-  padding-left: 50px;
+  margin-left: $page-margin-left;
   margin-top: 50px;
+  margin-right: $page-margin-right;
 }
 
 .page {
@@ -89,4 +93,47 @@
 .logo {
   font-size: 100px;
   font-weight: bold;
+}
+
+$header-height: 45px;
+.header {
+  color: white;
+  position: fixed;
+  width: 100%;
+  height: $header-height;
+  background-color: #363634;
+  top: 0;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.5);
+  padding: 5px 0;
+
+  .logo {
+    float: left;
+    height: calc(#{$header-height} - 10px);
+    vertical-align: top;
+    margin-left: $page-margin-left;
+  }
+
+  .links {
+    float: right;
+    margin-right: $page-margin-right;
+
+    p {
+      display: inline-block;
+      margin-left: 20px;
+      padding: 5px;
+      text-align: center;
+      -webkit-transition: all 0.2s ease-in-out;
+      border-radius: 3px;
+
+      a {
+        color: white;
+      }
+    }
+
+    p:hover {
+      background-color: gray;
+      border-radius: 3px;
+      -webkit-transition: all 0.2s ease-in-out;
+    }
+  }
 }

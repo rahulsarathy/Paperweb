@@ -229,6 +229,29 @@ class BeautifulSoupTestCase(TestCase):
         self.assertEquals(validate_soup.select_one('#domain').string, 'mock_domain')
         self.assertEquals(validate_soup.select_one('.main-content').string, 'mock_content')
 
+    @mock.patch('reading_list.utils.get_parsed')
+    def test_malformed_date(self, mock_get_parsed):
+        mock_get_parsed.return_value = {
+            'content': '<div>mock_content</div>',
+            'author': 'mock_author',
+            'date_published': '20d20-03-05T15:45:43.000Z',
+            'title': 'mock_title',
+            'domain': 'mock_domain',
+        }
+
+        my_article = baker.make('Article')
+        validate_soup = inject_json_into_html(my_article)
+        self.assertIsNone(validate_soup.select_one('#date').string)
+
+    def test_template_is_clean(self):
+        template_soup = BeautifulSoup(open('./pdf/template.html'), 'html.parser')
+        self.assertIsNone(template_soup.select_one('.title').string)
+        self.assertIsNone(template_soup.select_one('#author').string)
+        self.assertIsNone(template_soup.select_one('#date').string)
+        self.assertIsNone(template_soup.select_one('#domain').string)
+        self.assertIsNone(template_soup.select_one('.main-content').string)
+
+
 class DeliveryPagesTestCase(TestCase):
 
     def setUp(self):
