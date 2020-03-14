@@ -11,9 +11,12 @@ from pulp.globals import STRIPE_PUBLIC_KEY
 from rest_framework.decorators import api_view
 from reading_list.utils import get_parsed
 import requests
+import os
 
 CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 
+def create_js_static_url(name):
+    return settings.FRONTEND_HOST + name + '.js'
 
 def error_404(request, exception=None):
     return render(request, '404.html', status=404)
@@ -23,25 +26,15 @@ def landing(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect('/reading_list')
     context = {
-        'js_file': settings.JAVASCRIPT_URLS['landing']
+        'js_file': create_js_static_url('landing')
     }
     return render(request, 'landing.html', context)
-
-
-def newsletters(request):
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect('/')
-    context = {
-        'js_file': settings.JAVASCRIPT_URLS['newsletters']
-    }
-    return render(request, 'newsletters.html', context)
-
 
 def dashboard(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect('../')
     context = {
-        'js_file': settings.JAVASCRIPT_URLS['dashboard']
+        'js_file': create_js_static_url('dashboard')
     }
     return render(request, 'dashboard.html', context)
 
@@ -50,7 +43,7 @@ def profile(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect('../')
     context = {
-        'js_file': settings.JAVASCRIPT_URLS['profile']
+        'js_file': create_js_static_url('profile')
     }
     return render(request, 'profile.html', context)
 
@@ -59,7 +52,7 @@ def delivery(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect('../')
     context = {
-        'js_file': settings.JAVASCRIPT_URLS['delivery']
+        'js_file': create_js_static_url('delivery')
     }
     return render(request, 'delivery.html', context)
 
@@ -69,7 +62,7 @@ def switcher(request):
         return HttpResponseRedirect('../')
     pocket = request.GET.get('pocket', 'null')
     context = {
-        'js_file': settings.JAVASCRIPT_URLS['switcher'],
+        'js_file': create_js_static_url('switcher'),
         'pocket': pocket,
     }
     return render(request, 'reading_list.html', context)
@@ -79,7 +72,7 @@ def reading_list(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect('../')
     context = {
-        'js_file': settings.JAVASCRIPT_URLS['switcher']
+        'js_file': create_js_static_url('switcher')
     }
     return render(request, 'reading_list.html', context)
 
@@ -98,7 +91,7 @@ def article(request):
     json_response = json.dumps(article_response)
     context = {
         'article_response': json_response,
-        'js_file': settings.JAVASCRIPT_URLS['article']
+        'js_file': create_js_static_url('article')
 
     }
     return render(request, 'article.html', context)
@@ -108,7 +101,7 @@ def subscribe(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect('../')
     context = {
-        'js_file': settings.JAVASCRIPT_URLS['subscribe'],
+        'js_file': create_js_static_url('subscribe'),
         'stripe_public_key': STRIPE_PUBLIC_KEY,
     }
     return render(request, 'subscribe.html', context)

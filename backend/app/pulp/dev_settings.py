@@ -27,16 +27,6 @@ CACHES = {
 CELERY_BROKER_URL = 'redis://redis:6379'
 CELERY_RESULT_BACKEND = 'redis://redis:6379'
 
-# CELERY_BROKER_URL = 'http://pulp_redis_1:6379'
-
-JAVASCRIPT_URLS = {
-    'landing': 'http://localhost:8080/landing.js',
-    'switcher': 'http://localhost:8080/switcher.js',
-    'article': 'http://localhost:8080/article.js',
-    'subscribe': 'http://localhost:8080/subscribe.js',
-    'newsletters': 'http://localhost:8080/newsletters.js',
-}
-
 RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY')
 RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY')
 

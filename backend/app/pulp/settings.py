@@ -168,11 +168,11 @@ LOGIN_REDIRECT_URL = '/'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'rahul@getpulp.io'
+EMAIL_HOST_USER = os.environ.get("EMAIL_USERNAME")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 EMAIL_PORT = 587
-ACCOUNT_CONFIRM_EMAIL_ON_GET = True
-DEFAULT_FROM_EMAIL = 'rahul@getpulp.io'
+ACCOUNT_CONFIRM_EMAIL_ON_GET = os.environ.get('USE_EMAIL')
+DEFAULT_FROM_EMAIL = os.environ.get("EMAIL_USERNAME")
 LOGIN_URL = '/accounts/login'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
@@ -219,7 +219,7 @@ SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=False, cast=bool)
 SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default=False, cast=bool)
 PUPPETEER_HOST = os.environ.get('PUPPETEER_HOST')
 PARSER_HOST = os.environ.get('PARSER_HOST')
-PARSER_PORT = os.environ.get('PARSER_PORT')
+FRONTEND_HOST = os.environ.get('FRONTEND_HOST', '')
 
 CACHES = {
     "default": {
