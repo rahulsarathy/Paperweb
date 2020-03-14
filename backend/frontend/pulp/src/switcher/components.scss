@@ -153,6 +153,7 @@ $icon-height: 20px;
   margin-top: $header-height;
 }
 
+$header-background-color: #363634;
 .header {
   z-index: 4;
   font-size: 20px;
@@ -161,11 +162,16 @@ $icon-height: 20px;
   width: 100%;
   padding: 5px 0;
   height: $header-height;
-  background-color: #363634;
+  background-color: $header-background-color;
   top: 0;
   text-align: right;
   // min-width: 970px;
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.5);
+
+  button {
+    background-color: $header-background-color !important;
+    border-color: $header-background-color !important;
+  }
 
   .profile {
     float: right;
@@ -177,8 +183,8 @@ $icon-height: 20px;
     padding: 5px;
     cursor: pointer;
     position: relative;
-    background-color: gray;
-    border-color: gray;
+    // background-color: #525252;
+    // border-color: #525252;
 
     .profile-circle {
       $height: 30px;
@@ -219,15 +225,25 @@ $icon-height: 20px;
   }
 
   .profile:hover {
-    background-color: #adadad;
+    background-color: #525252 !important;
     -webkit-transition: all 0.2s ease-in-out;
-    border-color: #adadad;
+    border-color: #525252 !important;
+  }
+
+  .profile:focus {
+    background-color: #525252 !important;
+    border-color: #525252 !important;
+
+    .profile-circle {
+      color: black;
+      background-color: white;
+    }
   }
 
   .logo {
     float: left;
     margin-left: calc(#{$sidebar-width} - 70px);
-    height: calc(#{$header-height} - 10px);
+    height: calc(#{$header-height} - 13px);
     vertical-align: top;
   }
 }
