@@ -38,6 +38,7 @@ $sidebar-width: 170px;
 
   .sidebar {
     padding-top: 30px;
+    padding-right: 10px;
     position: fixed;
     z-index: 4;
     width: $sidebar-width;
@@ -46,59 +47,34 @@ $sidebar-width: 170px;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   }
 }
-$menu-font-size: 20px;
-$menu-item-color: #a8a894;
-$menu-item-margin: 20px;
-$menu-item-margin-top: 5px;
-$menu-item-height: 35px;
-$menu-item-padding-left: 10px;
-$menu-item-padding-right: 10px;
-$menu-item-margin-right: 10px;
-$text-align: right;
+
 .menu-item {
-  color: $menu-item-color;
-  font-size: $menu-font-size;
-  // margin-top: $menu-item-margin-top;
-  height: $menu-item-height;
-  line-height: $menu-item-height;
-  padding-left: $menu-item-padding-left;
-  padding-right: $menu-item-padding-right;
+  color: #a8a894;
+
+  font-size: 1.25rem;
   font-weight: bold;
-  margin-right: $menu-item-margin-right;
-  // text-align: $text-align;
+  line-height: 2rem;
+  text-decoration: none;
   float: right;
-  -webkit-transition: all 0.2s ease-in-out;
-  // margin-left: $menu-ictem-margin;
+
+  height: 2rem;
+  margin: 1px 0;
+  padding: 0 10px;
+  border-radius: 2px;
+
+  transition: all 0.2s ease-in-out;
 }
 
 .menu-item:hover {
-  -webkit-transition: all 0.2s ease-in-out;
-  color: white;
-  margin-top: 3px;
-  margin-bottom: 3px;
-  background-color: #a9a995;
-  border-radius: 2px;
-  // height: 30px;
-  // box-shadow: 0 1px 4px 0 rgba(246, 246, 242, 1);
+  @extend .menu-item-selected;
 }
 
 .menu-item-selected {
+  @extend .menu-item;
   color: white;
-  // text-align: $text-align;
-  font-weight: bold;
-  font-size: $menu-font-size;
   background-color: #a9a995;
-  // width: 100%;
-  // min-width: 100px;
-  float: right;
-  height: $menu-item-height;
-  line-height: $menu-item-height;
-  padding-left: $menu-item-padding-left;
-  padding-right: $menu-item-padding-right;
-  margin-right: $menu-item-margin-right;
-  margin-left: 5px;
-  border-radius: 2px;
 }
+
 $icon-margin-right: 5px;
 $icon-margin-left: 5px;
 $icon-height: 20px;
