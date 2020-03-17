@@ -202,7 +202,7 @@ export default class Switcher extends React.Component {
     var csrftoken = $("[name=csrfmiddlewaretoken]").val();
 
     $.ajax({
-      url: "../api/reading_list/services_status",
+      url: "../api/users/get_services",
       type: "GET",
       success: function(data) {
         this.setState({

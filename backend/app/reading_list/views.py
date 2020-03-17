@@ -133,32 +133,3 @@ def update_deliver(request):
         return get_reading_list(user)
     except ReadingListItem.DoesNotExist:
         raise NotFound(detail='ReadingListItem with link: %s not found.' % link, code=404)
-
-
-# Tell the user whether they have integrated reading list services
-@api_view(['GET'])
-def service_status(request):
-    user = request.user
-    if not user.is_authenticated:
-        return JsonResponse(data={'error': 'Invalid request.'}, status=403)
-
-    response = {
-        'instapaper': {"signed_in": False},
-        'pocket': {"signed_in": False},
-    }
-    try:
-        credentials = InstapaperCredentials.objects.get(owner=user)
-        instapaper_serializer = InstapaperCredentialsSerializer(credentials)
-        response['instapaper'] = instapaper_serializer.data
-        response['instapaper']['signed_in'] = True
-    except InstapaperCredentials.DoesNotExist:
-        response['instapaper']['signed_in'] = False
-    try:
-        credentials = PocketCredentials.objects.get(owner=user)
-        pocket_serializer = PocketCredentialsSerializer(credentials)
-        response['pocket'] = pocket_serializer.data
-        response['pocket']['signed_in'] = True
-    except PocketCredentials.DoesNotExist:
-        response['pocket']['signed_in'] = False
-
-    return JsonResponse(response)
