@@ -1,7 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Container, Row, Col, Button, Badge } from "react-bootstrap";
-import { LandingHeader } from "./components.jsx";
+import { Container, Row, Col, Button } from "react-bootstrap";
+
+import "bootstrap/dist/css/bootstrap.css";
+import "./components.scss";
 
 const images_url = "../static/images/";
 
@@ -10,12 +12,12 @@ function Header() {
 		<Container id="header">
 			<img
 				className="logo"
-				src={images_url + "pulp_temp_logo.svg"}
+				src={images_url + "pulp_black_logo.svg"}
 			/>
 			<div className="links">
-                <a href="/accounts/login">Pricing</a>
-				<a href="/accounts/signup">Contact</a>
-                <a href="/accounts/login">FAQ</a>
+                <a href="#">Pricing</a>
+				<a href="#">Contact</a>
+                <a href="#">FAQ</a>
 				<span>|</span>
 				<a href="/accounts/login">Login</a>
 				<a href="/accounts/signup">Sign Up</a>
@@ -47,21 +49,18 @@ function Steps() {
             <Container>
                 <Row>
                     <Col className="step">
-                        {/* <span className="step-num">1</span> */}
                         <div className="step-info">
                             <img src={images_url + "step1.png"}/>  
                             <span className="step-desc">Add Articles you want to read</span>
                         </div>
                     </Col>
                     <Col className="step">
-                        {/* <span className="step-num">2</span> */}
                         <div className="step-info">
                             <img src={images_url + "step2.png"}/>  
                             <span className="step-desc">Read, whenever you want</span>
                         </div>
                     </Col>
                     <Col className="step">
-                        {/* <span className="step-num">3</span> */}
                         <div className="step-info">
                             <img src={images_url + "step3.png"}/>  
                             <span className="step-desc">What you don't finish gets delivered to you as a magazine</span>
