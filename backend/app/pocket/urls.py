@@ -7,6 +7,6 @@ from . import views
 app_name = 'pocket'
 
 urlpatterns = [
-    path('pocket', views.pocket),
+    path('request_pocket', views.request_pocket),
     path('authenticate_pocket', views.authenticate_pocket),
 ]

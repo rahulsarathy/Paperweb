@@ -7,8 +7,17 @@ from pulp.globals import POCKET_CONSUMER_KEY
 from django.utils import timezone
 import requests
 
-def retrieve_pocket(user, access_token, last_polled=None):
+def retrieve_pocket(user):
     url = 'https://getpocket.com/v3/get'
+
+    try:
+        pocket_credentials = PocketCredentials.objects.get(owner=user)
+    except PocketCredentials.DoesNotExist:
+        # this user does not have pocket setup, nothing to do here
+        return
+    last_polled = pocket_credentials.last_polled
+    access_token = pocket_credentials.token
+
     if last_polled is None:
         data = {'consumer_key': POCKET_CONSUMER_KEY, 'access_token': access_token, 'state': 'unread'}
     else:
@@ -26,5 +35,4 @@ def retrieve_pocket(user, access_token, last_polled=None):
         pocket_credential.save()
     except PocketCredentials.DoesNotExist:
         PocketCredentials(owner=user, token=access_token, last_polled=timezone.now()).save()
-
     return articles

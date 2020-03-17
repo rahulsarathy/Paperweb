@@ -3,7 +3,12 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from pulp.globals import POCKET_CONSUMER_KEY, INSTAPAPER_CONSUMER_ID, INSTAPAPER_CONSUMER_SECRET
+from .models import InstapaperCredentials
+from .tasks import parse_instapaper_bookmarks
 
+from requests_oauthlib import OAuth1
+import requests
+import urllib
 
 # Create your views here.
 

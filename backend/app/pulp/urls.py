@@ -25,7 +25,7 @@ urlpatterns = [
   path('', views.landing, name='landing'),
   path('reading_list/', views.switcher, name='switcher'),
   path('delivery/', views.switcher, name='delivery'),
-  path('settings/', views.switcher, name='settings'),
+  path('profile/', views.switcher, name='profile'),
   path('archive/', views.switcher, name='archive'),
   path('subscribe/', views.subscribe, name='subscribe'),
   path('api/users/', include('users.urls')),

@@ -31,16 +31,10 @@ def import_pocket(email):
         logging.warning('User {} does not exist'.format(email))
         return
 
-    try:
-        pocket_credentials = PocketCredentials.objects.get(owner=user)
-    except PocketCredentials.DoesNotExist:
-        # this user does not have pocket setup, nothing to do here
+    new_articles = retrieve_pocket(user)
+    # Pocket has no new articles
+    if new_articles == []:
         return
-
-    token = pocket_credentials.token
-    last_polled = pocket_credentials.last_polled
-    new_articles = retrieve_pocket(user, token, last_polled)
-
     try:
         user = User.objects.get(email=email)
     except User.DoesNotExist:

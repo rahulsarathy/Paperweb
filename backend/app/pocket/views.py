@@ -2,7 +2,7 @@ import re
 
 from pulp.globals import POCKET_CONSUMER_KEY
 from django.core.cache import cache
-
+from .models import PocketCredentials
 
 from django.shortcuts import render
 from django.utils import timezone
@@ -14,12 +14,12 @@ from .tasks import import_pocket
 
  #Method is triggered when user starts pocket integration from frontend modal
 @api_view(['POST'])
-def pocket(request):
+def request_pocket(request):
     user = request.user
     if not user.is_authenticated:
         return JsonResponse(data={'error': 'Invalid request.'}, status=403)
     # Get pocket code from consumer key
-    redirect_uri = 'http://127.0.0.1:8000/api/reading_list/authenticate_pocket'
+    redirect_uri = 'http://127.0.0.1:8000/api/pocket/authenticate_pocket'
     url = 'https://getpocket.com/v3/oauth/request'
     data = {'consumer_key': POCKET_CONSUMER_KEY, 'redirect_uri': redirect_uri}
     response = requests.post(url, data=data)
@@ -52,7 +52,15 @@ def authenticate_pocket(request):
     result = re.search('access_token=(.*)&username', response_string)
     access_token = result.group(1)
 
-    articles = retrieve_pocket(user, access_token)
-    import_pocket.delay(request.user.email, articles)
+    try:
+        # update pocket access token
+        credentials = PocketCredentials.objects.get(owner=user)
+        credentials.token = access_token
+        credentials.save()
+    except PocketCredentials.DoesNotExist:
+        # create credentials with new acess token
+        PocketCredentials(owner=request.user, token=access_token).save()
+
+    import_pocket.delay(request.user.email)
 
     return HttpResponseRedirect('/')

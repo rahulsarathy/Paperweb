@@ -139,22 +139,14 @@ export default class Profile extends React.Component {
     });
   }
 
-  createInstapaperDate() {
-    let insta_date = new Date(this.props.instapaper.last_polled);
+  timeAgo(date) {
+    let insta_date = new Date(date);
     let unix = insta_date.getTime();
     let m = moment(unix);
     return m.fromNow();
   }
 
-  createPocketDate() {
-    let pocket_date = new Date(this.props.pocket.last_polled);
-    let unix = pocket_date.getTime();
-    let m = moment(unix);
-    return m.fromNow();
-  }
-
   render() {
-    this.createInstapaperDate();
     return (
       <div className="profile-container">
         <h1>Settings</h1>
@@ -173,25 +165,25 @@ export default class Profile extends React.Component {
         </div>
         <div id="import" className="subsection">
           <SubHeader title="Import Articles" />
-          <Instapaper_Pane />
           {this.props.instapaper.signed_in ? (
             <div className="sync-date">
-              Last synced: {this.createInstapaperDate()}
-              <button>
+              Last synced: {this.timeAgo(this.props.instapaper.last_polled)}
+              <button onClick={this.props.syncInstapaper}>
                 <img src="../static/icons/sync.svg" />
               </button>
             </div>
           ) : (
-            <div></div>
+            <div className="sync-date">Click to integrate Instapaper</div>
           )}
-          <Pocket_Modal />
+          <Instapaper_Pane />
           {this.props.pocket.signed_in ? (
             <div className="sync-date">
-              Last synced: {this.createPocketDate()}
+              Last synced: {this.timeAgo(this.props.pocket.last_polled)}
             </div>
           ) : (
-            <div></div>
+            <div>Click to integrate Pocket</div>
           )}
+          <Pocket_Modal />
         </div>
         <div id="address" className="subsection">
           <SubHeader title="Delivery Info" />

@@ -50,14 +50,12 @@ def add_to_reading_list(user, link, date_added=None):
     article, article_created = fill_article_fields(link)
 
     # Some instapaper links come with a timestamp
+    reading_list_item, created = ReadingListItem.objects.get_or_create(
+        reader=user, article=article
+    )
     if date_added is not None:
-        reading_list_item, created = ReadingListItem.objects.get_or_create(
-            reader=user, article=article, date_added=date_added
-        )
-    else:
-        reading_list_item, created = ReadingListItem.objects.get_or_create(
-            reader=user, article=article
-        )
+        reading_list_item.date_added = date_added
+        reading_list_item.save()
 
     article_id = get_article_id(link)
     if delegate_task(article, article_created):
@@ -128,8 +126,17 @@ def get_parsed(url):
         logging.warning("Could not connect to parser with {}".format(e))
         raise
 
-    response_string = response.content.decode("utf-8")
-    json_response = json.loads(response_string)
+    try:
+        response_string = response.content.decode("utf-8")
+        json_response = json.loads(response_string)
+    except json.decoder.JSONDecodeError:
+        logging.warning("JSON decode error from {}".format(url))
+        logging.warning("response_string is {}".format(response_string))
+        raise
+    except Exception as e:
+        logging.warning("Could not get mercury for {} with error: {}".format(url, e))
+        raise
+
     if not json_response.get('error', False):
         cache.set(url, response_string)
 

@@ -110,7 +110,7 @@ export default class Instapaper_Pane extends React.Component {
             ) : (
               <div></div>
             )}
-            <button
+            <Button
               onClick={() =>
                 this.authenticateInstapaper(
                   this.state.username,
@@ -119,8 +119,13 @@ export default class Instapaper_Pane extends React.Component {
               }
             >
               Import from Instapaper
-            </button>
-            <Button onClick={() => this.hideModal("instapaper")}>Close</Button>
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={() => this.hideModal("instapaper")}
+            >
+              Close
+            </Button>
           </Modal.Footer>
         </Modal>
       </div>

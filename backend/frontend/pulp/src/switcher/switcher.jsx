@@ -25,10 +25,14 @@ import {
 
 function MenuItem(props) {
   return (
-    <NavLink to={props.to} className="menu-item" activeClassName="menu-item-selected">
+    <NavLink
+      to={props.to}
+      className="menu-item"
+      activeClassName="menu-item-selected"
+    >
       {props.children}
     </NavLink>
-  )
+  );
 }
 
 export default class Switcher extends React.Component {
@@ -230,15 +234,9 @@ export default class Switcher extends React.Component {
           <div className="pulp-container">
             <div className="sidebar-container">
               <div className="sidebar">
-                <MenuItem to="/reading_list">
-                  Unread
-                </MenuItem>
-                <MenuItem to="/delivery">
-                  Delivery
-                </MenuItem>
-                <MenuItem to="/archive">
-                  Archive
-                </MenuItem>
+                <MenuItem to="/reading_list">Unread</MenuItem>
+                <MenuItem to="/delivery">Delivery</MenuItem>
+                <MenuItem to="/archive">Archive</MenuItem>
               </div>
             </div>
             <div className="page-container">
@@ -267,7 +265,7 @@ export default class Switcher extends React.Component {
                 />
                 <Route path="/archive" component={Archive} />
                 <Route
-                  path="/settings"
+                  path="/profile"
                   render={() => (
                     <Profile
                       pocket={this.state.pocket}

@@ -51,11 +51,14 @@ def parse_instapaper_bookmarks(email):
     polled_ids = polled_bookmarks.values()
     have_string = ','.join(str(polled_id) for polled_id in polled_ids)
     data = {
-        'have': have_string
+        'have': have_string,
+        'limit': 500,
     }
 
     response = requests.post(bookmarks_url, auth=oauth, data=data)
     bookmarks = json.loads(response.content)
+    credentials.last_polled = now()
+    credentials.save()
 
     # Add new URLs
     for bookmark in bookmarks:
@@ -64,10 +67,11 @@ def parse_instapaper_bookmarks(email):
         bookmark_id = bookmark.get('bookmark_id')
         link = bookmark.get('url')
         polled_bookmarks[link] = bookmark_id
+        credentials.polled_bookmarks = polled_bookmarks
+        credentials.save()
         unix_timestamp = bookmark.get('time')
         timestamp = int(unix_timestamp)
         dt_object = make_aware(datetime.fromtimestamp(timestamp))
         add_to_reading_list(user, link, dt_object)
-    credentials.polled_bookmarks = polled_bookmarks
-    credentials.last_polled = now()
-    credentials.save()
+
+    return
