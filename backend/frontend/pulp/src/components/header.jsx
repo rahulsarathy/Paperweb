@@ -58,6 +58,9 @@ export default class Header extends React.Component {
                         <Dropdown.Item as={Link} to="/settings">
                             Settings
                         </Dropdown.Item>
+                        <Dropdown.Item href="../accounts/logout">
+                            Logout
+                        </Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
             </div>

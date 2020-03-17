@@ -30,11 +30,11 @@ class ReadingListItem(models.Model):
 
 
 class InstapaperCredentials(models.Model):
-    username = models.CharField(_('Username'), max_length=255)
-    password = EncryptedCharField(_('Password'), max_length=255)
+    oauth_token = EncryptedCharField(_('Password'), max_length=255, null=True)
+    oauth_token_secret = EncryptedCharField(_('Password'), max_length=255, null=True)
     owner = models.OneToOneField(User, on_delete=models.CASCADE)
     last_polled = models.DateTimeField(default=None, null=True)
-
+    polled_bookmarks = JSONField(null=True, default=dict)
 
 class PocketCredentials(models.Model):
     owner = models.OneToOneField(User, on_delete=models.CASCADE)

@@ -8,8 +8,8 @@ from reading_list.models import Article, ReadingListItem, PocketCredentials, Ins
 from reading_list.utils import get_parsed, html_to_s3, get_reading_list, \
     add_to_reading_list, retrieve_pocket, get_archive_list
 from reading_list.instapaper import import_from_instapaper
-from reading_list.tasks import import_pocket
-from pulp.globals import POCKET_CONSUMER_KEY
+from reading_list.tasks import import_pocket, parse_instapaper_bookmarks
+from pulp.globals import POCKET_CONSUMER_KEY, INSTAPAPER_CONSUMER_ID, INSTAPAPER_CONSUMER_SECRET
 
 from rest_framework.decorators import api_view
 from rest_framework.exceptions import NotFound
@@ -18,7 +18,10 @@ from django.utils.timezone import make_aware
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.core.cache import cache
+from django.utils import timezone
 import requests
+from requests_oauthlib import OAuth1
+import urllib
 
 
 @api_view(['GET'])
@@ -104,9 +107,19 @@ def remove_from_reading_list(request):
     try:
         reading_list_item = ReadingListItem.objects.get(article=article, reader=user)
         reading_list_item.delete()
-        return get_reading_list(user)
     except ReadingListItem.DoesNotExist:
         raise NotFound(detail='ReadingListItem with link: %s not found.' % link, code=404)
+
+    # Remove from instapaper sync
+    try:
+        credentials = InstapaperCredentials.objects.get(owner=user)
+        polled_bookmarks = credentials.polled_bookmarks
+        polled_bookmarks.pop(link, None)
+        credentials.save()
+    except InstapaperCredentials.DoesNotExist:
+        # nothing to remove
+        pass
+    return get_reading_list(user)
 
 
 @api_view(['POST'])
@@ -206,22 +219,39 @@ def authenticate_pocket(request):
 
     return HttpResponseRedirect('/')
 
-
 @api_view(['POST'])
 def start_instapaper_import(request):
     user = request.user
     if not user.is_authenticated:
         return JsonResponse(data={'error': 'Invalid request.'}, status=403)
+
     username = request.POST['username']
     password = request.POST['password']
-    authenticate_url = 'https://www.instapaper.com/api/authenticate'
+
+    user = request.user
+    authenticate_url = 'https://www.instapaper.com/api/1/oauth/access_token'
+    oauth = OAuth1(client_key=INSTAPAPER_CONSUMER_ID, client_secret=INSTAPAPER_CONSUMER_SECRET)
     data = {
-        'username': username,
-        'password': password,
+        'x_auth_username': username,
+        'x_auth_password': password,
+        'x_auth_mode': 'client_auth',
     }
-    response = requests.post(authenticate_url, data=data)
-    if response.text != '200':
-        return HttpResponse("Invalid username or password", status=401)
 
-    return import_from_instapaper(user, username, password)
+    response = requests.post(authenticate_url, data=data, auth=oauth)
+    text = response.text
+    parsed = urllib.parse.parse_qs(text)
+    oauth_token_secret = parsed['oauth_token_secret'][0]
+    oauth_token = parsed['oauth_token'][0]
 
+    try:
+        credentials = InstapaperCredentials.objects.get(owner=user)
+    except InstapaperCredentials.DoesNotExist:
+        credentials = InstapaperCredentials(owner=user)
+
+    credentials.oauth_token = oauth_token
+    credentials.oauth_token_secret = oauth_token_secret
+    credentials.save()
+
+    parse_instapaper_bookmarks.delay(user.email)
+
+    return HttpResponse(status=200)
