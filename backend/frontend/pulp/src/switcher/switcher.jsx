@@ -18,36 +18,17 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
+  NavLink,
   useHistory,
   withRouter
 } from "react-router-dom";
 
-class MenuItem extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    let className;
-    let image_url = "/static/icons/" + this.props.value + ".svg";
-    this.props.location.pathname.split("/")[1] === this.props.value
-      ? (className = "menu-item-selected")
-      : (className = "menu-item");
-
-    return (
-      <div className={className} onClick={this.props.onClick}>
-        {/*
-        this.props.value === 'reading_list'
-          ? (<div className="unread">
-            <div className="number">{this.props.unread}</div>
-          </div>)
-          : (<img className="icon" src={image_url}/>)
-      */}
-        {this.props.text}
-      </div>
-    );
-  }
+function MenuItem(props) {
+  return (
+    <NavLink to={props.to} className="menu-item" activeClassName="menu-item-selected">
+      {props.children}
+    </NavLink>
+  )
 }
 
 export default class Switcher extends React.Component {
@@ -242,7 +223,6 @@ export default class Switcher extends React.Component {
   }
 
   render() {
-    const RouterMenuItem = withRouter(MenuItem);
     return (
       <Router>
         <div>
@@ -250,31 +230,15 @@ export default class Switcher extends React.Component {
           <div className="pulp-container">
             <div className="sidebar-container">
               <div className="sidebar">
-                <Link to={"/reading_list"}>
-                  <RouterMenuItem
-                    onClick={() => this.changeSelected("reading_list")}
-                    selected={this.state.selected}
-                    unread={this.state.unread}
-                    value="reading_list"
-                    text={"Unread"}
-                  />
-                </Link>
-                <Link to={"/delivery"}>
-                  <RouterMenuItem
-                    onClick={() => this.changeSelected("delivery")}
-                    selected={this.state.selected}
-                    value="delivery"
-                    text={"Delivery"}
-                  />
-                </Link>
-                <Link to={"/archive"}>
-                  <RouterMenuItem
-                    onClick={() => this.changeSelected("archive")}
-                    selected={this.state.selected}
-                    value="archive"
-                    text={"Archive"}
-                  />
-                </Link>
+                <MenuItem to="/reading_list">
+                  Unread
+                </MenuItem>
+                <MenuItem to="/delivery">
+                  Delivery
+                </MenuItem>
+                <MenuItem to="/archive">
+                  Archive
+                </MenuItem>
               </div>
             </div>
             <div className="page-container">
