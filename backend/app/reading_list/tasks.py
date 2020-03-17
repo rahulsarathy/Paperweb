@@ -37,46 +37,18 @@ def handle_pages_task(link, email=None):
     handle_pages(article, user)
     return
 
-@task(name='import_pocket')
-def import_pocket(email, article_json):
-    if not article_json:
-        return
-    try:
-        user = User.objects.get(email=email)
-    except User.DoesNotExist:
-        logging.warning('User {} does not exist'.format(email))
-        return
-    for key, article in article_json.items():
-        add_from_pocket(user, article)
-    return
 
-
-@task(name='sync_pocket')
-def sync_pocket():
+@task(name='sync_instapaper')
+def sync_instapaper():
     users = User.objects.all()
     for user in users:
         try:
-            pocket_credentials = PocketCredentials.objects.get(owner=user)
-        except PocketCredentials.DoesNotExist:
+            insta_credentials = InstapaperCredentials.objects.get(owner=user)
+        except InstapaperCredentials.DoesNotExist:
             # this user does not have pocket setup, nothing to do here
             continue
 
-        token = pocket_credentials.token
-        last_polled = pocket_credentials.last_polled
-        new_articles = retrieve_pocket(user, token, last_polled)
-        import_pocket.delay(user.email, new_articles)
-
-
-def add_from_pocket(user, article):
-    permalink = article.get('given_url')
-    unix_timestamp = article.get('time_added')
-    timestamp = int(unix_timestamp)
-    dt_object = make_aware(datetime.fromtimestamp(timestamp))
-    add_to_reading_list(user, permalink, dt_object)
-
-@shared_task
-def send_notification():
-    print("this is the task that is sending a notification")
+        parse_instapaper_bookmarks.delay(user.email)
 
 
 @task(name='parse_instapaper_bookmarks')

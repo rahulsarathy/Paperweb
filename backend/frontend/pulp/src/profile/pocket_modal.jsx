@@ -51,7 +51,7 @@ export default class Pocket_Modal extends React.Component {
     $.ajax({
       type: "POST",
       data: data,
-      url: "../api/reading_list/pocket",
+      url: "../api/pocket/pocket",
       success: function(data) {
         window.location.href = data;
       },
@@ -64,7 +64,7 @@ export default class Pocket_Modal extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="service-container">
         <button className="integration-button pocket" onClick={this.showPane}>
           <img className="pocket-image" src={static_url + "pocket_logo.svg"} />
         </button>

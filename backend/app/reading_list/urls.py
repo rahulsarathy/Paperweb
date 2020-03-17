@@ -14,8 +14,5 @@ urlpatterns = [
     path('archive_item', views.archive_item),
     path('update_deliver', views.update_deliver),
     path('unarchive', views.unarchive),
-    path('start_instapaper_import', views.start_instapaper_import),
     path('services_status', views.service_status),
-    path('pocket', views.pocket),
-    path('authenticate_pocket', views.authenticate_pocket),
 ]

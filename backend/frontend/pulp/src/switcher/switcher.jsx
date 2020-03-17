@@ -68,7 +68,11 @@ export default class Switcher extends React.Component {
       error_name: "",
       selected: "unread",
       show_add: false,
-      loading_list: true
+      loading_list: true,
+      instapaper: {},
+      pocket: {},
+      syncing_instapaper: false,
+      syncing_pocket: false
     };
   }
 
@@ -209,6 +213,28 @@ export default class Switcher extends React.Component {
     });
   }
 
+  syncInstapaper() {
+    this.setState(
+      {
+        loading_instapaper: true
+      },
+      () => {
+        var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+        $.ajax({
+          url: "../api/reading_list/sync_instapaper",
+          type: "POST",
+          success: function(data) {
+            this.setState({
+              loading_instapaper: false
+            });
+          }
+        });
+      }
+    );
+  }
+
+  syncPocket() {}
+
   closeModal() {
     this.setState({
       show_add: false
@@ -279,7 +305,11 @@ export default class Switcher extends React.Component {
                 <Route
                   path="/settings"
                   render={() => (
-                    <Profile changeSelected={this.changeSelected} />
+                    <Profile
+                      pocket={this.state.pocket}
+                      syncInstapaper={this.syncInstapaper}
+                      instapaper={this.state.instapaper}
+                    />
                   )}
                 />
                 <Route

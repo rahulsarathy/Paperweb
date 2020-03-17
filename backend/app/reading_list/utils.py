@@ -5,7 +5,7 @@ import json
 import time
 
 from utils.s3_utils import put_object, check_file, get_article_id
-from reading_list.models import ReadingListItem, Article, PocketCredentials
+from reading_list.models import ReadingListItem, Article
 from pulp.globals import HTML_BUCKET, POCKET_CONSUMER_KEY
 from reading_list.serializers import ReadingListItemSerializer
 from django.core.cache import cache
@@ -14,7 +14,6 @@ from django.conf import settings
 
 import requests
 from rest_framework import status
-from django.utils import timezone
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse
@@ -269,31 +268,6 @@ def get_staged_articles(user):
                 return
             staged.append(item.article)
     return staged
-
-
-
-
-def retrieve_pocket(user, access_token, last_polled=None):
-    url = 'https://getpocket.com/v3/get'
-    if last_polled is None:
-        data = {'consumer_key': POCKET_CONSUMER_KEY, 'access_token': access_token, 'state': 'unread'}
-    else:
-        timestamp = time.mktime(last_polled.timetuple())
-        data = {'since': timestamp, 'consumer_key': POCKET_CONSUMER_KEY, 'access_token': access_token, 'state': 'unread'}
-    response = requests.post(url, data=data)
-    response_string = response.content.decode("utf-8")
-    json_response = json.loads(response_string)
-    articles = json_response.get('list')
-
-    try:
-        pocket_credential = PocketCredentials.objects.get(owner=user)
-        pocket_credential.token = access_token
-        pocket_credential.last_polled = timezone.now()
-        pocket_credential.save()
-    except PocketCredentials.DoesNotExist:
-        PocketCredentials(owner=user, token=access_token, last_polled=timezone.now()).save()
-
-    return articles
 
 
 def get_page_count(url):

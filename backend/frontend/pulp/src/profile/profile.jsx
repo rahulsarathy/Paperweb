@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import $ from "jquery";
 import shortid from "shortid";
 import classnames from "classnames";
+import moment from "moment";
 import { Row, Col } from "react-bootstrap";
 import {
   Address_Pane,
@@ -138,7 +139,22 @@ export default class Profile extends React.Component {
     });
   }
 
+  createInstapaperDate() {
+    let insta_date = new Date(this.props.instapaper.last_polled);
+    let unix = insta_date.getTime();
+    let m = moment(unix);
+    return m.fromNow();
+  }
+
+  createPocketDate() {
+    let pocket_date = new Date(this.props.pocket.last_polled);
+    let unix = pocket_date.getTime();
+    let m = moment(unix);
+    return m.fromNow();
+  }
+
   render() {
+    this.createInstapaperDate();
     return (
       <div className="profile-container">
         <h1>Settings</h1>
@@ -158,7 +174,24 @@ export default class Profile extends React.Component {
         <div id="import" className="subsection">
           <SubHeader title="Import Articles" />
           <Instapaper_Pane />
+          {this.props.instapaper.signed_in ? (
+            <div className="sync-date">
+              Last synced: {this.createInstapaperDate()}
+              <button>
+                <img src="../static/icons/sync.svg" />
+              </button>
+            </div>
+          ) : (
+            <div></div>
+          )}
           <Pocket_Modal />
+          {this.props.pocket.signed_in ? (
+            <div className="sync-date">
+              Last synced: {this.createPocketDate()}
+            </div>
+          ) : (
+            <div></div>
+          )}
         </div>
         <div id="address" className="subsection">
           <SubHeader title="Delivery Info" />

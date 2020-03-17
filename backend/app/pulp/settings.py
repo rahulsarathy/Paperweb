@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'reading_list.apps.ReadingListConfig',
     'payments.apps.PaymentsConfig',
     'users.apps.UsersConfig',
+    'instapaper.apps.InstapaperConfig',
+    'pocket.apps.PocketConfig',
     'coverage',
     'django_celery_beat',
     'encrypted_model_fields',
@@ -104,10 +106,14 @@ CELERY_ROUTES = {
     'reading_list.tasks.handle_pages_task': {'queue': 'pdf_queue'}
 }
 CELERY_BEAT_SCHEDULE = {
- 'send_notification': {
-       'task': 'reading_list.tasks.send_notification',
-       'schedule': crontab(minute=0, hour='*/1')
+    'sync_instapaper': {
+        'task': 'instapaper.tasks.sync_instapaper',
+        'schedule': crontab(minute=0, hour=0),
     },
+    'sync_pocket': {
+        'task': 'pocket.tasks.sync_pocket',
+        'schedule': crontab(minute=0, hour=0),
+    }
 }
 
 WSGI_APPLICATION = 'pulp.wsgi.application'

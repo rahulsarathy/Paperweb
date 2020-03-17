@@ -31,6 +31,8 @@ urlpatterns = [
   path('api/users/', include('users.urls')),
   path('api/reading_list/', include('reading_list.urls')),
   path('api/payments/', include('payments.urls')),
+  path('api/instapaper/', include('instapaper.urls')),
+  path('api/pocket/', include('pocket.urls')),
   path('articles/', views.article),
   path('accounts/', include('allauth.urls')),
 ]
