@@ -1,10 +1,85 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "bootstrap/dist/css/bootstrap.css";
-import $ from "jquery";
-import shortid from "shortid";
-import { Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Button, Badge } from "react-bootstrap";
 import { LandingHeader } from "./components.jsx";
+
+const images_url = "../static/images/";
+
+function Header() {
+	return (
+		<Container id="header">
+			<img
+				className="logo"
+				src={images_url + "pulp_temp_logo.svg"}
+			/>
+			<div className="links">
+                <a href="/accounts/login">Pricing</a>
+				<a href="/accounts/signup">Contact</a>
+                <a href="/accounts/login">FAQ</a>
+				<span>|</span>
+				<a href="/accounts/login">Login</a>
+				<a href="/accounts/signup">Sign Up</a>
+			</div>
+		</Container>
+	);
+}
+
+
+function Splash() {
+    return (
+        <Container>
+            <Row id="splash">
+                <Col className="left">
+                    <h1>Your favorite articles, made into a magazine</h1>
+                </Col>
+                <Col className="right">
+                    <h4>High quality writing was meant to be held, not scrolled through</h4>
+                    <Button>Sign Up</Button>
+                </Col>
+            </Row>
+        </Container>
+    );
+}
+
+function Steps() {
+    return (
+        <div id="steps">
+            <Container>
+                <Row>
+                    <Col className="step">
+                        {/* <span className="step-num">1</span> */}
+                        <div className="step-info">
+                            <img src={images_url + "step1.png"}/>  
+                            <span className="step-desc">Add Articles you want to read</span>
+                        </div>
+                    </Col>
+                    <Col className="step">
+                        {/* <span className="step-num">2</span> */}
+                        <div className="step-info">
+                            <img src={images_url + "step2.png"}/>  
+                            <span className="step-desc">Read, whenever you want</span>
+                        </div>
+                    </Col>
+                    <Col className="step">
+                        {/* <span className="step-num">3</span> */}
+                        <div className="step-info">
+                            <img src={images_url + "step3.png"}/>  
+                            <span className="step-desc">What you don't finish gets delivered to you as a magazine</span>
+                        </div>
+                    </Col>
+                </Row>
+            </Container>
+        </div>
+    );
+}
+
+function Preview() {
+    return (
+        <div id="preview">
+            <img src={images_url + "preview.png"}/>
+        </div>
+    );
+}
 
 export default class Landing extends React.Component {
     constructor(props) {
@@ -16,22 +91,10 @@ export default class Landing extends React.Component {
     render() {
         return (
             <div>
-                <LandingHeader />
-                <div className="landing">
-                    <h1 className="logo">Pulp</h1>
-                    <h3 className="questioncopy">
-                        Save your favorite articles, read them at anytime.
-                    </h3>
-                    <div className="blogcopy">
-                        <p>
-                            Whatever you don't finish, gets delivered to your
-                            doorstep.
-                        </p>
-                    </div>
-                    <button className="getstarted">
-                        <a href="/accounts/signup">Get Started</a>
-                    </button>
-                </div>
+                <Header/>
+                <Splash/>
+                <Steps/>
+                <Preview/>
             </div>
         );
     }
