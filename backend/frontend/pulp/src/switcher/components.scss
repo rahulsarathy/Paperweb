@@ -243,25 +243,21 @@ $header-background-color: #363634;
     }
 
     @keyframes placeHolderShimmer {
-      from {
-        // background-position: 0% 0%;
-        // transform: translateX(0%);
-        background-position: -30vw 0;
+      0% {
+        background-position: 0% 50%;
       }
-      to {
-        // background-position: 80% 0%;
-        // transform: translateX(100%);
-        background-position: 70vw 0;
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
       }
     }
 
     .progress {
-      background: linear-gradient(to right, #4c8fff, #c3daff, #4c8fff);
-      animation-duration: 2s;
-      animation-fill-mode: forwards;
-      animation-iteration-count: infinite;
-      animation-name: placeHolderShimmer;
-      animation-timing-function: linear;
+      background: linear-gradient(to right, #4c8fff, #c3daff);
+      background-size: 400% 400%;
+      animation: placeHolderShimmer 2s ease infinite;
       height: 5px;
       border-radius: 0px;
     }
