@@ -244,22 +244,23 @@ $header-background-color: #363634;
 
     @keyframes placeHolderShimmer {
       0% {
-        background-position: 0% 50%;
+        background-position: 0% 0%;
       }
       50% {
-        background-position: 100% 50%;
+        background-position: 100% 0%;
       }
       100% {
-        background-position: 0% 50%;
+        background-position: 0% 0%;
       }
     }
 
     .progress {
-      background: linear-gradient(to right, #4c8fff, #c3daff);
-      background-size: 400% 400%;
+      background: linear-gradient(90deg, #ffffff, #4d8efa);
+      background-size: 300% 100%;
       animation: placeHolderShimmer 2s ease infinite;
-      height: 5px;
+      height: 4px;
       border-radius: 0px;
+      // transition: all 0.2s ease-in-out;
     }
   }
 }
