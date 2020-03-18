@@ -223,3 +223,47 @@ $header-background-color: #363634;
     vertical-align: top;
   }
 }
+
+.status {
+  width: 100%;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  position: fixed;
+  z-index: 3;
+  background-color: white;
+
+  .task {
+    width: 100%;
+    border-top-style: solid;
+    border-top-color: gray;
+    border-top-width: 1px;
+
+    p {
+      margin-bottom: 2px;
+      margin-left: 5px;
+    }
+
+    @keyframes placeHolderShimmer {
+      from {
+        // background-position: 0% 0%;
+        // transform: translateX(0%);
+        background-position: -30vw 0;
+      }
+      to {
+        // background-position: 80% 0%;
+        // transform: translateX(100%);
+        background-position: 70vw 0;
+      }
+    }
+
+    .progress {
+      background: linear-gradient(to right, #4c8fff, #c3daff, #4c8fff);
+      animation-duration: 2s;
+      animation-fill-mode: forwards;
+      animation-iteration-count: infinite;
+      animation-name: placeHolderShimmer;
+      animation-timing-function: linear;
+      height: 5px;
+      border-radius: 0px;
+    }
+  }
+}

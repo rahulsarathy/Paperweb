@@ -9,3 +9,4 @@ class PocketCredentials(models.Model):
     owner = models.OneToOneField(User, on_delete=models.CASCADE)
     token = EncryptedCharField(max_length=35)
     last_polled = models.DateTimeField(default=None, null=True)
+    invalid = models.NullBooleanField(null=True, default=None)

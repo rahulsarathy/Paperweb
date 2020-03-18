@@ -12,7 +12,8 @@ import {
   Delivery,
   Sidebar,
   AddArticle,
-  Profile
+  Profile,
+  Status
 } from "./components.jsx";
 import {
   BrowserRouter as Router,
@@ -240,6 +241,7 @@ export default class Switcher extends React.Component {
               </div>
             </div>
             <div className="page-container">
+              <Status />
               <AddArticle
                 addArticle={this.addArticle}
                 show_add={this.state.show_add}

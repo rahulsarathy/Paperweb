@@ -15,3 +15,4 @@ class InstapaperCredentials(models.Model):
     owner = models.OneToOneField(User, on_delete=models.CASCADE)
     last_polled = models.DateTimeField(default=None, null=True)
     polled_bookmarks = JSONField(null=True, default=dict)
+    invalid = models.NullBooleanField(null=True, default=None)
