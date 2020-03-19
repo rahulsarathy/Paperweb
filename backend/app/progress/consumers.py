@@ -77,11 +77,11 @@ class ProgressConsumer(AsyncWebsocketConsumer):
             'completed': completed
         }))
 
-    async def reading_list_item(self, event):
-        reading_list_item = event['reading_list_item']
+    async def reading_list(self, event):
+        reading_list = event['reading_list']
         await self.send(text_data=json.dumps({
-            'job_type': 'reading_list_item',
-            'reading_list_item': reading_list_item,
+            'job_type': 'reading_list',
+            'reading_list': reading_list,
         }))
 
     async def to_deliver(self, event):

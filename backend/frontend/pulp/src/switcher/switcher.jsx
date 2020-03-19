@@ -177,7 +177,7 @@ export default class Switcher extends React.Component {
       case "to_deliver":
         this.handleToDeliver(data);
         break;
-      case "reading_list_item":
+      case "reading_list":
         this.handleReadingList(data);
         break;
       case "message":
@@ -187,9 +187,7 @@ export default class Switcher extends React.Component {
   }
 
   handleReadingList(data) {
-    let reading_list_item = data.reading_list_item;
-    let reading_list = this.state.reading_list;
-    reading_list.unshift(reading_list_item);
+    let reading_list = data.reading_list;
     this.setState({
       reading_list: reading_list
     });

@@ -12,7 +12,8 @@ from django.core.cache import cache
 from django.conf import settings
 from django.utils.timezone import now
 from rest_framework import status
-from progress.types import update_add_to_reading_list_status, update_page_count, update_delivery
+from progress.types import update_add_to_reading_list_status, update_reading_list
+
 
 import requests
 from django.core.validators import URLValidator
@@ -78,8 +79,9 @@ def add_to_reading_list(user, link, date_added=None):
 # decide whether or not to undergo the expensive task of counting article pages
 def delegate_task(article, article_created):
     article_id = get_article_id(article.permalink)
-    article_key = "./{}.html".format(article_id)
-    if article.page_count is None or article_created or not check_file(article_key, HTML_BUCKET):
+    article_key = "{}.html".format(article_id)
+    s3_has = check_file(article_key, HTML_BUCKET)
+    if article.page_count is None or article_created or not s3_has:
         return True
     else:
         return False
@@ -233,8 +235,6 @@ def handle_pages(article, user=None):
     else:
         page_count = article.page_count
 
-    update_page_count(user, article.permalink, page_count)
-
     # for backfill_pages command
     if user is None:
         return page_count
@@ -254,7 +254,7 @@ def handle_pages(article, user=None):
     rlist_item.to_deliver = to_deliver
     rlist_item.save()
 
-    update_delivery(user, article.permalink, to_deliver)
+    update_reading_list(user)
 
     return page_count
 

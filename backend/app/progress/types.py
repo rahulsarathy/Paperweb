@@ -57,17 +57,16 @@ def update_delivery(user, link, to_deliver):
         }
     )
 
-def update_reading_list(user, reading_list_item):
+def update_reading_list(user):
+    from reading_list.utils import get_reading_list
     channel_layer = get_channel_layer()
     channel_id = get_channel_id(user.email)
-
-    serializer = ReadingListItemSerializer(reading_list_item)
-    serialized_reading_list_item = serializer.data
+    reading_list = get_reading_list(user)
 
     async_to_sync(channel_layer.group_send)(
         channel_id,
         {
-            'type': 'reading_list_item',
-            'reading_list_item': serialized_reading_list_item,
+            'type': 'reading_list',
+            'reading_list': reading_list,
         }
     )

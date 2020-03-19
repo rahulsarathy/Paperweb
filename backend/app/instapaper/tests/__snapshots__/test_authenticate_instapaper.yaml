@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: x_auth_username=blah2%40gmail.com&x_auth_password=pulptesting&x_auth_mode=client_auth
+    body: x_auth_username=rahul%40getpulp.io&x_auth_password=pulptesting&x_auth_mode=client_auth
     headers:
       Accept:
       - !!binary |
@@ -10,16 +10,16 @@ interactions:
         Z3ppcCwgZGVmbGF0ZQ==
       Authorization:
       - !!binary |
-        T0F1dGggb2F1dGhfbm9uY2U9IjE1MDg3MzEwNzA3NTAyMTc4MDIxMTU4NDYwNDAxNiIsIG9hdXRo
-        X3RpbWVzdGFtcD0iMTU4NDYwNDAxNiIsIG9hdXRoX3ZlcnNpb249IjEuMCIsIG9hdXRoX3NpZ25h
+        T0F1dGggb2F1dGhfbm9uY2U9IjE3Mjk5OTQ3ODEyODkwMjQ2MzQ4MTU4NDYxMTA1NSIsIG9hdXRo
+        X3RpbWVzdGFtcD0iMTU4NDYxMTA1NSIsIG9hdXRoX3ZlcnNpb249IjEuMCIsIG9hdXRoX3NpZ25h
         dHVyZV9tZXRob2Q9IkhNQUMtU0hBMSIsIG9hdXRoX2NvbnN1bWVyX2tleT0iYjVkOTk4NTM4MTkz
-        NGVjODgyMjFhZjhhZDMxMmM0YTMiLCBvYXV0aF9zaWduYXR1cmU9IlhWWHl2Zk10bE05d1FSZmRQ
-        VXBzeTlpN1dwNCUzRCI=
+        NGVjODgyMjFhZjhhZDMxMmM0YTMiLCBvYXV0aF9zaWduYXR1cmU9IjYxeWpxNEhIS2dwU0o0Z0pW
+        Nk5iOHVLOGNLMCUzRCI=
       Connection:
       - !!binary |
         a2VlcC1hbGl2ZQ==
       Content-Length:
-      - '85'
+      - '86'
       Content-Type:
       - !!binary |
         YXBwbGljYXRpb24veC13d3ctZm9ybS11cmxlbmNvZGVk
@@ -31,8 +31,8 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA0XLSw6AIAwFwNu4rjzKZ8FZSGkhJiaSKN7fpbOfKe866ppnv+rT9e6rgENANLCC
-        fRRJ6AxAJFrmXXSb/ykO0DGgIUP9ADdCdomoGYgs5Q++n/0yYAAAAA==
+        H4sIAAAAAAAAA0XLMQ6AIAwAwN+4lxZbBt5CSmljYiKJ4v8dvf2mvutoa55+tcft9lVBNRJoNtCg
+        UJLhKl4YA7p0tm3+p3IKYxPMiDvtNAS9jBQEMkrhjB9+4VfoYAAAAA==
     headers:
       Cache-Control:
       - no-cache
@@ -45,7 +45,7 @@ interactions:
       Content-Type:
       - text/html; charset=UTF-8
       Date:
-      - Thu, 19 Mar 2020 07:46:56 GMT
+      - Thu, 19 Mar 2020 09:44:16 GMT
       Pragma:
       - no-cache
       Server:
