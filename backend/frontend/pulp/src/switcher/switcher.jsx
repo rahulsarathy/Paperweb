@@ -94,9 +94,25 @@ export default class Switcher extends React.Component {
   handleAddToReadingList(data) {
     let link = data.link;
     let percent = data.percent;
+    let add_to_reading_list = this.state.add_to_reading_list;
+
+    // remove task if it is 100 percent complete
+    if (percent === 100) {
+      let i;
+      for (i = 0; i < add_to_reading_list.length; i++) {
+        if (add_to_reading_list[i].link === link) {
+          let index = i;
+          break;
+        }
+      }
+      add_to_reading_list.splice(i, 1);
+      this.setState({
+        add_to_reading_list: add_to_reading_list
+      });
+      return;
+    }
     // Add new task if percent is at 0
     if (percent === 0) {
-      let add_to_reading_list = this.state.add_to_reading_list;
       let new_task = {
         percent: percent,
         link: link,
@@ -108,7 +124,6 @@ export default class Switcher extends React.Component {
       });
       return;
     } else {
-      let add_to_reading_list = this.state.add_to_reading_list;
       for (let i = 0; i < add_to_reading_list.length; i++) {
         if (add_to_reading_list[i].link == link) {
           add_to_reading_list[i].percent = percent;

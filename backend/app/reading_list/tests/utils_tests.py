@@ -79,9 +79,10 @@ class AddToReadingListTestCase(TestCase):
         self.assertEquals(article.mercury_response.get('url'), self.url2)
 
     @vcr.use_cassette('reading_list/tests/__snapshots__/test_add_to_reading_list_with_date.yaml')
+    @mock.patch('reading_list.utils.handle_pages')
     @mock.patch('reading_list.utils.delegate_task')
     @mock.patch('reading_list.utils.fill_article_fields')
-    def test_add_to_reading_list_with_date(self, mock_fill_article_fields, mock_delegate_task):
+    def test_add_to_reading_list_with_date(self, mock_fill_article_fields, mock_delegate_task, mock_handle_pages):
         my_article = baker.make('reading_list.Article')
         my_article.save()
         mock_fill_article_fields.return_value = my_article, False

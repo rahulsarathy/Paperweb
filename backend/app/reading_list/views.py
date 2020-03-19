@@ -37,6 +37,9 @@ def handle_add_to_reading_list(request):
         return JsonResponse(data={'error': 'Invalid URL.'}, status=400)
     except json.decoder.JSONDecodeError:
         return JsonResponse(data={'error': 'Invalid URL.'}, status=400)
+    except Exception as e:
+        update_add_to_reading_list_status(user, link, 100)
+        return JsonResponse(data={'error': 'Error while adding to reading list. Try again or contact support.'}, status=400)
 
     update_add_to_reading_list_status(user, link, 100)
     return JsonResponse(get_reading_list(user), safe=False)

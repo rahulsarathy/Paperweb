@@ -55,7 +55,7 @@ def add_to_reading_list(user, link, date_added=None):
 
     update_add_to_reading_list_status(user, link, 70)
 
-    reading_list_item, created = ReadingListItem.objects.get_or_create(
+    reading_list_item, reading_list_item_created = ReadingListItem.objects.get_or_create(
         reader=user, article=article
     )
     # Some instapaper links come with a timestamp
@@ -71,6 +71,11 @@ def add_to_reading_list(user, link, date_added=None):
     if delegate_task(article, article_created):
         from reading_list.tasks import handle_pages_task
         handle_pages_task.delay(link, user.email)
+    else:
+        if reading_list_item_created:
+            # If process skips handle_pages_task, we still need to decide whether or not to add article
+            # to user reading list
+            handle_pages(article, user)
 
     update_add_to_reading_list_status(user, link, 90)
 

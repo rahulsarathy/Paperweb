@@ -11,7 +11,9 @@ from reading_list.models import ReadingListItem
 from reading_list.views import get_reading, get_archive, unarchive, archive_item, update_deliver
 from reading_list.views import handle_add_to_reading_list
 from reading_list.views import remove_from_reading_list
+from reading_list.utils import add_to_reading_list
 from django.contrib.auth.models import User
+from progress.types import update_add_to_reading_list_status
 
 from django.utils.timezone import make_aware
 from django_fakeredis import FakeRedis
@@ -174,6 +176,15 @@ class ReadingListTest(APITestCase):
         self.assertEqual(data[1]['article']['title'], self.article1.title)
         self.assertEqual(data[2]['article']['title'], self.article2.title)
         self.assertTrue(mock_handle_pages_task.called)
+
+    @mock.patch('reading_list.views.update_add_to_reading_list_status')
+    @mock.patch('reading_list.views.add_to_reading_list')
+    def test_add_to_reading_list_status(self, mock_add_to_reading_list, mock_update_add_to_reading_list_status):
+
+        request = self.factory.post(self.add_reading, {'link': self.to_add_link})
+        force_authenticate(request, user=self.test_user)
+        handle_add_to_reading_list(request)
+        mock_update_add_to_reading_list_status.assert_called_with(self.test_user, self.to_add_link, 100)
 
     def test_handle_add_to_reading_list_bad_link(self):
         """
