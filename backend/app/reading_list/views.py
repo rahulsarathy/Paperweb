@@ -1,3 +1,4 @@
+import json
 
 from reading_list.models import Article, ReadingListItem
 from reading_list.utils import get_parsed, html_to_s3, get_reading_list, \
@@ -33,6 +34,8 @@ def handle_add_to_reading_list(request):
     try:
         add_to_reading_list(user, link)
     except ValidationError:
+        return JsonResponse(data={'error': 'Invalid URL.'}, status=400)
+    except json.decoder.JSONDecodeError:
         return JsonResponse(data={'error': 'Invalid URL.'}, status=400)
 
     update_add_to_reading_list_status(user, link, 100)

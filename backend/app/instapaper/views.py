@@ -14,8 +14,19 @@ import urllib
 
 @api_view(['POSt'])
 def sync_instapaper(request):
-    pass
 
+    user = request.user
+    if not user.is_authenticated:
+        return JsonResponse(data={'error': 'Invalid request.'}, status=403)
+
+    try:
+        credentials = InstapaperCredentials.objects.get(owner=user)
+    except InstapaperCredentials.DoesNotExist:
+        return JsonResponse(data={'error': 'Invalid Instapaper Credentials.'}, status=403)
+
+    parse_instapaper_bookmarks.delay(user.email)
+
+    return HttpResponse(status=200)
 
 @api_view(['POST'])
 def authenticate_instapaper(request):

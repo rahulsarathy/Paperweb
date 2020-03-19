@@ -53,7 +53,7 @@ def parse_instapaper_bookmarks(email):
     have_string = ','.join(str(polled_id) for polled_id in polled_ids)
     data = {
         'have': have_string,
-        'limit': 10,
+        'limit': 500,
     }
 
     response = requests.post(bookmarks_url, auth=oauth, data=data)
@@ -68,15 +68,24 @@ def parse_instapaper_bookmarks(email):
     for bookmark in bookmarks:
         if bookmark.get('type', '') != 'bookmark':
             continue
-        bookmark_id = bookmark.get('bookmark_id')
         link = bookmark.get('url')
-        polled_bookmarks[link] = bookmark_id
-        credentials.polled_bookmarks = polled_bookmarks
-        credentials.save()
         unix_timestamp = bookmark.get('time')
         timestamp = int(unix_timestamp)
         dt_object = make_aware(datetime.fromtimestamp(timestamp))
-        reading_list_item = add_to_reading_list(user, link, dt_object)
+
+        try:
+            reading_list_item = add_to_reading_list(user, link, dt_object)
+        except Exception as e:
+            logging.warning("add_to_reading_list failed in instapaper with exception {} from link: {}".format(e, link))
+            # failed to add article.
+            total_num_of_bookmarks = total_num_of_bookmarks - 1
+            update_instapaper_queue_status(user, complete, total_num_of_bookmarks)
+            continue
+
+        bookmark_id = bookmark.get('bookmark_id')
+        polled_bookmarks[link] = bookmark_id
+        credentials.polled_bookmarks = polled_bookmarks
+        credentials.save()
         update_reading_list(user, reading_list_item)
         complete = complete + 1
         update_instapaper_queue_status(user, complete, total_num_of_bookmarks)

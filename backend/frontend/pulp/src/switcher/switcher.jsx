@@ -48,14 +48,31 @@ export default class Switcher extends React.Component {
     this.handleAddToReadingList = this.handleAddToReadingList.bind(this);
     this.handleInstapaperQueue = this.handleInstapaperQueue.bind(this);
     this.handlePageCount = this.handlePageCount.bind(this);
+    this.syncInstapaper = this.syncInstapaper.bind(this);
 
-    this.chatSocket = new WebSocket(
+    this.progressSocket = new WebSocket(
       "ws://" + window.location.host + "/ws/api/progress/"
     );
 
-    this.chatSocket.onmessage = function(e) {
+    // this.pageSocket = new WebSocket(
+    //   "ws://" + window.location.host + "/ws/api/page_count/"
+    // );
+
+    // this.deliverySocket = new WebSocket(
+    //   "ws://" + window.location.host + "/ws/api/deliver/"
+    // );
+
+    this.progressSocket.onmessage = function(e) {
       this.handleWebSocket(e);
     }.bind(this);
+
+    // this.pageSocket.onmessage = function(e) {
+    //   this.handleWebSocket(e);
+    // }.bind(this);
+
+    // this.deliverySocket.onmessage = function(e) {
+    //   this.handleWebSocket(e);
+    // }.bind(this);
 
     this.state = {
       reading_list: [],
@@ -308,23 +325,18 @@ export default class Switcher extends React.Component {
   }
 
   syncInstapaper() {
-    this.setState(
-      {
-        loading_instapaper: true
-      },
-      () => {
-        var csrftoken = $("[name=csrfmiddlewaretoken]").val();
-        $.ajax({
-          url: "../api/reading_list/sync_instapaper",
-          type: "POST",
-          success: function(data) {
-            this.setState({
-              loading_instapaper: false
-            });
-          }
-        });
-      }
-    );
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    let data = {
+      csrfmiddlewaretoken: csrftoken
+    };
+
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    $.ajax({
+      url: "../api/instapaper/sync_instapaper",
+      data: data,
+      type: "POST",
+      success: function(data) {}
+    });
   }
 
   syncPocket() {}

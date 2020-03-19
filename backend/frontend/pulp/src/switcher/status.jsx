@@ -54,7 +54,7 @@ class Task extends Component {
 
 class InstapaperTask extends Component {
 	shouldComponentUpdate(nextProps, nextState) {
-		if (nextProps.total === this.props.total) {
+		if (nextProps.completed === this.props.total) {
 			setTimeout(() => {}, 1000);
 		}
 		return true;

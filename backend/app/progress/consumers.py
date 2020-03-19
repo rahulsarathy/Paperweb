@@ -40,14 +40,13 @@ class ProgressConsumer(AsyncWebsocketConsumer):
         # )
         # await self.channel_layer.send('chat_message', {"message": "sending from backend"})
 
-    # Receive message from room group
-    async def chat_message(self, event):
-        message = event['message']
-
-        # Send message to WebSocket
+    async def page_count(self, event):
+        page_count = event['page_count']
+        link = event['link']
         await self.send(text_data=json.dumps({
-            'message': message,
-            'job_type': 'message',
+            'job_type': 'page_count',
+            'page_count': page_count,
+            'link': link
         }))
 
     async def add_to_reading_list(self, event):
@@ -78,6 +77,13 @@ class ProgressConsumer(AsyncWebsocketConsumer):
             'completed': completed
         }))
 
+    async def reading_list_item(self, event):
+        reading_list_item = event['reading_list_item']
+        await self.send(text_data=json.dumps({
+            'job_type': 'reading_list_item',
+            'reading_list_item': reading_list_item,
+        }))
+
     async def to_deliver(self, event):
         to_deliver = event['to_deliver']
         link = event['link']
@@ -86,14 +92,3 @@ class ProgressConsumer(AsyncWebsocketConsumer):
             'to_deliver': to_deliver,
             'link': link
         }))
-
-    async def reading_list_item(self, event):
-        reading_list_item = event['reading_list_item']
-        await self.send(text_data=json.dumps({
-            'job_type': 'reading_list_item',
-            'reading_list_item': reading_list_item,
-        }))
-
-
-    async def pocket_queue(self, event):
-        pass
