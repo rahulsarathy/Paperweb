@@ -50,7 +50,8 @@ class AddToReadingListTestCase(TestCase):
 
     # Test that add_to_reading_list succesfully saves an article
     @vcr.use_cassette('reading_list/tests/__snapshots__/test_save_article.yaml')
-    def test_save_article(self):
+    @mock.patch('reading_list.tasks.handle_pages_task')
+    def test_save_article(self, mock_handle_pages_task):
         add_to_reading_list(self.user, self.url1)
         article, article_created = Article.objects.get_or_create(
             permalink=self.url1
@@ -60,7 +61,8 @@ class AddToReadingListTestCase(TestCase):
 
     # Test that add_to_reading_list succesfully saves to reading list
     @vcr.use_cassette('reading_list/tests/__snapshots__/test_save_reading_list.yaml')
-    def test_save_reading_list(self):
+    @mock.patch('reading_list.tasks.handle_pages_task')
+    def test_save_reading_list(self, mock_handle_pages_task):
         add_to_reading_list(self.user, self.url1)
         article = Article.objects.get(permalink=self.url1)
 
