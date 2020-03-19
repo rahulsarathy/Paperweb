@@ -5,16 +5,17 @@ import json
 import time
 
 from utils.s3_utils import put_object, check_file, get_article_id
-from reading_list.models import ReadingListItem, Article, PocketCredentials
+from reading_list.models import ReadingListItem, Article
 from pulp.globals import HTML_BUCKET, POCKET_CONSUMER_KEY
 from reading_list.serializers import ReadingListItemSerializer
 from django.core.cache import cache
 from django.conf import settings
+from django.utils.timezone import now
+from rest_framework import status
+from progress.types import update_add_to_reading_list_status, update_reading_list
 
 
 import requests
-from rest_framework import status
-from django.utils import timezone
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse
@@ -25,7 +26,7 @@ def get_reading_list(user):
     my_reading = ReadingListItem.objects.filter(reader=user, archived=False).order_by('-date_added')
     serializer = ReadingListItemSerializer(my_reading, many=True)
     json_response = serializer.data
-    return JsonResponse(json_response, safe=False)
+    return json_response
 
 
 def get_archive_list(user):
@@ -48,30 +49,44 @@ def add_to_reading_list(user, link, date_added=None):
     except ValidationError:
         raise
 
+    update_add_to_reading_list_status(user, link, 30)
+
     article, article_created = fill_article_fields(link)
 
+    update_add_to_reading_list_status(user, link, 70)
+
+    reading_list_item, reading_list_item_created = ReadingListItem.objects.get_or_create(
+        reader=user, article=article
+    )
     # Some instapaper links come with a timestamp
     if date_added is not None:
-        reading_list_item, created = ReadingListItem.objects.get_or_create(
-            reader=user, article=article, date_added=date_added
-        )
+        reading_list_item.date_added = date_added
+        reading_list_item.save()
     else:
-        reading_list_item, created = ReadingListItem.objects.get_or_create(
-            reader=user, article=article
-        )
+        reading_list_item.date_added = now()
+        reading_list_item.save()
 
-    article_id = get_article_id(link)
+    update_add_to_reading_list_status(user, link, 75)
+
     if delegate_task(article, article_created):
         from reading_list.tasks import handle_pages_task
         handle_pages_task.delay(link, user.email)
+    else:
+        if reading_list_item_created:
+            # If process skips handle_pages_task, we still need to decide whether or not to add article
+            # to user reading list
+            handle_pages(article, user)
 
-    return True
+    update_add_to_reading_list_status(user, link, 90)
+
+    return reading_list_item
 
 # decide whether or not to undergo the expensive task of counting article pages
 def delegate_task(article, article_created):
     article_id = get_article_id(article.permalink)
-    article_key = "./{}.html".format(article_id)
-    if article.page_count is None or article_created or not check_file(article_key, HTML_BUCKET):
+    article_key = "{}.html".format(article_id)
+    s3_has = check_file(article_key, HTML_BUCKET)
+    if article.page_count is None or article_created or not s3_has:
         return True
     else:
         return False
@@ -80,7 +95,9 @@ def delegate_task(article, article_created):
 def fill_article_fields(link):
     try:
         article = Article.objects.get(permalink=link)
-        return article, False
+        # skip finding mercury response if already created
+        if not article.mercury_response is None:
+            return article, False
     except Article.DoesNotExist:
         pass
 
@@ -129,8 +146,17 @@ def get_parsed(url):
         logging.warning("Could not connect to parser with {}".format(e))
         raise
 
-    response_string = response.content.decode("utf-8")
-    json_response = json.loads(response_string)
+    try:
+        response_string = response.content.decode("utf-8")
+        json_response = json.loads(response_string)
+    except json.decoder.JSONDecodeError:
+        logging.warning("JSON decode error from {}".format(url))
+        logging.warning("response_string is {}".format(response_string))
+        raise
+    except Exception as e:
+        logging.warning("Could not get mercury for {} with error: {}".format(url, e))
+        raise
+
     if not json_response.get('error', False):
         cache.set(url, response_string)
 
@@ -216,7 +242,7 @@ def handle_pages(article, user=None):
 
     # for backfill_pages command
     if user is None:
-        return
+        return page_count
 
     # Set to_deliver for ReadingListItem
     rlist_item, created = ReadingListItem.objects.get_or_create(
@@ -232,7 +258,10 @@ def handle_pages(article, user=None):
         to_deliver = True
     rlist_item.to_deliver = to_deliver
     rlist_item.save()
-    return
+
+    update_reading_list(user)
+
+    return page_count
 
 
 def get_selected_pages(user, permalink):
@@ -269,31 +298,6 @@ def get_staged_articles(user):
                 return
             staged.append(item.article)
     return staged
-
-
-
-
-def retrieve_pocket(user, access_token, last_polled=None):
-    url = 'https://getpocket.com/v3/get'
-    if last_polled is None:
-        data = {'consumer_key': POCKET_CONSUMER_KEY, 'access_token': access_token, 'state': 'unread'}
-    else:
-        timestamp = time.mktime(last_polled.timetuple())
-        data = {'since': timestamp, 'consumer_key': POCKET_CONSUMER_KEY, 'access_token': access_token, 'state': 'unread'}
-    response = requests.post(url, data=data)
-    response_string = response.content.decode("utf-8")
-    json_response = json.loads(response_string)
-    articles = json_response.get('list')
-
-    try:
-        pocket_credential = PocketCredentials.objects.get(owner=user)
-        pocket_credential.token = access_token
-        pocket_credential.last_polled = timezone.now()
-        pocket_credential.save()
-    except PocketCredentials.DoesNotExist:
-        PocketCredentials(owner=user, token=access_token, last_polled=timezone.now()).save()
-
-    return articles
 
 
 def get_page_count(url):

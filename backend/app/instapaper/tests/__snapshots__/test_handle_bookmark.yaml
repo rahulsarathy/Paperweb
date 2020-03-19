@@ -1,0 +1,314 @@
+interactions:
+- request:
+    body: url=https%3A%2F%2Fmedium.com%2F%40joulee%2Fstay-healthy-stay-data-informed-d62da66951d7
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '87'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - python-requests/2.22.0
+    method: POST
+    uri: http://pulp_parser_1:3000/api/mercury
+  response:
+    body:
+      string: "{\"title\":\"Stay Healthy. Stay Data-Informed.\",\"content\":\"<div><article><section\
+        \ class=\\\"cy cz da db ai dc dd n de\\\"></section><div><section class=\\\
+        \"dj dk dl dm dn\\\"><div class=\\\"gi\\\"><div class=\\\"n p\\\"><div class=\\\
+        \"gj gk gl gm gn go ae gp af gq ah ai\\\"><figure class=\\\"gs gt gu gv gw\
+        \ gi gx gy paragraph-image\\\"><img class=\\\"s t u hf ai\\\" src=\\\"https://miro.medium.com/max/5120/1*hySCgJMFVUOtrgyT1NGoCA.jpeg\\\
+        \" width=\\\"2560\\\"><figcaption class=\\\"bl ev hp hq hr dc da db hs ht\
+        \ at eu\\\">Photo by <a href=\\\"https://flickr.com/photos/beachmobjellies/\\\
+        \" class=\\\"ex fv hu hv hw hx\\\">https://flickr.com/photos/beachmobjellies/</a></figcaption></figure></div></div></div><div\
+        \ class=\\\"n p\\\"><div class=\\\"z ab ac ae af do ah ai\\\"><p id=\\\"ae88\\\
+        \" class=\\\"hy hz dr bh ia b ib ic id ie if ig ih ii ij ik il dj\\\"><em\
+        \ class=\\\"im\\\">This was first published on my </em><a href=\\\"https://lg.substack.com/p/stay-healthy-stay-data-informed\\\
+        \" class=\\\"ex fv hu hv hw hx\\\"><em class=\\\"im\\\">mailing list The Year\
+        \ of the Looking Glass</em></a><em class=\\\"im\\\">. Sign up to get essays\
+        \ like these in your inbox 1&#x2013;2 times a month.</em></p><p id=\\\"1bb1\\\
+        \" class=\\\"hy hz dr bh ia b ib ic id ie if ig ih ii ij ik il dj\\\">I have\
+        \ a confession to make.</p><p id=\\\"fb32\\\" class=\\\"hy hz dr bh ia b ib\
+        \ ic id ie if ig ih ii ij ik il dj\\\">As a designer, for years my primary\
+        \ goal was striving to improve my product intuition.</p><p id=\\\"b022\\\"\
+        \ class=\\\"hy hz dr bh ia b ib ic id ie if ig ih ii ij ik il dj\\\">You see,\
+        \ I believed:</p><ul class><li id=\\\"f7e8\\\" class=\\\"hy hz dr bh ia b\
+        \ ib ic id ie if ig ih ii ij ik il in io ip\\\">The most wonderful products\
+        \ are that way because of a leader&#x2019;s keen insights borne of their intuition.</li><li\
+        \ id=\\\"744e\\\" class=\\\"hy hz dr bh ia b ib iq id ir if is ih it ij iu\
+        \ il in io ip\\\">People in suits and ties looking at sheets and sheets of\
+        \ numbers are missing the critical point &#x2014; what it <em class=\\\"im\\\
+        \">feels</em> like. What&#x2019;s the <em class=\\\"im\\\">story</em> that&#x2019;s\
+        \ going around. Where the <em class=\\\"im\\\">culture</em> is pointed.</li><li\
+        \ id=\\\"e19a\\\" class=\\\"hy hz dr bh ia b ib iq id ir if is ih it ij iu\
+        \ il in io ip\\\">The main difference between senior and junior designers\
+        \ was the strength and quality of their intuition.</li></ul><p id=\\\"d80f\\\
+        \" class=\\\"hy hz dr bh ia b ib ic id ie if ig ih ii ij ik il dj\\\">I believed\
+        \ the above with a deep and abiding fervor. The best designers I knew at the\
+        \ time had an alluring confidence borne of their well-honed sense of what\
+        \ was good and wasn&#x2019;t. I strove to be like them, listening and inhaling\
+        \ and jumping obstacles on the quest for that holy grail of <em class=\\\"\
+        im\\\">taste</em>. In fact, I wore my early-adoptnerness as a lifestyle, a\
+        \ badge of pride. I joined Facebook over Microsoft in 2006 because it was\
+        \ a product my friends and I used everyday. I sang the praises of my Welsh\
+        \ Airbnb hosts&#x2019; hearty breakfast when most people were like, <em class=\\\
+        \"im\\\">You stayed in a stranger&#x2019;s house in another country?</em>\
+        \ I never advanced my poor cooking skills because I switched to getting meals\
+        \ delivered every day as soon as food delivery services got started.</p><p\
+        \ id=\\\"09ef\\\" class=\\\"hy hz dr bh ia b ib ic id ie if ig ih ii ij ik\
+        \ il dj\\\">As such, I regarded the use of big data to make judgements the\
+        \ way I would an attractive peddler with a golden voice coming to town to\
+        \ sell cures for a broken heart: with extreme skepticism.</p><p id=\\\"8035\\\
+        \" class=\\\"hy hz dr bh ia b ib ic id ie if ig ih ii ij ik il dj\\\">And\
+        \ &#x2014; it was true! &#x2014; I saw misuses under the banner of &#x201C;be\
+        \ data-driven!&#x201D; everywhere. (And while we are at it, let&#x2019;s retire\
+        \ the term &#x201C;data-driven,&#x201D; shall we? It implies spreadsheets\
+        \ are at the wheel of your decisions, not humans.) Hordes of A/B tests that\
+        \ had teams running on treadmills busily shipping, but doing little to truly\
+        \ improve things. Hours of analyses that focused on micro-optimizations. Data\
+        \ being used to justify decisions that plain and simply felt incorrect, only\
+        \ to later find &#x2014; <em class=\\\"im\\\">oops, the logging was wrong</em>.\
+        \ I wrote lots of articles <a class=\\\"ex fv hu hv hw hx\\\" href=\\\"https://medium.com/the-year-of-the-looking-glass/metrics-versus-experience-a9347d6b80b\\\
+        \">here</a> and <a class=\\\"ex fv hu hv hw hx\\\" href=\\\"https://medium.com/the-year-of-the-looking-glass/the-agony-and-ecstasy-of-building-with-data-56215764d67c\\\
+        \">here</a> and <a class=\\\"ex fv hu hv hw hx\\\" href=\\\"https://medium.com/the-year-of-the-looking-glass/metrics-a-story-df6699e9a685\\\
+        \">here</a> to broadcast the message of &#x201C;practice safe data-informedness!&#x201D;</p><p\
+        \ id=\\\"0608\\\" class=\\\"hy hz dr bh ia b ib ic id ie if ig ih ii ij ik\
+        \ il dj\\\">But really, I thought we were all really overdoing it. I nodded\
+        \ vigorously when Jeff Bezos said that in his experience, when anecdotes and\
+        \ data diverge, he believes the anecdotes. Here, in the living breathing world,\
+        \ we are not all perfectly rational beings. It&#x2019;s stories that brings\
+        \ tears to our eyes, not numbers.</p><p id=\\\"67e7\\\" class=\\\"hy hz dr\
+        \ bh ia b ib ic id ie if ig ih ii ij ik il dj\\\">We follow our hearts and\
+        \ guts, not kanban boards and excel sheets.</p><p id=\\\"95d5\\\" class=\\\
+        \"hy hz dr bh ia b ib ic id ie if ig ih ii ij ik il dj\\\">I don&#x2019;t\
+        \ know exactly when this started changing for me, but it did. Maybe it was\
+        \ one too many experiences <a class=\\\"ex fv hu hv hw hx\\\" href=\\\"https://medium.com/@joulee/whatevers-best-for-the-people-thats-what-we-do-ed75a0ee7641\\\
+        \">like this one</a>. Maybe it was the Nth time my intuition turned out to\
+        \ be wrong in some small way, like <em class=\\\"im\\\">Wow, as much as I\
+        \ love me an aesthetically pleasing uncluttered set of icons with no labels,\
+        \ somehow the vast majority of the world appreciates and finds things easier\
+        \ to use with labels.</em> Or maybe I just wised up and realized that data\
+        \ is no different than a sword or a hammer or that excel sheet I keep bashing\
+        \ &#x2014; it can be used well or it can be used poorly. Whatever the reason,\
+        \ I&#x2019;m now firmly on the other side. I believe that most people, teams,\
+        \ companies, industries could function better by using <em class=\\\"im\\\"\
+        >more data better</em>.</p><p id=\\\"7c3f\\\" class=\\\"hy hz dr bh ia b ib\
+        \ ic id ie if ig ih ii ij ik il dj\\\">One of the best things about working\
+        \ at Facebook-scale, where every day millions or billions of people interact\
+        \ with what you design, is that you quickly become humbled by how little you\
+        \ can intuit about what works for someone who just got on the Internet for\
+        \ the first time and is trying to set up their first profile and make their\
+        \ first post. The world is soaringly vast in its complexity. To think our\
+        \ little molecule of an individual experience can be relied on help us understand\
+        \ the nuances of its evolution and ecosystems and weather formations is hubris.\
+        \ Taste, that lovely thing, is simply an ability to make a small ripple in\
+        \ the small pond we are familiar with; sometimes, luck takes that ripple and\
+        \ propels it across other ponds and oceans.</p><p id=\\\"5881\\\" class=\\\
+        \"hy hz dr bh ia b ib ic id ie if ig ih ii ij ik il dj\\\">These past few\
+        \ weeks, with the weight of the coronavirus situation, I&#x2019;ve felt all\
+        \ this so much more keenly. How easy is it to dismiss the risk of contagion\
+        \ when it was happening on the other side of the globe? How simple is it to\
+        \ tell ourselves &#x2014; especially those of us who are young and healthy\
+        \ &#x2014; that going to that party, or grabbing that coffee down the street,\
+        \ or hopping onto that train &#x2014; is no big deal?</p><p id=\\\"ea32\\\"\
+        \ class=\\\"hy hz dr bh ia b ib ic id ie if ig ih ii ij ik il dj\\\">The enemy\
+        \ is invisible. The greatest defenses against this threat are classic &#x201C;<a\
+        \ href=\\\"https://www.newyorker.com/magazine/2013/07/29/slow-ideas\\\" class=\\\
+        \"ex fv hu hv hw hx\\\">slow ideas</a>&#x201D; as described by writer and\
+        \ doctor Atul Gawande &#x2014; actions where the impact is not immediately\
+        \ seen or felt. You will not know that you were infected for maybe a week,\
+        \ if at all. You will not go to the hospital or die until two weeks after\
+        \ that, if at all. By the time the hospitals have sounded the alarms, it will\
+        \ be too late.</p><p id=\\\"95b9\\\" class=\\\"hy hz dr bh ia b ib ic id ie\
+        \ if ig ih ii ij ik il dj\\\">Our brains don&#x2019;t do well with slow ideas.\
+        \ For years, I have been waging a war with myself to get more sleep and exercise.\
+        \ We&#x2019;ve heard the refrain over and over again &#x2014; this is good\
+        \ for us. And yet, my health in 5, 10, 25 years constantly loses battles to\
+        \ the immediate satisfaction of time spent with friends, the completion of\
+        \ an episode, a new check on the to-do list, or simply the allure of words\
+        \ across a bright screen.</p><p id=\\\"e06a\\\" class=\\\"hy hz dr bh ia b\
+        \ ib ic id ie if ig ih ii ij ik il dj\\\">But this is the beauty and power\
+        \ of data. As new and scary as the coronavirus is, we are not flying blind.\
+        \ We know things from Wuhan and Italy, from the H1N1 flu of 2009 and the H2N2\
+        \ flu of 1957. My understanding of our current situation has been made all\
+        \ the more tangible with well-articulated analyses written by those who study\
+        \ numbers and make excel spreadsheets. For example, <a href=\\\"https://www.reddit.com/r/dataisbeautiful/comments/fjqroc/oc_updated_comparison_of_italy_usa_california_and/\\\
+        \" class=\\\"ex fv hu hv hw hx\\\">this chart</a> (pasted below) makes it\
+        \ exceedingly clear that the US is on a similar trajectory to Italy and that\
+        \ we too will be fast approaching the red zone without greater steps (which\
+        \ luckily states and counties are starting to take.)</p><figure class=\\\"\
+        gs gt gu gv gw gi da db paragraph-image\\\"><img class=\\\"s t u hf ai\\\"\
+        \ src=\\\"https://miro.medium.com/max/2912/0*x-mYXKsPz_K5MgXf.jpeg\\\" width=\\\
+        \"1456\\\"></figure><p id=\\\"3b4b\\\" class=\\\"hy hz dr bh ia b ib ic id\
+        \ ie if ig ih ii ij ik il dj\\\">As another example, these two articles, <a\
+        \ class=\\\"ex fv hu hv hw hx\\\" href=\\\"https://medium.com/@tomaspueyo/coronavirus-act-today-or-people-will-die-f4d3d9cd99ca\\\
+        \">Coronavirus: Why You Must Act Now</a> and <a class=\\\"ex fv hu hv hw hx\\\
+        \" href=\\\"https://medium.com/@joschabach/flattening-the-curve-is-a-deadly-delusion-eea324fe9727\\\
+        \">Don&#x2019;t flatten the Curve, Stop it!</a> both left a deep impression\
+        \ on me because they get specific with their estimates based on well-founded\
+        \ numbers &#x2014; how many hospital beds and respirators we have today, what\
+        \ the infection rate might be, what the transmission timeline looks like.\
+        \ As a result, you can critique the process, double-check the numbers, and\
+        \ judge the trustworthiness of the conclusion.</p><p id=\\\"dd10\\\" class=\\\
+        \"hy hz dr bh ia b ib ic id ie if ig ih ii ij ik il dj\\\">Many of you know\
+        \ that I&#x2019;ve partnered with my friend Chandra Narayanan to start an\
+        \ advising company called <a href=\\\"http://inspirit.work/\\\" class=\\\"\
+        ex fv hu hv hw hx\\\">Inspirit</a>. Chandra ran data at Facebook and Sequoia,\
+        \ and I think of him as one of the best data leaders in the world. Besides\
+        \ the fact that I am forever trying to emulate his wisdom and depth of care,\
+        \ I feel so lucky to work with Chandra because I get a first-row seat into\
+        \ how he approaches problems.</p><p id=\\\"942d\\\" class=\\\"hy hz dr bh\
+        \ ia b ib ic id ie if ig ih ii ij ik il dj\\\">One thing he said about data\
+        \ and design has always been on my mind:</p><blockquote class=\\\"ix\\\"><div\
+        \ id=\\\"2c91\\\" class=\\\"iy iz ja bh ds b jb jc jd je jf jg il\\\"><p class=\\\
+        \"ds b jh ji bl\\\">Diagnose with data. Treat with design.</p></div></blockquote><p\
+        \ id=\\\"07c3\\\" class=\\\"hy hz dr bh ia b ib jj id jk if jl ih jm ij jn\
+        \ il dj\\\">How wonderfully simple and powerful that statement is.</p><p id=\\\
+        \"3f69\\\" class=\\\"hy hz dr bh ia b ib ic id ie if ig ih ii ij ik il dj\\\
+        \">Great solutions are built upon solid and accurate assumptions about the\
+        \ world. You can&#x2019;t solve jack if your assumptions are off. And they\
+        \ are likely to be off in any scenario that involves millions or billions\
+        \ of people, involve a topic you haven&#x2019;t studied deeply, or where you\
+        \ don&#x2019;t have good data.</p><p id=\\\"729d\\\" class=\\\"hy hz dr bh\
+        \ ia b ib ic id ie if ig ih ii ij ik il dj\\\">Rather than surfing by on intuition\
+        \ and taste, the data-informed individual adopts a beginner&#x2019;s mindset:\
+        \ Assume you know <em class=\\\"im\\\">nothing</em>.</p><p id=\\\"6ea4\\\"\
+        \ class=\\\"hy hz dr bh ia b ib ic id ie if ig ih ii ij ik il dj\\\">Then,\
+        \ frame what you believe as <em class=\\\"im\\\">assumptions</em> or <em class=\\\
+        \"im\\\">hypotheses</em>. These are incredibly empowering words to help you\
+        \ get to great design. <em class=\\\"im\\\">I am assuming&#x2026; My hypothesis\
+        \ is&#x2026;</em> These words make it okay to be wrong, because they paint\
+        \ you as a truth-seeker rather than an egoist. These words invite contribution\
+        \ and follow-up questions from others, including the ever-critical <em class=\\\
+        \"im\\\">Why?</em></p><p id=\\\"81ba\\\" class=\\\"hy hz dr bh ia b ib ic\
+        \ id ie if ig ih ii ij ik il dj\\\">These words<em class=\\\"im\\\"> </em>opens\
+        \ the door for your assumptions or hypotheses to be validated through data,\
+        \ like what <a class=\\\"ex fv hu hv hw hx\\\" href=\\\"https://medium.com/@tomaspueyo/coronavirus-act-today-or-people-will-die-f4d3d9cd99ca\\\
+        \">Coronavirus: Why You Must Act Now</a> and <a class=\\\"ex fv hu hv hw hx\\\
+        \" href=\\\"https://medium.com/@joschabach/flattening-the-curve-is-a-deadly-delusion-eea324fe9727\\\
+        \">Don&#x2019;t flatten the Curve, Stop it!</a> have done. Are hospitals going\
+        \ be over capacity with the coronavirus? What would convince us one way or\
+        \ another? Let&#x2019;s calculate the number of bed or special equipment needed\
+        \ to treat COVID-19 cases. Let&#x2019;s calculate the number of people who\
+        \ are likely to be at the hospital for non-COVID-19 cases. Let&#x2019;s calculate\
+        \ the likely rate of spread and hospitalization based on what we know from\
+        \ other countries. Trust the process, and you can trust the conclusion.</p><p\
+        \ id=\\\"fb95\\\" class=\\\"hy hz dr bh ia b ib ic id ie if ig ih ii ij ik\
+        \ il dj\\\">Furthermore, looking at data helps you spot opportunities for\
+        \ new hypotheses. Chandra noticed a few weeks ago that infections seemed greater\
+        \ in places that were cold. He hypothesized that perhaps the virus doesn&#x2019;t\
+        \ spread as easily in hot temperatures. Chinese scientists had a similar hypothesis,\
+        \ and <a href=\\\"https://papers.ssrn.com/sol3/Papers.cfm?abstract_id=3551767\\\
+        \" class=\\\"ex fv hu hv hw hx\\\">their preliminary study results from analyzing\
+        \ 100 Chinese cities seem to indicate a relationship between lower transmission\
+        \ rate and higher temperature and humidity</a>.</p><p id=\\\"69dc\\\" class=\\\
+        \"hy hz dr bh ia b ib ic id ie if ig ih ii ij ik il dj\\\">Once you have a\
+        \ believable diagnosis of the problem, that&#x2019;s where design jumps in.</p><p\
+        \ id=\\\"8bab\\\" class=\\\"hy hz dr bh ia b ib ic id ie if ig ih ii ij ik\
+        \ il dj\\\">Data cannot <em class=\\\"im\\\">solve</em> problems. It can only\
+        \ help you identify and understand them.</p><p id=\\\"58b3\\\" class=\\\"\
+        hy hz dr bh ia b ib ic id ie if ig ih ii ij ik il dj\\\">Design is the treatment,\
+        \ the phase where you brainstorm all the ways that the problem can be solved.\
+        \ Social distancing. Government policies that incentivize social distancing.\
+        \ Investments in faster production of critical supplies like masks and respirators.\
+        \ Greater and more efficient testing. Better ways for important information\
+        \ to get to the right people. Online learning. Giving aid to those most deeply\
+        \ affected. Developing and experimenting with new treatments. (If you are\
+        \ interested in how you can get involved, I just heard of this list of <a\
+        \ href=\\\"https://helpwithcovid.com/\\\" class=\\\"ex fv hu hv hw hx\\\"\
+        >COVID-19 projects looking for volunteers here</a>.)</p><p id=\\\"9d19\\\"\
+        \ class=\\\"hy hz dr bh ia b ib ic id ie if ig ih ii ij ik il dj\\\">There\
+        \ are also the things we must do for ourselves and our loved ones, to get\
+        \ through each day. Get a full night&#x2019;s sleep. Count the blessings we\
+        \ do have. Text or call hello. Let nature rejuvenate our souls. Be kind to\
+        \ one another, especially those who are the most vulnerable or are the hardest\
+        \ hit.</p><p id=\\\"e1bd\\\" class=\\\"hy hz dr bh ia b ib ic id ie if ig\
+        \ ih ii ij ik il dj\\\">There is a surreal quality to such massive disruption\
+        \ on a global scale, like an entire year&#x2019;s (decade&#x2019;s?) worth\
+        \ of drama compressed into one sychronized dance, where health systems, stock\
+        \ markets, sports, work, schools and elections are all spinning wildly in\
+        \ chaos together.</p><p id=\\\"688b\\\" class=\\\"hy hz dr bh ia b ib ic id\
+        \ ie if ig ih ii ij ik il dj\\\">There&#x2019;s a lot more to weather in the\
+        \ days, weeks and months ahead.</p><p id=\\\"dd06\\\" class=\\\"hy hz dr bh\
+        \ ia b ib ic id ie if ig ih ii ij ik il dj\\\">Stay healthy. Stay calm.</p><p\
+        \ id=\\\"656a\\\" class=\\\"hy hz dr bh ia b ib ic id ie if ig ih ii ij ik\
+        \ il dj\\\">Let&#x2019;s make the best decisions we can by seeking out the\
+        \ best data we have.</p></div></div></section></div></article></div>\",\"\
+        author\":\"Julie Zhuo\",\"date_published\":\"2020-03-18T17:52:47.017Z\",\"\
+        lead_image_url\":\"https://miro.medium.com/max/1200/1*hySCgJMFVUOtrgyT1NGoCA.jpeg\"\
+        ,\"dek\":null,\"next_page_url\":null,\"url\":\"https://medium.com/the-year-of-the-looking-glass/stay-healthy-stay-data-informed-d62da66951d7\"\
+        ,\"domain\":\"medium.com\",\"excerpt\":\"Diagnose with data. Treat with design.\
+        \ How wonderfully simple and powerful that statement is. Great solutions are\
+        \ built upon solid\u2026\",\"word_count\":1784,\"direction\":\"ltr\",\"total_pages\"\
+        :1,\"rendered_pages\":1}"
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '17305'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 19 Mar 2020 17:05:33 GMT
+      ETag:
+      - W/"4399-9S+vWFLzI4ruYT/foQGicucxK/E"
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUEyR1ozWEYySjVBTUNVQ1RLLzIwMjAwMzE5
+        L3VzLXdlc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9NmNhYzgyZGZjZDRkMmFmOGRhNWVkMDVm
+        MzQzNDM2MzI1OTNlYzBiMjAxZGE3NDA0ZmIxNTRiNjdmNmIxZTI4NQ==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4xMi4xNSBQeXRob24vMy43LjYgTGludXgvNC4xOS43Ni1saW51eGtpdCBCb3RvY29y
+        ZS8xLjE1LjE1IFJlc291cmNl
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyMDAzMTlUMTcwNTMzWg==
+    method: HEAD
+    uri: https://pulphtml-test.s3.us-west-1.amazonaws.com/8f6a7774f2c84ac3696b.html
+  response:
+    body:
+      string: ''
+    headers:
+      Accept-Ranges:
+      - bytes
+      Content-Length:
+      - '16708'
+      Content-Type:
+      - binary/octet-stream
+      Date:
+      - Thu, 19 Mar 2020 17:05:34 GMT
+      ETag:
+      - '"90051cefd19428cecbb708c7b941ef54"'
+      Last-Modified:
+      - Thu, 19 Mar 2020 08:29:57 GMT
+      Server:
+      - AmazonS3
+      x-amz-id-2:
+      - B1fm+3ULVDIsalZ5QCe3JEw4YR/htVwKoexPa1YHRYS1Fu4KzHAX6W37+vFQquWUc8lNsHF2Sk4=
+      x-amz-meta-url:
+      - https://medium.com/@joulee/stay-healthy-stay-data-informed-d62da66951d7
+      x-amz-request-id:
+      - F8FBC2F2EE45F808
+    status:
+      code: 200
+      message: OK
+version: 1

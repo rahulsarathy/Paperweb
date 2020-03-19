@@ -21,20 +21,19 @@ interactions:
       string: '{"title":"Fighting Domain Name Fraud","author":null,"date_published":"2020-03-06T01:00:45.000Z","dek":null,"lead_image_url":null,"content":"<article
         id=\"post-21865\" class=\"post-21865 post type-post status-publish format-standard
         hentry category-company-news category-facebook category-integrity-security
-        category-recent-news category-featured\"> <div class=\"entry-content\"> <div
-        class=\"content uk-width-4-5@m uk-width-1-1@s\"> <p><span>This week we filed
-        a lawsuit in Arizona against Namecheap, a domain name registrar, as well as
-        its </span><span>proxy service, Whoisguard, for registering domain names that
-        aim to deceive people by pretending to be affiliated with Facebook apps. These
-        domain names can trick people into believing they are legitimate and are often
-        used for phishing, fraud and scams.&#xA0;</span></p>\n<p><span>We regularly
-        scan for domain names and apps that infringe our trademarks to protect people
-        from abuse. We found that Namecheap&#x2019;s proxy service, Whoisguard, registered
-        or used 45 domain names that impersonated Facebook and our services, such
-        as instagrambusinesshelp.com, facebo0k-login.com and whatsappdownload.site.
-        We sent notices to Whoisguard between October 2018 and February 2020, and
-        despite their obligation to provide information about these infringing domain
-        names, they declined to cooperate.&#xA0;</span><span>&#xA0;</span></p>\n<p><span>We
+        category-recent-news\"> <div class=\"entry-content\"> <div class=\"content
+        uk-width-4-5@m uk-width-1-1@s\"> <p><span>This week we filed a lawsuit in
+        Arizona against Namecheap, a domain name registrar, as well as its </span><span>proxy
+        service, Whoisguard, for registering domain names that aim to deceive people
+        by pretending to be affiliated with Facebook apps. These domain names can
+        trick people into believing they are legitimate and are often used for phishing,
+        fraud and scams.&#xA0;</span></p>\n<p><span>We regularly scan for domain names
+        and apps that infringe our trademarks to protect people from abuse. We found
+        that Namecheap&#x2019;s proxy service, Whoisguard, registered or used 45 domain
+        names that impersonated Facebook and our services, such as instagrambusinesshelp.com,
+        facebo0k-login.com and whatsappdownload.site. We sent notices to Whoisguard
+        between October 2018 and February 2020, and despite their obligation to provide
+        information about these infringing domain names, they declined to cooperate.&#xA0;</span><span>&#xA0;</span></p>\n<p><span>We
         don&#x2019;t want people to be deceived by these web addresses, so we&#x2019;ve
         taken legal action. We filed a similar </span><a href=\"https://about.fb.com/news/2019/10/fighting-domain-name-fraud/\"><span>lawsuit</span></a><span>
         in October 2019 against OnlineNIC, another domain registrar, and its proxy
@@ -48,13 +47,13 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '2304'
+      - '2286'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sat, 07 Mar 2020 23:29:46 GMT
+      - Thu, 19 Mar 2020 09:44:43 GMT
       ETag:
-      - W/"900-+j9kOtAdzcHvDB4oa5BDs6pKX9w"
+      - W/"8ee-giz+Y5S/a8UQvhS2ALMNhXG7IOE"
       X-Powered-By:
       - Express
     status:

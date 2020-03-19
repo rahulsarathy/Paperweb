@@ -1,10 +1,16 @@
-from payments.models import BillingInfo, Address
-from rest_framework.decorators import api_view, parser_classes
-from django.http import JsonResponse, HttpResponse
 import json
+import logging
+
 from users.serializers import SettingsSerializer
 from users.models import Settings
-import logging
+from payments.models import BillingInfo, Address
+from pocket.models import PocketCredentials
+from pocket.serializers import PocketCredentialsSerializer
+from instapaper.models import InstapaperCredentials
+from instapaper.serializers import InstapaperCredentialsSerializer
+
+from rest_framework.decorators import api_view, parser_classes
+from django.http import JsonResponse, HttpResponse
 
 
 @api_view(['GET'])
@@ -88,3 +94,31 @@ def set_address(request):
         billing_info.save()
 
     return JsonResponse(new_address.to_json())
+
+# Tell the user whether they have integrated reading list services
+@api_view(['GET'])
+def get_services(request):
+    user = request.user
+    if not user.is_authenticated:
+        return JsonResponse(data={'error': 'Invalid request.'}, status=403)
+
+    response = {
+        'instapaper': {"signed_in": False},
+        'pocket': {"signed_in": False},
+    }
+    try:
+        credentials = InstapaperCredentials.objects.get(owner=user)
+        instapaper_serializer = InstapaperCredentialsSerializer(credentials)
+        response['instapaper'] = instapaper_serializer.data
+        response['instapaper']['signed_in'] = True
+    except InstapaperCredentials.DoesNotExist:
+        response['instapaper']['signed_in'] = False
+    try:
+        credentials = PocketCredentials.objects.get(owner=user)
+        pocket_serializer = PocketCredentialsSerializer(credentials)
+        response['pocket'] = pocket_serializer.data
+        response['pocket']['signed_in'] = True
+    except PocketCredentials.DoesNotExist:
+        response['pocket']['signed_in'] = False
+
+    return JsonResponse(response)

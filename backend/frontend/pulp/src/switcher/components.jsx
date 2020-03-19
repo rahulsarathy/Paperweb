@@ -6,6 +6,7 @@ import ArchiveItem from "../reading_list/archive_item.jsx";
 import Delivery from "../delivery/delivery.jsx";
 import AddArticle from "./add_article.jsx";
 import Profile from "../profile/profile.jsx";
+import Status from "./status.jsx";
 
 export {
 	Header,
@@ -14,5 +15,6 @@ export {
 	ArchiveItem,
 	Delivery,
 	AddArticle,
-	Profile
+	Profile,
+	Status
 };

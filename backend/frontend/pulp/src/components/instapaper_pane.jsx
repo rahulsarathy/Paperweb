@@ -14,7 +14,7 @@ export default class Instapaper_Pane extends React.Component {
     super(props);
 
     this.handleChange = this.handleChange.bind(this);
-    this.importFromInstapaper = this.importFromInstapaper.bind(this);
+    this.authenticateInstapaper = this.authenticateInstapaper.bind(this);
 
     this.showModal = this.showModal.bind(this);
     this.hideModal = this.hideModal.bind(this);
@@ -41,7 +41,7 @@ export default class Instapaper_Pane extends React.Component {
     this.setState({ [field]: e.target.value });
   }
 
-  importFromInstapaper(username, password) {
+  authenticateInstapaper(username, password) {
     this.setState({ loading: true });
     var csrftoken = $("[name=csrfmiddlewaretoken]").val();
     let data = {
@@ -50,7 +50,7 @@ export default class Instapaper_Pane extends React.Component {
       csrfmiddlewaretoken: csrftoken
     };
     $.ajax({
-      url: "../api/reading_list/start_instapaper_import",
+      url: "../api/instapaper/authenticate_instapaper",
       data: data,
       type: "POST",
       success: function(data) {
@@ -67,7 +67,7 @@ export default class Instapaper_Pane extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="service-container">
         <button
           onClick={() => this.showModal("instapaper")}
           className="integration-button instapaper"
@@ -110,17 +110,22 @@ export default class Instapaper_Pane extends React.Component {
             ) : (
               <div></div>
             )}
-            <button
+            <Button
               onClick={() =>
-                this.importFromInstapaper(
+                this.authenticateInstapaper(
                   this.state.username,
                   this.state.password
                 )
               }
             >
               Import from Instapaper
-            </button>
-            <Button onClick={() => this.hideModal("instapaper")}>Close</Button>
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={() => this.hideModal("instapaper")}
+            >
+              Close
+            </Button>
           </Modal.Footer>
         </Modal>
       </div>

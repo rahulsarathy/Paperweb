@@ -1,10 +1,11 @@
+# moto must be imported before any boto3 imports
+import moto
+
 from unittest import mock
 import json
 import os
 import logging
 
-# moto must be imported before any boto3 imports
-import moto
 from moto import mock_s3
 
 from reading_list.utils import get_parsed, add_to_reading_list, \
@@ -30,71 +31,6 @@ from bs4 import BeautifulSoup
 
 class AddToReadingListTestCase(TestCase):
 
-    @vcr.use_cassette('reading_list/tests/__snapshots__/AddToReadingListTestCase.yaml')
-    # mock celery task to prevent from being called
-    @mock.patch('reading_list.tasks.handle_pages_task.delay')
-    def setUp(self, mock_handle_pages_task):
-
-        self.url1 = 'http://paulgraham.com/ds.html'
-        self.url2 = 'https://medium.com/@nic__carter/lessons-from-the-uneven-distribution-of-capital-ce665def00e6'
-        self.url3 = 'http://www.espn.com/espn/feature/story/_/id/13035450/league-legends-' \
-                    'prodigy-faker-carries-country-shoulders'
-
-        self.user = baker.make('User')
-
-        add_to_reading_list(self.user, self.url1)
-
-    def tearDown(self):
-        Article.objects.all().delete()
-
-    def test_add_invalid_url(self):
-        brokenlink = 'http://brokenlink'
-        with self.assertRaises(ValidationError):
-            add_to_reading_list(self.user, brokenlink)
-
-    # Test that add_to_reading_list succesfully saves an article
-    def test_save_article(self):
-        article, article_created = Article.objects.get_or_create(
-            permalink=self.url1
-        )
-        self.assertFalse(article_created)
-        self.assertEquals(self.url1, article.permalink)
-
-    def test_save_reading_list(self):
-        article = Article.objects.get(permalink=self.url1)
-
-        reading_list_item, created = ReadingListItem.objects.get_or_create(
-            reader=self.user, article=article
-        )
-
-        self.assertFalse(created)
-        self.assertEquals(reading_list_item.article, article)
-
-    @vcr.use_cassette('reading_list/tests/__snapshots__/test_fill_article_fields.yaml')
-    def test_fill_article_fields(self):
-        article, article_created = fill_article_fields(self.url2)
-        self.assertTrue(article_created)
-        self.assertEquals(article.mercury_response.get('url'), self.url2)
-
-    @mock.patch('reading_list.tasks.handle_pages_task.delay')
-    @mock.patch('reading_list.utils.fill_article_fields')
-    def test_add_to_reading_list_with_date(self, mock_fill_article_fields,
-                                           mock_handle_pages_task):
-        my_article = baker.make('reading_list.Article')
-        my_article.save()
-        mock_fill_article_fields.return_value = my_article, False
-        date_object = timezone.now()
-        add_to_reading_list(self.user, self.url2, date_object)
-
-        reading_list_item = ReadingListItem.objects.get(
-            reader=self.user, article=my_article
-        )
-
-        self.assertEquals(reading_list_item.article.permalink, my_article.permalink)
-        self.assertEquals(reading_list_item.date_added, date_object)
-
-class DelegateTaskTestCase(TestCase):
-
     def setUp(self):
 
         self.url1 = 'http://paulgraham.com/ds.html'
@@ -105,6 +41,79 @@ class DelegateTaskTestCase(TestCase):
         self.user = baker.make('User')
 
     def tearDown(self):
+        Article.objects.all().delete()
+
+    def test_add_invalid_url(self):
+        brokenlink = 'http://brokenlink'
+        with self.assertRaises(ValidationError):
+            add_to_reading_list(self.user, brokenlink)
+
+    # Test that add_to_reading_list succesfully saves an article
+    @vcr.use_cassette('reading_list/tests/__snapshots__/test_save_article.yaml')
+    @mock.patch('reading_list.tasks.handle_pages_task')
+    def test_save_article(self, mock_handle_pages_task):
+        add_to_reading_list(self.user, self.url1)
+        article, article_created = Article.objects.get_or_create(
+            permalink=self.url1
+        )
+        self.assertFalse(article_created)
+        self.assertEquals(self.url1, article.permalink)
+
+    # Test that add_to_reading_list succesfully saves to reading list
+    @vcr.use_cassette('reading_list/tests/__snapshots__/test_save_reading_list.yaml')
+    @mock.patch('reading_list.tasks.handle_pages_task')
+    def test_save_reading_list(self, mock_handle_pages_task):
+        add_to_reading_list(self.user, self.url1)
+        article = Article.objects.get(permalink=self.url1)
+
+        reading_list_item, created = ReadingListItem.objects.get_or_create(
+            reader=self.user, article=article
+        )
+
+        self.assertFalse(created)
+        self.assertEquals(reading_list_item.article, article)
+
+    # Test that fill_article_fields succesfully fills an article model's fields
+    @vcr.use_cassette('reading_list/tests/__snapshots__/test_fill_article_fields.yaml')
+    def test_fill_article_fields(self):
+        article, article_created = fill_article_fields(self.url2)
+        self.assertTrue(article_created)
+        self.assertEquals(article.mercury_response.get('url'), self.url2)
+
+    @vcr.use_cassette('reading_list/tests/__snapshots__/test_add_to_reading_list_with_date.yaml')
+    @mock.patch('reading_list.utils.handle_pages')
+    @mock.patch('reading_list.utils.delegate_task')
+    @mock.patch('reading_list.utils.fill_article_fields')
+    def test_add_to_reading_list_with_date(self, mock_fill_article_fields, mock_delegate_task, mock_handle_pages):
+        my_article = baker.make('reading_list.Article')
+        my_article.save()
+        mock_fill_article_fields.return_value = my_article, False
+        mock_delegate_task.return_value = False
+        date_object = timezone.now()
+        add_to_reading_list(self.user, self.url2, date_object)
+
+        reading_list_item = ReadingListItem.objects.get(
+            reader=self.user, article=my_article
+        )
+
+        self.assertEquals(reading_list_item.article.permalink, my_article.permalink)
+        self.assertEquals(reading_list_item.date_added, date_object)
+
+@mock_s3
+class DelegateTaskTestCase(TestCase):
+
+    def setUp(self):
+
+        self.url1 = 'http://paulgraham.com/ds.html'
+        self.url2 = 'https://medium.com/@nic__carter/lessons-from-the-uneven-distribution-of-capital-ce665def00e6'
+        self.url3 = 'http://www.espn.com/espn/feature/story/_/id/13035450/league-legends-' \
+                    'prodigy-faker-carries-country-shoulders'
+
+        self.user = baker.make('User')
+        createS3()
+
+    def tearDown(self):
+        deleteS3()
         Article.objects.all().delete()
 
     @mock.patch('reading_list.tasks.handle_pages_task.delay')
@@ -190,7 +199,7 @@ class S3BucketsTestCase(TestCase):
         my_article.page_count = 3
         article_created = False
         article_id = get_article_id(my_article.permalink)
-        article_key = "./{}.html".format(article_id)
+        article_key = "{}.html".format(article_id)
         f = open(article_key, "w+")
         f.write(str("test html"))
         f.close()

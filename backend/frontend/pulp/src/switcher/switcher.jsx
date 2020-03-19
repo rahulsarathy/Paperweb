@@ -12,7 +12,8 @@ import {
   Delivery,
   Sidebar,
   AddArticle,
-  Profile
+  Profile,
+  Status
 } from "./components.jsx";
 import {
   BrowserRouter as Router,
@@ -25,37 +26,186 @@ import {
 
 function MenuItem(props) {
   return (
-    <NavLink to={props.to} className="menu-item" activeClassName="menu-item-selected">
+    <NavLink
+      to={props.to}
+      className="menu-item"
+      activeClassName="menu-item-selected"
+    >
       {props.children}
     </NavLink>
-  )
+  );
 }
 
 export default class Switcher extends React.Component {
   constructor(props) {
     super(props);
-    this.changeSelected = this.changeSelected.bind(this);
     this.changeDeliver = this.changeDeliver.bind(this);
-    this.changeSelected = this.changeSelected.bind(this);
     this.addArticle = this.addArticle.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.showModal = this.showModal.bind(this);
     this.removeArticle = this.removeArticle.bind(this);
     this.archiveArticle = this.archiveArticle.bind(this);
+    this.handleAddToReadingList = this.handleAddToReadingList.bind(this);
+    this.handleInstapaperQueue = this.handleInstapaperQueue.bind(this);
+    this.handlePageCount = this.handlePageCount.bind(this);
+    this.syncInstapaper = this.syncInstapaper.bind(this);
+
+    this.progressSocket = new WebSocket(
+      "ws://" + window.location.host + "/ws/api/progress/"
+    );
+
+    // this.pageSocket = new WebSocket(
+    //   "ws://" + window.location.host + "/ws/api/page_count/"
+    // );
+
+    // this.deliverySocket = new WebSocket(
+    //   "ws://" + window.location.host + "/ws/api/deliver/"
+    // );
+
+    this.progressSocket.onmessage = function(e) {
+      this.handleWebSocket(e);
+    }.bind(this);
+
+    // this.pageSocket.onmessage = function(e) {
+    //   this.handleWebSocket(e);
+    // }.bind(this);
+
+    // this.deliverySocket.onmessage = function(e) {
+    //   this.handleWebSocket(e);
+    // }.bind(this);
 
     this.state = {
-      value: "",
       reading_list: [],
-      error_name: "",
-      selected: "unread",
       show_add: false,
-      loading_list: true
+      loading_list: true,
+      instapaper: {},
+      pocket: {},
+      add_to_reading_list: [],
+      total: 0,
+      completed: 0
     };
   }
 
   componentDidMount() {
     this.getReadingList();
     this.getServices();
+  }
+
+  handleAddToReadingList(data) {
+    let link = data.link;
+    let percent = data.percent;
+    let add_to_reading_list = this.state.add_to_reading_list;
+
+    // remove task if it is 100 percent complete
+    if (percent === 100) {
+      let i;
+      for (i = 0; i < add_to_reading_list.length; i++) {
+        if (add_to_reading_list[i].link === link) {
+          let index = i;
+          break;
+        }
+      }
+      add_to_reading_list.splice(i, 1);
+      this.setState({
+        add_to_reading_list: add_to_reading_list
+      });
+      return;
+    }
+    // Add new task if percent is at 0
+    if (percent === 0) {
+      let new_task = {
+        percent: percent,
+        link: link,
+        type: "add_to_reading_list"
+      };
+      add_to_reading_list.push(new_task);
+      this.setState({
+        add_to_reading_list: add_to_reading_list
+      });
+      return;
+    } else {
+      for (let i = 0; i < add_to_reading_list.length; i++) {
+        if (add_to_reading_list[i].link == link) {
+          add_to_reading_list[i].percent = percent;
+          this.setState({
+            add_to_reading_list: add_to_reading_list
+          });
+          return;
+        }
+      }
+    }
+  }
+
+  handlePageCount(data) {
+    let link = data.link;
+    let page_count = data.page_count;
+    let reading_list = this.state.reading_list;
+
+    for (let i = 0; i < reading_list.length; i++) {
+      if (reading_list[i].article.permalink === link) {
+        reading_list[i].article.page_count = page_count;
+      }
+    }
+
+    this.setState({
+      reading_list: reading_list
+    });
+  }
+
+  handleToDeliver(data) {
+    let to_deliver = data.to_deliver;
+    let link = data.link;
+    let reading_list = this.state.reading_list;
+
+    for (let i = 0; i < reading_list.length; i++) {
+      if (reading_list[i].article.permalink === link) {
+        reading_list[i].to_deliver = to_deliver;
+      }
+    }
+    this.setState({
+      reading_list: reading_list
+    });
+  }
+
+  handleInstapaperQueue(data) {
+    let total = data.total;
+    let completed = data.completed;
+
+    this.setState({
+      total: total,
+      completed: completed
+    });
+  }
+
+  handleWebSocket(e) {
+    let data = JSON.parse(e.data);
+    switch (data.job_type) {
+      case "add_to_reading_list":
+        this.handleAddToReadingList(data);
+        break;
+      case "page_count":
+        this.handlePageCount(data);
+        break;
+      case "instapaper_queue":
+        this.handleInstapaperQueue(data);
+        break;
+      case "to_deliver":
+        this.handleToDeliver(data);
+        break;
+      case "reading_list":
+        this.handleReadingList(data);
+        break;
+      case "message":
+        break;
+      default:
+    }
+  }
+
+  handleReadingList(data) {
+    let reading_list = data.reading_list;
+    this.setState({
+      reading_list: reading_list
+    });
   }
 
   getReadingList() {
@@ -114,6 +264,7 @@ export default class Switcher extends React.Component {
   }
 
   addArticle(link) {
+    this.closeModal();
     if (link === "") {
       this.setState({
         error_name: "empty"
@@ -146,10 +297,6 @@ export default class Switcher extends React.Component {
     });
   }
 
-  changeSelected(value) {
-    this.setState({ selected: value });
-  }
-
   changeDeliver(to_deliver, permalink) {
     var csrftoken = $("[name=csrfmiddlewaretoken]").val();
     let data = {
@@ -179,7 +326,7 @@ export default class Switcher extends React.Component {
     var csrftoken = $("[name=csrfmiddlewaretoken]").val();
 
     $.ajax({
-      url: "../api/reading_list/services_status",
+      url: "../api/users/get_services",
       type: "GET",
       success: function(data) {
         this.setState({
@@ -189,6 +336,23 @@ export default class Switcher extends React.Component {
       }.bind(this)
     });
   }
+
+  syncInstapaper() {
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    let data = {
+      csrfmiddlewaretoken: csrftoken
+    };
+
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    $.ajax({
+      url: "../api/instapaper/sync_instapaper",
+      data: data,
+      type: "POST",
+      success: function(data) {}
+    });
+  }
+
+  syncPocket() {}
 
   closeModal() {
     this.setState({
@@ -200,22 +364,21 @@ export default class Switcher extends React.Component {
     return (
       <Router>
         <div>
-          <Header changeSelected={this.changeSelected} />
+          <Header />
           <div className="pulp-container">
             <div className="sidebar-container">
               <div className="sidebar">
-                <MenuItem to="/reading_list">
-                  Unread
-                </MenuItem>
-                <MenuItem to="/delivery">
-                  Delivery
-                </MenuItem>
-                <MenuItem to="/archive">
-                  Archive
-                </MenuItem>
+                <MenuItem to="/reading_list">Unread</MenuItem>
+                <MenuItem to="/delivery">Delivery</MenuItem>
+                <MenuItem to="/archive">Archive</MenuItem>
               </div>
             </div>
             <div className="page-container">
+              <Status
+                add_to_reading_list={this.state.add_to_reading_list}
+                completed={this.state.completed}
+                total={this.state.total}
+              />
               <AddArticle
                 addArticle={this.addArticle}
                 show_add={this.state.show_add}
@@ -241,9 +404,13 @@ export default class Switcher extends React.Component {
                 />
                 <Route path="/archive" component={Archive} />
                 <Route
-                  path="/settings"
+                  path="/profile"
                   render={() => (
-                    <Profile changeSelected={this.changeSelected} />
+                    <Profile
+                      pocket={this.state.pocket}
+                      syncInstapaper={this.syncInstapaper}
+                      instapaper={this.state.instapaper}
+                    />
                   )}
                 />
                 <Route

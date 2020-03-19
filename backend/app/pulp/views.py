@@ -21,7 +21,6 @@ def create_js_static_url(name):
 def error_404(request, exception=None):
     return render(request, '404.html', status=404)
 
-
 def landing(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect('/reading_list')
@@ -29,33 +28,6 @@ def landing(request):
         'js_file': create_js_static_url('landing')
     }
     return render(request, 'landing.html', context)
-
-def dashboard(request):
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect('../')
-    context = {
-        'js_file': create_js_static_url('dashboard')
-    }
-    return render(request, 'dashboard.html', context)
-
-
-def profile(request):
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect('../')
-    context = {
-        'js_file': create_js_static_url('profile')
-    }
-    return render(request, 'profile.html', context)
-
-
-def delivery(request):
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect('../')
-    context = {
-        'js_file': create_js_static_url('delivery')
-    }
-    return render(request, 'delivery.html', context)
-
 
 def switcher(request):
     if not request.user.is_authenticated:
@@ -66,16 +38,6 @@ def switcher(request):
         'pocket': pocket,
     }
     return render(request, 'reading_list.html', context)
-
-
-def reading_list(request):
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect('../')
-    context = {
-        'js_file': create_js_static_url('switcher')
-    }
-    return render(request, 'reading_list.html', context)
-
 
 def article(request):
     if not request.user.is_authenticated:
@@ -95,7 +57,6 @@ def article(request):
 
     }
     return render(request, 'article.html', context)
-
 
 def subscribe(request):
     if not request.user.is_authenticated:

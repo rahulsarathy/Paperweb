@@ -51,7 +51,7 @@ export default class Pocket_Modal extends React.Component {
     $.ajax({
       type: "POST",
       data: data,
-      url: "../api/reading_list/pocket",
+      url: "../api/pocket/request_pocket",
       success: function(data) {
         window.location.href = data;
       },

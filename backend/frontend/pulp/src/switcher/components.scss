@@ -223,3 +223,48 @@ $header-background-color: #363634;
     vertical-align: top;
   }
 }
+
+.status {
+  width: 100%;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  position: fixed;
+  z-index: 3;
+  background-color: white;
+
+  .task {
+    width: 100%;
+    border-top-style: solid;
+    border-top-color: #d3d3d3;
+    border-top-width: 1px;
+
+    p {
+      margin-bottom: 2px;
+      margin-left: 5px;
+    }
+
+    @keyframes placeHolderShimmer {
+      0% {
+        background-position: 0% 0%;
+      }
+      50% {
+        background-position: 100% 0%;
+      }
+      100% {
+        background-position: 0% 0%;
+      }
+    }
+
+    .import {
+      animation: placeHolderShimmer 2s ease infinite;
+      background: linear-gradient(90deg, #ffffff, #4d8efa);
+      background-size: 300% 100%;
+    }
+
+    .progress {
+      background-color: #4d8efa;
+      height: 4px;
+      border-radius: 0px;
+      // transition: all 0.2s ease-in-out;
+    }
+  }
+}

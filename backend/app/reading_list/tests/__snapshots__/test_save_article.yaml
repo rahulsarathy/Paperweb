@@ -380,11 +380,60 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sat, 07 Mar 2020 23:29:42 GMT
+      - Thu, 19 Mar 2020 17:45:20 GMT
       ETag:
       - W/"6d59-jw9OvXheDPDzNWN1emnoUBeLlNE"
       X-Powered-By:
       - Express
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUEyR1ozWEYySjVBTUNVQ1RLLzIwMjAwMzE5
+        L3VzLXdlc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9YjM2MjRmMzlmMmEzMWZhZDlkZDJjN2Qz
+        OTI0ZjA3NjE0YWYwZmRjZGUzMzdjYzFhNWI5MWZmOTU5YjMwM2NkNw==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4xMi4xNSBQeXRob24vMy43LjYgTGludXgvNC4xOS43Ni1saW51eGtpdCBCb3RvY29y
+        ZS8xLjE1LjE1IFJlc291cmNl
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyMDAzMTlUMTc0NTIwWg==
+    method: HEAD
+    uri: https://pulphtml-test.s3.us-west-1.amazonaws.com/2bd58bc02ba2b9dc0ad9.html
+  response:
+    body:
+      string: ''
+    headers:
+      Accept-Ranges:
+      - bytes
+      Content-Length:
+      - '26598'
+      Content-Type:
+      - binary/octet-stream
+      Date:
+      - Thu, 19 Mar 2020 17:45:21 GMT
+      ETag:
+      - '"2caea9fae8cf61af485a6addc3e4c540"'
+      Last-Modified:
+      - Thu, 05 Mar 2020 04:27:35 GMT
+      Server:
+      - AmazonS3
+      x-amz-id-2:
+      - iwNIaf4k863DqJewUARbQ3EkcsSC3woNQvI6NkzN4e6CvoMTqV7lggEJoJ4855zeJcAJRuRGqtU=
+      x-amz-meta-url:
+      - http://paulgraham.com/ds.html
+      x-amz-request-id:
+      - B322EBFA7055C5B5
     status:
       code: 200
       message: OK
