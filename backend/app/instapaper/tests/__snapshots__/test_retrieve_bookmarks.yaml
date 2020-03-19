@@ -1,0 +1,605 @@
+interactions:
+- request:
+    body: have=&limit=500
+    headers:
+      Accept:
+      - !!binary |
+        Ki8q
+      Accept-Encoding:
+      - !!binary |
+        Z3ppcCwgZGVmbGF0ZQ==
+      Authorization:
+      - !!binary |
+        T0F1dGggb2F1dGhfbm9uY2U9IjE1ODQwNDEzOTE0NDkyMTk0NzkxNTg0NjExOTA5Iiwgb2F1dGhf
+        dGltZXN0YW1wPSIxNTg0NjExOTA5Iiwgb2F1dGhfdmVyc2lvbj0iMS4wIiwgb2F1dGhfc2lnbmF0
+        dXJlX21ldGhvZD0iSE1BQy1TSEExIiwgb2F1dGhfY29uc3VtZXJfa2V5PSJiNWQ5OTg1MzgxOTM0
+        ZWM4ODIyMWFmOGFkMzEyYzRhMyIsIG9hdXRoX3Rva2VuPSI3MmZjN2M4MzUzMzY0NjRkODNlOWQy
+        ZjQxOGQ5OTc1MyIsIG9hdXRoX3NpZ25hdHVyZT0iNTlBQVFRdEF3RE1KSHJOWExGdGg4JTJCNkZN
+        Uk0lM0Qi
+      Connection:
+      - !!binary |
+        a2VlcC1hbGl2ZQ==
+      Content-Length:
+      - '15'
+      Content-Type:
+      - !!binary |
+        YXBwbGljYXRpb24veC13d3ctZm9ybS11cmxlbmNvZGVk
+      User-Agent:
+      - !!binary |
+        cHl0aG9uLXJlcXVlc3RzLzIuMjIuMA==
+    method: POST
+    uri: https://www.instapaper.com/api/1/bookmarks/list
+  response:
+    body:
+      string: '[{"type": "meta"}, {"username": "rahul@getpulp.io", "user_id": 7756081,
+        "type": "user", "subscription_is_active": "0"}, {"hash": "mE4M0dpz", "description":
+        "Stay Healthy. Stay Data-Informed. https://ift.tt/2WkzUg2", "bookmark_id":
+        1287357119, "private_source": "", "title": "Stay Healthy. Stay Data-Informed.",
+        "url": "https://medium.com/@joulee/stay-healthy-stay-data-informed-d62da66951d7",
+        "progress_timestamp": 0, "time": 1584555442, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "6vGCDIvC", "description": "", "bookmark_id":
+        1287357120, "private_source": "", "title": "Outbreak", "url": "https://meltingasphalt.com/interactive/outbreak",
+        "progress_timestamp": 0, "time": 1584430322, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "khYXT30G", "description": "Funding for COVID-19
+        Projects https://ift.tt/3d2VsUr", "bookmark_id": 1287357121, "private_source":
+        "", "title": "Funding for COVID-19 Projects", "url": "https://blog.samaltman.com/funding-for-covid-19-projects",
+        "progress_timestamp": 0, "time": 1584291066, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "XPJwWCMN", "description": "", "bookmark_id":
+        1287357123, "private_source": "", "title": "YC\u2019s Paul Graham: The Complete
+        Interview", "url": "https://www.theinformation.com/articles/YC-s-Paul-Graham-The-Complete-Interview",
+        "progress_timestamp": 0, "time": 1584053907, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "HCAB4anB", "description": "", "bookmark_id":
+        1287357124, "private_source": "", "title": "The Three Faces Of Steve In this
+        exclusive, personal conversation, Apple''s CEO reflects on the turnaround,
+        and on how a wunderkind became an old pro. - November 9, 1998", "url": "https://archive.fortune.com/magazines/fortune/fortune_archive/1998/11/09/250880/index.htm",
+        "progress_timestamp": 0, "time": 1583601443, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "in2uUCob", "description": "", "bookmark_id":
+        1287357125, "private_source": "", "title": "The Elton/Hootie Line | Epsilon
+        Theory", "url": "https://www.epsilontheory.com/the-elton-hootie-line/", "progress_timestamp":
+        0, "time": 1583374099, "progress": 0.0, "starred": "0", "type": "bookmark"},
+        {"hash": "ZCafYPu4", "description": "", "bookmark_id": 1287357126, "private_source":
+        "", "title": "Do Things that Don''t Scale", "url": "http://paulgraham.com/ds.html",
+        "progress_timestamp": 0, "time": 1583281061, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "lqBagBnW", "description": "", "bookmark_id":
+        1287357128, "private_source": "", "title": "How Microsoft, Apple, Amazon,
+        and Alphabet have created trillion dollar companies by lowering one\u2026",
+        "url": "https://medium.com/@efeng/how-microsoft-apple-amazon-and-alphabet-have-created-trillion-dollar-companies-by-lowering-one-34a29c6169a1",
+        "progress_timestamp": 0, "time": 1583199275, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "zg21TGEy", "description": "", "bookmark_id":
+        1287357130, "private_source": "", "title": "We Need To Take CO2 Out Of The
+        Sky", "url": "https://www.orbuch.com/carbon-removal/", "progress_timestamp":
+        0, "time": 1582703376, "progress": 0.0, "starred": "0", "type": "bookmark"},
+        {"hash": "Vx8OS5k3", "description": "", "bookmark_id": 1287357131, "private_source":
+        "", "title": "Bitcoin\u2019s Guardian Angel: Inside Coinbase Billionaire Brian
+        Armstrong\u2019s Plan To Make Crypto Safe For All", "url": "https://www.forbes.com/sites/michaeldelcastillo/2020/02/19/coinbase-billionaire-brian-armstrongs-plan-to-make-bitcoin-ethereum-xrp-safe-for-all/",
+        "progress_timestamp": 0, "time": 1582426864, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "MM3FWwmr", "description": "", "bookmark_id":
+        1287357133, "private_source": "", "title": "The Complex Markets Hypothesis",
+        "url": "https://medium.com/@allenfarrington/the-complex-markets-hypothesis-44c2b2b191d2",
+        "progress_timestamp": 0, "time": 1581991924, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "F5HMDOSB", "description": "", "bookmark_id":
+        1287357134, "private_source": "", "title": "Confessions of an Ex Philosopher",
+        "url": "https://write.as/formerly-known-as-a-philosopher/confession-of-an-ex-philosopher",
+        "progress_timestamp": 0, "time": 1581651696, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "R1wg6YkO", "description": "If any one person
+        can be said to have set off the personal computer revolution, it might be
+        Steve Wozniak. He designed the machine that crystallized what a desktop computer
+        was: the Apple II.", "bookmark_id": 1287357135, "private_source": "", "title":
+        "Steve Wozniak", "url": "http://www.foundersatwork.com/steve-wozniak.html",
+        "progress_timestamp": 0, "time": 1581647893, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "6YHxBJZJ", "description": "", "bookmark_id":
+        1287357178, "private_source": "", "title": "Lessons from the uneven distribution
+        of capital", "url": "https://medium.com/@nic__carter/lessons-from-the-uneven-distribution-of-capital-ce665def00e6",
+        "progress_timestamp": 0, "time": 1581228448, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "XqyE2464", "description": "", "bookmark_id":
+        1287357684, "private_source": "", "title": "The Nerd as the Norm", "url":
+        "https://everythingstudies.com/2017/11/07/the-nerd-as-the-norm/", "progress_timestamp":
+        0, "time": 1581208116, "progress": 0.0, "starred": "0", "type": "bookmark"},
+        {"hash": "CI9AUqJ6", "description": "", "bookmark_id": 1287357136, "private_source":
+        "", "title": "Stripe Atlas: Guide to getting your first 10 customers", "url":
+        "https://stripe.com/gb/atlas/guides/starting-sales", "progress_timestamp":
+        0, "time": 1580587349, "progress": 0.0, "starred": "0", "type": "bookmark"},
+        {"hash": "6zR7tStN", "description": "", "bookmark_id": 1287357140, "private_source":
+        "", "title": "The iPad''s original software designer and program lead look
+        back on the device''s first 10 years", "url": "https://www.inputmag.com/tech/the-ipads-original-software-designer-and-program-lead-look-back-on-the-devices-first-10-years",
+        "progress_timestamp": 0, "time": 1580504744, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "5r8gaeon", "description": "", "bookmark_id":
+        1287357141, "private_source": "", "title": "The Skewed and the Screwed: When
+        Mating Meets Politics", "url": "https://putanumonit.com/2020/01/26/skewed-and-the-screwed/",
+        "progress_timestamp": 0, "time": 1580490455, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "FvCRAfWY", "description": "", "bookmark_id":
+        1287357174, "private_source": "", "title": "Antitrust for thee, profits for
+        me", "url": "https://exponents.substack.com/p/antitrust-for-thee-profits-for-me",
+        "progress_timestamp": 0, "time": 1579972165, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "BzcqQBQd", "description": "", "bookmark_id":
+        1287357147, "private_source": "", "title": "From The Mag: The Unkillable Demon
+        King", "url": "http://www.espn.com/espn/feature/story/_/id/13035450/league-legends-prodigy-faker-carries-country-shoulders",
+        "progress_timestamp": 0, "time": 1579796443, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "FCqmNi9q", "description": "", "bookmark_id":
+        1287357149, "private_source": "", "title": "The Internet of Beefs", "url":
+        "https://www.ribbonfarm.com/2020/01/16/the-internet-of-beefs/", "progress_timestamp":
+        0, "time": 1579572019, "progress": 0.0, "starred": "0", "type": "bookmark"},
+        {"hash": "BHgios9F", "description": "", "bookmark_id": 1287357151, "private_source":
+        "", "title": "Designing a New Old Home: Part 1", "url": "https://medium.com/@simon.sarris/designing-a-new-old-home-part-1-cf298b58ed41",
+        "progress_timestamp": 0, "time": 1579396292, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "UtaV2dkv", "description": "", "bookmark_id":
+        1287357238, "private_source": "", "title": "Tech and Liberty", "url": "https://stratechery.com/2019/tech-and-liberty/",
+        "progress_timestamp": 0, "time": 1572972295, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "hy2BIpSZ", "description": "", "bookmark_id":
+        1287357241, "private_source": "", "title": "Starlink is a very big deal",
+        "url": "https://caseyhandmer.wordpress.com/2019/11/02/starlink-is-a-very-big-deal/",
+        "progress_timestamp": 0, "time": 1572823407, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "vU8Sf7Ou", "description": "", "bookmark_id":
+        1287357276, "private_source": "", "title": "The Rising Threat of Digital Nationalism",
+        "url": "https://www.wsj.com/articles/the-rising-threat-of-digital-nationalism-11572620577",
+        "progress_timestamp": 0, "time": 1572737269, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "VtWV63rG", "description": "", "bookmark_id":
+        1287357713, "private_source": "", "title": "Steve Jobs: The Next Insanely
+        Great Thing", "url": "https://www.wired.com/1996/02/jobs-2/", "progress_timestamp":
+        0, "time": 1571854800, "progress": 0.0, "starred": "0", "type": "bookmark"},
+        {"hash": "pZU8dI0P", "description": "", "bookmark_id": 1287357354, "private_source":
+        "", "title": "What Is a Tech Company?", "url": "https://stratechery.com/2019/what-is-a-tech-company/",
+        "progress_timestamp": 0, "time": 1567600726, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "3fcMDg8c", "description": "", "bookmark_id":
+        1287357298, "private_source": "", "title": "For Most Things, Recycling Harms
+        the Environment", "url": "https://www.aier.org/article/most-things-recycling-harms-environment",
+        "progress_timestamp": 0, "time": 1565814777, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "jhoJW6li", "description": "", "bookmark_id":
+        1287357293, "private_source": "", "title": "Is Capitalism Sustainable?", "url":
+        "https://www.aier.org/article/capitalism-sustainable", "progress_timestamp":
+        0, "time": 1565814508, "progress": 0.0, "starred": "0", "type": "bookmark"},
+        {"hash": "Cz6NeaWo", "description": "Ephemerisle is Burning Man on boats in
+        the Sacramento River Delta\nDepending who you ask, this floating festival
+        is a weeklong art party, a spiritual retreat from earthbound society, a social
+        experiment in self-governance or all of the above.\nsfchronicle.com", "bookmark_id":
+        1287357316, "private_source": "", "title": "Ephemerisle is Burning Man on
+        boats in the Sacramento River Delta", "url": "https://www.sfchronicle.com/travel/article/Ephemerisle-is-Burning-Man-on-boats-in-the-14301730.php",
+        "progress_timestamp": 0, "time": 1565804098, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "ewmTNw3l", "description": "", "bookmark_id":
+        1287357322, "private_source": "", "title": "How Monopolies Broke the Federal
+        Reserve", "url": "https://mattstoller.substack.com/p/how-monopolies-broke-the-federal",
+        "progress_timestamp": 0, "time": 1565717956, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "33qlBmeG", "description": "", "bookmark_id":
+        1287357326, "private_source": "", "title": "What Is Polycentric Law? | Tom
+        W. Bell", "url": "https://fee.org/articles/what-is-polycentric-law/", "progress_timestamp":
+        0, "time": 1565539975, "progress": 0.0, "starred": "0", "type": "bookmark"},
+        {"hash": "8TvGejn3", "description": "", "bookmark_id": 1287357296, "private_source":
+        "", "title": "How to Outcompete Capitalism?", "url": "http://metamoderna.org/how-to-outcompete-capitalism?lang=en",
+        "progress_timestamp": 0, "time": 1565424369, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "HcWecJqD", "description": "Netflix is not a
+        tech company \u2014 Benedict Evans\nLike Sky before it, Netflix is a television
+        company using tech as a crowbar for market entry. The tech has to be good,
+        but it\u2019s still fundamentally a commodity, and all of the questions that
+        matter...\nben-evans.com", "bookmark_id": 1287357305, "private_source": "",
+        "title": "Netflix is not a tech company \u2014 Benedict Evans", "url": "https://www.ben-evans.com/benedictevans/2019/7/31/Netflix",
+        "progress_timestamp": 0, "time": 1565282645, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "YwTWscCP", "description": "", "bookmark_id":
+        1287357320, "private_source": "", "title": "The Lonely Work of Moderating
+        Hacker News", "url": "https://www.newyorker.com/news/letter-from-silicon-valley/the-lonely-work-of-moderating-hacker-news",
+        "progress_timestamp": 0, "time": 1565281171, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "1VjNGeg6", "description": "", "bookmark_id":
+        1287357337, "private_source": "", "title": "A Framework for Moderation", "url":
+        "https://stratechery.com/2019/a-framework-for-moderation/", "progress_timestamp":
+        0, "time": 1565247866, "progress": 0.0, "starred": "0", "type": "bookmark"},
+        {"hash": "XX739FrA", "description": "", "bookmark_id": 1287357311, "private_source":
+        "", "title": "Principles for Radical Tax Reform and a Universal Dividend",
+        "url": "http://kortina.nyc/essays/principles-for-radical-tax-reform-and-a-universal-dividend//",
+        "progress_timestamp": 0, "time": 1565155163, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "4ZIPxYcu", "description": "", "bookmark_id":
+        1287357329, "private_source": "", "title": "Was E-mail a Mistake?", "url":
+        "https://www.newyorker.com/tech/annals-of-technology/was-e-mail-a-mistake",
+        "progress_timestamp": 0, "time": 1565150721, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "l7ngZJ2I", "description": "Journalism Isn''t
+        Dying. It''s Returning to Its Roots\nThe future of journalism is more partisan
+        and supported by more diverse revenue streams\u2014in other words, like the
+        journalism of 200 years ago.\nwired.com", "bookmark_id": 1287357362, "private_source":
+        "", "title": "Journalism Isn''t Dying. It''s Returning to Its Roots", "url":
+        "https://www.wired.com/story/journalism-isnt-dying-its-returning-its-roots/",
+        "progress_timestamp": 0, "time": 1565111704, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "GXB3TCIw", "description": "", "bookmark_id":
+        1287357342, "private_source": "", "title": "Reflecting on My First 18 Months
+        Living in Denver \u2013 Danielle Morrill", "url": "http://www.daniellemorrill.com/2019/08/reflecting-on-my-first-18-months-in-denver-2019-mid-year-checkin/",
+        "progress_timestamp": 0, "time": 1564900770, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "zM1r6Wse", "description": "", "bookmark_id":
+        1287357373, "private_source": "", "title": "The Passions of John Stuart Mill",
+        "url": "https://www.newyorker.com/magazine/2008/10/06/right-again", "progress_timestamp":
+        0, "time": 1564164786, "progress": 0.0, "starred": "0", "type": "bookmark"},
+        {"hash": "RqLyf317", "description": "Facebook''s Ex-Security Chief Details
+        His ''Observatory'' for Internet Abuse\r\nAlex Stamos'' Stanford-based project
+        will try to persuade tech firms to offer academics access to massive troves
+        of user data.\r\nwired.com\r\n12\r\n178\r\n382", "bookmark_id": 1287357462,
+        "private_source": "", "title": "Home / Twitter", "url": "https://twitter.com/signup",
+        "progress_timestamp": 0, "time": 1564121907, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "3jvUAMSt", "description": "", "bookmark_id":
+        1287357309, "private_source": "", "title": "Stuff", "url": "http://www.paulgraham.com/stuff.html",
+        "progress_timestamp": 0, "time": 1563834843, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "gblztqn1", "description": "", "bookmark_id":
+        1287357313, "private_source": "", "title": "Antitrust regulators are using
+        the wrong tools to break up Big Tech", "url": "https://qz.com/1666863/why-big-tech-keeps-outsmarting-antitrust-regulators/",
+        "progress_timestamp": 0, "time": 1563699870, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "7ZKQIneE", "description": "", "bookmark_id":
+        1287357333, "private_source": "", "title": "Invisible asymptotes", "url":
+        "https://www.eugenewei.com/blog/2018/5/21/invisible-asymptotes", "progress_timestamp":
+        0, "time": 1562613572, "progress": 0.0, "starred": "0", "type": "bookmark"},
+        {"hash": "aYkTaG68", "description": "", "bookmark_id": 1287357482, "private_source":
+        "", "title": "Montesquieu''s \"sweet commerce\" and Cobden''s \"God''s diplomacy\"",
+        "url": "http://www.rationaloptimist.com/blog/free-markets-and-free-trade/",
+        "progress_timestamp": 0, "time": 1562613447, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "kTvaRLim", "description": "", "bookmark_id":
+        1287357349, "private_source": "", "title": "Status as a Service (StaaS)",
+        "url": "https://www.eugenewei.com/blog/2019/2/19/status-as-a-service", "progress_timestamp":
+        0, "time": 1562611983, "progress": 0.0, "starred": "0", "type": "bookmark"},
+        {"hash": "j8oN7GR4", "description": "", "bookmark_id": 1287357315, "private_source":
+        "", "title": "The Fed\u2019s 2% Inflation Target: The Ultimate Keynesian Con
+        Job", "url": "https://davidstockmanscontracorner.com/the-feds-2-inflation-target-the-ultimate-keynesian-con-job/",
+        "progress_timestamp": 0, "time": 1562103926, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "o1y2S0fl", "description": "", "bookmark_id":
+        1287357352, "private_source": "", "title": "Priceless: How The Federal Reserve
+        Bought The Economics Profession", "url": "https://www.huffpost.com/entry/priceless-how-the-federal_n_278805",
+        "progress_timestamp": 0, "time": 1562023367, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "HBz5ziQK", "description": "", "bookmark_id":
+        1287357334, "private_source": "", "title": "Your Professional Decline Is Coming
+        (Much) Sooner Than You Think", "url": "https://www.theatlantic.com/magazine/archive/2019/07/work-peak-professional-decline/590650/",
+        "progress_timestamp": 0, "time": 1561272822, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "dIouTvkS", "description": "", "bookmark_id":
+        1287357360, "private_source": "", "title": "Scant Evidence of Power Laws Found
+        in Real-World Networks | Quanta Magazine", "url": "https://www.quantamagazine.org/scant-evidence-of-power-laws-found-in-real-world-networks-20180215/",
+        "progress_timestamp": 0, "time": 1560982348, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "Y7QqtMS4", "description": "", "bookmark_id":
+        1287357323, "private_source": "", "title": "A Short History Of The Most Important
+        Economic Theory In Tech", "url": "https://www.fastcompany.com/3064681/most-important-economic-theory-in-technology-brian-arthur",
+        "progress_timestamp": 0, "time": 1560827184, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "AC3Oyy4S", "description": "", "bookmark_id":
+        1287357397, "private_source": "", "title": "A Deep Dive into the Harris-Klein
+        Controversy", "url": "https://everythingstudies.com/2018/04/26/a-deep-dive-into-the-harris-klein-controversy/",
+        "progress_timestamp": 0, "time": 1560563112, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "exbLg00s", "description": "", "bookmark_id":
+        1287357332, "private_source": "", "title": "A New Soft Technology", "url":
+        "https://breakingsmart.com/en/season-1/a-new-soft-technology/", "progress_timestamp":
+        0, "time": 1560459648, "progress": 0.0, "starred": "0", "type": "bookmark"},
+        {"hash": "C7YKk218", "description": "", "bookmark_id": 1287357369, "private_source":
+        "", "title": "You Are Not an Artisan", "url": "https://www.ribbonfarm.com/2013/07/10/you-are-not-an-artisan/",
+        "progress_timestamp": 0, "time": 1546903742, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "zGfTqoCj", "description": "", "bookmark_id":
+        1287357393, "private_source": "", "title": "\"Stop Assuming that Everything
+        You Feel or Think Is Right\"\u2014An Interview with Robert Greene - Quillette",
+        "url": "https://quillette.com/2019/01/01/stop-assuming-that-everything-you-feel-or-think-is-right-an-interview-with-robert-greene/",
+        "progress_timestamp": 0, "time": 1546396971, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "v55H444P", "description": "", "bookmark_id":
+        1287358383, "private_source": "", "title": "The Refragmentation", "url": "http://www.paulgraham.com/re.html",
+        "progress_timestamp": 0, "time": 1546326720, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "Jz9I8rJs", "description": "", "bookmark_id":
+        1287357423, "private_source": "", "title": "Productivity for Precious Snowflakes",
+        "url": "https://www.ribbonfarm.com/2016/01/28/productivity-for-precious-snowflakes/",
+        "progress_timestamp": 0, "time": 1546104174, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "lseOHtGw", "description": "", "bookmark_id":
+        1287357402, "private_source": "", "title": "The Bliss Of Distant Shores \u2013
+        Kapil Gupta \u2013 Medium", "url": "https://medium.com/@KapilGuptaMD/the-bliss-of-distant-shores-562b6ccb823",
+        "progress_timestamp": 0, "time": 1545970037, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "QiRU9Wti", "description": "", "bookmark_id":
+        1287357425, "private_source": "", "title": "Tweets with replies by Naval (@naval)
+        | Twitter", "url": "https://twitter.com/naval", "progress_timestamp": 0, "time":
+        1545265314, "progress": 0.0, "starred": "0", "type": "bookmark"}, {"hash":
+        "Nx3H421b", "description": "", "bookmark_id": 1287357479, "private_source":
+        "", "title": "Understanding Users of Social Networks", "url": "http://hbswk.hbs.edu/item/understanding-users-of-social-networks",
+        "progress_timestamp": 0, "time": 1541903771, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "CCDX11pR", "description": "", "bookmark_id":
+        1287357384, "private_source": "", "title": "Learning to Read in Your 30s Profoundly
+        Transforms the Brain - Max Planck Neuroscience on Nautilus", "url": "http://maxplanck.nautil.us/article/338/learning-to-read-in-your-30s-profoundly-transforms-the-brain",
+        "progress_timestamp": 0, "time": 1541699645, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "QJgXaiGg", "description": "", "bookmark_id":
+        1287357454, "private_source": "", "title": "A Natural History of Beauty |
+        Melting Asphalt", "url": "https://meltingasphalt.com/a-natural-history-of-beauty/",
+        "progress_timestamp": 0, "time": 1541430406, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "IWwEjTcT", "description": "", "bookmark_id":
+        1287357472, "private_source": "", "title": "The Middle-Class Revolution",
+        "url": "https://www.wsj.com/articles/SB10001424127887323873904578571472700348086",
+        "progress_timestamp": 0, "time": 1540597628, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "pxJbPOH4", "description": "", "bookmark_id":
+        1287357385, "private_source": "", "title": "How to build a Moon base", "url":
+        "http://www.nature.com/articles/d41586-018-07107-4", "progress_timestamp":
+        0, "time": 1540524067, "progress": 0.0, "starred": "0", "type": "bookmark"},
+        {"hash": "Cp8lW2Oi", "description": "", "bookmark_id": 1287357469, "private_source":
+        "", "title": "Gabriel Weinberg''s answer to What is the revenue generation
+        model for DuckDuckGo? - Quora", "url": "https://www.quora.com/What-is-the-revenue-generation-model-for-DuckDuckGo",
+        "progress_timestamp": 0, "time": 1540491370, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "IXnFnJqB", "description": "", "bookmark_id":
+        1287357495, "private_source": "", "title": "Do the Rich Capture All the Gains
+        from Economic Growth?", "url": "https://medium.com/@russroberts/do-the-rich-capture-all-the-gains-from-economic-growth-c96d93101f9c",
+        "progress_timestamp": 0, "time": 1540487965, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "wVkaVVRo", "description": "", "bookmark_id":
+        1287357398, "private_source": "", "title": "Opinion | Alex Honnold, a Soul
+        Freed in \u2018Free Solo\u2019", "url": "https://www.nytimes.com/2018/10/25/opinion/alex-honnold-free-solo-movie.html",
+        "progress_timestamp": 0, "time": 1540475862, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "1x8TD0Do", "description": "", "bookmark_id":
+        1287357400, "private_source": "", "title": "Who Are My Investors? \u2013 AVC",
+        "url": "https://avc.com/2018/10/who-are-my-investors/", "progress_timestamp":
+        0, "time": 1540396834, "progress": 0.0, "starred": "0", "type": "bookmark"},
+        {"hash": "VxaIeAi2", "description": "", "bookmark_id": 1287357428, "private_source":
+        "", "title": "The high-return activity of raising others'' aspirations - Marginal
+        REVOLUTION", "url": "https://marginalrevolution.com/marginalrevolution/2018/10/high-return-activity-raising-others-aspirations.html",
+        "progress_timestamp": 0, "time": 1540254805, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "Feh1IaCV", "description": "", "bookmark_id":
+        1287357456, "private_source": "", "title": "Ideas: A Healthcare Idea: Insurance
+        That Doesn''t Pay", "url": "http://daviddfriedman.blogspot.com/2009/05/healthcare-idea-insurance-that-doesnt.html",
+        "progress_timestamp": 0, "time": 1540137126, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "ID8u0G83", "description": "", "bookmark_id":
+        1287357404, "private_source": "", "title": "Opinion | On Venezuela, Where
+        Are Liberals?", "url": "https://www.nytimes.com/2018/02/15/opinion/venezuela-maduro-liberals.html",
+        "progress_timestamp": 0, "time": 1540137120, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "GB7DnTEt", "description": "", "bookmark_id":
+        1287357445, "private_source": "", "title": "An Oral History of Apple''s Infinite
+        Loop", "url": "https://www.wired.com/story/apple-infinite-loop-oral-history/",
+        "progress_timestamp": 0, "time": 1539978058, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "ddF7lV2Y", "description": "", "bookmark_id":
+        1287357513, "private_source": "", "title": "Kinky Labor Supply and the Attention
+        Tax", "url": "http://kortina.nyc/essays/kinky-labor-supply-and-the-attention-tax//",
+        "progress_timestamp": 0, "time": 1539958873, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "WEJtoXTF", "description": "", "bookmark_id":
+        1287357407, "private_source": "", "title": "Where does jealousy come from?",
+        "url": "https://www.sciencefocus.com/the-human-body/where-does-jealousy-come-from/?utm_campaign=buffer&utm_content=buffer88128&utm_medium=social&utm_source=twitter.com",
+        "progress_timestamp": 0, "time": 1539955565, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "ba5GInnc", "description": "\"Why are men more
+        interested than women in uncommitted sex and sexual variety?\" asks psychology
+        professor @SteveStuWill https://t.co/ijHcwwEubh", "bookmark_id": 1287357420,
+        "private_source": "", "title": "Keeping it Casual - Quillette", "url": "https://quillette.com/2018/10/14/keeping-it-casual/",
+        "progress_timestamp": 0, "time": 1539905935, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "FEQGVWpM", "description": "https://hbr.org/2016/07/why-diversity-programs-fail",
+        "bookmark_id": 1287357464, "private_source": "", "title": "Why Diversity Programs
+        Fail", "url": "https://hbr.org/2016/07/why-diversity-programs-fail", "progress_timestamp":
+        0, "time": 1539867850, "progress": 0.0, "starred": "0", "type": "bookmark"},
+        {"hash": "c3q4YVjb", "description": "", "bookmark_id": 1287357457, "private_source":
+        "", "title": "Ways people trying to do good accidentally make things worse,
+        and how to avoid them", "url": "https://80000hours.org/articles/accidental-harm/",
+        "progress_timestamp": 0, "time": 1539867766, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "NxFrw2l9", "description": "", "bookmark_id":
+        1287357504, "private_source": "", "title": "The Gervais Principle II: Posturetalk,
+        Powertalk, Babytalk and Gametalk", "url": "https://www.ribbonfarm.com/2009/11/11/the-gervais-principle-ii-posturetalk-powertalk-babytalk-and-gametalk/",
+        "progress_timestamp": 0, "time": 1539648353, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "PsdvA3NU", "description": "", "bookmark_id":
+        1287357440, "private_source": "", "title": "Pack Experience", "url": "https://www.ribbonfarm.com/2018/10/11/pack-experience/",
+        "progress_timestamp": 0, "time": 1539382754, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "sOq2ZKuR", "description": "", "bookmark_id":
+        1287357435, "private_source": "", "title": "Western civilisation is an idea
+        worth defending\u2014and reapplying", "url": "https://www.economist.com/open-future/2018/08/03/western-civilisation-is-an-idea-worth-defending-and-reapplying",
+        "progress_timestamp": 0, "time": 1539117939, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "SbxnBbR9", "description": "", "bookmark_id":
+        1287357527, "private_source": "", "title": "How Casper drove Mattress Firm
+        into bankruptcy", "url": "https://www.cnn.com/2018/10/06/business/mattress-firm-bankruptcy-casper/index.html",
+        "progress_timestamp": 0, "time": 1538851130, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "ubJ8AhLw", "description": "", "bookmark_id":
+        1287357461, "private_source": "", "title": "Why You\u2019re Buying Products
+        From Companies You\u2019ve Never Heard Of", "url": "https://www.wsj.com/articles/why-youre-buying-products-from-companies-youve-never-heard-of-1538661608",
+        "progress_timestamp": 0, "time": 1538827248, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "MvqazfHF", "description": "", "bookmark_id":
+        1287357480, "private_source": "", "title": "The Privilege Trap: Can Rich Kids
+        Become Good Leaders?", "url": "https://www.wsj.com/articles/the-privilege-trap-can-rich-kids-become-good-leaders-1538798420",
+        "progress_timestamp": 0, "time": 1538827071, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "26GO3xYo", "description": "", "bookmark_id":
+        1287357494, "private_source": "", "title": "What an Audacious Hoax Reveals
+        About Academia", "url": "https://www.theatlantic.com/ideas/archive/2018/10/new-sokal-hoax/572212/",
+        "progress_timestamp": 0, "time": 1538758557, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "m9jVXqqa", "description": "", "bookmark_id":
+        1287357421, "private_source": "", "title": "Netflix Is Forcing Hollywood Into
+        a Talent War", "url": "https://www.bloomberg.com/news/articles/2018-10-04/netflix-is-forcing-hollywood-into-a-talent-war",
+        "progress_timestamp": 0, "time": 1538738620, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "wFFZjZj8", "description": "", "bookmark_id":
+        1287357468, "private_source": "", "title": "The Best Article Ever Written
+        About Bragging", "url": "https://www.lesspenguiny.com/articles/best-article-on-bragging",
+        "progress_timestamp": 0, "time": 1538738548, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "fg5Pp8oH", "description": "", "bookmark_id":
+        1287357477, "private_source": "", "title": "Raised by YouTube", "url": "https://www.theatlantic.com/magazine/archive/2018/11/raised-by-youtube/570838/",
+        "progress_timestamp": 0, "time": 1538736802, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "11pvL3h3", "description": "", "bookmark_id":
+        1287357465, "private_source": "", "title": "Rifts Break Open at Facebook Over
+        Kavanaugh Hearing", "url": "https://www.nytimes.com/2018/10/04/technology/facebook-kavanaugh-nomination-kaplan.html",
+        "progress_timestamp": 0, "time": 1538689861, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "7g0xdp6P", "description": "", "bookmark_id":
+        1287357481, "private_source": "", "title": "Why Twitter Is Massively Undervalued
+        Compared To Facebook", "url": "http://social.techcrunch.com/2010/10/16/why-twitter-is-massively-undervalued-compared-to-facebook/",
+        "progress_timestamp": 0, "time": 1538397203, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "ycFxGZD1", "description": "", "bookmark_id":
+        1287357483, "private_source": "", "title": "Things as authorities", "url":
+        "http://unenumerated.blogspot.com/2006/10/things-as-authorities.html", "progress_timestamp":
+        0, "time": 1538161142, "progress": 0.0, "starred": "0", "type": "bookmark"},
+        {"hash": "YWdZH4if", "description": "Terrific job putting the Moviepass story
+        in perspective, by @Devindra. https://t.co/pNNoTJX4uw", "bookmark_id": 1287357586,
+        "private_source": "", "title": "MoviePass failed so cinema can live", "url":
+        "https://www.engadget.com/2018/08/07/moviepass-rip/", "progress_timestamp":
+        0, "time": 1533746665, "progress": 0.0, "starred": "0", "type": "bookmark"},
+        {"hash": "YaZfrKfo", "description": "", "bookmark_id": 1287357543, "private_source":
+        "", "title": "What is disruption and how can it be harnessed?[1]", "url":
+        "http://www.asymco.com/2012/03/12/what-is-disruption-and-how-can-it-be-harnessed1/",
+        "progress_timestamp": 0, "time": 1533669769, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "THYXemgq", "description": "", "bookmark_id":
+        1287357518, "private_source": "", "title": "Daring Fireball: The iPhone and
+        Disruption: Five Years In", "url": "https://daringfireball.net/2012/07/iphone_disruption_five_years_in",
+        "progress_timestamp": 0, "time": 1533669620, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "JZVUtlyP", "description": "New essay: The Power
+        User Curve. The best way to understand your most engaged users. https://t.co/kdgO8Q03O0",
+        "bookmark_id": 1287357488, "private_source": "", "title": "The Power User
+        Curve: The best way to understand your most engaged users", "url": "https://andrewchen.co/power-user-curve/",
+        "progress_timestamp": 0, "time": 1533661201, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "zqsaE1Up", "description": "", "bookmark_id":
+        1287357553, "private_source": "", "title": "How Tesla Made the Model 3 Better
+        Than the Model S", "url": "https://jalopnik.com/how-tesla-made-the-model-3-better-than-the-model-s-1828052113",
+        "progress_timestamp": 0, "time": 1533608507, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "Rg0bSpwi", "description": "\u201cApple at $1Trillion:
+        The Missing Theory\u201d by \u2066@gassee\u2069 // lots to think about and
+        really no one has yet to offer a satisfying narrative.  https://t.co/Qbrqz9X45k",
+        "bookmark_id": 1287357523, "private_source": "", "title": "Apple at $1Trillion:
+        The Missing Theory \u2013 Monday Note", "url": "https://mondaynote.com/apple-at-1trillion-the-missing-theory-6f6e58db4786",
+        "progress_timestamp": 0, "time": 1533576563, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "8rtMKCvX", "description": "", "bookmark_id":
+        1287357529, "private_source": "", "title": "How Tech Billionaires Hack Their
+        Taxes With a Philanthropic Loophole", "url": "https://www.nytimes.com/2018/08/03/business/donor-advised-funds-tech-tax.html",
+        "progress_timestamp": 0, "time": 1533333638, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "DEKVTq02", "description": "", "bookmark_id":
+        1287357533, "private_source": "", "title": "The Dark Core of Personality",
+        "url": "https://blogs.scientificamerican.com/beautiful-minds/the-dark-core-of-personality/",
+        "progress_timestamp": 0, "time": 1533167926, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "pLngygeY", "description": "Here\u2019s a list
+        of things cryptocurrency can do better than sovereign currency https://t.co/mjtcePe8z8",
+        "bookmark_id": 1287357538, "private_source": "", "title": "Cryptocurrency:
+        What is it good for? (A lot, actually.) | Coin Center", "url": "https://coincenter.org/entry/cryptocurrency-what-is-it-good-for-a-lot-actually",
+        "progress_timestamp": 0, "time": 1533147279, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "H5wsZhrM", "description": "\"Over $20bn has
+        been raised by crypto projects via ICOs in the last 18 months.\n\nAnd that
+        is not counting the amount of capital that has gone into crypto companies
+        via traditional means (venture capital, angel capital, etc\"\n https://t.co/fKMkylst1H",
+        "bookmark_id": 1287357537, "private_source": "", "title": "Drinking From The
+        Crypto Firehose \u2013 AVC", "url": "https://avc.com/2018/07/drinking-from-the-crypto-firehose/",
+        "progress_timestamp": 0, "time": 1533144161, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "k9mQAbH4", "description": "", "bookmark_id":
+        1287357595, "private_source": "", "title": "Die Weltwoche | Weltwoche Online
+        \u2013 www.weltwoche.ch: Interview of the Week: Peter Thiel:\u201cHypnotic
+        Mass Phenomena\u201d | Die Weltwoche, Ausgabe 29/2018", "url": "https://www.weltwoche.ch/ausgaben/2018-29/artikel/en-hypnotische-massenphanomene-die-weltwoche-ausgabe-29-2018.html",
+        "progress_timestamp": 0, "time": 1533092897, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "iC5jSyam", "description": "", "bookmark_id":
+        1287357570, "private_source": "", "title": "\u2018Lopping,\u2019 \u2018Tips\u2019
+        and the \u2018Z-List\u2019: Bias Lawsuit Explores Harvard\u2019s Admissions
+        Secrets", "url": "https://www.nytimes.com/2018/07/29/us/harvard-admissions-asian-americans.html",
+        "progress_timestamp": 0, "time": 1533080937, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "HJAMJ91v", "description": "", "bookmark_id":
+        1287357606, "private_source": "", "title": "Do property rights increase freedom?
+        (Japan edition)", "url": "http://noahpinionblog.blogspot.com/2011/08/do-property-rights-increase-liberty.html",
+        "progress_timestamp": 0, "time": 1532839587, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "dQlYqKTJ", "description": "", "bookmark_id":
+        1287357541, "private_source": "", "title": "Ancient Rivers of Money", "url":
+        "https://www.ribbonfarm.com/2010/11/05/ancient-rivers-of-money/", "progress_timestamp":
+        0, "time": 1532583213, "progress": 0.0, "starred": "0", "type": "bookmark"},
+        {"hash": "W96hjDX7", "description": "", "bookmark_id": 1287357578, "private_source":
+        "", "title": "Zoning Out in the Age of Netflix \u2013 500ish Words", "url":
+        "https://500ish.com/zoning-out-in-the-age-of-netflix-426b6842ad40", "progress_timestamp":
+        0, "time": 1532559881, "progress": 0.0, "starred": "0", "type": "bookmark"},
+        {"hash": "eUi1IfRb", "description": "", "bookmark_id": 1287357558, "private_source":
+        "", "title": "Amazon\u2019s Antitrust Paradox", "url": "https://www.yalelawjournal.org/article/amazons-antitrust-paradox",
+        "progress_timestamp": 0, "time": 1532554240, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "Sdc0I61s", "description": "", "bookmark_id":
+        1287357652, "private_source": "", "title": "Overpowered Metrics Eat Underspecified
+        Goals", "url": "https://www.ribbonfarm.com/2016/09/29/soft-bias-of-underspecified-goals/",
+        "progress_timestamp": 0, "time": 1532499643, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "NLzYYkU3", "description": "economist.com/open-f...",
+        "bookmark_id": 1287357601, "private_source": "", "title": "Jordan Peterson
+        on modern liberalism", "url": "https://www.economist.com/open-future/2018/05/24/jordan-peterson-on-modern-liberalism",
+        "progress_timestamp": 0, "time": 1532458268, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "KeMQqXrI", "description": "The Different Fate
+        of Apple\u2019s Lisa and Macintosh", "bookmark_id": 1287357592, "private_source":
+        "", "title": "The different fate of Apple''s Lisa and Macintosh (and why design
+        matters)", "url": "https://www.inexhibit.com/case-studies/different-fate-apples-lisa-macintosh-design-matters/",
+        "progress_timestamp": 0, "time": 1532456877, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "6QF3ktQw", "description": "", "bookmark_id":
+        1287357526, "private_source": "", "title": "The European Commission Versus
+        Android", "url": "https://stratechery.com/2018/the-european-commission-versus-android/",
+        "progress_timestamp": 0, "time": 1532412694, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "8cpdaSQt", "description": "", "bookmark_id":
+        1287357597, "private_source": "", "title": "Everyone Is Smart Except Trump",
+        "url": "https://spectator.org/everyone-is-smart-except-trump/", "progress_timestamp":
+        0, "time": 1531945121, "progress": 0.0, "starred": "0", "type": "bookmark"},
+        {"hash": "EXlrTruv", "description": "", "bookmark_id": 1287357557, "private_source":
+        "", "title": "Vitalik Buterin on Cryptoeconomics and Markets in Everything
+        (Ep. 45)", "url": "https://medium.com/conversations-with-tyler/vitalik-buterin-tyler-cowen-cryptocurrency-blockchain-tech-3a2b20c12c97",
+        "progress_timestamp": 0, "time": 1531943047, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "4hBOByUK", "description": "", "bookmark_id":
+        1287357605, "private_source": "", "title": "\u2018The Last Bet-the-Company
+        Situation\u2019: Q&A With Elon Musk", "url": "https://www.bloomberg.com/news/features/2018-07-13/-the-last-bet-the-company-situation-q-amp-a-with-elon-musk",
+        "progress_timestamp": 0, "time": 1531850582, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "w5cT9NY3", "description": "", "bookmark_id":
+        1287357582, "private_source": "", "title": "Interview with Sam Altman from
+        The High Growth Handbook", "url": "https://blog.ycombinator.com/interview-with-sam-altman-from-the-high-growth-handbook/",
+        "progress_timestamp": 0, "time": 1531847431, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "2pKMjoeA", "description": "", "bookmark_id":
+        1287357641, "private_source": "", "title": "That time I had Steve Jobs keynote
+        at Unix Expo", "url": "https://www.cake.co/conversations/rZXhqtP/that-time-i-had-steve-jobs-keynote-at-unix-expo",
+        "progress_timestamp": 0, "time": 1530290929, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "FwD9m71s", "description": "", "bookmark_id":
+        1287357682, "private_source": "", "title": "The Unicorn Hunters", "url": "https://logicmag.io/04-the-unicorn-hunters/",
+        "progress_timestamp": 0, "time": 1526454702, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "s3CK4a9i", "description": "", "bookmark_id":
+        1287357611, "private_source": "", "title": "J.R.R. Tolkien Expressed a \u201cHeartfelt
+        Loathing\u201d for Walt Disney and Refused to Let Disney Studios Adapt His
+        Work", "url": "http://www.openculture.com/2018/05/j-r-r-tolkien-expressed-a-heartfelt-loathing-for-walt-disney.html",
+        "progress_timestamp": 0, "time": 1526264045, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "DoUxkfrW", "description": "", "bookmark_id":
+        1287357612, "private_source": "", "title": "The State of Cryptocurrency Mining
+        \u2013 Sia Blog", "url": "https://blog.sia.tech/the-state-of-cryptocurrency-mining-538004a37f9b",
+        "progress_timestamp": 0, "time": 1526258469, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "KF0t2Qz4", "description": "", "bookmark_id":
+        1287357639, "private_source": "", "title": "Laws of Tech: Commoditize Your
+        Complement - Gwern.net", "url": "https://www.gwern.net/Complement", "progress_timestamp":
+        0, "time": 1526067542, "progress": 0.0, "starred": "0", "type": "bookmark"},
+        {"hash": "bFj4KgAf", "description": "", "bookmark_id": 1287357623, "private_source":
+        "", "title": "Apple, Influence, and Ive", "url": "https://www.hodinkee.com/magazine/jony-ive-apple",
+        "progress_timestamp": 0, "time": 1525905856, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "jrlxJyCK", "description": "", "bookmark_id":
+        1287357659, "private_source": "", "title": "The United States of Japan", "url":
+        "https://www.newyorker.com/culture/culture-desk/the-united-states-of-japan",
+        "progress_timestamp": 0, "time": 1525535616, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "XRaoODPI", "description": "", "bookmark_id":
+        1287357614, "private_source": "", "title": "Core Cryptocurrency Use Cases",
+        "url": "http://blog.eladgil.com/2018/05/core-cryptocurrency-use-cases.html",
+        "progress_timestamp": 0, "time": 1525274482, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "CeYjQ6C4", "description": "", "bookmark_id":
+        1287357634, "private_source": "", "title": "How merchants use Facebook to
+        flood Amazon with fake reviews", "url": "https://www.washingtonpost.com/business/economy/how-merchants-secretly-use-facebook-to-flood-amazon-with-fake-reviews/2018/04/23/5dad1e30-4392-11e8-8569-26fda6b404c7_story.html",
+        "progress_timestamp": 0, "time": 1524580108, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "DBvefAo9", "description": "", "bookmark_id":
+        1287357628, "private_source": "", "title": "Have Algorithms Destroyed Personal
+        Taste?", "url": "https://www.racked.com/2018/4/17/17219166/fashion-style-algorithm-amazon-echo-look",
+        "progress_timestamp": 0, "time": 1524255025, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "HTdzvXGK", "description": "", "bookmark_id":
+        1287357650, "private_source": "", "title": "Not even wrong - ways to dismiss
+        technology", "url": "https://www.ben-evans.com/benedictevans/2017/5/24/not-even-wrong-ways-to-dismiss-technology",
+        "progress_timestamp": 0, "time": 1520969702, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "lWACG3ny", "description": "", "bookmark_id":
+        1287357691, "private_source": "", "title": "Is Majoring in Liberal Arts a
+        Mistake for Students?", "url": "https://medium.com/@vkhosla/is-majoring-in-liberal-arts-a-mistake-for-students-bc10bc8bacbd",
+        "progress_timestamp": 0, "time": 1520626137, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "KzFyNZ3M", "description": "How Jocks and Mathletes
+        Are Alike", "bookmark_id": 1287357655, "private_source": "", "title": "How
+        Jocks and Mathletes Are Alike - Issue 18: Genius - Nautilus", "url": "http://nautil.us/issue/18/Genius/how-jocks-and-mathletes-are-alike",
+        "progress_timestamp": 0, "time": 1519081566, "progress": 0.0, "starred": "0",
+        "type": "bookmark"}, {"hash": "7P23QmTn", "description": "It\u2019s Time for
+        Apple to Build a Less Addictive iPhone.\n\nIt\u2019s not Apple\u2019s fault
+        that you feel enslaved by your phone. But Apple can do more to address this
+        problem than just about anyone else. \n\nMy @nytimes column\n\nhttps://t.co/yy7YSyod5s",
+        "bookmark_id": 1287357751, "private_source": "", "title": "It\u2019s Time
+        for Apple to Build a Less-Addictive iPhone", "url": "https://www.nytimes.com/2018/01/17/technology/apple-addiction-iphone.html",
+        "progress_timestamp": 0, "time": 1516214006, "progress": 0.0, "starred": "1",
+        "type": "bookmark"}, {"hash": "Nh9V7cMq", "description": "This Year We Can
+        End the Death Penalty in California http://ift.tt/2f7yVe5", "bookmark_id":
+        1287358006, "private_source": "", "title": "This Year We Can End the Death
+        Penalty in California", "url": "http://www.paulgraham.com/prop62.html", "progress_timestamp":
+        0, "time": 1478081122, "progress": 0.0, "starred": "0", "type": "bookmark"},
+        {"hash": "iuNpmN3G", "description": "The 2016 Election http://ift.tt/2e29sUT",
+        "bookmark_id": 1287358205, "private_source": "", "title": "The 2016 Election",
+        "url": "http://blog.samaltman.com/the-2016-election", "progress_timestamp":
+        0, "time": 1476733458, "progress": 0.0, "starred": "0", "type": "bookmark"},
+        {"hash": "u0GLuSUE", "description": "", "bookmark_id": 1287358823, "private_source":
+        "", "title": "Silicon Valley\u2019s Youth Problem \u2014 www.nytimes.com \u2014
+        Readability", "url": "http://www.nytimes.com/2014/03/16/magazine/silicon-valleys-youth-problem.html",
+        "progress_timestamp": 0, "time": 1394666943, "progress": 0.0, "starred": "1",
+        "type": "bookmark"}]'
+    headers:
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '46969'
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 19 Mar 2020 09:58:30 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - nginx/1.16.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Powered-By:
+      - a lot of coffee and Phish
+    status:
+      code: 200
+      message: OK
+version: 1

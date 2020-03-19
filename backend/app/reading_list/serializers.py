@@ -1,7 +1,6 @@
-from reading_list.models import Article, ReadingListItem, InstapaperCredentials, PocketCredentials
+from reading_list.models import Article, ReadingListItem
 import json
 from rest_framework import serializers
-from users.serializers import UserSerializer
 
 
 class ArticleSerializer(serializers.ModelSerializer):
@@ -27,19 +26,3 @@ class ReadingListItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = ReadingListItem
         fields = ['article', 'date_added', 'archived', 'delivered', 'trashed', 'to_deliver']
-
-
-class InstapaperCredentialsSerializer(serializers.ModelSerializer):
-    owner = UserSerializer()
-
-    class Meta:
-        model = InstapaperCredentials
-        fields = ['owner', 'last_polled']
-
-
-class PocketCredentialsSerializer(serializers.ModelSerializer):
-    owner = UserSerializer()
-
-    class Meta:
-        model = PocketCredentials
-        fields = ['owner', 'last_polled']

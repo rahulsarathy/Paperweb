@@ -1,3 +1,5 @@
+import moto
+
 from datetime import datetime
 import json
 from unittest import mock
@@ -6,11 +8,12 @@ import vcr
 
 from reading_list.models import Article
 from reading_list.models import ReadingListItem
-from reading_list.views import get_reading, get_archive, unarchive, archive_item, \
-    start_instapaper_import, update_deliver
+from reading_list.views import get_reading, get_archive, unarchive, archive_item, update_deliver
 from reading_list.views import handle_add_to_reading_list
 from reading_list.views import remove_from_reading_list
+from reading_list.utils import add_to_reading_list
 from django.contrib.auth.models import User
+from progress.types import update_add_to_reading_list_status
 
 from django.utils.timezone import make_aware
 from django_fakeredis import FakeRedis
@@ -31,7 +34,6 @@ class ReadingListTest(APITestCase):
         self.unarchive = '/api/reading_list/unarchive'
         self.archive_item = '/api/reading_list/archive_item'
         self.update_deliver = '/api/reading_list/update_deliver'
-        self.start_instapaper_import = '/api/reading_list/start_instapaper_import'
 
         self.test_user = User.objects.create(
             email='rita@sarathy.org')
@@ -175,6 +177,15 @@ class ReadingListTest(APITestCase):
         self.assertEqual(data[2]['article']['title'], self.article2.title)
         self.assertTrue(mock_handle_pages_task.called)
 
+    @mock.patch('reading_list.views.update_add_to_reading_list_status')
+    @mock.patch('reading_list.views.add_to_reading_list')
+    def test_add_to_reading_list_status(self, mock_add_to_reading_list, mock_update_add_to_reading_list_status):
+
+        request = self.factory.post(self.add_reading, {'link': self.to_add_link})
+        force_authenticate(request, user=self.test_user)
+        handle_add_to_reading_list(request)
+        mock_update_add_to_reading_list_status.assert_called_with(self.test_user, self.to_add_link, 100)
+
     def test_handle_add_to_reading_list_bad_link(self):
         """
         Checks that an add_to_reading_list() request with a bad link returns 400.
@@ -294,37 +305,6 @@ class ReadingListTest(APITestCase):
         force_authenticate(request, user=self.test_user)
         response = unarchive(request)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-
-    @vcr.use_cassette('reading_list/tests/__snapshots__/test_start_instapaper_import_wrong_password.yaml')
-    def test_start_instapaper_import_wrong_password(self):
-        """Checks that a start_instapaper_import() with wrong instapaper credentials request returns 401."""
-
-        request = self.factory.post(self.start_instapaper_import,
-                                    {'username': 'blah2@gmail.com', 'password': 'wrongpassword'})
-        force_authenticate(request, user=self.test_user)
-        response = start_instapaper_import(request)
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-
-    def test_unauthenticated_instapaper(self):
-        """Checks that an unauthenticated start_instapaper_import() request returns 403."""
-
-        request = self.factory.post(self.start_instapaper_import)
-        response = start_instapaper_import(request)
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-
-    @vcr.use_cassette('reading_list/tests/__snapshots__/mock_parse_instapaper_csv.yaml')
-    @mock.patch('reading_list.tasks.parse_instapaper_csv.delay')
-    def test_start_instapaper_import(self, mock_parse_instapaper_csv):
-        """Checks that an authenticated start_instapaper_import() with good instapaper credentials request
-         returns 200."""
-
-        # these credentials are legit on instapaper.
-        request = self.factory.post(self.start_instapaper_import,
-                                    {'username': 'blah2@gmail.com', 'password': 'pulptesting'})
-        force_authenticate(request, user=self.test_user)
-        response = start_instapaper_import(request)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertTrue(mock_parse_instapaper_csv.called)
 
     def test_unauthenticated_update_deliver(self):
         """Checks that an unauthenticated update_deliver() request returns 403."""

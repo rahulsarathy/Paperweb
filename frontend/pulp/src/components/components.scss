@@ -92,21 +92,22 @@
   }
 }
 
+.service-container {
+  display: inline-block;
+}
+
 .integration-button {
   $height: 45px;
-  display: block;
   border-radius: 3px;
   background-color: white;
   border-color: #4c8fff;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 20px;
   width: 150px;
   height: $height;
   line-height: $height;
   font-size: 22px;
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.5);
   -webkit-transition: all 0.2s ease-in-out;
+  margin-bottom: 12px;
 }
 
 .pocket {
@@ -114,6 +115,19 @@
 
   .pocket-image {
     height: 28px;
+  }
+}
+
+.sync-date {
+  // display: inline-block;
+  button {
+    background-color: white;
+    border-style: none;
+    -webkit-transition: all 0.2s ease-in-out;
+
+    img {
+      height: 20px;
+    }
   }
 }
 
@@ -139,6 +153,13 @@
   width: 500px;
   margin: 20px auto auto;
   color: #363634;
+
+  button {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+    display: block;
+  }
 
   .pulp-gray {
     margin-top: 20px;

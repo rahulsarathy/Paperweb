@@ -199,7 +199,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sat, 07 Mar 2020 23:29:47 GMT
+      - Thu, 19 Mar 2020 09:44:44 GMT
       ETag:
       - W/"32f0-aRChhpPSaUuUUpziVF7CFPTXnjs"
       X-Powered-By:
@@ -207,4 +207,45 @@ interactions:
     status:
       code: 200
       message: OK
+- request:
+    body: null
+    headers:
+      Authorization:
+      - !!binary |
+        QVdTNC1ITUFDLVNIQTI1NiBDcmVkZW50aWFsPUFLSUEyR1ozWEYySjVBTUNVQ1RLLzIwMjAwMzE5
+        L3VzLXdlc3QtMS9zMy9hd3M0X3JlcXVlc3QsIFNpZ25lZEhlYWRlcnM9aG9zdDt4LWFtei1jb250
+        ZW50LXNoYTI1Njt4LWFtei1kYXRlLCBTaWduYXR1cmU9YjUzZGZkOGUxYjc3NzEzMzkyMjRjNzI3
+        YmZjYTQzMjllMDZkYmNmMmJlMDc3NzgzNTIwODZjNTMzM2VmMDhiNg==
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4xMi4xNSBQeXRob24vMy43LjYgTGludXgvNC4xOS43Ni1saW51eGtpdCBCb3RvY29y
+        ZS8xLjE1LjE1IFJlc291cmNl
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyMDAzMTlUMDk0NDQ0Wg==
+    method: HEAD
+    uri: https://pulphtml-test.s3.us-west-1.amazonaws.com/5c30eebf2e21a91f8d2c.html
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Thu, 19 Mar 2020 09:44:44 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - qbB3ojFQYjsbx2mbzzIi+B4mHFrrchRijTtx4UDAB1YWS/U57SCQZB50Cl22KVihoIGr+8j0qEs=
+      x-amz-request-id:
+      - BAE58CA6455DF1AB
+    status:
+      code: 404
+      message: Not Found
 version: 1
