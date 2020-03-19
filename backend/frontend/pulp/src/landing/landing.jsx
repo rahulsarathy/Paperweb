@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Container, Row, Col, Button } from "react-bootstrap";
+import { Row, Col, Button } from "react-bootstrap";
 
 import "bootstrap/dist/css/bootstrap.css";
 import "./components.scss";
@@ -9,7 +9,7 @@ const images_url = "../static/images/";
 
 function Header() {
 	return (
-		<Container id="header">
+		<div id="header">
 			<img
 				className="logo"
 				src={images_url + "pulp_black_logo.svg"}
@@ -22,52 +22,48 @@ function Header() {
 				<a href="/accounts/login">Login</a>
 				<a href="/accounts/signup">Sign Up</a>
 			</div>
-		</Container>
+		</div>
 	);
 }
 
 
 function Splash() {
     return (
-        <Container>
-            <Row id="splash">
-                <Col className="left">
-                    <h1>Your favorite articles, made into a magazine</h1>
-                </Col>
-                <Col className="right">
-                    <h4>High quality writing was meant to be held, not scrolled through</h4>
-                    <Button>Sign Up</Button>
-                </Col>
-            </Row>
-        </Container>
+        <Row id="splash">
+            <Col className="left">
+                <h1>Your favorite articles, made into a magazine</h1>
+            </Col>
+            <Col className="right">
+                <h4>High quality writing was meant to be held, not scrolled through</h4>
+                <Button id="sign-up">Sign Up</Button>
+            </Col>
+        </Row>
     );
 }
 
 function Steps() {
     return (
         <div id="steps">
-            <Container>
-                <Row>
-                    <Col className="step">
-                        <div className="step-info">
-                            <img src={images_url + "step1.png"}/>  
-                            <span className="step-desc">Add Articles you want to read</span>
-                        </div>
-                    </Col>
-                    <Col className="step">
-                        <div className="step-info">
-                            <img src={images_url + "step2.png"}/>  
-                            <span className="step-desc">Read, whenever you want</span>
-                        </div>
-                    </Col>
-                    <Col className="step">
-                        <div className="step-info">
-                            <img src={images_url + "step3.png"}/>  
-                            <span className="step-desc">What you don't finish gets delivered to you as a magazine</span>
-                        </div>
-                    </Col>
-                </Row>
-            </Container>
+            <Row>
+                <Col className="step">
+                    <div className="step-info">
+                        <img src={images_url + "step1.png"}/>  
+                        <span className="step-desc">Add Articles you want to read</span>
+                    </div>
+                </Col>
+                <Col className="step">
+                    <div className="step-info">
+                        <img src={images_url + "step2.png"}/>  
+                        <span className="step-desc">Read, whenever you want</span>
+                    </div>
+                </Col>
+                <Col className="step">
+                    <div className="step-info">
+                        <img src={images_url + "step3.png"}/>  
+                        <span className="step-desc">What you don't finish gets delivered to you as a magazine</span>
+                    </div>
+                </Col>
+            </Row>
         </div>
     );
 }
@@ -80,23 +76,15 @@ function Preview() {
     );
 }
 
-export default class Landing extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {};
-    }
-
-    render() {
-        return (
-            <div>
-                <Header/>
-                <Splash/>
-                <Steps/>
-                <Preview/>
-            </div>
-        );
-    }
+function Landing() {
+    return (
+        <div>
+            <Header/>
+            <Splash/>
+            <Steps/>
+            <Preview/>
+        </div>
+    );
 }
 
-ReactDOM.render(<Landing />, document.getElementById("landing"));
+ReactDOM.render(<Landing />, document.querySelector("body"));
