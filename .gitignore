@@ -30,14 +30,14 @@ backend/app/instapaper/migrations/*.py
 !backend/app/instapaper/migrations/__init__.py
 
 # Celery
-backend/app/celerybeat-schedule
+celerybeat-schedule
+celerybeat.pid
 
 # Pulp Blog Archive
 blog_archive
 
 # Directory metadata
 .idea
-celerybeat.pid
 .env.dev
 .env
 
