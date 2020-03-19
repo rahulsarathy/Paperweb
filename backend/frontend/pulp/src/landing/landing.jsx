@@ -1,40 +1,90 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { Row, Col, Button } from "react-bootstrap";
+
 import "bootstrap/dist/css/bootstrap.css";
-import $ from "jquery";
-import shortid from "shortid";
-import { Row, Col } from "react-bootstrap";
-import { LandingHeader } from "./components.jsx";
+import "./components.scss";
 
-export default class Landing extends React.Component {
-    constructor(props) {
-        super(props);
+const images_url = "../static/images/";
 
-        this.state = {};
-    }
-
-    render() {
-        return (
-            <div>
-                <LandingHeader />
-                <div className="landing">
-                    <h1 className="logo">Pulp</h1>
-                    <h3 className="questioncopy">
-                        Save your favorite articles, read them at anytime.
-                    </h3>
-                    <div className="blogcopy">
-                        <p>
-                            Whatever you don't finish, gets delivered to your
-                            doorstep.
-                        </p>
-                    </div>
-                    <button className="getstarted">
-                        <a href="/accounts/signup">Get Started</a>
-                    </button>
-                </div>
-            </div>
-        );
-    }
+function Header() {
+	return (
+		<div id="header">
+			<img
+				className="logo"
+				src={images_url + "pulp_black_logo.svg"}
+			/>
+			<div className="links">
+                <a href="#">Pricing</a>
+				<a href="#">Contact</a>
+                <a href="#">FAQ</a>
+				<span>|</span>
+				<a href="/accounts/login">Login</a>
+				<a href="/accounts/signup">Sign Up</a>
+			</div>
+		</div>
+	);
 }
 
-ReactDOM.render(<Landing />, document.getElementById("landing"));
+
+function Splash() {
+    return (
+        <Row id="splash">
+            <Col className="left">
+                <h1>Your favorite articles, made into a magazine</h1>
+            </Col>
+            <Col className="right">
+                <h4>High quality writing was meant to be held, not scrolled through</h4>
+                <Button id="sign-up">Sign Up</Button>
+            </Col>
+        </Row>
+    );
+}
+
+function Steps() {
+    return (
+        <div id="steps">
+            <Row>
+                <Col className="step">
+                    <div className="step-info">
+                        <img src={images_url + "step1.png"}/>  
+                        <span className="step-desc">Add Articles you want to read</span>
+                    </div>
+                </Col>
+                <Col className="step">
+                    <div className="step-info">
+                        <img src={images_url + "step2.png"}/>  
+                        <span className="step-desc">Read, whenever you want</span>
+                    </div>
+                </Col>
+                <Col className="step">
+                    <div className="step-info">
+                        <img src={images_url + "step3.png"}/>  
+                        <span className="step-desc">What you don't finish gets delivered to you as a magazine</span>
+                    </div>
+                </Col>
+            </Row>
+        </div>
+    );
+}
+
+function Preview() {
+    return (
+        <div id="preview">
+            <img src={images_url + "preview.png"}/>
+        </div>
+    );
+}
+
+function Landing() {
+    return (
+        <div>
+            <Header/>
+            <Splash/>
+            <Steps/>
+            <Preview/>
+        </div>
+    );
+}
+
+ReactDOM.render(<Landing />, document.querySelector("body"));
