@@ -10,10 +10,11 @@ from pulp.globals import HTML_BUCKET, POCKET_CONSUMER_KEY
 from reading_list.serializers import ReadingListItemSerializer
 from django.core.cache import cache
 from django.conf import settings
-
+from django.utils.timezone import now
+from rest_framework import status
+from progress.types import update_add_to_reading_list_status, update_page_count, update_delivery
 
 import requests
-from rest_framework import status
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse
@@ -24,7 +25,7 @@ def get_reading_list(user):
     my_reading = ReadingListItem.objects.filter(reader=user, archived=False).order_by('-date_added')
     serializer = ReadingListItemSerializer(my_reading, many=True)
     json_response = serializer.data
-    return JsonResponse(json_response, safe=False)
+    return json_response
 
 
 def get_archive_list(user):
@@ -47,22 +48,32 @@ def add_to_reading_list(user, link, date_added=None):
     except ValidationError:
         raise
 
+    update_add_to_reading_list_status(user, link, 30)
+
     article, article_created = fill_article_fields(link)
 
-    # Some instapaper links come with a timestamp
+    update_add_to_reading_list_status(user, link, 70)
+
     reading_list_item, created = ReadingListItem.objects.get_or_create(
         reader=user, article=article
     )
+    # Some instapaper links come with a timestamp
     if date_added is not None:
         reading_list_item.date_added = date_added
         reading_list_item.save()
+    else:
+        reading_list_item.date_added = now()
+        reading_list_item.save()
 
-    article_id = get_article_id(link)
+    update_add_to_reading_list_status(user, link, 75)
+
     if delegate_task(article, article_created):
         from reading_list.tasks import handle_pages_task
         handle_pages_task.delay(link, user.email)
 
-    return True
+    update_add_to_reading_list_status(user, link, 90)
+
+    return reading_list_item
 
 # decide whether or not to undergo the expensive task of counting article pages
 def delegate_task(article, article_created):
@@ -77,7 +88,9 @@ def delegate_task(article, article_created):
 def fill_article_fields(link):
     try:
         article = Article.objects.get(permalink=link)
-        return article, False
+        # skip finding mercury response if already created
+        if not article.mercury_response is None:
+            return article, False
     except Article.DoesNotExist:
         pass
 
@@ -220,9 +233,11 @@ def handle_pages(article, user=None):
     else:
         page_count = article.page_count
 
+    update_page_count(user, article.permalink, page_count)
+
     # for backfill_pages command
     if user is None:
-        return
+        return page_count
 
     # Set to_deliver for ReadingListItem
     rlist_item, created = ReadingListItem.objects.get_or_create(
@@ -238,7 +253,11 @@ def handle_pages(article, user=None):
         to_deliver = True
     rlist_item.to_deliver = to_deliver
     rlist_item.save()
-    return
+
+    print("sending delivery")
+    update_delivery(user, article.permalink, to_deliver)
+
+    return page_count
 
 
 def get_selected_pages(user, permalink):

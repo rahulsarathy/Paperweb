@@ -10,7 +10,10 @@ export default class DeliveryItem extends Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		return nextProps.checked !== this.props.checked;
+		return (
+			nextProps.checked !== this.props.checked ||
+			nextProps.page_count != this.props.page_count
+		);
 	}
 
 	render() {
@@ -92,11 +95,13 @@ class DateAdded extends Component {
 	render() {
 		return (
 			<div className="date-added">
-				{new Date(this.props.date_added)
-					.toDateString()
-					.split(" ")
-					.slice(1)
-					.join(" ")}
+				<div className="center">
+					{new Date(this.props.date_added)
+						.toDateString()
+						.split(" ")
+						.slice(1)
+						.join(" ")}
+				</div>
 			</div>
 		);
 	}

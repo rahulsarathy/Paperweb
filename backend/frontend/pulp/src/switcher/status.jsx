@@ -1,24 +1,85 @@
 import React, { Component } from "react";
 
 export default class Status extends Component {
+	constructor(props) {
+		super(props);
+
+		this.state = {};
+	}
+
+	componentDidMount() {}
+
 	render() {
 		return (
 			<div className="status">
-				<Task />
+				<InstapaperTask
+					total={this.props.total}
+					completed={this.props.completed}
+				/>
+				{this.props.add_to_reading_list.map(task => (
+					<Task
+						key={task.link}
+						link={task.link}
+						percent={task.percent}
+					/>
+				))}
 			</div>
 		);
 	}
 }
 
 class Task extends Component {
+	shouldComponentUpdate(nextProps, nextState) {
+		if (nextProps.percent === 100) {
+			setTimeout(() => {}, 1000);
+		}
+		return true;
+	}
+
 	render() {
 		let style = {
-			width: "80%"
+			width: this.props.percent + "%"
 		};
+		if (this.props.percent === 100) {
+			return null;
+		}
 		return (
-			<div className="task" style={style}>
-				<p>Importing 30/50 Articles from Instapaper</p>
-				<div className="progress"></div>
+			<div className="task">
+				<p>Adding {this.props.link}</p>
+				<div style={style} className="progress"></div>
+			</div>
+		);
+	}
+}
+
+class InstapaperTask extends Component {
+	shouldComponentUpdate(nextProps, nextState) {
+		if (nextProps.total === this.props.total) {
+			setTimeout(() => {}, 1000);
+		}
+		return true;
+	}
+	render() {
+		if (
+			this.props.total === 0 ||
+			this.props.completed === this.props.total
+		) {
+			return null;
+		}
+
+		let percent = (this.props.completed / this.props.total) * 100;
+
+		let style = {
+			width: percent + "%"
+		};
+
+		return (
+			<div className="task">
+				<p>
+					Importing {this.props.completed}/{this.props.total} Articles
+					from Instapaper
+				</p>
+				<div style={style} className="import progress"></div>
 			</div>
 		);
 	}

@@ -12,6 +12,14 @@ from celery import task
 from bs4 import BeautifulSoup
 
 
+def get_user(email):
+    try:
+        user = User.objects.get(email=email)
+    except User.DoesNotExist:
+        logging.warning('User {} does not exist'.format(email))
+        return
+    return user
+
 @task(name='handle_pages')
 def handle_pages_task(link, email=None):
     try:

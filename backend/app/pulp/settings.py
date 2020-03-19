@@ -23,6 +23,7 @@ INSTALLED_APPS = [
 #   'health_check.contrib.celery',              # requires celery
 #   'health_check.contrib.redis',               # required Redis broker
     'captcha',
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -36,6 +37,7 @@ INSTALLED_APPS = [
     # 'allauth.socialaccount',
     'corsheaders',
     'rest_framework',
+    'progress',
     'reading_list.apps.ReadingListConfig',
     'payments.apps.PaymentsConfig',
     'users.apps.UsersConfig',
@@ -101,10 +103,7 @@ TEMPLATES = [
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
-CELERY_ROUTES = {
-    'reading_list.tasks.parse_instapaper_csv': {'queue': 'import_queue'},
-    'reading_list.tasks.handle_pages_task': {'queue': 'pdf_queue'}
-}
+CELERY_DEFAULT_QUEUE = "default"
 CELERY_BEAT_SCHEDULE = {
     'sync_instapaper': {
         'task': 'instapaper.tasks.sync_instapaper',
@@ -236,6 +235,17 @@ CACHES = {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     }
+}
+
+# Channels
+ASGI_APPLICATION = 'pulp.routing.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [(os.environ.get('REDIS_HOST'), os.environ.get('REDIS_PORT'))],
+        },
+    },
 }
 
 SILENCED_SYSTEM_CHECKS = config('SILENCED_SYSTEM_CHECKS', cast=Csv())

@@ -39,32 +39,143 @@ function MenuItem(props) {
 export default class Switcher extends React.Component {
   constructor(props) {
     super(props);
-    this.changeSelected = this.changeSelected.bind(this);
     this.changeDeliver = this.changeDeliver.bind(this);
-    this.changeSelected = this.changeSelected.bind(this);
     this.addArticle = this.addArticle.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.showModal = this.showModal.bind(this);
     this.removeArticle = this.removeArticle.bind(this);
     this.archiveArticle = this.archiveArticle.bind(this);
+    this.handleAddToReadingList = this.handleAddToReadingList.bind(this);
+    this.handleInstapaperQueue = this.handleInstapaperQueue.bind(this);
+    this.handlePageCount = this.handlePageCount.bind(this);
+
+    this.chatSocket = new WebSocket(
+      "ws://" + window.location.host + "/ws/api/progress/"
+    );
+
+    this.chatSocket.onmessage = function(e) {
+      this.handleWebSocket(e);
+    }.bind(this);
 
     this.state = {
-      value: "",
       reading_list: [],
-      error_name: "",
-      selected: "unread",
       show_add: false,
       loading_list: true,
       instapaper: {},
       pocket: {},
-      syncing_instapaper: false,
-      syncing_pocket: false
+      add_to_reading_list: [],
+      total: 0,
+      completed: 0
     };
   }
 
   componentDidMount() {
     this.getReadingList();
     this.getServices();
+  }
+
+  handleAddToReadingList(data) {
+    let link = data.link;
+    let percent = data.percent;
+    // Add new task if percent is at 0
+    if (percent === 0) {
+      let add_to_reading_list = this.state.add_to_reading_list;
+      let new_task = {
+        percent: percent,
+        link: link,
+        type: "add_to_reading_list"
+      };
+      add_to_reading_list.push(new_task);
+      this.setState({
+        add_to_reading_list: add_to_reading_list
+      });
+      return;
+    } else {
+      let add_to_reading_list = this.state.add_to_reading_list;
+      for (let i = 0; i < add_to_reading_list.length; i++) {
+        if (add_to_reading_list[i].link == link) {
+          add_to_reading_list[i].percent = percent;
+          this.setState({
+            add_to_reading_list: add_to_reading_list
+          });
+          return;
+        }
+      }
+    }
+  }
+
+  handlePageCount(data) {
+    let link = data.link;
+    let page_count = data.page_count;
+    let reading_list = this.state.reading_list;
+
+    for (let i = 0; i < reading_list.length; i++) {
+      if (reading_list[i].article.permalink === link) {
+        reading_list[i].article.page_count = page_count;
+      }
+    }
+
+    this.setState({
+      reading_list: reading_list
+    });
+  }
+
+  handleToDeliver(data) {
+    let to_deliver = data.to_deliver;
+    let link = data.link;
+    let reading_list = this.state.reading_list;
+
+    for (let i = 0; i < reading_list.length; i++) {
+      if (reading_list[i].article.permalink === link) {
+        reading_list[i].to_deliver = to_deliver;
+      }
+    }
+    this.setState({
+      reading_list: reading_list
+    });
+  }
+
+  handleInstapaperQueue(data) {
+    let total = data.total;
+    let completed = data.completed;
+
+    this.setState({
+      total: total,
+      completed: completed
+    });
+  }
+
+  handleWebSocket(e) {
+    let data = JSON.parse(e.data);
+    switch (data.job_type) {
+      case "add_to_reading_list":
+        this.handleAddToReadingList(data);
+        break;
+      case "page_count":
+        this.handlePageCount(data);
+        break;
+      case "instapaper_queue":
+        this.handleInstapaperQueue(data);
+        break;
+      case "to_deliver":
+        this.handleToDeliver(data);
+        break;
+      case "reading_list_item":
+        this.handleReadingList(data);
+        break;
+      case "message":
+        break;
+      default:
+    }
+  }
+
+  handleReadingList(data) {
+    let reading_list_item = data.reading_list_item;
+    let reading_list = this.state.reading_list;
+    reading_list.unshift(reading_list_item);
+    this.setState({
+      reading_list: reading_list
+    });
   }
 
   getReadingList() {
@@ -123,6 +234,7 @@ export default class Switcher extends React.Component {
   }
 
   addArticle(link) {
+    this.closeModal();
     if (link === "") {
       this.setState({
         error_name: "empty"
@@ -153,10 +265,6 @@ export default class Switcher extends React.Component {
         }
       }.bind(this)
     });
-  }
-
-  changeSelected(value) {
-    this.setState({ selected: value });
   }
 
   changeDeliver(to_deliver, permalink) {
@@ -231,7 +339,7 @@ export default class Switcher extends React.Component {
     return (
       <Router>
         <div>
-          <Header changeSelected={this.changeSelected} />
+          <Header />
           <div className="pulp-container">
             <div className="sidebar-container">
               <div className="sidebar">
@@ -241,7 +349,11 @@ export default class Switcher extends React.Component {
               </div>
             </div>
             <div className="page-container">
-              <Status />
+              <Status
+                add_to_reading_list={this.state.add_to_reading_list}
+                completed={this.state.completed}
+                total={this.state.total}
+              />
               <AddArticle
                 addArticle={this.addArticle}
                 show_add={this.state.show_add}

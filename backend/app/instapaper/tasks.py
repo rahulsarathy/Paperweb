@@ -5,6 +5,7 @@ import json
 from .models import InstapaperCredentials
 from reading_list.utils import add_to_reading_list
 from pulp.globals import INSTAPAPER_CONSUMER_ID, INSTAPAPER_CONSUMER_SECRET
+from progress.types import update_instapaper_queue_status, update_reading_list
 
 from django.contrib.auth.models import User
 from celery import task
@@ -23,7 +24,7 @@ def sync_instapaper():
             # this user does not have pocket setup, nothing to do here
             continue
 
-        parse_instapaper_bookmarks.delay(user.email)
+        parse_instapaper_bookmarks(user.email)
 
 
 @task(name='parse_instapaper_bookmarks')
@@ -52,7 +53,7 @@ def parse_instapaper_bookmarks(email):
     have_string = ','.join(str(polled_id) for polled_id in polled_ids)
     data = {
         'have': have_string,
-        'limit': 500,
+        'limit': 10,
     }
 
     response = requests.post(bookmarks_url, auth=oauth, data=data)
@@ -60,6 +61,9 @@ def parse_instapaper_bookmarks(email):
     credentials.last_polled = now()
     credentials.save()
 
+    total_num_of_bookmarks = len(bookmarks) - 2
+    complete = 0
+    update_instapaper_queue_status(user, 0, total_num_of_bookmarks)
     # Add new URLs
     for bookmark in bookmarks:
         if bookmark.get('type', '') != 'bookmark':
@@ -72,6 +76,8 @@ def parse_instapaper_bookmarks(email):
         unix_timestamp = bookmark.get('time')
         timestamp = int(unix_timestamp)
         dt_object = make_aware(datetime.fromtimestamp(timestamp))
-        add_to_reading_list(user, link, dt_object)
-
+        reading_list_item = add_to_reading_list(user, link, dt_object)
+        update_reading_list(user, reading_list_item)
+        complete = complete + 1
+        update_instapaper_queue_status(user, complete, total_num_of_bookmarks)
     return

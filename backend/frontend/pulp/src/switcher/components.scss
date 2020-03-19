@@ -234,7 +234,7 @@ $header-background-color: #363634;
   .task {
     width: 100%;
     border-top-style: solid;
-    border-top-color: gray;
+    border-top-color: #d3d3d3;
     border-top-width: 1px;
 
     p {
@@ -254,10 +254,14 @@ $header-background-color: #363634;
       }
     }
 
-    .progress {
+    .import {
+      animation: placeHolderShimmer 2s ease infinite;
       background: linear-gradient(90deg, #ffffff, #4d8efa);
       background-size: 300% 100%;
-      animation: placeHolderShimmer 2s ease infinite;
+    }
+
+    .progress {
+      background-color: #4d8efa;
       height: 4px;
       border-radius: 0px;
       // transition: all 0.2s ease-in-out;

@@ -6,6 +6,7 @@ from instapaper.serializers import InstapaperCredentialsSerializer
 from pocket.serializers import PocketCredentialsSerializer
 from instapaper.models import InstapaperCredentials
 from pocket.models import PocketCredentials
+from progress.types import update_add_to_reading_list_status
 
 from rest_framework.decorators import api_view
 from rest_framework.exceptions import NotFound
@@ -13,14 +14,12 @@ from django.core.exceptions import ValidationError
 from django.http import JsonResponse
 
 
-
 @api_view(['GET'])
 def get_reading(request):
     user = request.user
     if not user.is_authenticated:
         return JsonResponse(data={'error': 'Invalid request.'}, status=403)
-    return get_reading_list(user)
-
+    return JsonResponse(get_reading_list(user), safe=False)
 
 @api_view(['POST'])
 def handle_add_to_reading_list(request):
@@ -28,6 +27,7 @@ def handle_add_to_reading_list(request):
     if not user.is_authenticated:
         return JsonResponse(data={'error': 'Invalid request.'}, status=403)
     link = request.POST['link']
+    update_add_to_reading_list_status(user, link, 0)
 
     # handle validation error
     try:
@@ -35,7 +35,8 @@ def handle_add_to_reading_list(request):
     except ValidationError:
         return JsonResponse(data={'error': 'Invalid URL.'}, status=400)
 
-    return get_reading_list(user)
+    update_add_to_reading_list_status(user, link, 100)
+    return JsonResponse(get_reading_list(user), safe=False)
 
 
 @api_view(['GET'])
@@ -60,7 +61,7 @@ def archive_item(request):
         reading_list_item = ReadingListItem.objects.get(article=article, reader=user)
         reading_list_item.archived = True
         reading_list_item.save()
-        return get_reading_list(user)
+        return JsonResponse(get_reading_list(user), safe=False)
     except ReadingListItem.DoesNotExist:
         raise NotFound(detail='ReadingListItem with link: %s not found.' % link, code=404)
 
@@ -109,7 +110,7 @@ def remove_from_reading_list(request):
     except InstapaperCredentials.DoesNotExist:
         # nothing to remove
         pass
-    return get_reading_list(user)
+    return JsonResponse(get_reading_list(user), safe=False)
 
 
 @api_view(['POST'])
@@ -130,6 +131,6 @@ def update_deliver(request):
         reading_list_item = ReadingListItem.objects.get(article=article, reader=user)
         reading_list_item.to_deliver = to_deliver
         reading_list_item.save()
-        return get_reading_list(user)
+        return JsonResponse(get_reading_list(user), safe=False)
     except ReadingListItem.DoesNotExist:
         raise NotFound(detail='ReadingListItem with link: %s not found.' % link, code=404)
