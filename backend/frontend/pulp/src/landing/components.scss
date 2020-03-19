@@ -24,16 +24,19 @@
 
   display: flex;
   justify-content: space-between;
-
 }
 
 #header .logo {
-  height: 2rem;
+  height: 2.5rem;
 }
 
 #header .links {
   display: flex;
   white-space: nowrap;
+
+  font-size: 0.9rem;
+
+  margin: auto 0;
 }
 
 #header .links a {
