@@ -1,0 +1,58 @@
+interactions:
+- request:
+    body: x_auth_username=blah2%40gmail.com&x_auth_password=pulptesting&x_auth_mode=client_auth
+    headers:
+      Accept:
+      - !!binary |
+        Ki8q
+      Accept-Encoding:
+      - !!binary |
+        Z3ppcCwgZGVmbGF0ZQ==
+      Authorization:
+      - !!binary |
+        T0F1dGggb2F1dGhfbm9uY2U9IjE1MDg3MzEwNzA3NTAyMTc4MDIxMTU4NDYwNDAxNiIsIG9hdXRo
+        X3RpbWVzdGFtcD0iMTU4NDYwNDAxNiIsIG9hdXRoX3ZlcnNpb249IjEuMCIsIG9hdXRoX3NpZ25h
+        dHVyZV9tZXRob2Q9IkhNQUMtU0hBMSIsIG9hdXRoX2NvbnN1bWVyX2tleT0iYjVkOTk4NTM4MTkz
+        NGVjODgyMjFhZjhhZDMxMmM0YTMiLCBvYXV0aF9zaWduYXR1cmU9IlhWWHl2Zk10bE05d1FSZmRQ
+        VXBzeTlpN1dwNCUzRCI=
+      Connection:
+      - !!binary |
+        a2VlcC1hbGl2ZQ==
+      Content-Length:
+      - '85'
+      Content-Type:
+      - !!binary |
+        YXBwbGljYXRpb24veC13d3ctZm9ybS11cmxlbmNvZGVk
+      User-Agent:
+      - !!binary |
+        cHl0aG9uLXJlcXVlc3RzLzIuMjIuMA==
+    method: POST
+    uri: https://www.instapaper.com/api/1/oauth/access_token
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA0XLSw6AIAwFwNu4rjzKZ8FZSGkhJiaSKN7fpbOfKe866ppnv+rT9e6rgENANLCC
+        fRRJ6AxAJFrmXXSb/ykO0DGgIUP9ADdCdomoGYgs5Q++n/0yYAAAAA==
+    headers:
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '97'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Thu, 19 Mar 2020 07:46:56 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - nginx/1.16.1
+      X-Powered-By:
+      - a lot of coffee and Phish
+    status:
+      code: 200
+      message: OK
+version: 1

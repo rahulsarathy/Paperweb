@@ -1,10 +1,11 @@
+# moto must be imported before any boto3 imports
+import moto
+
 from unittest import mock
 import json
 import os
 import logging
 
-# moto must be imported before any boto3 imports
-import moto
 from moto import mock_s3
 
 from reading_list.utils import get_parsed, add_to_reading_list, \

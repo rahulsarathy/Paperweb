@@ -9,6 +9,7 @@ from .tasks import parse_instapaper_bookmarks
 from requests_oauthlib import OAuth1
 import requests
 import urllib
+from rest_framework import status
 
 # Create your views here.
 
@@ -47,6 +48,9 @@ def authenticate_instapaper(request):
     }
 
     response = requests.post(authenticate_url, data=data, auth=oauth)
+    if response.status_code != 200:
+        return HttpResponse(status=401)
+
     text = response.text
     parsed = urllib.parse.parse_qs(text)
     oauth_token_secret = parsed['oauth_token_secret'][0]

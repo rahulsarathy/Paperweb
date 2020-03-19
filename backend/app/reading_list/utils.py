@@ -254,7 +254,6 @@ def handle_pages(article, user=None):
     rlist_item.to_deliver = to_deliver
     rlist_item.save()
 
-    print("sending delivery")
     update_delivery(user, article.permalink, to_deliver)
 
     return page_count
