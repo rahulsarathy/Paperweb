@@ -69,15 +69,14 @@ def authenticate_pocket(request):
 @api_view(['POST'])
 def sync_pocket(request):
     user = request.user
-
-    user = request.user
     if not user.is_authenticated:
         return JsonResponse(data={'error': 'Invalid request.'}, status=403)
-
     try:
         credentials = PocketCredentials.objects.get(owner=user)
+        if credentials.invalid:
+            return JsonResponse(data={'error': 'Invalid Pocket Credentials.'}, status=403)
     except PocketCredentials.DoesNotExist:
-        return JsonResponse(data={'error': 'Invalid Instapaper Credentials.'}, status=403)
+        return JsonResponse(data={'error': 'Invalid Pocket Credentials.'}, status=403)
 
     import_pocket.delay(user.email)
 
