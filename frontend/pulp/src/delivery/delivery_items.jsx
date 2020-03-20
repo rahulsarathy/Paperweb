@@ -62,6 +62,7 @@ export default class DeliveryItems extends Component {
 						checked={item.to_deliver}
 						permalink={item.article.permalink}
 						changeDeliver={this.props.changeDeliver}
+						page_total={this.props.page_total}
 					/>
 				))}
 			</div>

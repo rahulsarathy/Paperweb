@@ -3,6 +3,7 @@ import re
 from pulp.globals import POCKET_CONSUMER_KEY
 from django.core.cache import cache
 from .models import PocketCredentials
+from pocket.tasks import import_pocket
 
 from django.shortcuts import render
 from django.utils import timezone
@@ -64,3 +65,20 @@ def authenticate_pocket(request):
     import_pocket.delay(request.user.email)
 
     return HttpResponseRedirect('/')
+
+@api_view(['POST'])
+def sync_pocket(request):
+    user = request.user
+
+    user = request.user
+    if not user.is_authenticated:
+        return JsonResponse(data={'error': 'Invalid request.'}, status=403)
+
+    try:
+        credentials = PocketCredentials.objects.get(owner=user)
+    except PocketCredentials.DoesNotExist:
+        return JsonResponse(data={'error': 'Invalid Instapaper Credentials.'}, status=403)
+
+    import_pocket.delay(user.email)
+
+    return HttpResponse(status=200)

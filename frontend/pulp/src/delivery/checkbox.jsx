@@ -6,7 +6,7 @@ import "bootstrap/dist/css/bootstrap.css";
 
 const icon_url = "../static/icons/";
 
-export default class CheckBox extends React.Component {
+class CheckBox extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -32,3 +32,20 @@ export default class CheckBox extends React.Component {
 		);
 	}
 }
+
+class OverflowBox extends React.Component {
+	constructor(props) {
+		super(props);
+
+		this.state = {};
+	}
+
+	render() {
+		let style = {
+			borderColor: "red"
+		};
+		return <div style={style} className="checkbox unselected center"></div>;
+	}
+}
+
+export { OverflowBox, CheckBox };

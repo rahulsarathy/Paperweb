@@ -1,5 +1,5 @@
 import "./components.scss";
-import CheckBox from "./checkbox.jsx";
+import { CheckBox, OverflowBox } from "./checkbox.jsx";
 import TableContainer from "./table_container.jsx";
 import NoArticles from "../components/NoArticles.jsx";
 import DeliveryContainer from "./delivery_container.jsx";
@@ -20,5 +20,6 @@ export {
 	DeliveryItems,
 	PageCount,
 	Filter,
-	Footer
+	Footer,
+	OverflowBox
 };

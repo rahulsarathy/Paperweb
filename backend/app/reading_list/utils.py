@@ -12,7 +12,7 @@ from django.core.cache import cache
 from django.conf import settings
 from django.utils.timezone import now
 from rest_framework import status
-from progress.types import update_add_to_reading_list_status, update_reading_list
+from progress.types import update_add_to_reading_list_status, update_reading_list, update_delivery, update_page_count
 
 
 import requests
@@ -41,7 +41,7 @@ def get_archive_list(user):
 # 3. Add Article to DB
 # 4. Convert article to PDF and count pages
 # 5. Choose if Article should be set to deliver
-def add_to_reading_list(user, link, date_added=None):
+def add_to_reading_list(user, link, date_added=None, send_updates=True):
     # Validate url
     validate = URLValidator()
     try:
@@ -49,11 +49,14 @@ def add_to_reading_list(user, link, date_added=None):
     except ValidationError:
         raise
 
-    update_add_to_reading_list_status(user, link, 30)
+    # Choose to not send updates if running a large import to avoid spamming websocket
+    if send_updates:
+        update_add_to_reading_list_status(user, link, 30)
 
     article, article_created = fill_article_fields(link)
 
-    update_add_to_reading_list_status(user, link, 70)
+    if send_updates:
+        update_add_to_reading_list_status(user, link, 70)
 
     reading_list_item, reading_list_item_created = ReadingListItem.objects.get_or_create(
         reader=user, article=article
@@ -66,7 +69,8 @@ def add_to_reading_list(user, link, date_added=None):
         reading_list_item.date_added = now()
         reading_list_item.save()
 
-    update_add_to_reading_list_status(user, link, 75)
+    if send_updates:
+        update_add_to_reading_list_status(user, link, 75)
 
     if delegate_task(article, article_created):
         from reading_list.tasks import handle_pages_task
@@ -77,7 +81,10 @@ def add_to_reading_list(user, link, date_added=None):
             # to user reading list
             handle_pages(article, user)
 
-    update_add_to_reading_list_status(user, link, 90)
+    if send_updates:
+        update_add_to_reading_list_status(user, link, 90)
+
+    update_reading_list(user)
 
     return reading_list_item
 
@@ -244,6 +251,8 @@ def handle_pages(article, user=None):
     if user is None:
         return page_count
 
+    update_page_count(user, article.permalink, page_count)
+
     # Set to_deliver for ReadingListItem
     rlist_item, created = ReadingListItem.objects.get_or_create(
         reader=user, article=article
@@ -259,7 +268,7 @@ def handle_pages(article, user=None):
     rlist_item.to_deliver = to_deliver
     rlist_item.save()
 
-    update_reading_list(user)
+    update_delivery(user, article.permalink, to_deliver)
 
     return page_count
 

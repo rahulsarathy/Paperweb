@@ -28,6 +28,7 @@ export default class Delivery extends React.Component {
           empty={this.props.reading_list.length === 0}
           reading_list={this.props.reading_list}
           changeDeliver={this.props.changeDeliver}
+          page_total={this.props.page_total}
         />
       </div>
     );

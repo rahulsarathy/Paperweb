@@ -5,7 +5,7 @@ import json
 from .models import InstapaperCredentials
 from reading_list.utils import add_to_reading_list
 from pulp.globals import INSTAPAPER_CONSUMER_ID, INSTAPAPER_CONSUMER_SECRET
-from progress.types import update_instapaper_queue_status, update_reading_list
+from progress.types import update_instapaper_queue_status
 
 from django.contrib.auth.models import User
 from celery import task
@@ -59,7 +59,7 @@ def handle_bookmark(bookmark, user):
     timestamp = int(unix_timestamp)
     dt_object = make_aware(datetime.fromtimestamp(timestamp))
     # might throw an exception, in which case parse_instapaper_bookmarks will catch it and ignore this bookmark
-    reading_list_item = add_to_reading_list(user, link, dt_object)
+    reading_list_item = add_to_reading_list(user, link, dt_object, send_updates=False)
     return
 
 
@@ -98,7 +98,6 @@ def parse_instapaper_bookmarks(email):
         except Exception as e:
             logging.warning("add_to_reading_list failed in instapaper with exception {} from link: {}".format(e, url))
             total = total - 1
-            complete = complete - 1
             update_instapaper_queue_status(user, complete, total)
             continue
 

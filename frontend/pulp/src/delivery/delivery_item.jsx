@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { CheckBox } from "./components.jsx";
+import { CheckBox, OverflowBox } from "./components.jsx";
 import { Spinner } from "../components/components.jsx";
 
 const static_icon = "../static/icons/";
@@ -12,7 +12,9 @@ export default class DeliveryItem extends Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		return (
 			nextProps.checked !== this.props.checked ||
-			nextProps.page_count != this.props.page_count
+			nextProps.page_count != this.props.page_count ||
+			nextProps.overflow != this.props.overflow ||
+			nextProps.page_total != this.props.page_total
 		);
 	}
 
@@ -25,6 +27,7 @@ export default class DeliveryItem extends Component {
 					checked={this.props.checked}
 					permalink={this.props.permalink}
 					page_count={this.props.page_count}
+					page_total={this.props.page_total}
 				/>
 				<PageCount page_count={this.props.page_count} />
 				<DateAdded date_added={this.props.date_added} />
@@ -36,8 +39,13 @@ export default class DeliveryItem extends Component {
 class ToDeliver extends Component {
 	constructor(props) {
 		super(props);
+
+		let will_overflow = this.props.page_total + this.props.page_count > 50;
+
 		this.state = {
-			loading: false
+			loading: false,
+			will_overflow: will_overflow,
+			overflowed: false
 		};
 	}
 
@@ -47,23 +55,50 @@ class ToDeliver extends Component {
 				loading: false
 			});
 		}
+		if (prevProps.page_total !== this.props.page_total) {
+			this.setState({
+				overflowed: false
+			});
+			let will_overflow =
+				this.props.page_total + this.props.page_count > 50;
+			this.setState({
+				will_overflow: will_overflow
+			});
+		}
 	}
 
 	startToggleDeliver() {
+		// if going to be checked
+		if (!this.props.checked) {
+			if (this.state.will_overflow) {
+				this.setState({
+					overflowed: true
+				});
+				return;
+			}
+		}
+
 		this.setState(
 			{
 				loading: true
 			},
 			() =>
 				this.props.changeDeliver(
-					this.props.checked,
 					this.props.permalink,
-					this.props.page_count
+					false,
+					this.props.checked
 				)
 		);
 	}
 
 	render() {
+		if (this.state.overflowed) {
+			return (
+				<div className="to-deliver">
+					<OverflowBox />
+				</div>
+			);
+		}
 		return (
 			<div className="to-deliver">
 				{this.state.loading ? (

@@ -50,6 +50,36 @@ export default class Profile extends React.Component {
     this.getEmail();
   }
 
+  syncInstapaper() {
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    let data = {
+      csrfmiddlewaretoken: csrftoken
+    };
+
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    $.ajax({
+      url: "../api/instapaper/sync_instapaper",
+      data: data,
+      type: "POST",
+      success: function(data) {}
+    });
+  }
+
+  syncPocket() {
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    let data = {
+      csrfmiddlewaretoken: csrftoken
+    };
+
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    $.ajax({
+      url: "../api/pocket/sync_pocket",
+      data: data,
+      type: "POST",
+      success: function(data) {}
+    });
+  }
+
   updateSettings() {
     var csrftoken = $("[name=csrfmiddlewaretoken]").val();
     let data = {
@@ -168,7 +198,7 @@ export default class Profile extends React.Component {
           {this.props.instapaper.signed_in ? (
             <div className="sync-date">
               Last synced: {this.timeAgo(this.props.instapaper.last_polled)}
-              <button onClick={this.props.syncInstapaper}>
+              <button onClick={this.syncInstapaper}>
                 <img src="../static/icons/sync.svg" />
               </button>
             </div>
@@ -179,6 +209,9 @@ export default class Profile extends React.Component {
           {this.props.pocket.signed_in ? (
             <div className="sync-date">
               Last synced: {this.timeAgo(this.props.pocket.last_polled)}
+              <button onClick={this.syncPocket}>
+                <img src="../static/icons/sync.svg" />
+              </button>
             </div>
           ) : (
             <div>Click to integrate Pocket</div>
