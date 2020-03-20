@@ -1,3 +1,5 @@
+import math
+
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
@@ -7,7 +9,7 @@ from utils.stripe_utils import stripe
 from django.http import JsonResponse, HttpResponse
 from payments.models import BillingInfo
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
 from django.contrib.auth.models import User
@@ -100,15 +102,40 @@ def next_billing_date(request):
 
     return JsonResponse(next_billing_date)
 
+def date_finder(current_date):
+    wanted_day = 6 # sunday
+
+    first_day_of_month = datetime(current_date.year, current_date.month, 1)
+    first_day_of_month_weekday = first_day_of_month.weekday()
+
+    delta = abs(wanted_day - first_day_of_month_weekday)
+
+    first_occurence = first_day_of_month + timedelta(days=delta)
+
+    second_occurence = first_occurence + timedelta(days=7)
+
+    fourth_occurence = second_occurence + timedelta(days=14)
+
+    first_day_of_next_month = datetime(current_date.year, current_date.month + 1, 1)
+    first_day_of_next_month_weekday = first_day_of_next_month.weekday()
+    delta = abs(wanted_day - first_day_of_next_month_weekday)
+    next_month_first_occurence = first_day_of_next_month + timedelta(days=delta)
+
+
+    if current_date <= second_occurence:
+        return second_occurence
+    elif current_date <= fourth_occurence:
+        return fourth_occurence
+    else:
+        return next_month_first_occurence
 @api_view(['GET'])
 def next_delivery_date(request):
-    current_date = timezone.now()
-
-    last_date_of_month = datetime(current_date.year, current_date.month, 1) + relativedelta(months=1, days=-1)
+    current_date = datetime.now()
+    next_date = date_finder(current_date)
     next_delivery_date = {
-        'day': last_date_of_month.day,
-        'month': last_date_of_month.strftime("%B"),
-        'year': last_date_of_month.year,
+        'day': next_date.day,
+        'month': next_date.strftime("%B"),
+        'year': next_date.year,
     }
     return JsonResponse(next_delivery_date)
 

@@ -15,6 +15,12 @@ class Article(models.Model):
     preview_text = models.CharField(_('Preview Text'), null=True, max_length=350)
 
 
+class Magazine(models.Model):
+    reader = models.ForeignKey(User, on_delete=models.CASCADE)
+    to_deliver_date = models.DateTimeField(_('To Deliver Date'))
+    delivered = models.BooleanField(default=False)
+
+
 class ReadingListItem(models.Model):
     reader = models.ForeignKey(User, on_delete=models.CASCADE)
     article = models.ForeignKey(Article, on_delete=models.CASCADE, default=None, null=True)
@@ -23,6 +29,7 @@ class ReadingListItem(models.Model):
     trashed = models.NullBooleanField(_('Trashed'))
     delivered = models.NullBooleanField(_('Delivered'))
     to_deliver = models.BooleanField(_('Delivered'), default=False)
+    magazine = models.ForeignKey(Magazine, on_delete=models.CASCADE, default=None, null=True)
 
     class Meta:
         unique_together = (("reader", "article"),)

@@ -2,7 +2,7 @@ import json
 
 from reading_list.models import Article, ReadingListItem
 from reading_list.utils import get_parsed, html_to_s3, get_reading_list, \
-    add_to_reading_list, get_archive_list
+    add_to_reading_list, get_archive_list, decide_to_deliver
 from instapaper.serializers import InstapaperCredentialsSerializer
 from pocket.serializers import PocketCredentialsSerializer
 from instapaper.models import InstapaperCredentials
@@ -129,10 +129,17 @@ def update_deliver(request):
     link = request.POST['permalink']
     to_deliver = request.POST.get('to_deliver') == 'true'
     # Get Article to get Reading list item
+
+
     try:
         article = Article.objects.get(permalink=link)
     except Article.DoesNotExist:
         raise NotFound(detail='Article not found', code=404)
+
+    if to_deliver:
+        # if overflow over page limit, then force to_deliver to False
+        to_deliver = decide_to_deliver(user, link, article.page_count)
+
     try:
         reading_list_item = ReadingListItem.objects.get(article=article, reader=user)
         reading_list_item.to_deliver = to_deliver

@@ -13,8 +13,12 @@ export default class Status extends Component {
 		return (
 			<div className="status">
 				<InstapaperTask
-					total={this.props.total}
-					completed={this.props.completed}
+					total={this.props.instapaper_total}
+					completed={this.props.instapaper_completed}
+				/>
+				<PocketTask
+					completed={this.props.pocket_completed}
+					total={this.props.pocket_total}
 				/>
 				{this.props.add_to_reading_list.map(task => (
 					<Task
@@ -52,6 +56,39 @@ class Task extends Component {
 	}
 }
 
+class PocketTask extends Component {
+	shouldComponentUpdate(nextProps, nextState) {
+		if (nextProps.completed === this.props.total) {
+			setTimeout(() => {}, 1000);
+		}
+		return true;
+	}
+	render() {
+		if (
+			this.props.total === 0 ||
+			this.props.completed === this.props.total
+		) {
+			return null;
+		}
+
+		let percent = (this.props.completed / this.props.total) * 100;
+
+		let style = {
+			width: percent + "%"
+		};
+
+		return (
+			<div className="task">
+				<p>
+					Importing {this.props.completed}/{this.props.total} articles
+					from Pocket
+				</p>
+				<div style={style} className="import progress"></div>
+			</div>
+		);
+	}
+}
+
 class InstapaperTask extends Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		if (nextProps.completed === this.props.total) {
@@ -76,7 +113,7 @@ class InstapaperTask extends Component {
 		return (
 			<div className="task">
 				<p>
-					Importing {this.props.completed}/{this.props.total} Articles
+					Importing {this.props.completed}/{this.props.total} articles
 					from Instapaper
 				</p>
 				<div style={style} className="import progress"></div>

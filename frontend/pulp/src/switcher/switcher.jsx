@@ -48,31 +48,15 @@ export default class Switcher extends React.Component {
     this.handleAddToReadingList = this.handleAddToReadingList.bind(this);
     this.handleInstapaperQueue = this.handleInstapaperQueue.bind(this);
     this.handlePageCount = this.handlePageCount.bind(this);
-    this.syncInstapaper = this.syncInstapaper.bind(this);
+    this.handlePocketQueue = this.handlePocketQueue.bind(this);
 
     this.progressSocket = new WebSocket(
       "ws://" + window.location.host + "/ws/api/progress/"
     );
 
-    // this.pageSocket = new WebSocket(
-    //   "ws://" + window.location.host + "/ws/api/page_count/"
-    // );
-
-    // this.deliverySocket = new WebSocket(
-    //   "ws://" + window.location.host + "/ws/api/deliver/"
-    // );
-
     this.progressSocket.onmessage = function(e) {
       this.handleWebSocket(e);
     }.bind(this);
-
-    // this.pageSocket.onmessage = function(e) {
-    //   this.handleWebSocket(e);
-    // }.bind(this);
-
-    // this.deliverySocket.onmessage = function(e) {
-    //   this.handleWebSocket(e);
-    // }.bind(this);
 
     this.state = {
       reading_list: [],
@@ -81,8 +65,10 @@ export default class Switcher extends React.Component {
       instapaper: {},
       pocket: {},
       add_to_reading_list: [],
-      total: 0,
-      completed: 0
+      instapaper_total: 0,
+      instapaper_completed: 0,
+      pocket_total: 0,
+      pocket_completed: 0
     };
   }
 
@@ -172,13 +158,14 @@ export default class Switcher extends React.Component {
     let completed = data.completed;
 
     this.setState({
-      total: total,
-      completed: completed
+      instapaper_total: total,
+      instapaper_completed: completed
     });
   }
 
   handleWebSocket(e) {
     let data = JSON.parse(e.data);
+
     switch (data.job_type) {
       case "add_to_reading_list":
         this.handleAddToReadingList(data);
@@ -187,6 +174,9 @@ export default class Switcher extends React.Component {
         this.handlePageCount(data);
         break;
       case "instapaper_queue":
+        this.handleInstapaperQueue(data);
+        break;
+      case "pocket_queue":
         this.handleInstapaperQueue(data);
         break;
       case "to_deliver":
@@ -200,6 +190,8 @@ export default class Switcher extends React.Component {
       default:
     }
   }
+
+  handlePocketQueue(data) {}
 
   handleReadingList(data) {
     let reading_list = data.reading_list;
@@ -337,27 +329,23 @@ export default class Switcher extends React.Component {
     });
   }
 
-  syncInstapaper() {
-    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
-    let data = {
-      csrfmiddlewaretoken: csrftoken
-    };
-
-    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
-    $.ajax({
-      url: "../api/instapaper/sync_instapaper",
-      data: data,
-      type: "POST",
-      success: function(data) {}
-    });
-  }
-
-  syncPocket() {}
-
   closeModal() {
     this.setState({
       show_add: false
     });
+  }
+
+  calculateTotal() {
+    let page_total = 0;
+    let total_articles = 0;
+    let reading_list = this.state.reading_list;
+    for (let i = 0; i < reading_list.length; i++) {
+      if (reading_list[i].to_deliver) {
+        page_total += reading_list[i].article.page_count;
+        total_articles += 1;
+      }
+    }
+    return page_total;
   }
 
   render() {
@@ -376,8 +364,10 @@ export default class Switcher extends React.Component {
             <div className="page-container">
               <Status
                 add_to_reading_list={this.state.add_to_reading_list}
-                completed={this.state.completed}
-                total={this.state.total}
+                instapaper_completed={this.state.instapaper_completed}
+                instapaper_total={this.state.instapaper_total}
+                pocket_completed={this.state.pocket_completed}
+                pocket_total={this.state.pocket_total}
               />
               <AddArticle
                 addArticle={this.addArticle}
@@ -408,7 +398,6 @@ export default class Switcher extends React.Component {
                   render={() => (
                     <Profile
                       pocket={this.state.pocket}
-                      syncInstapaper={this.syncInstapaper}
                       instapaper={this.state.instapaper}
                     />
                   )}
@@ -417,6 +406,7 @@ export default class Switcher extends React.Component {
                   path="/delivery"
                   render={() => (
                     <Delivery
+                      page_total={this.calculateTotal()}
                       pocket={this.state.pocket}
                       instapaper={this.state.instapaper}
                       loading_list={this.state.loading_list}

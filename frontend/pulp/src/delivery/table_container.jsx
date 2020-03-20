@@ -20,6 +20,7 @@ export default class TableContainer extends Component {
 					search={this.props.search}
 					sort={this.props.sort}
 					changeDeliver={this.props.changeDeliver}
+					page_total={this.props.page_total}
 				/>
 			</div>
 		);

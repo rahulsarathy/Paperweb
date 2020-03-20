@@ -7,10 +7,11 @@ export default class PageCount extends Component {
 
 	render() {
 		return (
-			<div>
-				<p>{this.props.total}/50 Pages</p>
-				{this.props.overflow ? <div>OVERFLOW!</div> : <div></div>}
+			<div className="pagecount">
+				<p>{this.props.total}/50 pages used</p>
 			</div>
 		);
 	}
 }
+
+
