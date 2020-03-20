@@ -177,7 +177,7 @@ export default class Switcher extends React.Component {
         this.handleInstapaperQueue(data);
         break;
       case "pocket_queue":
-        this.handleInstapaperQueue(data);
+        this.handlePocketQueue(data);
         break;
       case "to_deliver":
         this.handleToDeliver(data);
@@ -191,7 +191,15 @@ export default class Switcher extends React.Component {
     }
   }
 
-  handlePocketQueue(data) {}
+  handlePocketQueue(data) {
+    let total = data.total;
+    let completed = data.completed;
+
+    this.setState({
+      pocket_total: total,
+      pocket_completed: completed
+    });
+  }
 
   handleReadingList(data) {
     let reading_list = data.reading_list;

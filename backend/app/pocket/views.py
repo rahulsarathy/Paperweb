@@ -10,8 +10,7 @@ from django.utils import timezone
 import requests
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from rest_framework.decorators import api_view
-from .utils import retrieve_pocket
-from .tasks import import_pocket
+from .tasks import import_pocket, retrieve_pocket
 
  #Method is triggered when user starts pocket integration from frontend modal
 @api_view(['POST'])
@@ -57,10 +56,11 @@ def authenticate_pocket(request):
         # update pocket access token
         credentials = PocketCredentials.objects.get(owner=user)
         credentials.token = access_token
+        credentials.invalid = False
         credentials.save()
     except PocketCredentials.DoesNotExist:
         # create credentials with new acess token
-        PocketCredentials(owner=request.user, token=access_token).save()
+        PocketCredentials(owner=request.user, token=access_token, invalid=False).save()
 
     import_pocket.delay(request.user.email)
 

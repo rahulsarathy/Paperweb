@@ -24,7 +24,8 @@ def sync_instapaper(request):
         credentials = InstapaperCredentials.objects.get(owner=user)
     except InstapaperCredentials.DoesNotExist:
         return JsonResponse(data={'error': 'Invalid Instapaper Credentials.'}, status=403)
-
+    if credentials.invalid:
+        return HttpResponse(status=401)
     parse_instapaper_bookmarks.delay(user.email)
 
     return HttpResponse(status=200)
@@ -63,6 +64,7 @@ def authenticate_instapaper(request):
 
     credentials.oauth_token = oauth_token
     credentials.oauth_token_secret = oauth_token_secret
+    credentials.invalid = False
     credentials.save()
 
     parse_instapaper_bookmarks.delay(user.email)

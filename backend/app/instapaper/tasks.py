@@ -44,6 +44,9 @@ def retrieve_bookmarks(credentials):
     }
 
     response = requests.post(BOOKMARKS_URL, auth=oauth, data=data)
+    if response.status_code != 200:
+        credentials.invalid = True
+        credentials.save()
     bookmarks = json.loads(response.content)
     credentials.last_polled = now()
     credentials.save()
