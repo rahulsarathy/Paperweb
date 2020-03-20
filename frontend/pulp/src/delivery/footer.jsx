@@ -19,7 +19,6 @@ export default class Footer extends Component {
 			url: "../api/payments/next_delivery_date",
 			type: "GET",
 			success: function(data) {
-				console.log(data);
 				this.setState({
 					next_date: data
 				});

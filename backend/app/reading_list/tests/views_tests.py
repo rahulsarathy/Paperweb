@@ -15,6 +15,7 @@ from reading_list.utils import add_to_reading_list
 from django.contrib.auth.models import User
 from progress.types import update_add_to_reading_list_status
 
+from model_bakery import baker
 from django.utils.timezone import make_aware
 from django_fakeredis import FakeRedis
 from rest_framework import status
@@ -44,7 +45,8 @@ class ReadingListTest(APITestCase):
         self.article1 = Article.objects.create(
             title='Rent-Seeking and the New York Marathon',
             permalink='rohit.sarathy.org/?p=439',
-            mercury_response=mercury_response
+            mercury_response=mercury_response,
+            page_count=3
         )
         self.reading_item1 = ReadingListItem.objects.create(
             reader=self.test_user,
@@ -368,6 +370,24 @@ class ReadingListTest(APITestCase):
         my_article = Article.objects.get(permalink=self.reading_item1.article.permalink)
         updated_readinglist_item = ReadingListItem.objects.get(reader=self.test_user, article=my_article)
         self.assertTrue(updated_readinglist_item.to_deliver)
+
+    def test_update_deliver_over_page(self):
+        self.assertFalse(self.reading_item1.to_deliver)
+        request = self.factory.post(self.update_deliver, {
+            'to_deliver': 'true',
+            'permalink': self.reading_item1.article.permalink
+        })
+        force_authenticate(request, user=self.test_user)
+
+        for i in range(0, 9):
+            my_article = baker.make('Article')
+            my_article.page_count = 5
+            my_article.save()
+
+        response = update_deliver(request)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertFalse(self.reading_item1.to_deliver)
+
 
     def test_services_status_unauthenticated(self):
         pass

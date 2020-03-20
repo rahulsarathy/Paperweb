@@ -258,13 +258,7 @@ def handle_pages(article, user=None):
         reader=user, article=article
     )
     # Check if we should check this article to to_deliver
-    to_deliver = False
-    current_pages = get_selected_pages(user, url)
-    total_pages = page_count + current_pages
-    if total_pages > 50:
-        to_deliver = False
-    else:
-        to_deliver = True
+    to_deliver = decide_to_deliver(user, url, page_count)
     rlist_item.to_deliver = to_deliver
     rlist_item.save()
 
@@ -272,6 +266,17 @@ def handle_pages(article, user=None):
 
     return page_count
 
+def decide_to_deliver(user, url, page_count):
+    if page_count is None:
+        return False
+    current_pages = get_selected_pages(user, url)
+    total_pages = page_count + current_pages
+    if total_pages > 50:
+        to_deliver = False
+    else:
+        to_deliver = True
+
+    return to_deliver
 
 def get_selected_pages(user, permalink):
     rlist_items = ReadingListItem.objects.filter(reader=user)
