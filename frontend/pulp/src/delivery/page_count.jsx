@@ -8,7 +8,7 @@ export default class PageCount extends Component {
 	render() {
 		return (
 			<div className="pagecount">
-				<p>{this.props.total}/50 Pages</p>
+				<p>{this.props.total}/50 pages used</p>
 			</div>
 		);
 	}
