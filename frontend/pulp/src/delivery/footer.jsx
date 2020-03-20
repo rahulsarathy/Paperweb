@@ -30,19 +30,24 @@ export default class Footer extends Component {
 	render() {
 		return (
 			<div className="footer">
-				<p>
-					Your next magazine will arrive on
-					{" " +
-						this.state.next_date.month +
-						" " +
-						this.state.next_date.day +
-						" " +
-						this.state.next_date.year}
-				</p>
-				<PageCount
-					overflow={this.props.overflow}
-					total={this.props.page_total}
-				/>
+				<div className="inner-footer">
+					<PageCount
+						overflow={this.props.overflow}
+						total={this.props.page_total}
+					/>
+					<div className="divider"></div>
+					<div className="nextdate">
+						<p>
+							Your next magazine will arrive on
+							{" " +
+								this.state.next_date.month +
+								" " +
+								this.state.next_date.day +
+								" " +
+								this.state.next_date.year}
+						</p>
+					</div>
+				</div>
 			</div>
 		);
 	}
