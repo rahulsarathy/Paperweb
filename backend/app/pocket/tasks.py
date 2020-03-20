@@ -78,6 +78,10 @@ def retrieve_pocket(user):
         timestamp = time.mktime(last_polled.timetuple())
         data = {'since': timestamp, 'consumer_key': POCKET_CONSUMER_KEY, 'access_token': access_token, 'state': 'unread'}
     response = requests.post(url, data=data)
+    if response.status_code != 200:
+        pocket_credentials.invalid = True
+        pocket_credentials.save()
+        return {}
     response_string = response.content.decode("utf-8")
     json_response = json.loads(response_string)
     articles = json_response.get('list')

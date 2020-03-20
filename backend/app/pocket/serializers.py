@@ -7,4 +7,4 @@ class PocketCredentialsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PocketCredentials
-        fields = ['owner', 'last_polled']
+        fields = ['owner', 'last_polled', 'invalid']

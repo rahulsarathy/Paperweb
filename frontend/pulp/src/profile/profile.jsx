@@ -4,14 +4,8 @@ import "bootstrap/dist/css/bootstrap.css";
 import $ from "jquery";
 import shortid from "shortid";
 import classnames from "classnames";
-import moment from "moment";
 import { Row, Col } from "react-bootstrap";
-import {
-  Address_Pane,
-  Header,
-  Instapaper_Pane,
-  Pocket_Modal
-} from "./components.jsx";
+import { Address_Pane, Header, Instapaper, Pocket } from "./components.jsx";
 
 class SubHeader extends React.Component {
   constructor(props) {
@@ -169,13 +163,6 @@ export default class Profile extends React.Component {
     });
   }
 
-  timeAgo(date) {
-    let insta_date = new Date(date);
-    let unix = insta_date.getTime();
-    let m = moment(unix);
-    return m.fromNow();
-  }
-
   render() {
     return (
       <div className="profile-container">
@@ -195,28 +182,8 @@ export default class Profile extends React.Component {
         </div>
         <div id="import" className="subsection">
           <SubHeader title="Import Articles" />
-          {this.props.instapaper.signed_in ? (
-            <div className="sync-date">
-              Last synced: {this.timeAgo(this.props.instapaper.last_polled)}
-              <button onClick={this.syncInstapaper}>
-                <img src="../static/icons/sync.svg" />
-              </button>
-            </div>
-          ) : (
-            <div className="sync-date">Click to integrate Instapaper</div>
-          )}
-          <Instapaper_Pane />
-          {this.props.pocket.signed_in ? (
-            <div className="sync-date">
-              Last synced: {this.timeAgo(this.props.pocket.last_polled)}
-              <button onClick={this.syncPocket}>
-                <img src="../static/icons/sync.svg" />
-              </button>
-            </div>
-          ) : (
-            <div>Click to integrate Pocket</div>
-          )}
-          <Pocket_Modal />
+          <Instapaper instapaper={this.props.instapaper} />
+          <Pocket pocket={this.props.pocket} />
         </div>
         <div id="address" className="subsection">
           <SubHeader title="Delivery Info" />

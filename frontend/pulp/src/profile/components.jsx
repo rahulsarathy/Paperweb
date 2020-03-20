@@ -1,7 +1,7 @@
 import "./components.scss";
 import Address_Pane from "./address_pane.jsx";
 import Address_Modal from "./address_modal.jsx";
-import Instapaper_Pane from "../components/instapaper_pane.jsx";
-import Pocket_Modal from "../components/pocket_modal.jsx";
+import Instapaper from "../components/instapaper.jsx";
+import Pocket from "../components/pocket.jsx";
 
-export { Address_Pane, Address_Modal, Instapaper_Pane, Pocket_Modal };
+export { Address_Pane, Address_Modal, Instapaper, Pocket };

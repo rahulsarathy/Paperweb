@@ -8,4 +8,4 @@ class InstapaperCredentialsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = InstapaperCredentials
-        fields = ['owner', 'last_polled']
+        fields = ['owner', 'last_polled', 'invalid']
