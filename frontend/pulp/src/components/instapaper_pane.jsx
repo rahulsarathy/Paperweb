@@ -65,6 +65,84 @@ export default class Instapaper_Pane extends React.Component {
     });
   }
 
+  defaultModal() {
+    return (
+      <Modal
+        id="instapaper-modal"
+        show={this.state.instapaper}
+        onHide={() => this.hideModal("instapaper")}
+      >
+        <h2>Sign into Instapaper</h2>
+        Username
+        <input id="username" onChange={this.handleChange}></input>
+        Password
+        <input
+          type="password"
+          id="password"
+          onChange={this.handleChange}
+        ></input>
+        <Modal.Footer>
+          {this.state.invalid ? (
+            <div className="invalid">Invalid username or password</div>
+          ) : (
+            <div></div>
+          )}
+          {this.state.loading ? (
+            <div className="loading">Loading...</div>
+          ) : (
+            <div></div>
+          )}
+          {this.state.success ? (
+            <div className="success">
+              Your articles will be imported over the next half hour.
+            </div>
+          ) : (
+            <div></div>
+          )}
+          <Button
+            onClick={() =>
+              this.authenticateInstapaper(
+                this.state.username,
+                this.state.password
+              )
+            }
+          >
+            Import from Instapaper
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={() => this.hideModal("instapaper")}
+          >
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  }
+
+  removeModal() {
+    return (
+      <Modal
+        id="instapaper-modal"
+        show={this.state.instapaper}
+        onHide={() => this.hideModal("instapaper")}
+      >
+        <p>Instapaper is integrated with Pulp</p>
+        <Modal.Footer>
+          <Button onClick={this.props.removeInstapaper}>
+            Remove Instapaper integration
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={() => this.hideModal("instapaper")}
+          >
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  }
+
   render() {
     return (
       <div className="service-container">
@@ -78,56 +156,7 @@ export default class Instapaper_Pane extends React.Component {
           />
           Instapaper
         </button>
-        <Modal
-          id="instapaper-modal"
-          show={this.state.instapaper}
-          onHide={() => this.hideModal("instapaper")}
-        >
-          <h2>Sign into Instapaper</h2>
-          Username
-          <input id="username" onChange={this.handleChange}></input>
-          Password
-          <input
-            type="password"
-            id="password"
-            onChange={this.handleChange}
-          ></input>
-          <Modal.Footer>
-            {this.state.invalid ? (
-              <div className="invalid">Invalid username or password</div>
-            ) : (
-              <div></div>
-            )}
-            {this.state.loading ? (
-              <div className="loading">Loading...</div>
-            ) : (
-              <div></div>
-            )}
-            {this.state.success ? (
-              <div className="success">
-                Your articles will be imported over the next half hour.
-              </div>
-            ) : (
-              <div></div>
-            )}
-            <Button
-              onClick={() =>
-                this.authenticateInstapaper(
-                  this.state.username,
-                  this.state.password
-                )
-              }
-            >
-              Import from Instapaper
-            </Button>
-            <Button
-              variant="secondary"
-              onClick={() => this.hideModal("instapaper")}
-            >
-              Close
-            </Button>
-          </Modal.Footer>
-        </Modal>
+        {this.props.signed_in ? this.removeModal() : this.defaultModal()}
       </div>
     );
   }

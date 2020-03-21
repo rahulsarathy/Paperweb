@@ -50,6 +50,12 @@ export default class Switcher extends React.Component {
     this.handlePageCount = this.handlePageCount.bind(this);
     this.handlePocketQueue = this.handlePocketQueue.bind(this);
 
+    this.syncPocket = this.syncPocket.bind(this);
+    this.syncInstapaper = this.syncInstapaper.bind(this);
+
+    this.removePocket = this.removePocket.bind(this);
+    this.removeInstapaper = this.removeInstapaper.bind(this);
+
     this.progressSocket = new WebSocket(
       "ws://" + window.location.host + "/ws/api/progress/"
     );
@@ -322,6 +328,61 @@ export default class Switcher extends React.Component {
     });
   }
 
+  syncInstapaper() {
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    let data = {
+      csrfmiddlewaretoken: csrftoken
+    };
+
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    let instapaper = this.state.instapaper;
+    $.ajax({
+      url: "../api/instapaper/sync_instapaper",
+      data: data,
+      type: "POST",
+      success: function(data) {
+        instapaper.last_polled = data;
+        this.setState({
+          instapaper: instapaper
+        });
+      },
+      error: function(xhr) {
+        instapaper.invalid = true;
+        this.setState({
+          instapaper: instapaper
+        });
+      }.bind(this)
+    });
+  }
+
+  syncPocket() {
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    let data = {
+      csrfmiddlewaretoken: csrftoken
+    };
+
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    let pocket = this.state.pocket;
+
+    $.ajax({
+      url: "../api/pocket/sync_pocket",
+      data: data,
+      type: "POST",
+      success: function(data) {
+        pocket.last_polled = data;
+        this.setState({
+          pocket: pocket
+        });
+      }.bind(this),
+      error: function(xhr) {
+        pocket.invalid = true;
+        this.setState({
+          pocket: pocket
+        });
+      }.bind(this)
+    });
+  }
+
   getServices() {
     var csrftoken = $("[name=csrfmiddlewaretoken]").val();
 
@@ -354,6 +415,44 @@ export default class Switcher extends React.Component {
       }
     }
     return page_total;
+  }
+
+  removeInstapaper(e) {
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    let data = {
+      csrfmiddlewaretoken: csrftoken
+    };
+    $.ajax({
+      type: "POST",
+      data: data,
+      url: "../api/instapaper/remove_instapaper",
+      success: function(data) {
+        let instapaper = this.state.instapaper;
+        instapaper.signed_in = false;
+        this.setState({
+          instapaper: instapaper
+        });
+      }.bind(this)
+    });
+  }
+
+  removePocket(e) {
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    let data = {
+      csrfmiddlewaretoken: csrftoken
+    };
+    $.ajax({
+      type: "POST",
+      data: data,
+      url: "../api/pocket/remove_pocket",
+      success: function(data) {
+        let pocket = this.state.pocket;
+        pocket.signed_in = false;
+        this.setState({
+          pocket: pocket
+        });
+      }.bind(this)
+    });
   }
 
   render() {
@@ -407,6 +506,10 @@ export default class Switcher extends React.Component {
                     <Profile
                       pocket={this.state.pocket}
                       instapaper={this.state.instapaper}
+                      syncPocket={this.syncPocket}
+                      removePocket={this.removePocket}
+                      removeInstapaper={this.removeInstapaper}
+                      syncInstapaper={this.syncInstapaper}
                     />
                   )}
                 />

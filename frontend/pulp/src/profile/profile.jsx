@@ -44,36 +44,6 @@ export default class Profile extends React.Component {
     this.getEmail();
   }
 
-  syncInstapaper() {
-    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
-    let data = {
-      csrfmiddlewaretoken: csrftoken
-    };
-
-    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
-    $.ajax({
-      url: "../api/instapaper/sync_instapaper",
-      data: data,
-      type: "POST",
-      success: function(data) {}
-    });
-  }
-
-  syncPocket() {
-    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
-    let data = {
-      csrfmiddlewaretoken: csrftoken
-    };
-
-    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
-    $.ajax({
-      url: "../api/pocket/sync_pocket",
-      data: data,
-      type: "POST",
-      success: function(data) {}
-    });
-  }
-
   updateSettings() {
     var csrftoken = $("[name=csrfmiddlewaretoken]").val();
     let data = {
@@ -182,8 +152,16 @@ export default class Profile extends React.Component {
         </div>
         <div id="import" className="subsection">
           <SubHeader title="Import Articles" />
-          <Instapaper instapaper={this.props.instapaper} />
-          <Pocket pocket={this.props.pocket} />
+          <Instapaper
+            syncInstapaper={this.props.syncInstapaper}
+            instapaper={this.props.instapaper}
+            removeInstapaper={this.props.removeInstapaper}
+          />
+          <Pocket
+            syncPocket={this.props.syncPocket}
+            pocket={this.props.pocket}
+            removePocket={this.props.removePocket}
+          />
         </div>
         <div id="address" className="subsection">
           <SubHeader title="Delivery Info" />

@@ -9,11 +9,12 @@ from .tasks import parse_instapaper_bookmarks
 from requests_oauthlib import OAuth1
 import requests
 import urllib
+from django.utils import timezone
 from rest_framework import status
 
 # Create your views here.
 
-@api_view(['POSt'])
+@api_view(['POST'])
 def sync_instapaper(request):
 
     user = request.user
@@ -27,7 +28,20 @@ def sync_instapaper(request):
     if credentials.invalid:
         return HttpResponse(status=401)
     parse_instapaper_bookmarks.delay(user.email)
+    now = timezone.now()
+    return JsonResponse(now, safe=False)
 
+@api_view(['POST'])
+def remove_instapaper(request):
+    user = request.user
+    if not user.is_authenticated:
+        return JsonResponse(data={'error': 'Invalid request.'}, status=403)
+
+    try:
+        credentials = InstapaperCredentials.objects.get(owner=user)
+    except InstapaperCredentials.DoesNotExist:
+        return JsonResponse(data={'error': 'Could not find pocket credentials.'}, status=403)
+    credentials.delete()
     return HttpResponse(status=200)
 
 @api_view(['POST'])

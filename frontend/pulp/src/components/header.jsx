@@ -41,10 +41,12 @@ export default class Header extends React.Component {
 
         return (
             <div className="header">
-                <img
-                    className="logo"
-                    src={images_url + "pulp_header_logo.svg"}
-                />
+                <a href="../">
+                    <img
+                        className="logo"
+                        src={images_url + "pulp_header_logo.svg"}
+                    />
+                </a>
                 <Dropdown>
                     <Dropdown.Toggle className="profile">
                         <div className="profile-circle">

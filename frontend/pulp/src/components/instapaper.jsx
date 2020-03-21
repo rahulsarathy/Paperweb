@@ -10,7 +10,7 @@ export default class Instapaper extends Component {
 					<div className="sync-date">
 						Last synced:{" "}
 						{timeAgo(this.props.instapaper.last_polled)}
-						<button onClick={this.syncInstapaper}>
+						<button onClick={this.props.syncInstapaper}>
 							<img src="../static/icons/sync.svg" />
 						</button>
 					</div>
@@ -19,7 +19,10 @@ export default class Instapaper extends Component {
 						Click to integrate Instapaper
 					</div>
 				)}
-				<Instapaper_Pane />
+				<Instapaper_Pane
+					signed_in={this.props.instapaper.signed_in}
+					removeInstapaper={this.props.removeInstapaper}
+				/>
 			</div>
 		);
 	}

@@ -61,6 +61,25 @@ class InstapaperViewsTest(APITestCase):
 
         self.assertIsNotNone(InstapaperCredentials.objects.get(owner=self.test_user))
 
+    def test_remove_instapaper(self):
+        """Checks that an authenticated authenticate_instapaper() with good instapaper credentials request
+         returns 200."""
+
+        self.assertRaises(InstapaperCredentials.DoesNotExist,
+                          lambda: InstapaperCredentials.objects.get(owner=self.test_user))
+
+        # these credentials are legit on instapaper.
+        request = self.factory.post(self.authenticate_instapaper,
+                                    {'username': 'rahul@getpulp.io', 'password': 'pulptesting'})
+        force_authenticate(request, user=self.test_user)
+        response = authenticate_instapaper(request)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(mock_parse_instapaper_csv.called)
+
+        self.assertIsNotNone(InstapaperCredentials.objects.get(owner=self.test_user))
+
+
+
 
 
 

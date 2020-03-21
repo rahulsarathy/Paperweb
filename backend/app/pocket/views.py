@@ -19,7 +19,8 @@ def request_pocket(request):
     if not user.is_authenticated:
         return JsonResponse(data={'error': 'Invalid request.'}, status=403)
     # Get pocket code from consumer key
-    redirect_uri = 'http://127.0.0.1:8000/api/pocket/authenticate_pocket'
+    hostname = request.get_host()
+    redirect_uri = 'http://{}/api/pocket/authenticate_pocket'.format(hostname)
     url = 'https://getpocket.com/v3/oauth/request'
     data = {'consumer_key': POCKET_CONSUMER_KEY, 'redirect_uri': redirect_uri}
     response = requests.post(url, data=data)
@@ -34,6 +35,18 @@ def request_pocket(request):
     # User will redirect to this URL
     return HttpResponse(url)
 
+@api_view(['POST'])
+def remove_pocket(request):
+    user = request.user
+    if not user.is_authenticated:
+        return JsonResponse(data={'error': 'Invalid request.'}, status=403)
+
+    try:
+        credentials = PocketCredentials.objects.get(owner=user)
+    except PocketCredentials.DoesNotExist:
+        return JsonResponse(data={'error': 'Could not find pocket credentials.'}, status=403)
+    credentials.delete()
+    return HttpResponse(status=200)
 
 # this method is hit as a webhook
 def authenticate_pocket(request):
@@ -79,5 +92,5 @@ def sync_pocket(request):
         return JsonResponse(data={'error': 'Invalid Pocket Credentials.'}, status=403)
 
     import_pocket.delay(user.email)
-
-    return HttpResponse(status=200)
+    now = timezone.now()
+    return JsonResponse(now, safe=False)
