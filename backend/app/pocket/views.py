@@ -21,12 +21,8 @@ def request_pocket(request):
     # Get pocket code from consumer key
     hostname = request.get_host()
     redirect_uri = 'http://{}/api/pocket/authenticate_pocket'.format(hostname)
-    url = 'https://getpocket.com/v3/oauth/request'
     data = {'consumer_key': POCKET_CONSUMER_KEY, 'redirect_uri': redirect_uri}
-    response = requests.post(url, data=data)
-    response_string = response.text
-    code = response_string.partition("code=")[2]
-
+    code = get_pocket_code(data)
     url = 'https://getpocket.com/auth/authorize?request_token={code}&redirect_uri=' \
           '{redirect_uri}'.format(code=code, redirect_uri=redirect_uri)
     key = request.user.email + 'pocket'
@@ -34,6 +30,14 @@ def request_pocket(request):
     # Send the user a url w/ code that links the user to our consumer key
     # User will redirect to this URL
     return HttpResponse(url)
+
+def get_pocket_code(data):
+    url = 'https://getpocket.com/v3/oauth/request'
+    response = requests.post(url, data=data)
+    response_string = response.text
+    code = response_string.partition("code=")[2]
+    return code
+
 
 @api_view(['POST'])
 def remove_pocket(request):
@@ -48,7 +52,17 @@ def remove_pocket(request):
     credentials.delete()
     return HttpResponse(status=200)
 
+def get_access_token(code):
+    url = 'https://getpocket.com/v3/oauth/authorize'
+    data = {'consumer_key': POCKET_CONSUMER_KEY, 'code': code}
+    response = requests.post(url, data=data)
+    response_string = response.text
+    result = re.search('access_token=(.*)&username', response_string)
+    access_token = result.group(1)
+    return access_token
+
 # this method is hit as a webhook
+@api_view(['GET'])
 def authenticate_pocket(request):
     user = request.user
     if not user.is_authenticated:
@@ -58,12 +72,7 @@ def authenticate_pocket(request):
     code = cache.get(key)
 
     # get access token for user
-    url = 'https://getpocket.com/v3/oauth/authorize'
-    data = {'consumer_key': POCKET_CONSUMER_KEY, 'code': code}
-    response = requests.post(url, data=data)
-    response_string = response.text
-    result = re.search('access_token=(.*)&username', response_string)
-    access_token = result.group(1)
+    access_token = get_access_token(code)
 
     try:
         # update pocket access token
@@ -93,4 +102,5 @@ def sync_pocket(request):
 
     import_pocket.delay(user.email)
     now = timezone.now()
+    print("now is {}".format(now))
     return JsonResponse(now, safe=False)

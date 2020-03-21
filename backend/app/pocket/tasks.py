@@ -41,11 +41,7 @@ def import_pocket(email):
     # Pocket has no new articles
     if new_articles == []:
         return
-    try:
-        user = User.objects.get(email=email)
-    except User.DoesNotExist:
-        logging.warning('User {} does not exist'.format(email))
-        return
+
     total = len(new_articles.items())
     completed = 0
     for key, article in new_articles.items():
@@ -81,16 +77,12 @@ def retrieve_pocket(user):
     if response.status_code != 200:
         pocket_credentials.invalid = True
         pocket_credentials.save()
-        return {}
+        return []
     response_string = response.content.decode("utf-8")
     json_response = json.loads(response_string)
     articles = json_response.get('list')
 
-    try:
-        pocket_credential = PocketCredentials.objects.get(owner=user)
-        pocket_credential.token = access_token
-        pocket_credential.last_polled = timezone.now()
-        pocket_credential.save()
-    except PocketCredentials.DoesNotExist:
-        PocketCredentials(owner=user, token=access_token, last_polled=timezone.now()).save()
+    pocket_credentials.last_polled = timezone.now()
+    pocket_credentials.save()
+
     return articles
