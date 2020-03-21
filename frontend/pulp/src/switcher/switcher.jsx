@@ -345,7 +345,7 @@ export default class Switcher extends React.Component {
         this.setState({
           instapaper: instapaper
         });
-      },
+      }.bind(this),
       error: function(xhr) {
         instapaper.invalid = true;
         this.setState({
@@ -404,6 +404,7 @@ export default class Switcher extends React.Component {
     });
   }
 
+  // Calculate how many pages are set for delivery
   calculateTotal() {
     let page_total = 0;
     let total_articles = 0;
@@ -415,6 +416,18 @@ export default class Switcher extends React.Component {
       }
     }
     return page_total;
+  }
+
+  // Calculate how many articles are set for delivery
+  calculateTotalArticles() {
+    let total_articles = 0;
+    let reading_list = this.state.reading_list;
+    for (let i = 0; i < reading_list.length; i++) {
+      if (reading_list[i].to_deliver) {
+        total_articles += 1;
+      }
+    }
+    return total_articles;
   }
 
   removeInstapaper(e) {
@@ -518,6 +531,7 @@ export default class Switcher extends React.Component {
                   render={() => (
                     <Delivery
                       page_total={this.calculateTotal()}
+                      total_articles={this.calculateTotalArticles()}
                       pocket={this.state.pocket}
                       instapaper={this.state.instapaper}
                       loading_list={this.state.loading_list}

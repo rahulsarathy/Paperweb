@@ -24,11 +24,12 @@ def sync_instapaper(request):
     try:
         credentials = InstapaperCredentials.objects.get(owner=user)
     except InstapaperCredentials.DoesNotExist:
-        return JsonResponse(data={'error': 'Invalid Instapaper Credentials.'}, status=403)
+        return HttpResponse(status=401)
     if credentials.invalid:
         return HttpResponse(status=401)
     parse_instapaper_bookmarks.delay(user.email)
     now = timezone.now()
+    print("now is {}".format(now))
     return JsonResponse(now, safe=False)
 
 @api_view(['POST'])
