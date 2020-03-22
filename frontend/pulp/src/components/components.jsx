@@ -5,5 +5,13 @@ import Pocket_Modal from "./pocket_modal.jsx";
 import Spinner from "./spinner.jsx";
 import LazyImage from "./lazy_image.jsx";
 import Header from "./header.jsx";
+import Instapaper from "./instapaper.jsx";
 
-export { Instapaper_Pane, Header, Pocket_Modal, Spinner, LazyImage };
+export {
+	Instapaper_Pane,
+	Header,
+	Pocket_Modal,
+	Spinner,
+	LazyImage,
+	Instapaper
+};

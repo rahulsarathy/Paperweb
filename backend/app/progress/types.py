@@ -33,6 +33,18 @@ def update_instapaper_queue_status(user, completed, total):
         }
     )
 
+def update_pocket_queue_status(user, completed, total):
+    channel_layer = get_channel_layer()
+    channel_id = get_channel_id(user.email)
+    async_to_sync(channel_layer.group_send)(
+        channel_id,
+        {
+            'type': 'pocket_queue',
+            'total': total,
+            'completed': completed
+        }
+    )
+
 def update_page_count(user, link, page_count):
     channel_layer = get_channel_layer()
     channel_id = get_channel_id(user.email)

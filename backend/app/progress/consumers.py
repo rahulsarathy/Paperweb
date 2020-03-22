@@ -59,20 +59,20 @@ class ProgressConsumer(AsyncWebsocketConsumer):
             'percent': percent
         }))
 
-    async def page_count(self, event):
-        page_count = event['page_count']
-        link = event['link']
-        await self.send(text_data=json.dumps({
-            'job_type': 'page_count',
-            'page_count': page_count,
-            'link': link
-        }))
-
     async def instapaper_queue(self, event):
         total = event['total']
         completed = event['completed']
         await self.send(text_data=json.dumps({
             'job_type': 'instapaper_queue',
+            'total': total,
+            'completed': completed
+        }))
+
+    async def pocket_queue(self, event):
+        total = event['total']
+        completed = event['completed']
+        await self.send(text_data=json.dumps({
+            'job_type': 'pocket_queue',
             'total': total,
             'completed': completed
         }))

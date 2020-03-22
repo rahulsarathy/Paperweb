@@ -47,6 +47,7 @@ export default class DeliveryContainer extends React.Component {
 		return (
 			<div className="delivery-container">
 				<Filter handleSearch={this.handleSearch} />
+				<Counter items={this.props.reading_list.length} />
 				<TableContainer
 					search={this.state.search}
 					reading_list={this.props.reading_list}
@@ -59,6 +60,16 @@ export default class DeliveryContainer extends React.Component {
 					overflow={this.state.overflow}
 					page_total={this.props.page_total}
 				/>
+			</div>
+		);
+	}
+}
+
+export class Counter extends React.Component {
+	render() {
+		return (
+			<div className="counter">
+				{this.props.items} articles in your print list
 			</div>
 		);
 	}

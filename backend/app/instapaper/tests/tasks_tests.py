@@ -7,7 +7,7 @@ from instapaper.tasks import parse_instapaper_bookmarks, retrieve_bookmarks, han
 from django.contrib.auth.models import User
 from instapaper.models import InstapaperCredentials
 
-
+from django.utils.timezone import now
 from django.test import TestCase
 
 oauth_token_secret = '1aaf21a5c1af4fa48dea8e973f1b8b7c'
@@ -92,3 +92,11 @@ class InstapaperTasksTests(TestCase):
         self.assertEqual(bookmarks[1].get('type'), 'user')
         self.assertEqual(len(bookmarks), 134)
 
+    @mock.patch("logging.warning")
+    def test_polled_too_recently(self, mock_logger):
+
+        credentials = InstapaperCredentials(owner=self.test_user, last_polled=now())
+        credentials.save()
+        result = parse_instapaper_bookmarks(self.test_user.email)
+        mock_logger.assert_called_with("instapaper polled too recently")
+        self.assertEquals(0, result)

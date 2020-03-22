@@ -12,6 +12,7 @@ from celery import task
 from django.utils.timezone import make_aware, now
 import requests
 from requests_oauthlib import OAuth1
+from django.core.cache import cache
 import urllib
 
 BOOKMARKS_URL = 'https://www.instapaper.com/api/1/bookmarks/list'
@@ -36,14 +37,21 @@ def retrieve_bookmarks(credentials):
 
     # Get previously polled IDs
     polled_bookmarks = credentials.polled_bookmarks
-    polled_ids = polled_bookmarks.values()
-    have_string = ','.join(str(polled_id) for polled_id in polled_ids)
+    if polled_bookmarks is None:
+        have_string = ''
+    else:
+        polled_ids = polled_bookmarks.values()
+        have_string = ','.join(str(polled_id) for polled_id in polled_ids)
+
     data = {
         'have': have_string,
         'limit': 500,
     }
 
     response = requests.post(BOOKMARKS_URL, auth=oauth, data=data)
+    if response.status_code != 200:
+        credentials.invalid = True
+        credentials.save()
     bookmarks = json.loads(response.content)
     credentials.last_polled = now()
     credentials.save()
@@ -79,6 +87,10 @@ def parse_instapaper_bookmarks(email):
     except InstapaperCredentials.DoesNotExist:
         logging.warning('Could not find instapaper credentials for {}'.format(user.email))
         return
+
+    if credentials.last_polled is not None and (now() - credentials.last_polled).seconds < 300:
+        logging.warning("instapaper polled too recently")
+        return 0
 
     bookmarks = retrieve_bookmarks(credentials)
     total = len(bookmarks) - 2

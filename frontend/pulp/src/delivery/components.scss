@@ -1,5 +1,6 @@
 .delivery-container {
   position: relative;
+  margin-bottom: 75px;
 
   $footer-height: 50px;
   .footer {
@@ -70,13 +71,18 @@
   }
 }
 
-.filter {
+.counter {
   display: inline-block;
+  margin-left: 10px;
+}
 
+.filter {
   input {
     border-radius: 5px;
     border: 1px solid #dddddd;
   }
+  display: inline-block;
+  margin-bottom: 10px;
 }
 
 .table-container {

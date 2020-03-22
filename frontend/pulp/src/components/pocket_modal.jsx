@@ -62,36 +62,45 @@ export default class Pocket_Modal extends React.Component {
     });
   }
 
+  removeModal() {
+    return (
+      <Modal show={this.state.show} onHide={this.hidePane}>
+        <h2>Pocket is integrated with Pulp</h2>
+        <Modal.Footer>
+          <Button variant="primary" onClick={this.props.removePocket}>
+            Remove pocket integration
+          </Button>
+          <Button variant="secondary" onClick={this.hidePane}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  }
+
+  defaultModal() {
+    return (
+      <Modal show={this.state.show} onHide={this.hidePane}>
+        <h2>Integrate Pulp with Pocket</h2>
+        <Modal.Footer>
+          <Button variant="primary" onClick={() => this.importFromPocket()}>
+            Import from Pocket
+          </Button>
+          <Button variant="secondary" onClick={this.hidePane}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  }
+
   render() {
     return (
       <div>
         <button className="integration-button pocket" onClick={this.showPane}>
           <img className="pocket-image" src={static_url + "pocket_logo.svg"} />
         </button>
-        <Modal show={this.state.show} onHide={this.hidePane}>
-          <h2>Import articles from Pocket</h2>
-          {pocket ? (
-            <p>
-              Import started. Your articles will be imported over the next half
-              hour.
-            </p>
-          ) : (
-            <div></div>
-          )}
-          <Modal.Footer>
-            <Button
-              variant="primary"
-              onClick={() =>
-                this.importFromPocket(this.state.username, this.state.password)
-              }
-            >
-              Import from Pocket
-            </Button>
-            <Button variant="secondary" onClick={this.hidePane}>
-              Close
-            </Button>
-          </Modal.Footer>
-        </Modal>
+        {this.props.signed_in ? this.removeModal() : this.defaultModal()}
       </div>
     );
   }
