@@ -102,5 +102,4 @@ def sync_pocket(request):
 
     import_pocket.delay(user.email)
     now = timezone.now()
-    print("now is {}".format(now))
     return JsonResponse(now, safe=False)

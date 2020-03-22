@@ -37,6 +37,11 @@ def import_pocket(email):
         logging.warning('User {} does not exist'.format(email))
         return
 
+    credentials = PocketCredentials.objects.get(owner=user)
+    if credentials.last_polled is not None and (now() - credentials.last_polled).seconds < 300:
+        logging.warning("pocket polled too recently")
+        return
+
     new_articles = retrieve_pocket(user)
     # Pocket has no new articles
     if new_articles == []:

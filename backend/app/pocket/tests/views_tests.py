@@ -82,12 +82,16 @@ class PocketViewsTestCase(APITestCase):
         response = sync_pocket(request)
         self.assertEquals(response.status_code, 403)
 
+    @mock.patch('pocket.views.timezone.now')
     @mock.patch('pocket.views.import_pocket.delay')
-    def test_sync_pocket(self, mock_import_pocket):
+    def test_sync_pocket(self, mock_import_pocket, mock_timezone_now):
         PocketCredentials(owner=self.test_user).save()
+        mock_timezone_now.return_value = "rightnow"
         request = self.factory.post(self.sync_pocket)
         force_authenticate(request, user=self.test_user)
         response = sync_pocket(request)
+        decoded = response.content.decode('utf-8')
+        self.assertEqual(decoded, '"rightnow"')
         mock_import_pocket.assert_called_with(self.test_user.email)
         self.assertEquals(response.status_code, 200)
 
