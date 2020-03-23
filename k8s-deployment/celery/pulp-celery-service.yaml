@@ -11,4 +11,5 @@ spec:
     component: pulp-celery-pod
     pulp.service: pulp-celery
     tier: backend
-
+status:
+  loadBalancer: {}
