@@ -17,15 +17,8 @@ export default class Pocket_Modal extends React.Component {
     this.hidePane = this.hidePane.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.importFromPocket = this.importFromPocket.bind(this);
-    let show;
-    if (pocket) {
-      show = true;
-    } else {
-      show = false;
-    }
-
     this.state = {
-      show: show
+      show: false
     };
   }
 

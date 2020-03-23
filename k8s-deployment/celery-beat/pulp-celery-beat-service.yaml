@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: pulp-celery-beat--service
+  labels:
+    component: pulp-celery-beat-service
+    pulp.service: pulp-celery-beat
+    tier: backend
+spec:
+  selector:
+    component: pulp-celery-beat-pod
+    pulp.service: pulp-celery-beat
+    tier: backend
+

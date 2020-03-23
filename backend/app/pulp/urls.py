@@ -27,6 +27,7 @@ urlpatterns = [
   path('delivery/', views.switcher, name='delivery'),
   path('profile/', views.switcher, name='profile'),
   path('archive/', views.switcher, name='archive'),
+  path('payments/', views.switcher, name='payments'),
   path('subscribe/', views.subscribe, name='subscribe'),
   path('api/users/', include('users.urls')),
   path('api/reading_list/', include('reading_list.urls')),

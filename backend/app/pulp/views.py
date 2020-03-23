@@ -32,10 +32,9 @@ def landing(request):
 def switcher(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect('../')
-    pocket = request.GET.get('pocket', 'null')
     context = {
         'js_file': create_js_static_url('switcher'),
-        'pocket': pocket,
+        'stripe_public_key': STRIPE_PUBLIC_KEY,
     }
     return render(request, 'reading_list.html', context)
 

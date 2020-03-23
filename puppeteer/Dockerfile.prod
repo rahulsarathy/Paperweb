@@ -1,0 +1,40 @@
+FROM node:10-slim
+
+RUN apt-get update && apt-get install -y gnupg2
+RUN  apt-get install -y wget
+
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
+    && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' \
+    && apt-get update \
+    && apt-get install -y gnupg2 google-chrome-unstable fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf \
+      --no-install-recommends \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create app directory
+WORKDIR /usr/src/app
+
+# Install app dependencies
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+# where available (npm@5+)
+COPY ./package*.json .
+
+# Bundle app source
+COPY . .
+
+RUN npm install \
+    # Add user so we don't need --no-sandbox.
+    # same layer as npm install to keep re-chowned files from using up several hundred MBs more space
+    && groupadd -r pptruser && useradd -r -g pptruser -G audio,video pptruser \
+    && mkdir -p /home/pptruser/Downloads \
+    && chown -R pptruser:pptruser /home/pptruser \
+    && chown -R pptruser:pptruser ./node_modules
+
+USER pptruser
+
+ARG PARSER_PORT=3000
+EXPOSE ${PARSER_PORT}
+
+# If you are building your code for production
+# RUN npm ci --only=production
+
+CMD [ "npm", "run", "start" ]

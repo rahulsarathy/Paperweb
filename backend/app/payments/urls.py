@@ -12,5 +12,6 @@ urlpatterns = [
     path('cancel_payment/', views.cancel_payment),
     path('stripehook/', views.stripe_hook),
     path('next_billing_date/', views.next_billing_date),
-    path('next_delivery_date/', views.next_delivery_date)
+    path('next_delivery_date/', views.next_delivery_date),
+    path('get_stripe_public_key/', views.get_stripe_public_key),
 ]
