@@ -1,18 +1,21 @@
 import math
 
-from django.shortcuts import render
-from rest_framework.decorators import api_view
-from django.views.decorators.csrf import csrf_exempt
+import json
+from datetime import datetime, timedelta
+
+
+from pulp.globals import STRIPE_PUBLIC_KEY
 from utils.google_maps_utils import autocomplete
 from utils import stripe_utils
 from utils.stripe_utils import stripe
-from django.http import JsonResponse, HttpResponse
 from payments.models import BillingInfo
-import json
-from datetime import datetime, timedelta
-from django.utils import timezone
-from dateutil.relativedelta import relativedelta
+
+
+from rest_framework.decorators import api_view
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse, HttpResponse, JsonResponse
 from django.contrib.auth.models import User
+from django.views.decorators.cache import cache_page
 
 # Create your views here.
 @api_view(['GET'])
@@ -21,6 +24,14 @@ def address_autocomplete(request):
     autocompleted = autocomplete(address)
 
     return JsonResponse(autocompleted, safe=False)
+
+
+@cache_page(60 * 15)
+@api_view(['GET'])
+def get_stripe_public_key(request):
+    return JsonResponse(STRIPE_PUBLIC_KEY, safe=False)
+
+
 
 @api_view(['GET'])
 def create_session(request):
@@ -35,6 +46,7 @@ def create_session(request):
         new_session = stripe_utils.create_session(current_user.id, current_user.email)
 
     return JsonResponse(new_session)
+
 
 @api_view(['GET'])
 def payment_status(request):

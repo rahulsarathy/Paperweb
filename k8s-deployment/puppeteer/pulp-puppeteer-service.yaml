@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: pulp-puppeteer-service
+  labels:
+    component: pulp-puppeteer-service
+    pulp.service: pulp-puppeteer
+    tier: backend
+spec:
+  ports:
+  - name: "puppeteer-port"
+    port: 4000
+    targetPort: 4000
+  selector:
+    component: pulp-puppeteer-pod
+    pulp.service: pulp-puppeteer
+    tier: backend
+status:
+  loadBalancer: {}

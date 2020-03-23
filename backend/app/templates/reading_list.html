@@ -1,14 +1,16 @@
-{% load static %}
-{% csrf_token %}
+{% load static %} {% csrf_token %}
 <html>
     <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
         <title>Pulp</title>
-        <script>var pocket={{pocket}};</script>
+        <script>
+            var stripe_public_key = "{{stripe_public_key}}";
+        </script>
+        <script src="https://js.stripe.com/v3" async></script>
     </head>
 </html>
 <body>
-	<div id="reading_list"></div>
-	<script src={{js_file}}></script>
+    <div id="reading_list"></div>
+    <script src="{{js_file}}"></script>
 </body>

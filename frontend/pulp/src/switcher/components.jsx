@@ -7,6 +7,7 @@ import Delivery from "../delivery/delivery.jsx";
 import AddArticle from "./add_article.jsx";
 import Profile from "../profile/profile.jsx";
 import Status from "./status.jsx";
+import Subscribe from "../subscribe/subscribe.jsx";
 
 export {
 	Header,
@@ -16,5 +17,6 @@ export {
 	Delivery,
 	AddArticle,
 	Profile,
-	Status
+	Status,
+	Subscribe
 };

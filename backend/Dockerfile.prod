@@ -9,26 +9,21 @@ RUN apk --update \
     linux-headers \
     musl-dev \
     libc-dev \
-    nodejs \
-    npm \
     python3-dev \
     postgresql \
-    postgresql-dev
+    postgresql-dev \
+    libffi-dev \
+    openssl-dev \
+    fortify-headers
 
 # instead of installing, create a wheel
 RUN pip install --upgrade pip
 RUN pip wheel --wheel-dir=/root/wheels psycopg2
-
-# Build jsx
-ENV PATH /app/pulp/node_modules/.bin:$PATH
-WORKDIR /app
-COPY ./frontend/pulp/package.json /app/package.json 
-COPY ./frontend/pulp/package-lock.json /app/package-lock.json
-COPY ./frontend/pulp/webpack.config.js /app/webpack.config.js
-RUN npm install --silent
-COPY ./frontend/pulp/src ./src
-COPY ./frontend/pulp/public ./public
-RUN npm run --silent build
+RUN pip wheel --wheel-dir=/root/wheels vcrpy
+RUN pip wheel --wheel-dir=/root/wheels cryptography
+RUN pip wheel --wheel-dir=/root/wheels psutil
+RUN pip wheel --wheel-dir=/root/wheels twisted
+RUN pip wheel --wheel-dir=/root/wheels hiredis
 
 ###
 # Stage 2 - Image WITHOUT dev tools
@@ -47,24 +42,47 @@ RUN addgroup -S appgroup && adduser -S ${APP_USER} -G appgroup
 # Copy wheels built in previous stage
 COPY --from=buildimage /root/wheels /root/wheels
 
-# Copy compiled js files to /static
 WORKDIR /usr/src/app
-RUN mkdir -p ./static/js/build
-COPY --from=buildimage /app/build /usr/src/app/static/js/build
 
 # copy requirements.txt and code
 COPY ./requirements.txt /usr/src/app/
 COPY ./app /usr/src/app/
 RUN chown -R ${APP_USER}:appgroup . 
 
-# Install from pip archive
-RUN pip install -r ./requirements.txt
-
 # Look for archives in # /root/wheels
 RUN pip install \
       --no-index \
       --find-links=/root/wheels \
       psycopg2
+RUN pip install \
+      --no-index \
+      --find-links=/root/wheels \
+      vcrpy
+
+RUN pip install \
+      --no-index \
+      --find-links=/root/wheels \
+      psutil
+
+RUN pip install \
+      --no-index \
+      --find-links=/root/wheels \
+      cryptography
+
+
+# channels dependencies
+RUN pip install \
+      --no-index \
+      --find-links=/root/wheels \
+      twisted
+
+RUN pip install \
+      --no-index \
+      --find-links=/root/wheels \
+      hiredis
+
+# Install from pip archive
+RUN pip install -r ./requirements.txt
 
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1

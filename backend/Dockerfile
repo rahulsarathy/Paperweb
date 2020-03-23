@@ -12,17 +12,25 @@ RUN apk --update \
     libc-dev \
     python3-dev \
     postgresql \
-    postgresql-dev
+    postgresql-dev \
+    libffi-dev \
+    openssl-dev \
+    fortify-headers
 
 # instead of installing, create a wheel
 RUN pip install --upgrade pip
 RUN pip wheel --wheel-dir=/root/wheels psycopg2
 RUN pip wheel --wheel-dir=/root/wheels vcrpy
+RUN pip wheel --wheel-dir=/root/wheels cryptography
+RUN pip wheel --wheel-dir=/root/wheels psutil
+RUN pip wheel --wheel-dir=/root/wheels twisted
+RUN pip wheel --wheel-dir=/root/wheels hiredis
+
 
 ###
 # Stage 2 - Image WITHOUT C compiler
 #
-FROM python:3.7-alpine
+FROM python:3.7.4-alpine
 
 COPY --from=buildimage /root/wheels /root/wheels
 
@@ -48,19 +56,11 @@ RUN apk --update \
     add --no-cache --virtual .build-deps \
     postgresql-client
 
-# install mechanicalsoup
-RUN apk add g++ libxml2 libxslt-dev \
-	&& pip install mechanicalsoup \
-	&& apk del g++
-
 # for django-encrypted-model-fields
-RUN apk add gcc musl-dev libffi-dev openssl-dev python3-dev && pip install django-encrypted-model-fields
+#RUN apk add gcc musl-dev libffi-dev openssl-dev python3-dev && pip install django-encrypted-model-fields
 
 # for psutil
-RUN apk add --update gcc libc-dev fortify-headers linux-headers && rm -rf
-
-# Install from pip archive
-RUN pip install -r ./requirements.txt
+#RUN apk add --update gcc libc-dev fortify-headers linux-headers && rm -rf
 
 # Look for archives in # /root/wheels
 RUN pip install \
@@ -71,6 +71,31 @@ RUN pip install \
       --no-index \
       --find-links=/root/wheels \
       vcrpy
+
+RUN pip install \
+      --no-index \
+      --find-links=/root/wheels \
+      psutil
+
+RUN pip install \
+      --no-index \
+      --find-links=/root/wheels \
+      cryptography
+
+
+# channels dependencies
+RUN pip install \
+      --no-index \
+      --find-links=/root/wheels \
+      twisted
+
+RUN pip install \
+      --no-index \
+      --find-links=/root/wheels \
+      hiredis
+
+# Install from pip archive
+RUN pip install -r ./requirements.txt
 
 # run entrypoint-dev.sh
 ENTRYPOINT ["/usr/src/app/entrypoint-dev.sh"]

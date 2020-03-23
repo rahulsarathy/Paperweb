@@ -1,0 +1,46 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: pulp-puppeteer-deployment
+  labels:
+    component: pulp-puppeteer-pod
+    pulp.service: pulp-puppeteer
+    tier: backend
+spec:
+  replicas: 2
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      component: pulp-puppeteer-pod
+  template:
+    metadata:
+      labels:
+        component: pulp-puppeteer-pod
+        pulp.service: pulp-puppeteer
+        tier: backend
+    spec:
+      containers:
+      - name: pulp-puppeteer
+        args:
+        - npm
+        - run
+        - dev
+        image: gcr.io/sandbox-164917/pulp-puppeteer:v1
+        imagePullPolicy: Always
+        env:
+        - name: AWS_HTML_BUCKET
+          valueFrom:
+            configMapKeyRef:
+              key: AWS_HTML_BUCKET
+              name: pulp-backend-config
+        - name: AWS_PDF_BUCKET
+          valueFrom:
+            configMapKeyRef:
+              key: AWS_PDF_BUCKET
+              name: pulp-backend-config
+        ports:
+        - containerPort: 4000
+        resources: {}
+      restartPolicy: Always
+status: {}

@@ -13,7 +13,8 @@ import {
   Sidebar,
   AddArticle,
   Profile,
-  Status
+  Status,
+  Subscribe
 } from "./components.jsx";
 import {
   BrowserRouter as Router,
@@ -56,6 +57,9 @@ export default class Switcher extends React.Component {
     this.removePocket = this.removePocket.bind(this);
     this.removeInstapaper = this.removeInstapaper.bind(this);
 
+    // Payments
+    this.checkPaymentStatus = this.checkPaymentStatus.bind(this);
+
     this.progressSocket = new WebSocket(
       "ws://" + window.location.host + "/ws/api/progress/"
     );
@@ -81,6 +85,21 @@ export default class Switcher extends React.Component {
   componentDidMount() {
     this.getReadingList();
     this.getServices();
+    this.checkPaymentStatus();
+  }
+
+  checkPaymentStatus() {
+    $.ajax({
+      url: "../api/payments/payment_status",
+      type: "GET",
+      success: function(data, statusText, xhr) {
+        if (xhr.status == 208) {
+          this.setState({ paid: true });
+        } else {
+          this.setState({ paid: false });
+        }
+      }.bind(this)
+    });
   }
 
   handleAddToReadingList(data) {
@@ -479,6 +498,11 @@ export default class Switcher extends React.Component {
                 <MenuItem to="/reading_list">Unread</MenuItem>
                 <MenuItem to="/delivery">Delivery</MenuItem>
                 <MenuItem to="/archive">Archive</MenuItem>
+                {!this.state.paid ? (
+                  <MenuItem to="/payments">Subscribe</MenuItem>
+                ) : (
+                  <div></div>
+                )}
               </div>
             </div>
             <div className="page-container">
@@ -526,6 +550,7 @@ export default class Switcher extends React.Component {
                     />
                   )}
                 />
+                <Route path="/payments" render={() => <Subscribe />} />
                 <Route
                   path="/delivery"
                   render={() => (
