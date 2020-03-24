@@ -26,7 +26,7 @@ spec:
         - npm
         - run
         - dev
-        image: gcr.io/sandbox-164917/pulp-puppeteer:v1
+        image: gcr.io/prod1-259305/pulp-puppeteer:v1
         imagePullPolicy: Always
         env:
         - name: AWS_HTML_BUCKET

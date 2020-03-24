@@ -9,7 +9,7 @@ spec:
     spec:
       containers:
       - name: pulp-collect-static
-        image: gcr.io/sandbox-164917/pulp-backend:v1
+        image: gcr.io/prod1-259305/pulp-backend:v1
         imagePullPolicy: Always
         env:
         command: [ "/bin/sh", "-c", "python manage.py collectstatic --noinput" ]

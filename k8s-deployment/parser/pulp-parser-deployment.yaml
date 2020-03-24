@@ -26,7 +26,7 @@ spec:
         - npm
         - run
         - dev
-        image: gcr.io/sandbox-164917/pulp-parser:v1
+        image: gcr.io/prod1-259305/pulp-parser:v1
         imagePullPolicy: Always
         env:
         - name: PARSER_HOST 

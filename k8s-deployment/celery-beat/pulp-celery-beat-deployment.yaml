@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: pulp-celery-beat
-        image: gcr.io/sandbox-164917/pulp-celery-beat:v1
+        image: gcr.io/prod1-259305/pulp-celery-beat:v1
         imagePullPolicy: Always
         env:
         - name: SQL_USER

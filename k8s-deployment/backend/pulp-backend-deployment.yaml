@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: pulp-backend
-        image: gcr.io/sandbox-164917/pulp-backend:v1
+        image: gcr.io/prod1-259305/pulp-backend:v1
         imagePullPolicy: Always
         envFrom:
           - configMapRef:
