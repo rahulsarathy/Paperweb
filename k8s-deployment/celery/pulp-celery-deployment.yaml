@@ -23,7 +23,13 @@ spec:
       containers:
       - name: pulp-celery
         image: gcr.io/prod1-259305/pulp-celery:v1
+        command: ['celery', '-A', 'pulp', 'worker', '-l', 'info']
         imagePullPolicy: Always
+        envFrom:
+          - configMapRef:
+              name: pulp-backend-config
+          - secretRef:
+              name: pulp-backend-credentials
         env:
         - name: SQL_USER
           valueFrom:
@@ -35,11 +41,6 @@ spec:
             secretKeyRef:
                name: pulp-postgres-db-credentials
                key: password
-          initialDelaySeconds: 15
-          periodSeconds: 20
-          timeoutSeconds: 10
-          successThreshold: 1
-          failureThreshold: 2
         resources: {}
       restartPolicy: Always
 status: {}

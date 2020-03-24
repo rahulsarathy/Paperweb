@@ -85,10 +85,10 @@ PARSER
 
 # cd <pulp dir>/node
 # export PROJECT_ID=<set project id>
-# docker build -t gcr.io/${PROJECT_ID}/pulp-node:v1 .
+# docker build -t gcr.io/${PROJECT_ID}/pulp-parser:v1 .
 
 2. Push the frontend to gcr.io
-# docker push gcr.io/${PROJECT_ID}/pulp-node:v1
+# docker push gcr.io/${PROJECT_ID}/pulp-parser:v1
 
 3. Deploy 
 cd <pulp dir>/k8s-deployment/parser
