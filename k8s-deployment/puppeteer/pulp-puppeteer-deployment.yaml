@@ -39,6 +39,16 @@ spec:
             configMapKeyRef:
               key: AWS_PDF_BUCKET
               name: pulp-backend-config
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: pulp-backend-credentials
+              key: AWS_ACCESS_KEY_ID
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: pulp-backend-credentials
+              key: AWS_SECRET_ACCESS_KEY
         ports:
         - containerPort: 4000
         resources: {}
