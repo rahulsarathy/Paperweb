@@ -44,8 +44,8 @@ COPY --from=buildimage /root/wheels /root/wheels
 
 WORKDIR /usr/src/app
 
-# copy requirements.txt and code
-COPY ./requirements.txt /usr/src/app/
+# copy requirements_prod.txt and code
+COPY ./requirements_prod.txt /usr/src/app/
 COPY ./app /usr/src/app/
 RUN chown -R ${APP_USER}:appgroup . 
 
