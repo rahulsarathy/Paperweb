@@ -26,3 +26,4 @@ data:
   AWS_PDF_BUCKET: "pulppdf-test"
   FRONTEND_HOST: "/static/js/build/"
   EMAIL_HOST_USER: "rahul@getpulp.io"
+  ACCOUNT_EMAIL_VERIFICATION: "optional"
