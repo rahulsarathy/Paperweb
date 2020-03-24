@@ -4,7 +4,7 @@
   "description": "Pulp Node.js server running puppeteer",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon dotenv/config ./puppeteer.js",
+    "dev": "nodemon ./puppeteer.js",
     "start": "node ./puppeteer.js"
   },
   "author": "Rahul Sarathy <rahul@sarathy.org>",
@@ -16,7 +16,6 @@
     "pdfjs-dist": "^2.2.228"
   },
   "devDependencies": {
-    "nodemon": "^1.19.4",
-    "dotenv": "^8.2.0"
+    "nodemon": "^1.19.4"
   }
 }

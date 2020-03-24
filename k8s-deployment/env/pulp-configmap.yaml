@@ -13,6 +13,7 @@ data:
   SQL_DATABASE: "pulp_db"
   BACKEND_PORT: "8000"
   PARSER_HOST: pulp-parser-service
+  PUPPETEER_HOST: pulp-puppeteer-service
   PARSER_PORT: "3000"
   REDIS_HOST: pulp-redis-service 
   REDIS_PORT: "6379"
@@ -24,3 +25,4 @@ data:
   AWS_HTML_BUCKET: "pulphtml-test"
   AWS_PDF_BUCKET: "pulppdf-test"
   FRONTEND_HOST: "/static/build/js/"
+  EMAIL_HOST_USER: "rahul@getpulp.io"

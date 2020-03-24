@@ -12,8 +12,8 @@ STRIPE_PUBLIC_KEY = 'pk_test_9DUWDnI9T5YJWmLRhNn6nHtS'
 PULP_STRIPE_PLAN = 'plan_GAWq4OuTaB2RqS'
 
 # AWS S3
-S3_USER_ACCESS_ID = os.environ.get('AWS_ACCESS_KEY')
-S3_USER_SECRET = os.environ.get('AWS_SECRET_KEY')
+S3_USER_ACCESS_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+S3_USER_SECRET = os.environ.get('AWS_SECRET_ACCESS_KEY')
 PDF_BUCKET = os.environ.get('AWS_PDF_BUCKET')
 HTML_BUCKET = os.environ.get('AWS_HTML_BUCKET')
 
