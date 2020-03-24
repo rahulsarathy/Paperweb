@@ -20,8 +20,8 @@ INSTALLED_APPS = [
     'health_check.db',                          # stock Django health checkers
     'health_check.cache',
     'health_check.storage',
-#   'health_check.contrib.celery',              # requires celery
-#   'health_check.contrib.redis',               # required Redis broker
+    'health_check.contrib.celery',              # requires celery
+    'health_check.contrib.redis',               # required Redis broker
     'captcha',
     'channels',
     'django.contrib.admin',
@@ -251,3 +251,6 @@ CHANNEL_LAYERS = {
 }
 
 SILENCED_SYSTEM_CHECKS = config('SILENCED_SYSTEM_CHECKS', cast=Csv())
+
+CELERY_BROKER_URL = 'redis://redis:6379'
+CELERY_RESULT_BACKEND = 'redis://redis:6379'

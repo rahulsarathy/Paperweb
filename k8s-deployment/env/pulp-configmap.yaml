@@ -23,3 +23,4 @@ data:
   SILENCED_SYSTEM_CHECKS: "captcha.recaptcha_test_key_error"
   AWS_HTML_BUCKET: "pulphtml-test"
   AWS_PDF_BUCKET: "pulppdf-test"
+  FRONTEND_HOST: "/static/build/js/"
