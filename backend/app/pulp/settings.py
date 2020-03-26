@@ -1,6 +1,4 @@
 import os, sys
-import sentry_sdk
-from sentry_sdk.integrations.django import DjangoIntegration
 from celery.schedules import crontab
 from decouple import config, Csv
 
@@ -11,7 +9,6 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 
 FIELD_ENCRYPTION_KEY=os.environ.get('FIELD_ENCRYPTION_KEY')
 
-SITE_ID = 1
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
 # Application definition
@@ -106,11 +103,11 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_DEFAULT_QUEUE = "default"
 CELERY_BEAT_SCHEDULE = {
     'sync_instapaper': {
-        'task': 'instapaper.tasks.sync_instapaper',
+        'task': 'sync_instapaper',
         'schedule': crontab(minute=0, hour=0),
     },
     'sync_pocket': {
-        'task': 'pocket.tasks.sync_pocket',
+        'task': 'sync_pocket',
         'schedule': crontab(minute=0, hour=0),
     }
 }
@@ -159,7 +156,7 @@ ACCOUNT_SIGNUP_FORM_CLASS = 'users.forms.AllauthSignupForm'
 # ACCOUNT_FORMS = {'signup': 'users.forms.MyCustomSignupForm'}
 ACCOUNT_USER_MODEL_USERNAME_FIELD = 'username'
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
@@ -170,13 +167,13 @@ LOGOUT_REDIRECT_URL = '/'
 LOGIN_REDIRECT_URL = '/'
 
 # emaillogin_project/settings.py
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 EMAIL_PORT = 587
-ACCOUNT_CONFIRM_EMAIL_ON_GET = False
+ACCOUNT_CONFIRM_EMAIL_ON_GET = os.environ.get('ACCOUNT_CONFIRM_EMAIL_ON_GET')
 ACCOUNT_EMAIL_VERIFICATION = os.environ.get('ACCOUNT_EMAIL_VERIFICATION', 'optional')
 DEFAULT_FROM_EMAIL = os.environ.get("EMAIL_HOST_USER")
 LOGIN_URL = '/accounts/login'

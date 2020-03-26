@@ -2,9 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import $ from "jquery";
 import shortid from "shortid";
-// import Stripe from "stripe";
 
-// const stripe = Stripe(stripe_public_key);
+const stripe = Stripe(stripe_public_key);
 
 export default class Unpaid extends React.Component {
   constructor(props) {

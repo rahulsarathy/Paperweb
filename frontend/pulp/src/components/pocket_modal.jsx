@@ -27,7 +27,6 @@ export default class Pocket_Modal extends React.Component {
   }
 
   hidePane() {
-    pocket = false;
     this.setState({ show: false });
   }
 

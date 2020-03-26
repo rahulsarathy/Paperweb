@@ -6,7 +6,7 @@ while ! nc -z $SQL_HOST $SQL_PORT; do
 done
 echo "PostgreSQL started"
 
-python manage.py flush --no-input
+#python manage.py flush --no-input
 python manage.py makemigrations
 python manage.py migrate
 

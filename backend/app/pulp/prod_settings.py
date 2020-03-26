@@ -1,4 +1,9 @@
 from pulp.settings import *
+import os
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
+SITE_ID = os.environ.get('SITE_ID')
 
 DATABASES = {
     'default': {

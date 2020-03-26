@@ -1,4 +1,7 @@
 from pulp.settings import *
+import os
+
+SITE_ID = 1
 
 DATABASES = {
     "default": {

@@ -20,7 +20,7 @@ from django.urls import path, re_path
 from pulp import views
 
 urlpatterns = [
-  path('admin/', admin.site.urls),
+  path('secret_admin1/', admin.site.urls),
   path('ready/', include('health_check.urls')),
   path('', views.landing, name='landing'),
   path('reading_list/', views.switcher, name='switcher'),

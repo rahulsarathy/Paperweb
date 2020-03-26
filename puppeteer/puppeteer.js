@@ -25,15 +25,15 @@ app.get("/", (req, res) => {
 });
 
 app.post("/api/print", function(req, res) {
-  if (!fs.existsSync("dump")) {
-    fs.mkdir("dump", function(err) {
-      if (err) {
-        return console.log("failed to write directory", err);
-      }
+  // if (!fs.existsSync("dump")) {
+  //   fs.mkdir("dump", function(err) {
+  //     if (err) {
+  //       return console.log("failed to write directory", err);
+  //     }
 
-      // now, write a file in the directory
-    });
-  }
+  //     // now, write a file in the directory
+  //   });
+  // }
 
   let html_id = req.param("html_id");
   let htmlFileName = path.join("dump", html_id + ".html");
