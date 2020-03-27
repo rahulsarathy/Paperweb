@@ -17,7 +17,7 @@ INSTALLED_APPS = [
     'health_check.db',                          # stock Django health checkers
     'health_check.cache',
     'health_check.storage',
-    'health_check.contrib.celery',              # requires celery
+    # 'health_check.contrib.celery',              # requires celery
     'health_check.contrib.redis',               # required Redis broker
     'captcha',
     'channels',
