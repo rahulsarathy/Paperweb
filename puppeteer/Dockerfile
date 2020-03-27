@@ -29,6 +29,7 @@ RUN npm install \
     && chown -R pptruser:pptruser /home/pptruser \
     && chown -R pptruser:pptruser ./node_modules
 
+RUN chown -R pptruser dump
 USER pptruser
 
 # If you are building your code for production
