@@ -2,6 +2,8 @@ from pulp.settings import *
 import os
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
+from sentry_sdk.integrations.redis import RedisIntegration
+from sentry_sdk.integrations.celery import CeleryIntegration
 
 SITE_ID = os.environ.get('SITE_ID')
 
@@ -20,7 +22,7 @@ DEBUG = False
 
 sentry_sdk.init(
     dsn="https://376f22cb96ba4052a0cb5f47084f452c@sentry.io/1529016",
-    integrations=[DjangoIntegration()]
+    integrations=[DjangoIntegration(), RedisIntegration(), CeleryIntegration()]
 )
 
 JAVASCRIPT_URLS = {

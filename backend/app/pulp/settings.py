@@ -255,3 +255,5 @@ CELERY_BROKER_URL = "redis://{REDIS_HOST}:{REDIS_PORT}/0".format(REDIS_HOST=os.e
                                                                  REDIS_PORT=os.environ.get('REDIS_PORT'))
 CELERY_RESULT_BACKEND = "redis://{REDIS_HOST}:{REDIS_PORT}/0".format(REDIS_HOST=os.environ.get('REDIS_HOST'),
                                                                  REDIS_PORT=os.environ.get('REDIS_PORT'))
+
+HEALTHCHECK_CELERY_TIMEOUT = os.environ.get('HEALTHCHECK_CELERY_TIMEOUT')
