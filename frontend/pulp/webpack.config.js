@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   entry: {
-    landing: path.join(__dirname, "src", "landing", "landing.jsx"),
+    landing: path.join(__dirname, "src", "landing", "landing_switcher.jsx"),
     switcher: path.join(__dirname, "src", "switcher", "switcher.jsx"),
     article: path.join(__dirname, "src", "article", "article.jsx"),
     subscribe: path.join(__dirname, "src", "subscribe", "subscribe.jsx")

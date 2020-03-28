@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django_celery_beat',
     'encrypted_model_fields',
     'django_nose',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [

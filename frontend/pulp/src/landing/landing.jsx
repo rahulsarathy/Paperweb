@@ -1,27 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Row, Col, Button } from "react-bootstrap";
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    NavLink,
+    useHistory,
+    withRouter
+} from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.css";
 import "./components.scss";
 
 const images_url = "../static/images/";
-
-function Header() {
-    return (
-        <div id="header">
-            <img className="logo" src={images_url + "pulp_black_logo.svg"} />
-            <div className="links">
-                <a href="#">Pricing</a>
-                <a href="#">Contact</a>
-                <a href="#">FAQ</a>
-                <span>|</span>
-                <a href="/accounts/login">Login</a>
-                <a href="/accounts/signup">Sign Up</a>
-            </div>
-        </div>
-    );
-}
 
 function Splash() {
     return (
@@ -82,15 +74,14 @@ function Preview() {
     );
 }
 
-function Landing() {
-    return (
-        <div>
-            <Header />
-            <Splash />
-            <Steps />
-            <Preview />
-        </div>
-    );
+export default class Landing extends React.Component {
+    render() {
+        return (
+            <div>
+                <Splash />
+                <Steps />
+                <Preview />
+            </div>
+        );
+    }
 }
-
-ReactDOM.render(<Landing />, document.getElementById("landing"));
