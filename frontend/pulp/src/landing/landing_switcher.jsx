@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import { Landing, Publishers, FAQ, Pricing } from "./components.jsx";
+import { Landing, Publishers, FAQ, Pricing, Header } from "./components.jsx";
 import {
 	BrowserRouter as Router,
 	Switch,
@@ -12,21 +12,6 @@ import {
 
 const images_url = "../static/images/";
 
-function Header() {
-	return (
-		<div id="header" className="header">
-			<img className="logo" src={images_url + "pulp_black_logo.svg"} />
-			<div className="links">
-				<NavLink to="/pricing">Pricing</NavLink>
-				<NavLink to="/faq">FAQ</NavLink>
-				<NavLink to="/publishers">Publishers</NavLink>
-				<a href="/accounts/login">Log in</a>
-				<a href="/accounts/signup">Sign Up</a>
-			</div>
-		</div>
-	);
-}
-
 export class LandingSwitcher extends Component {
 	render() {
 		return (
@@ -35,12 +20,11 @@ export class LandingSwitcher extends Component {
 				<div className="content">
 					<Switch>
 						<Route path="/landing" render={() => <Landing />} />
+						<Route path="/faq" render={() => <FAQ />} />
 						<Route
 							path="/publishers"
 							render={() => <Publishers />}
 						/>
-						<Route path="/faq" render={() => <FAQ />} />
-						<Route path="/pricing" render={() => <Pricing />} />
 					</Switch>
 				</div>
 			</Router>

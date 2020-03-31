@@ -12,6 +12,8 @@ import {
 
 import "bootstrap/dist/css/bootstrap.css";
 import "./components.scss";
+import { Magazine } from "../magazine/components.jsx";
+import "../magazine/components.scss";
 
 const images_url = "../static/images/";
 
@@ -26,7 +28,9 @@ function Splash() {
                     High quality writing was meant to be held, not scrolled
                     through
                 </h4>
-                <Button id="sign-up">Sign Up</Button>
+                <a href="/accounts/signup">
+                    <Button id="sign-up">Sign Up</Button>
+                </a>
             </Col>
         </Row>
     );
@@ -38,15 +42,23 @@ function Steps() {
             <Row>
                 <Col className="step">
                     <div className="step-info">
-                        <img src={images_url + "step1.png"} />
+                        <div className="step1-background">
+                            <div className="number">1</div>
+                            <img src={images_url + "step1.svg"} />
+                        </div>
                         <span className="step-desc">
-                            Add Articles you want to read
+                            Sync your already existing reading lists or add your
+                            own articles
                         </span>
                     </div>
                 </Col>
                 <Col className="step">
                     <div className="step-info">
-                        <img src={images_url + "step2.png"} />
+                        <div className="step1-background">
+                            <div className="number">2</div>
+
+                            <img src={images_url + "step2.svg"} />
+                        </div>
                         <span className="step-desc">
                             Read, whenever you want
                         </span>
@@ -54,7 +66,11 @@ function Steps() {
                 </Col>
                 <Col className="step">
                     <div className="step-info">
-                        <img src={images_url + "step3.png"} />
+                        <div className="step1-background">
+                            <div className="number">3</div>
+
+                            <img src={images_url + "step3.svg"} />
+                        </div>
                         <span className="step-desc">
                             What you don't finish gets delivered to you as a
                             magazine
@@ -80,7 +96,7 @@ export default class Landing extends React.Component {
             <div>
                 <Splash />
                 <Steps />
-                <Preview />
+                <Magazine />
             </div>
         );
     }
