@@ -29,6 +29,11 @@ def landing(request):
     }
     return render(request, 'landing.html', context)
 
+def redirect_to_landing(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect('/reading_list')
+    return HttpResponseRedirect('/landing')
+
 def switcher(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect('../')

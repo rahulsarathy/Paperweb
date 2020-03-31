@@ -6,14 +6,17 @@
 	<link rel="stylesheet" href="{% static 'css/login.css' %}">
 	</head>
 	<body>
-		<p class="back">
-			<i class="arrow left"></i><a href="{% url 'landing' %}">Back to Home</a>
-		</p>
-		<h2>Sign up</h2>
-		<form method="post">
-			{% csrf_token %}
-			{{ form.as_p }}
-			<button type="submit">Sign up</button>
-		</form>
+        <div class="account-content">
+            <p class="back">
+			    <i class="arrow left"></i><a href="{% url 'landing' %}">Back to Home</a>
+		    </p>
+		    <h2>Sign up</h2>
+		    <form method="post">
+			    {% csrf_token %}
+			    {{ form.as_p }}
+			    <button type="submit">Sign up</button>
+		    </form>
+        </div>
+        <div id="login"></div>
 	</body>
 </html>

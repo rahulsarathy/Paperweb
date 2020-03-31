@@ -21,21 +21,33 @@ from pulp import views
 
 urlpatterns = [
   path('secret_admin1/', admin.site.urls),
-  path('ready/', include('health_check.urls')),
-  path('', views.landing, name='landing'),
+
+  # landing page switcher
+  path('', views.redirect_to_landing, name='redirect_to_landing'),
+  path('landing/', views.landing, name='landing'),
+  path('pricing/', views.landing, name='pricing'),
+  path('faq/', views.landing, name='faq'),
+  path('publishers/', views.landing, name='publishers'),
+
+  # signed in switcher
   path('reading_list/', views.switcher, name='switcher'),
   path('delivery/', views.switcher, name='delivery'),
   path('profile/', views.switcher, name='profile'),
   path('archive/', views.switcher, name='archive'),
   path('payments/', views.switcher, name='payments'),
   path('subscribe/', views.subscribe, name='subscribe'),
+
+  # api endpoints
   path('api/users/', include('users.urls')),
   path('api/reading_list/', include('reading_list.urls')),
   path('api/payments/', include('payments.urls')),
   path('api/instapaper/', include('instapaper.urls')),
   path('api/pocket/', include('pocket.urls')),
   path('articles/', views.article),
+
+  # django 3rd party
   path('accounts/', include('allauth.urls')),
+  path('ready/', include('health_check.urls')),
 ]
 
 handler404 = views.error_404
