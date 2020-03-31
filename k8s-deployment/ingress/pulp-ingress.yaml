@@ -2,6 +2,8 @@ apiVersion: "extensions/v1beta1"
 kind: "Ingress"
 metadata:
   name: "pulp-ingress"
+  annotations:
+	kubernetes.io/ingress.global-static-ip-name: "web-static-ip"
   namespace: "default"
 spec:
   backend:
