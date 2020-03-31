@@ -101,6 +101,7 @@ export default class Magazine extends React.Component {
         return (
             <div className="magazine-container">
                 <div className="magazine">
+                    <div className="hide-magazine"></div>
                     <div className="binding"></div>
                     <div className="content">
                         <img
