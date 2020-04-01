@@ -28,7 +28,7 @@ function reducer(state = initialState, action) {
                 readingList: {
                     loading: state.readingList.loading,
                     list: [
-                        ...state.readingList.list.filter(item => item.url !== action.url),
+                        ...state.readingList.list.filter(item => item.url !== action.url && !item.placeholder),
                         action.article
                     ]
                 }
