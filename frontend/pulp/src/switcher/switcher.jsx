@@ -78,7 +78,8 @@ export default class Switcher extends React.Component {
       instapaper_total: 0,
       instapaper_completed: 0,
       pocket_total: 0,
-      pocket_completed: 0
+      pocket_completed: 0,
+      paid: true
     };
   }
 
@@ -547,6 +548,7 @@ export default class Switcher extends React.Component {
                       removePocket={this.removePocket}
                       removeInstapaper={this.removeInstapaper}
                       syncInstapaper={this.syncInstapaper}
+                      paid={this.state.paid}
                     />
                   )}
                 />

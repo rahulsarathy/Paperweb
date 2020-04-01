@@ -147,8 +147,17 @@ export default class Profile extends React.Component {
         </div>
         <div id="subscription" className="subsection">
           <SubHeader title="Subscription Info" />
-          <label>You are not subscribed to pulp</label>
-          <a href="../subscribe">Subscribe</a>
+          {this.props.paid ? (
+            <div>
+              <label>You are currently subscribed to pulp</label>
+              <button>Unsubscribe</button>
+            </div>
+          ) : (
+            <div>
+              <label>You are not subscribed to pulp</label>
+              <a href="../subscribe">Subscribe</a>
+            </div>
+          )}
         </div>
         <div id="import" className="subsection">
           <SubHeader title="Import Articles" />

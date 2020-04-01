@@ -16,9 +16,14 @@ export default class Unpaid extends React.Component {
   }
 
   createSession() {
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    let data = {
+      csrfmiddlewaretoken: csrftoken
+    };
     $.ajax({
-      url: "../api/payments/create_session",
-      type: "GET",
+      url: "../api/payments/create_session/",
+      type: "POST",
+      data: data,
       success: function(data, statusText, xhr) {
         if (xhr.status == 208) {
           this.setState({ paid: true });
