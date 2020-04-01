@@ -15,8 +15,6 @@ export default class Unpaid extends React.Component {
     this.state = {};
   }
 
-  componentDidMount() {}
-
   createSession() {
     $.ajax({
       url: "../api/payments/create_session",
@@ -51,17 +49,13 @@ export default class Unpaid extends React.Component {
   render() {
     return (
       <div className="unpaid">
-        <div className="pay-card">
-          <div className="title">
-            <p>Pulp</p>
-          </div>
-          <div className="description">
-            <p>Your reading list printed out and delivered once a week</p>
-            <p>$8.99 / month</p>
-            <button onClick={this.createSession} className="getpulp">
-              Get Pulp
-            </button>
-          </div>
+        <h1>Subscribe to Pulp</h1>
+        <div className="description">
+          <p>Your reading list printed out and delivered every month.</p>
+          <p>$7.99 / month</p>
+          <button onClick={this.createSession} className="getpulp">
+            Get Pulp
+          </button>
         </div>
       </div>
     );

@@ -24,10 +24,7 @@ function Splash() {
                 <h1>Your favorite articles, made into a magazine</h1>
             </Col>
             <Col className="right">
-                <h4>
-                    High quality writing was meant to be held, not scrolled
-                    through
-                </h4>
+                <h4>High quality writing was meant to be held, not scrolled</h4>
                 <a href="/accounts/signup">
                     <Button id="sign-up">Sign Up</Button>
                 </a>
@@ -94,9 +91,17 @@ export default class Landing extends React.Component {
     render() {
         return (
             <div>
-                <Splash />
+                <div className="landing">
+                    <div className="first-row">
+                        <div className="first-half">
+                            <Magazine />
+                        </div>
+                        <div className="second-half">
+                            <Splash />
+                        </div>
+                    </div>
+                </div>
                 <Steps />
-                <Magazine />
             </div>
         );
     }

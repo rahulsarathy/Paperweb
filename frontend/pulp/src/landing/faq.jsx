@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+import { NavLink } from "react-router-dom";
+
 export default class FAQ extends Component {
 	render() {
 		return (
@@ -12,16 +14,23 @@ export default class FAQ extends Component {
 					up of articles that you choose.
 				</p>
 
+				<h4>What articles can I add to Pulp?</h4>
+
+				<p>
+					You can add any articles you want that are not{" "}
+					<NavLink to="/publishers">blacklisted</NavLink> by us.
+				</p>
+
 				<h4>How much does Pulp cost?</h4>
 
 				<p>
-					A Pulp subscription costs $9.99 per month, for two magazines
-					each month. Shipping and handling are included.
+					A Pulp subscription costs $7.99 per month, for a monthly
+					magazine. Shipping and handling is included.
 				</p>
 
 				<h4>How often do I receive Pulp magazines?</h4>
 
-				<p>Pulp magazines are delivered twice a month.</p>
+				<p>Pulp magazines are delivered once a month.</p>
 
 				<p></p>
 
