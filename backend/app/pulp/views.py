@@ -29,6 +29,13 @@ def landing(request):
     }
     return render(request, 'landing.html', context)
 
+def testing(request):
+    context = {
+        "webpack_file": create_js_static_url("testing")
+    }
+
+    return render(request, 'testing.html', context)
+
 def switcher(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect('../')
