@@ -1,7 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Modal, Button } from 'react-bootstrap'
-import { integratePocket, removePocket } from './actions'
 import PulpButton from '../../../components/PulpButton'
 
 import './PocketModal.scss'
