@@ -7,8 +7,6 @@ import './ReadingListItem.scss'
 
 function ReadingListItem({ item, onRemoveClick, onArchiveClick }) {
     if (item.placeholder) {
-        console.log("GOT PLACEHOLDER: "+item.url)
-        
         return false
     }
 

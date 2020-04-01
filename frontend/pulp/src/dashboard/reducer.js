@@ -23,6 +23,7 @@ var initialState = {
 function reducer(state = initialState, action) {
     switch (action.type) {
         case "ARTICLE_ADDED":
+            console.log(action)
             return Object.assign({}, state, {
                 readingList: {
                     loading: state.readingList.loading,
@@ -37,7 +38,7 @@ function reducer(state = initialState, action) {
                 readingList: {
                     loading: state.readingList.loading,
                     list: [
-                        ...state.readingList,
+                        ...state.readingList.list,
                         {
                             placeholder: true,
                             url: action.url
