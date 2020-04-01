@@ -7,27 +7,30 @@ import AddItemModal from '../AddItemModal'
 
 import './ReadingListView.scss'
 
-function ReadingListView({ readingList }) {
+function ReadingListView({ loading, readingList }) {
     return (
         <View>
             <View.Header>
                 <View.Title>Your Print List</View.Title>
-                {readingList.length > 0 
+                {!loading && readingList.length > 0 
                     && <AddItemModal>Add Article</AddItemModal>}
             </View.Header>
+            {!loading && //TODO
             <View.Body centered={readingList.length == 0}>
                 {readingList.length > 0
                     ? readingList.map(item => <ReadingListItem key={item.url} item={item} />)
                     : <NoItems />
                 }
             </View.Body>
+            }
         </View>
     )
 }
 
 function mapStateToProps(state) {
     return {
-        readingList: state.readingList
+        loading: state.readingList.loading, // TODO use this
+        readingList: state.readingList.list
     }
 }
 

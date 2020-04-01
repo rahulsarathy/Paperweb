@@ -24,60 +24,83 @@ function reducer(state = initialState, action) {
     switch (action.type) {
         case "ARTICLE_ADDED":
             return Object.assign({}, state, {
-                readingList: [
-                    ...state.readingList.filter(item => item.url !== action.url),
-                    action.article
-                ]
+                readingList: {
+                    loading: state.readingList.loading,
+                    list: [
+                        ...state.readingList.list.filter(item => item.url !== action.url),
+                        action.article
+                    ]
+                }
             })
         case "ADDING_ARTICLE":
             return Object.assign({}, state, {
-                readingList: [
-                    ...state.readingList,
-                    {
-                        placeholder: true,
-                        url: action.url
-                    }
-                ]
+                readingList: {
+                    loading: state.readingList.loading,
+                    list: [
+                        ...state.readingList,
+                        {
+                            placeholder: true,
+                            url: action.url
+                        }
+                    ]
+                }
             })
         case "REMOVE_ARTICLE":
             return Object.assign({}, state, {
-                readingList: state.readingList.filter(item => item.url !== action.url)
+                readingList: {
+                    loading: state.readingList.loading,
+                    list: state.readingList.list.filter(item => item.url !== action.url)
+                }
             })
         case "ARCHIVE_ARTICLE":
             return Object.assign({}, state, {
-                readingList: state.readingList.filter(item => item.id !== action.id),
-                archive: [...state.archive, state.readingList.find(item => item.id === action.id)]
+                readingList: {
+                    loading: state.readingList.loading,
+                    list: state.readingList.list.filter(item => item.url !== action.url)
+                },
+                archive: {
+                    loading: state.archive.loading,
+                    list: [...state.archive, state.readingList.list.find(item => item.url === action.url)]
+                }
             })
         case "LOADING_ARTICLES":
             return Object.assign({}, state, {
-                readingList: [] // TODO
+                readingList: {
+                    loading: true
+                }
             })
         case "LOADED_ARTICLES":
             return Object.assign({}, state, {
-                readingList: action.articles
-                    .filter((item) => !item.archived)
-                    .map((item) => {
-                        return {
-                            title: item.article.title,
-                            url: item.article.permalink,
-                            author: item.article.author,
-                            preview: item.article.preview_text,
-                            image: item.article.image_url,
-                            placeholder: false,
-                        }
-                    }),
-                archive: action.articles
-                    .filter((item) => item.archived)
-                    .map((item) => {
-                        return {
-                            title: item.article.title,
-                            url: item.article.permalink,
-                            author: item.article.author,
-                            preview: item.article.preview_text,
-                            image: item.article.image_url,
-                            placeholder: false,
-                        }
-                    })
+                readingList: {
+                    loading: false,
+                    list: action.articles
+                        .filter((item) => !item.archived)
+                        .map((item) => {
+                            return {
+                                title: item.article.title,
+                                url: item.article.permalink,
+                                author: item.article.author,
+                                preview: item.article.preview_text,
+                                image: item.article.image_url,
+                                placeholder: false,
+                            }
+                        })
+                },
+                archive: {
+                    loading: false,
+                    list: action.articles
+                        .filter((item) => item.archived)
+                        .map((item) => {
+                            return {
+                                title: item.article.title,
+                                url: item.article.permalink,
+                                author: item.article.author,
+                                preview: item.article.preview_text,
+                                image: item.article.image_url,
+                                placeholder: false,
+                            }
+                        })
+                }
             })
         case "LOADED_EMAIL":
             return Object.assign({}, state, {
