@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from 'react-redux';
 import { Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import Spinner from './../../components/spinner'
 
 import './Header.scss'
 
@@ -15,7 +16,7 @@ const ProfileButton = React.forwardRef(({ children, onClick }, ref) => {
     )
 })
 
-function Header({ email }) {
+function Header({ loading, email }) {
     return (
         <div className="header">
             <a href="../">
@@ -25,7 +26,8 @@ function Header({ email }) {
             <Dropdown>
                 <Dropdown.Toggle as={ProfileButton}>
                     <div className="profile-circle">
-                        {email.charAt(0)}
+                        {/* TODO spinner */}
+                        {!loading && email.charAt(0)}
                     </div>
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
@@ -43,6 +45,7 @@ function Header({ email }) {
 
 function mapStateToProps(state) {
     return {
+        loading: state.user.loading,
         email: state.user.email
     }
 }

@@ -10,13 +10,15 @@ import reducer from './reducer'
 
 const store = createStore(reducer, applyMiddleware(thunk))
 
+// TODO This would all be better done in one request...
+
 function populateEmail(dispatch) {
     // TODO this doesn't use the csrf token!!!
     return $.ajax({
         url: "/api/users/get_email",
         type: "GET",
     }).then(
-        (response) => dispatch({ type: "SET_EMAIL", data: response }),
+        (response) => dispatch({ type: "LOADED_EMAIL", email: response }),
         (error) => console.log(error)
     )
 }
@@ -39,6 +41,17 @@ function populateReadingList(dispatch) {
     )
 }
 
+function populateIntegrations(dispatch) {
+    // TODO This request doesn't use the csrf token
+    $.ajax({
+      url: "../api/users/get_services",
+      type: "GET",
+    }).then(
+        (response) => dispatch({ type: "LOADED_INTEGRATIONS", integrations: response }),
+        (error) => console.log(error)
+    )
+}
+
 function populateInitialState() {
     return function(dispatch) {
         var csrftoken = $("[name=csrfmiddlewaretoken]").val();
@@ -46,7 +59,7 @@ function populateInitialState() {
         return Promise.all([
             populateEmail(dispatch),
             populateReadingList(dispatch),
-
+            populateIntegrations(dispatch),
         ])
     }
 }

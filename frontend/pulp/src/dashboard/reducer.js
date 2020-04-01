@@ -1,28 +1,22 @@
 
 var initialState = {
     user: {
-        email: "robbieguy98@gmail.com",
+        loading: true
     },
     subscription: {
-        paid: true,
+        loading: true
     },
-    readingList: [
-        {
-            id: 1,
-            title: "The Eclipse Foundation Releases Eclipse Theia 1.0, a True Open Source Alternative to Visual Studio Code",
-            url: "https://www.example.com",
-            author: "Testing Testing",
-            preview: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-            image: "http://i1.ytimg.com/vi/PB5FosTwM8s/maxresdefault.jpg",
-            placeholder: false
-        }
-    ],
-    archive: [],
+    readingList: {
+        loading: true
+    },
+    archive: {
+        loading: true
+    },
     pocket: {
-        integrated: true,
+        loading: true
     },
     instapaper: {
-        integrated: true,
+        loading: true
     }
 }
 
@@ -84,6 +78,24 @@ function reducer(state = initialState, action) {
                             placeholder: false,
                         }
                     })
+            })
+        case "LOADED_EMAIL":
+            return Object.assign({}, state, {
+                user: {
+                    loading: false,
+                    email: action.email
+                }
+            })
+        case "LOADED_INTEGRATIONS":
+            return Object.assign({}, state, {
+                pocket: {
+                    loading: false,
+                    integrated: action.integrations.pocket.signed_in
+                },
+                instapaper: {
+                    loading: false,
+                    integrated: action.integrations.instapaper.signed_in
+                }, 
             })
         default:
             return state
