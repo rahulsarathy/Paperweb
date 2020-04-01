@@ -1,0 +1,73 @@
+@import 'base.scss';
+
+// TODO This is jank: use flexbox somehow
+$logo-margin: 0.4rem;
+
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    
+    z-index: 1;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 100%;
+
+    height: $header-height;
+
+    background-color: #363634;
+
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.5);
+
+    .logo {
+        margin: $logo-margin;
+        margin-left: 2 * $logo-margin;
+        height: $header-height - 2 * $logo-margin;
+    }
+
+    .profile {
+        color: white;
+        display: flex;
+        align-items: center;
+
+        padding: 0.5rem;
+
+        margin-right: 2*$logo-margin;
+
+        border: none;
+        border-radius: 3px;
+
+        background-color: transparent;
+
+        .profile-circle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: black;
+            background-color: white;
+
+            text-transform: capitalize;
+
+            // Jank
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+
+            // Also a bit jank
+            margin-right: 5px;
+        }
+    }
+
+    .profile:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .show .profile {
+        @extend .profile:hover
+    }
+}
+

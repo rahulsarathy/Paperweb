@@ -1,0 +1,49 @@
+@import 'base.scss'; // Seems to be deprecated
+
+$background-color: #f6f6f2;
+$foreground-color: #a8a894;
+
+.sidebar {
+    position: fixed;
+    top: $header-height; // JANK!
+    left: 0;
+    bottom: 0;
+
+    z-index: 1;
+
+    max-width: $sidebar-width;
+
+    padding-top: 30px;
+    padding-right: 10px;
+
+    background-color: $background-color;
+
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+}
+
+.menu-item {
+    color: $foreground-color;
+  
+    font-size: 1.25rem;
+    font-weight: bold;
+    line-height: 2rem;
+    text-decoration: none;
+    float: right;
+  
+    height: 2rem;
+    margin: 1px 0;
+    padding: 0 10px;
+    border-radius: 2px;
+  
+    transition: all 0.2s ease-in-out;
+}
+  
+.menu-item:hover {
+    @extend .menu-item-selected;
+}
+
+.menu-item-selected {
+    @extend .menu-item;
+    color: $background-color;
+    background-color: $foreground-color;
+}

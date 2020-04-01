@@ -1,0 +1,15 @@
+@import 'base.scss';
+
+body {
+    margin: 0;
+}
+
+.content {
+    position: absolute;
+    top: $header-height;
+    left: $sidebar-width; // JANK!!!
+
+    width: calc(100% - #{$sidebar-width}); // Jank :(
+
+    padding: 1rem;
+}

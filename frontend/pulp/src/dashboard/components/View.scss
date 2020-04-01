@@ -1,0 +1,29 @@
+.view {
+    width: 80%;
+    margin: auto;
+}
+
+.view-header {
+    display: flex;
+    justify-content: space-between;
+
+    width: 100%;
+
+    border-bottom: 1px solid #4c8fff;
+
+    margin-bottom: 3rem;
+}
+
+.view-title {
+    font-weight: bold;
+    font-size: 45px;
+    margin-bottom: 0;
+}
+
+.view-body {
+    width: 100%;
+}
+
+.view-body.centered {
+    text-align: center;
+}
