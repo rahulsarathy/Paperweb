@@ -1,0 +1,18 @@
+.pulp-button {
+    // Jank?
+    width: 150px;
+    height: 45px;
+
+    padding: 0.5rem 1rem;
+
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.5);
+
+    border: none;
+    border-radius: 3px;
+    
+    transition: all 0.2s ease-in-out;
+}
+
+.pulp-button:hover {
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.8);
+}
