@@ -216,10 +216,10 @@ LOGGING = {
 }
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+CSRF_COOKIE_SECURE = os.environ.get('CSRF_COOKIE_SECURE', False)
+SECURE_SSL_REDIRECT = os.environ.get('SECURE_SSL_REDIRECT', False)
+SESSION_COOKIE_SECURE = os.environ.get('SESSION_COOKIE_SECURE', False)
 
-CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default=False, cast=bool)
-SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=False, cast=bool)
-SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default=False, cast=bool)
 PUPPETEER_HOST = os.environ.get('PUPPETEER_HOST')
 PARSER_HOST = os.environ.get('PARSER_HOST')
 FRONTEND_HOST = os.environ.get('FRONTEND_HOST', '')

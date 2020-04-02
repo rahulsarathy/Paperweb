@@ -1,0 +1,89 @@
+interactions:
+- request:
+    body: payment_method_types[0]=card&subscription_data[items][0][plan]=plan_H1Ci4XHaGDHOLy&subscription_data[payment_behavior]=allow_incomplete&success_url=https%3A%2F%2Fgetpulp.io&cancel_url=https%3A%2F%2Fgetpulp.io&client_reference_id=1&customer_email=rita%40sarathy.org
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer sk_test_jvZ3yrlb77roQiXw6HnSNvXH00VXDVY0G4
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '264'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      Idempotency-Key:
+      - 9ef9c7f6-0421-41a8-8466-d5ae33a7eae9
+      User-Agent:
+      - Stripe/v1 PythonBindings/2.40.0
+      X-Stripe-Client-User-Agent:
+      - '{"bindings_version": "2.40.0", "lang": "python", "publisher": "stripe", "httplib":
+        "requests", "lang_version": "3.7.4", "platform": "Linux-4.19.76-linuxkit-x86_64-with",
+        "uname": "Linux db5531980fa4 4.19.76-linuxkit #1 SMP Thu Oct 17 19:31:58 UTC
+        2019 x86_64 "}'
+    method: POST
+    uri: https://api.stripe.com/v1/checkout/sessions
+  response:
+    body:
+      string: "{\n  \"id\": \"cs_test_7Jsac3XGprq1gIrcHaQZvhiAnSIus82nMA7E8vhEbxEKDIOlg3SSUl9D\"\
+        ,\n  \"object\": \"checkout.session\",\n  \"billing_address_collection\":\
+        \ null,\n  \"cancel_url\": \"https://getpulp.io\",\n  \"client_reference_id\"\
+        : \"1\",\n  \"customer\": null,\n  \"customer_email\": \"rita@sarathy.org\"\
+        ,\n  \"display_items\": [\n    {\n      \"amount\": 799,\n      \"currency\"\
+        : \"usd\",\n      \"plan\": {\n        \"id\": \"plan_H1Ci4XHaGDHOLy\",\n\
+        \        \"object\": \"plan\",\n        \"active\": true,\n        \"aggregate_usage\"\
+        : null,\n        \"amount\": 799,\n        \"amount_decimal\": \"799\",\n\
+        \        \"billing_scheme\": \"per_unit\",\n        \"created\": 1585761906,\n\
+        \        \"currency\": \"usd\",\n        \"interval\": \"month\",\n      \
+        \  \"interval_count\": 1,\n        \"livemode\": false,\n        \"metadata\"\
+        : {\n        },\n        \"nickname\": \"1x/month\",\n        \"product\"\
+        : \"prod_H1CZ5dILCmMJER\",\n        \"tiers\": null,\n        \"tiers_mode\"\
+        : null,\n        \"transform_usage\": null,\n        \"trial_period_days\"\
+        : null,\n        \"usage_type\": \"licensed\"\n      },\n      \"quantity\"\
+        : 1,\n      \"type\": \"plan\"\n    }\n  ],\n  \"livemode\": false,\n  \"\
+        locale\": null,\n  \"metadata\": {\n  },\n  \"mode\": \"subscription\",\n\
+        \  \"payment_intent\": null,\n  \"payment_method_types\": [\n    \"card\"\n\
+        \  ],\n  \"setup_intent\": null,\n  \"shipping\": null,\n  \"shipping_address_collection\"\
+        : null,\n  \"submit_type\": null,\n  \"subscription\": null,\n  \"success_url\"\
+        : \"https://getpulp.io\"\n}\n"
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '1369'
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 02 Apr 2020 05:33:07 GMT
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains; preload
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-methods:
+      - GET, POST, HEAD, OPTIONS, DELETE
+      access-control-allow-origin:
+      - '*'
+      access-control-expose-headers:
+      - Request-Id, Stripe-Manage-Version, X-Stripe-External-Auth-Required, X-Stripe-Privileged-Session-Required
+      access-control-max-age:
+      - '300'
+      cache-control:
+      - no-cache, no-store
+      idempotency-key:
+      - 9ef9c7f6-0421-41a8-8466-d5ae33a7eae9
+      original-request:
+      - req_zap1STepIt2efw
+      request-id:
+      - req_zap1STepIt2efw
+      stripe-should-retry:
+      - 'false'
+      stripe-version:
+      - '2019-09-09'
+    status:
+      code: 200
+      message: OK
+version: 1

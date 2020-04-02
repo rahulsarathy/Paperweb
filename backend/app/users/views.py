@@ -67,12 +67,12 @@ def set_settings(request):
 def set_address(request):
     current_user = request.user
     address_json = json.loads(request.POST.get('address_json'))
-    line_1 = address_json['line_1']
-    line_2 = address_json['line_2']
-    city = address_json['city']
-    state = address_json['state']
-    zip = address_json['zip']
-    country = address_json['country']
+    line_1 = address_json.get('line_1', '')
+    line_2 = address_json.get('line_2', '')
+    city = address_json.get('city', '')
+    state = address_json.get('state', '')
+    zip = address_json.get('zip', '')
+    country = address_json.get('country', '')
 
     if line_1 is '':
         return HttpResponse(status=403)

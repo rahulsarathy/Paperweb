@@ -25,7 +25,6 @@ export default class Article extends React.Component {
       : (author_text = "By " + article_json.author);
     return (
       <div>
-        <Header />
         <div className="article">
           <h1>{article_json.title}</h1>
           <p className="author">{author_text}</p>

@@ -1,6 +1,9 @@
 %breakpoints {
   @media (min-width: 0) {
     max-width: 550px;
+    // .landing {
+    //   flex-direction: column-reverse;
+    // }
   }
 
   @media (min-width: 600px) {
@@ -9,10 +12,20 @@
 
   @media (min-width: 900px) {
     max-width: 700px;
+
+    // .landing {
+    //   flex-direction: column-reverse;
+    // }
   }
 
   @media (min-width: 1200px) {
     max-width: 900px;
+  }
+}
+
+@media only screen and (max-width: 1100px) {
+  .first-row {
+    flex-direction: column-reverse !important;
   }
 }
 
@@ -25,7 +38,7 @@
   }
   background-color: white;
   padding: 5px;
-  z-index: 5;
+  z-index: 6;
   box-shadow: 0 4px 5px -5px rgba(0, 0, 0, 0.5);
   position: fixed;
   top: 0;
@@ -41,6 +54,12 @@
   margin-left: auto;
   margin-right: auto;
   margin-top: 55px;
+}
+
+.first-row {
+  display: flex;
+  flex-direction: row;
+  margin: auto;
 }
 
 #header .logo {
@@ -72,17 +91,27 @@
 #splash {
   @extend %breakpoints;
   margin: auto;
-
-  margin-top: 6rem;
+  padding-left: 100px;
+  padding-right: 100px;
+  margin-top: 3rem;
   text-align: left;
 }
 
 #splash .left {
   min-width: 300px;
+  // text-align: right;
+
+  h1 {
+    font-size: 47px;
+  }
 }
 
 #splash .right {
   min-width: 300px;
+
+  h4 {
+    font-size: 30px;
+  }
 }
 
 #splash .left h1 {
@@ -90,7 +119,9 @@
 }
 
 #sign-up {
+  margin-top: 12px;
   font-weight: bold;
+  font-size: 25px;
 }
 
 #steps {

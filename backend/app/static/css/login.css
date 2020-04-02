@@ -54,6 +54,13 @@ a {
 
 }
 
+.forgot {
+	font-weight: normal;
+	display: block;
+	margin-bottom: 10px;
+	font-size: 15px;
+}
+
 .right {
   transform: rotate(-45deg);
   -webkit-transform: rotate(-45deg);

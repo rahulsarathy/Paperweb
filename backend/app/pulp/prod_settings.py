@@ -4,6 +4,7 @@ import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.integrations.redis import RedisIntegration
 from sentry_sdk.integrations.celery import CeleryIntegration
+from sentry_sdk.integrations.logging import LoggingIntegration
 
 SITE_ID = os.environ.get('SITE_ID')
 
@@ -22,7 +23,8 @@ DEBUG = False
 
 sentry_sdk.init(
     dsn="https://376f22cb96ba4052a0cb5f47084f452c@sentry.io/1529016",
-    integrations=[DjangoIntegration(), RedisIntegration(), CeleryIntegration()]
+    integrations=[DjangoIntegration(), RedisIntegration(), CeleryIntegration(), LoggingIntegration()],
+    send_default_pii=True
 )
 
 JAVASCRIPT_URLS = {
@@ -42,3 +44,7 @@ CACHES = {
         }
     }
 }
+
+RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY')
+RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY')
+

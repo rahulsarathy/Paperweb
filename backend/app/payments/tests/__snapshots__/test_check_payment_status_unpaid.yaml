@@ -1,0 +1,61 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer sk_test_jvZ3yrlb77roQiXw6HnSNvXH00VXDVY0G4
+      Connection:
+      - keep-alive
+      User-Agent:
+      - Stripe/v1 PythonBindings/2.40.0
+      X-Stripe-Client-Telemetry:
+      - '{"last_request_metrics": {"request_id": "req_OWBmqjotkZioDm", "request_duration_ms":
+        4}}'
+      X-Stripe-Client-User-Agent:
+      - '{"bindings_version": "2.40.0", "lang": "python", "publisher": "stripe", "httplib":
+        "requests", "lang_version": "3.7.4", "platform": "Linux-4.19.76-linuxkit-x86_64-with",
+        "uname": "Linux db5531980fa4 4.19.76-linuxkit #1 SMP Thu Oct 17 19:31:58 UTC
+        2019 x86_64 "}'
+    method: GET
+    uri: https://api.stripe.com/v1/customers?email=rita%40sarathy.org
+  response:
+    body:
+      string: "{\n  \"object\": \"list\",\n  \"data\": [\n\n  ],\n  \"has_more\":\
+        \ false,\n  \"url\": \"/v1/customers\"\n}\n"
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '88'
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 02 Apr 2020 17:41:18 GMT
+      Server:
+      - nginx
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains; preload
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-methods:
+      - GET, POST, HEAD, OPTIONS, DELETE
+      access-control-allow-origin:
+      - '*'
+      access-control-expose-headers:
+      - Request-Id, Stripe-Manage-Version, X-Stripe-External-Auth-Required, X-Stripe-Privileged-Session-Required
+      access-control-max-age:
+      - '300'
+      cache-control:
+      - no-cache, no-store
+      request-id:
+      - req_3Kq45G7qVlujY9
+      stripe-version:
+      - '2019-09-09'
+    status:
+      code: 200
+      message: OK
+version: 1

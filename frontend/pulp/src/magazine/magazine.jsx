@@ -54,8 +54,6 @@ export default class Magazine extends React.Component {
             .css("border-bottom")
             .split("solid ")[1];
 
-        console.log(next_color);
-
         this.setState({
             top_gradient: {
                 top: "0px",
@@ -91,16 +89,24 @@ export default class Magazine extends React.Component {
     }
 
     render() {
-        var blog_chapters = this.createBlogChapters();
+        let blog_chapters = this.createBlogChapters();
 
-        var style1 = {
+        let style1 = {
             top: "0px",
             height: "96px"
+        };
+
+        let econlib_url = "url(" + images_url + "econlib.png" + ")";
+
+        let page_style = {
+            backgroundImage: econlib_url,
+            backgroundSize: "400px 520px"
         };
 
         return (
             <div className="magazine-container">
                 <div className="magazine">
+                    <div className="hide-magazine"></div>
                     <div className="binding"></div>
                     <div className="content">
                         <img
@@ -118,7 +124,7 @@ export default class Magazine extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="page"></div>
+                <div className="page" style={page_style}></div>
                 <div className="page2"></div>
             </div>
         );
