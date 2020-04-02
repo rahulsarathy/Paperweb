@@ -40,30 +40,37 @@ function MenuItem(props) {
 export default class Switcher extends React.Component {
   constructor(props) {
     super(props);
+
+    //delivery
     this.changeDeliver = this.changeDeliver.bind(this);
+
+    //reading list
     this.addArticle = this.addArticle.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.showModal = this.showModal.bind(this);
     this.removeArticle = this.removeArticle.bind(this);
     this.archiveArticle = this.archiveArticle.bind(this);
-    this.handleAddToReadingList = this.handleAddToReadingList.bind(this);
+
+    // loading bars
     this.handleInstapaperQueue = this.handleInstapaperQueue.bind(this);
     this.handlePageCount = this.handlePageCount.bind(this);
     this.handlePocketQueue = this.handlePocketQueue.bind(this);
+    this.handleAddToReadingList = this.handleAddToReadingList.bind(this);
 
+    // reading list integrations
     this.syncPocket = this.syncPocket.bind(this);
     this.syncInstapaper = this.syncInstapaper.bind(this);
-
     this.removePocket = this.removePocket.bind(this);
     this.removeInstapaper = this.removeInstapaper.bind(this);
 
     // Payments
     this.checkPaymentStatus = this.checkPaymentStatus.bind(this);
+    this.unsubscribe = this.unsubscribe.bind(this);
 
+    //websocket
     this.progressSocket = new WebSocket(
       "ws://" + window.location.host + "/ws/api/progress/"
     );
-
     this.progressSocket.onmessage = function(e) {
       this.handleWebSocket(e);
     }.bind(this);
@@ -99,6 +106,23 @@ export default class Switcher extends React.Component {
         } else {
           this.setState({ paid: false });
         }
+      }.bind(this)
+    });
+  }
+
+  unsubscribe() {
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    let data = {
+      csrfmiddlewaretoken: csrftoken
+    };
+    $.ajax({
+      type: "POST",
+      data: data,
+      url: "../api/payments/cancel_payment/",
+      success: function(data) {
+        this.setState({
+          paid: false
+        });
       }.bind(this)
     });
   }
@@ -549,6 +573,7 @@ export default class Switcher extends React.Component {
                       removeInstapaper={this.removeInstapaper}
                       syncInstapaper={this.syncInstapaper}
                       paid={this.state.paid}
+                      unsubscribe={this.unsubscribe}
                     />
                   )}
                 />

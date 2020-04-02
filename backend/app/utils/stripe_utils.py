@@ -54,24 +54,32 @@ def check_payment_status(user):
 
 def stripe_db_user_paid(user):
     email = user.email
-    previous_customer = stripe.Customer.list(email=email)
-    if previous_customer.data == []:
+
+    # Get last made Stripe Customer
+    previous_customer = check_previous_customer(email)
+
+    if previous_customer is None:
+        # Stripe Customer does not exist
         return False
     else:
-        data = previous_customer.data
-        if len(data) > 1:
-            logging.warning('Email: {} has more than one stripe customer'.format(email))
-        subscription_id = data[0]['subscriptions']['data'][0]['id']
+        # if customer has no subscriptions, it is unpaid
+        if previous_customer['subscriptions']['total_count'] == 0:
+            return False
+
+        # get subscription_id and validate that it is paid
+        subscription_id = previous_customer['subscriptions']['data'][0]['id']
         subscription_validated = validate_subscription(subscription_id)
 
+        # if subscription is good, update billing info
         if subscription_validated:
             try:
                 billing_info = BillingInfo.objects.get(customer=user)
                 billing_info.stripe_subscription_id = subscription_id
-                billing_info.stripe_customer_id = data[0]['id']
+                billing_info.stripe_customer_id = previous_customer['id']
                 billing_info.save()
             except BillingInfo.DoesNotExist:
-                BillingInfo(customer=user, stripe_customer_id=data[0]['id'], stripe_subscription_id=subscription_id).save()
+                BillingInfo(customer=user, stripe_customer_id=previous_customer['id'],
+                            stripe_subscription_id=subscription_id).save()
         return subscription_validated
 
 # checks if the DB has confirmation on whether user has paid or not
@@ -85,9 +93,13 @@ def db_user_paid(user):
         return False
 
 def validate_subscription(subscription_id):
-
+    if subscription_id is None:
+        return False
     to_validate = stripe.Subscription.retrieve(subscription_id)
-    return to_validate['plan']['active']
+    if to_validate['status'] == 'active':
+        return True
+    else:
+        return False
 
 
 def retrieve_customer(stripe_customer_id):

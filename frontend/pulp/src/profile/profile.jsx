@@ -5,7 +5,13 @@ import $ from "jquery";
 import shortid from "shortid";
 import classnames from "classnames";
 import { Row, Col } from "react-bootstrap";
-import { Address_Pane, Header, Instapaper, Pocket } from "./components.jsx";
+import {
+  Address_Pane,
+  Header,
+  Instapaper,
+  Pocket,
+  SubscribePane
+} from "./components.jsx";
 
 class SubHeader extends React.Component {
   constructor(props) {
@@ -147,17 +153,11 @@ export default class Profile extends React.Component {
         </div>
         <div id="subscription" className="subsection">
           <SubHeader title="Subscription Info" />
-          {this.props.paid ? (
-            <div>
-              <label>You are currently subscribed to pulp</label>
-              <button>Unsubscribe</button>
-            </div>
-          ) : (
-            <div>
-              <label>You are not subscribed to pulp</label>
-              <a href="../subscribe">Subscribe</a>
-            </div>
-          )}
+          <SubscribePane
+            unsubscribe={this.props.unsubscribe}
+            email={this.state.email}
+            paid={this.props.paid}
+          />
         </div>
         <div id="import" className="subsection">
           <SubHeader title="Import Articles" />

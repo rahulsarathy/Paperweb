@@ -13,6 +13,7 @@ from utils.stripe_utils import stripe, check_previous_customer, \
 from payments.models import BillingInfo
 
 
+from django.contrib.auth.decorators import login_required
 from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse
@@ -21,6 +22,7 @@ from django.views.decorators.cache import cache_page
 
 # Create your views here.
 @api_view(['GET'])
+@login_required
 def address_autocomplete(request):
     address = request.GET['address']
     autocompleted = autocomplete(address)
@@ -30,19 +32,19 @@ def address_autocomplete(request):
 
 @cache_page(60 * 15)
 @api_view(['GET'])
+@login_required
 def get_stripe_public_key(request):
     return JsonResponse(STRIPE_PUBLIC_KEY, safe=False)
-
 
 
 @api_view(['POST'])
 def create_session(request):
     current_user = request.user
-
+    user = request.user
+    if not user.is_authenticated:
+        return JsonResponse(data={'error': 'Invalid request.'}, status=403)
     if check_payment_status(current_user):
-        print("check payment status is true")
         return HttpResponse(status=403)
-
     try:
         billing_info = BillingInfo.objects.get(customer=current_user)
         stripe_customer_id = None
@@ -57,6 +59,11 @@ def create_session(request):
 
 @api_view(['GET'])
 def payment_status(request):
+
+    user = request.user
+    if not user.is_authenticated:
+        return JsonResponse(data={'error': 'Invalid request.'}, status=403)
+
     user = request.user
     if check_payment_status(user):
         return HttpResponse(status=208)
@@ -66,6 +73,10 @@ def payment_status(request):
 
 @api_view(['POST'])
 def cancel_payment(request):
+    user = request.user
+    if not user.is_authenticated:
+        return JsonResponse(data={'error': 'Invalid request.'}, status=403)
+
     current_user = request.user
     try:
         billing_info = BillingInfo.objects.get(customer=current_user)
@@ -75,6 +86,8 @@ def cancel_payment(request):
     try:
         subscription_id = billing_info.stripe_subscription_id
         stripe_utils.delete_subscription(subscription_id)
+        billing_info.stripe_subscription_id = None
+        billing_info.save()
         return HttpResponse(status=200)
     except Exception as e:
         logging.warning("failed to cancel payment with {}".format(e))
@@ -82,6 +95,11 @@ def cancel_payment(request):
 
 @api_view(['GET'])
 def next_billing_date(request):
+
+    user = request.user
+    if not user.is_authenticated:
+        return JsonResponse(data={'error': 'Invalid request.'}, status=403)
+
     current_user = request.user
     try:
         user_billing_info = BillingInfo.objects.get(customer=current_user)
@@ -126,8 +144,14 @@ def date_finder(current_date):
         return fourth_occurence
     else:
         return next_month_first_occurence
+
+
 @api_view(['GET'])
 def next_delivery_date(request):
+    user = request.user
+    if not user.is_authenticated:
+        return JsonResponse(data={'error': 'Invalid request.'}, status=403)
+
     current_date = datetime.now()
     next_date = date_finder(current_date)
     next_delivery_date = {
