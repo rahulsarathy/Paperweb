@@ -34,8 +34,6 @@ label {
 }
 
 .address_pane {
-  color: red;
-
   h3 {
     font-size: 20px;
   }
@@ -104,6 +102,15 @@ label {
       background-color: #2393ff;
     }
   }
+}
+
+.highlighted {
+  color: blue;
+}
+
+#address-button {
+  background-color: gray;
+  border-color: gray;
 }
 
 #unsubscribe-modal {
