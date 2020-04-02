@@ -4,6 +4,7 @@ metadata:
   name: "pulp-ingress"
   annotations:
     kubernetes.io/ingress.global-static-ip-name: "web-static-ip"
+    networking.gke.io/managed-certificates: "pulp-certificate"
   namespace: "default"
 spec:
   backend:
