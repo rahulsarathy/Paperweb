@@ -23,7 +23,7 @@ spec:
       containers:
       - name: pulp-daphne
         image: gcr.io/prod1-259305/pulp-backend:v1
-        command: ["daphne -b 0.0.0.0 -p 8001 pulp.asgi:application"]
+        command: ['daphne', '-b 0.0.0.0', '-p', '8001', 'pulp.asgi:application']
         imagePullPolicy: Always
         envFrom:
           - configMapRef:
