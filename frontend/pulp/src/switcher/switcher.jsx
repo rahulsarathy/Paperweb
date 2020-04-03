@@ -67,17 +67,7 @@ export default class Switcher extends React.Component {
     this.checkPaymentStatus = this.checkPaymentStatus.bind(this);
     this.unsubscribe = this.unsubscribe.bind(this);
 
-    //websocket
-    let ws_url = "";
-    if (process.env.NODE_ENV == "production") {
-      ws_url = "wss://" + window.location.host + "/ws/api/progress/";
-    } else {
-      ws_url = "ws://" + window.location.host + "/ws/api/progress/";
-    }
-    this.progressSocket = new WebSocket(ws_url);
-    this.progressSocket.onmessage = function(e) {
-      this.handleWebSocket(e);
-    }.bind(this);
+    this.startWebsocket();
 
     this.state = {
       reading_list: [],
@@ -98,6 +88,26 @@ export default class Switcher extends React.Component {
     this.getReadingList();
     this.getServices();
     this.checkPaymentStatus();
+  }
+
+  startWebsocket() {
+    //websocket
+    let ws_url = "";
+    if (process.env.NODE_ENV == "production") {
+      ws_url = "wss://" + window.location.host + "/ws/api/progress/";
+    } else {
+      ws_url = "ws://" + window.location.host + "/ws/api/progress/";
+    }
+    this.progressSocket = new WebSocket(ws_url);
+    this.progressSocket.onmessage = function(e) {
+      this.handleWebSocket(e);
+    }.bind(this);
+
+    this.progressSocket.onclose = function() {
+      // connection closed, discard old websocket and create a new one in 5s
+      this.progressSocket = null;
+      setTimeout(this.startWebsocket, 5000);
+    };
   }
 
   checkPaymentStatus() {
