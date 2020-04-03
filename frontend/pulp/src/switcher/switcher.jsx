@@ -103,7 +103,10 @@ export default class Switcher extends React.Component {
       this.handleWebSocket(e);
     }.bind(this);
 
+    console.log("connected websocket");
+
     this.progressSocket.onclose = function() {
+      console.log("closing and restarting websocket");
       // connection closed, discard old websocket and create a new one in 5s
       this.progressSocket = null;
       setTimeout(this.startWebsocket, 5000);

@@ -47,9 +47,6 @@ class Address(models.Model):
 
 class BillingInfo(models.Model):
     delivery_address = models.OneToOneField(Address, on_delete=models.CASCADE, default=None, null=True)
-    stripe_customer_id = EncryptedCharField(_('Stripe Customer ID'), max_length=100, default=None, null=True)
-    stripe_subscription_id = EncryptedCharField(_('Stripe Customer ID'), max_length=100, default=None, null=True)
+    stripe_customer_id = EncryptedCharField(max_length=100, null=True)
+    stripe_subscription_id = EncryptedCharField(max_length=100, null=True)
     customer = models.ForeignKey(User, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.delivery_address
