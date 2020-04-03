@@ -68,9 +68,13 @@ export default class Switcher extends React.Component {
     this.unsubscribe = this.unsubscribe.bind(this);
 
     //websocket
-    this.progressSocket = new WebSocket(
-      "ws://" + window.location.host + "/ws/api/progress/"
-    );
+    let ws_url = "";
+    if (process.env.NODE_ENV == "production") {
+      ws_url = "wss://" + window.location.host + "/ws/api/progress/";
+    } else {
+      ws_url = "ws://" + window.location.host + "/ws/api/progress/";
+    }
+    this.progressSocket = new WebSocket(ws_url);
     this.progressSocket.onmessage = function(e) {
       this.handleWebSocket(e);
     }.bind(this);
