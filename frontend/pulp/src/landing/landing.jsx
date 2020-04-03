@@ -25,7 +25,7 @@ function Splash() {
             </Col>
             <Col className="right">
                 <h4>High quality writing was meant to be held, not scrolled</h4>
-                <a href="/accounts/signup">
+                <a href="/accounts/signup/">
                     <Button id="sign-up">Sign Up</Button>
                 </a>
             </Col>

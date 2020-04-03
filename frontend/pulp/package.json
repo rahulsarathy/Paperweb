@@ -5,7 +5,7 @@
   "description": "Pulp frontend using Webpack, Babel, and Sass",
   "main": "src/App.js",
   "scripts": {
-    "start": "webpack-dev-server --inline --hot --host 0.0.0.0s",
+    "start": "webpack-dev-server --inline --hot --host 0.0.0.0 --config webpack.dev.js",
     "deploy": "webpack && surge -p ./build/ -d tiny-react-env.surge.sh",
     "build": "webpack --config webpack.prod.js"
   },

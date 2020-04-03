@@ -26,8 +26,8 @@ export default class header extends Component {
 						<NavLink to="/faq">FAQ</NavLink>
 						<NavLink to="/publishers">Publishers</NavLink>
 						<span>|</span>
-						<a href="/accounts/login">Log in</a>
-						<a href="/accounts/signup">Sign Up</a>
+						<a href="/accounts/login/">Log in</a>
+						<a href="/accounts/signup/">Sign Up</a>
 					</div>
 				</div>
 			</div>
