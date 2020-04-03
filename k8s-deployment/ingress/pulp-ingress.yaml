@@ -7,6 +7,14 @@ metadata:
     networking.gke.io/managed-certificates: "pulp-certificate"
   namespace: "default"
 spec:
-  backend:
-    serviceName: "pulp-backend-service"
-    servicePort: 8000
+  rules:
+  - http:
+      paths:
+      - path: /*
+        backend:
+          serviceName: pulp-backend-service
+          servicePort: 8000
+      - path: /ws/*
+        backend:
+          serviceName: pulp-daphne-service
+          servicePort: 8001

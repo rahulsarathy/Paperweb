@@ -61,12 +61,3 @@ def article(request):
 
     }
     return render(request, 'article.html', context)
-
-def subscribe(request):
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect('../')
-    context = {
-        'js_file': create_js_static_url('subscribe'),
-        'stripe_public_key': STRIPE_PUBLIC_KEY,
-    }
-    return render(request, 'subscribe.html', context)
