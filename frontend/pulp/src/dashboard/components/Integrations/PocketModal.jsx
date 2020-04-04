@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Modal, Button } from 'react-bootstrap'
 import PulpButton from '../../../components/PulpButton'
+import { integratePocket, removePocket } from './redux'
 
 import './PocketModal.scss'
 
@@ -52,7 +53,8 @@ function PocketModal({ integrated, integrateWithPocket, removePocketIntegration 
 
 function mapStateToProps(state) {
     return {
-        integrated: state.pocket.integrated
+        loading: state.integrations.pocket.loading,
+        integrated: state.integrations.pocket.integrated
     }
 }
 

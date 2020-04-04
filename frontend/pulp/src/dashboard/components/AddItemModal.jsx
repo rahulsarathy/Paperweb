@@ -1,8 +1,8 @@
 import React from 'react'
-import $ from 'jquery'
 import { connect } from 'react-redux'
 import { Modal, Button } from 'react-bootstrap'
 import PulpButton from '../../components/PulpButton'
+import { addArticle } from './ReadingListView/redux'
 
 import './AddItemModal.scss'
 
@@ -50,41 +50,6 @@ function AddItemModal({ addArticle, children }) {
             </Modal>
         </React.Fragment>
     )
-}
-
-function addingArticle(url) {
-    return {
-        type: "ADDING_ARTICLE",
-        url: url
-    }
-}
-
-function articleAdded(article) {
-    return {
-        type: "ARTICLE_ADDED",
-        article: article
-    }
-}
-
-function addArticle(url) {
-    return function(dispatch) {
-        var csrftoken = $("[name=csrfmiddlewaretoken]").val()
-        let data = {
-            link: url,
-            csrfmiddlewaretoken: csrftoken
-        };
-
-        dispatch(addingArticle(url))
-
-        return $.ajax({
-            url: "/api/reading_list/add_reading",
-            type: "POST",
-            data: data,
-        }).then(
-            (response) => dispatch(articleAdded(response.responseJSON())),
-            (error) => console.log(error) // TODO
-        )
-    }
 }
 
 function mapDispatchToProps(dispatch) {

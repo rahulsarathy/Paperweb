@@ -45,7 +45,7 @@ function Header({ loading, email }) {
 
 function mapStateToProps(state) {
     return {
-        loading: state.user.loading,
+        loading: state.user.loadingEmail,
         email: state.user.email
     }
 }

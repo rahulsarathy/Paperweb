@@ -30,7 +30,7 @@ function Sidebar({ paid }) {
 
 function mapStateToProps(state, ownProps) {
     return {
-        paid: state.subscription.paid
+        paid: state.user.subscribed
     }
 }
 

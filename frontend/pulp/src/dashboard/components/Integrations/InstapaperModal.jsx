@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Modal, Button } from 'react-bootstrap'
 import PulpButton from '../../../components/PulpButton'
+import { integrateInstapaper, removeInstapaper } from './redux'
 
 import './InstapaperModal.scss'
 
@@ -79,16 +80,16 @@ function PocketModal({ integrationStatus, integrateWithInstapaper, removeInstapa
 function mapStateToProps(state) {
     return {
         integrationStatus: {
-            integrated: state.instapaper.integrated,
-            invalidPassword: false,
+            integrated: state.integrations.instapaper.integrated,
+            invalidPassword: false, // TODO
         }
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        integrateWithPocket: () => dispatch(integratePocket()),
-        removePocketIntegration: () => dispatch(removePocket()),
+        integrateWithPocket: () => dispatch(integrateInstapaper()),
+        removePocketIntegration: () => dispatch(removeInstapaper()),
     }
 }
 
