@@ -50,9 +50,9 @@ function PocketModal({ integrationStatus, integrateWithInstapaper, removeInstapa
                 </Modal.Header>
                 <Modal.Body>
                     <form onSubmit={handleIntegrateInstapaper}>
-                        <label for="username">Instapaper Username:</label>
+                        <label htmlFor="username">Instapaper Username:</label>
                         <input type="text" name="username" />
-                        <label for="password">Instapaper Password:</label>
+                        <label htmlFor="password">Instapaper Password:</label>
                         <input type="password" name="password" />
                     </form>
                     {/* TODO */}

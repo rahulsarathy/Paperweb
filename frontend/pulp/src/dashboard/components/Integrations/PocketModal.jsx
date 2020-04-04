@@ -43,7 +43,7 @@ function PocketModal({ integrated, integrateWithPocket, removePocketIntegration 
                     <Button variant="secondary" onClick={handleHide}>Close</Button>
                     {integrated
                         ? <Button variant="primary" onClick={handleRemovePocket}>Remove Pocket integration</Button>
-                        : <Button variant="primary" onclick={handleIntegratePocket}>Import from Pocket</Button>
+                        : <Button variant="primary" onClick={handleIntegratePocket}>Import from Pocket</Button>
                     }
                 </Modal.Footer>
             </Modal>
