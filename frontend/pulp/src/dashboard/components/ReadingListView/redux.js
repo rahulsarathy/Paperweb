@@ -37,7 +37,7 @@ export function addArticle(url) {
             type: "POST",
             data: data,
         }).then(
-            (response) => dispatch({ type: "ARTICLE_ADDED", articles: response.responseJSON() }),
+            (response) => dispatch({ type: "ARTICLE_ADDED", articles: response }),
             (error) => console.log(error) // TODO
         )
     }

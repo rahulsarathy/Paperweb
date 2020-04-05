@@ -11,7 +11,7 @@ import Sidebar from './Sidebar'
 
 import ReadingListView from './ReadingListView'
 // import ArchiveView from './ArchiveView'
-// import ProfileView from './ProfileView'
+import SettingsView from './SettingsView'
 // import PaymentsView from './PaymentsView'
 // import DeliveryView from './DeliveryView'
 
@@ -33,11 +33,11 @@ function Dashboard(props) {
                     </Route>
                     {/* <Route path="/archive">
                         <ArchiveView />
+                    </Route>*/}
+                    <Route path="/settings">
+                        <SettingsView />
                     </Route>
-                    <Route path="/profile">
-                        <ProfileView />
-                    </Route>
-                    <Route path="/payments">
+                    {/*<Route path="/payments">
                         <PaymentsView />
                     </Route>
                     <Route path="/delivery">

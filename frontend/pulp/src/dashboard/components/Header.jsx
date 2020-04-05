@@ -31,8 +31,8 @@ function Header({ loading, email }) {
                     </div>
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                    <Dropdown.Item as={Link} to="/profile">
-                        My Account
+                    <Dropdown.Item as={Link} to="/settings">
+                        Settings
                     </Dropdown.Item>
                     <Dropdown.Item href="/accounts/logout">
                         Logout
