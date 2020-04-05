@@ -1,5 +1,11 @@
 import React from 'react'
 
-export default function LoadingBar() {
-    return <div></div>
+import './LoadingBar.scss'
+
+export default function LoadingBar({ percent }) {
+    let style = {
+        width: percent + "%"
+    }
+    
+    return <div className="loading-bar" style={style}></div>
 }

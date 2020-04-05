@@ -4,6 +4,7 @@ import {
     Switch,
     Route,
 } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 import LoadingBar from './LoadingBar'
 import Header from './Header'
@@ -22,7 +23,8 @@ function Dashboard(props) {
     return (
         <Router basename="/testing">
             <Header />
-            <LoadingBar />
+
+            {props.loaders.map((loader) => <LoadingBar key={loader.url} percent={loader.percent} />)}
 
             <Sidebar />
 
@@ -48,5 +50,13 @@ function Dashboard(props) {
         </Router>
     )
 }
+
+function mapStateToProps(state, ownProps) {
+    return {
+        loaders: state.websockets.loading
+    }
+}
+
+Dashboard = connect(mapStateToProps)(Dashboard)
 
 export default Dashboard

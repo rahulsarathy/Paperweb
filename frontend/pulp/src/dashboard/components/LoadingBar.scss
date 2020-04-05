@@ -1,0 +1,14 @@
+@import 'base.scss';
+
+.loading-bar {
+    position: fixed;
+    top: $header-height; // JANK!
+    left: 0;
+
+    z-index: 2;
+
+    border: 1px solid #4c8fff;
+
+    transition: width 0.01s linear;
+}
+
