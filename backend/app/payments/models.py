@@ -49,4 +49,4 @@ class BillingInfo(models.Model):
     delivery_address = models.OneToOneField(Address, on_delete=models.CASCADE, default=None, null=True)
     stripe_customer_id = EncryptedCharField(max_length=100, null=True)
     stripe_subscription_id = EncryptedCharField(max_length=100, null=True)
-    customer = models.ForeignKey(User, on_delete=models.CASCADE)
+    customer = models.ForeignKey(User, on_delete=models.CASCADE, db_column='customer')
