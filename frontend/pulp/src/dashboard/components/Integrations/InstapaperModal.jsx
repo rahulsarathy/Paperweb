@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Modal, Button } from 'react-bootstrap'
 import PulpButton from '../../../components/PulpButton'
-import { integrateInstapaper, removeInstapaper } from './redux'
+import { integrateInstapaper, removeInstapaper } from '../../actions/InstapaperActions'
 
 import './InstapaperModal.scss'
 

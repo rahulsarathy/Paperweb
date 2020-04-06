@@ -1,14 +1,13 @@
-import { combineReducers, reduceReducers } from "redux"
-import { reducer as integrationReducer } from './components/Integrations/redux'
-import { reducer as readingListReducer } from './components/ReadingListView/redux'
-import { reducer as userReducer } from './components/SettingsView/redux'
+import { combineReducers } from "redux"
+import IntegrationsReducer from './reducers/IntegrationsReducer'
+import ReadingListReducer from './reducers/ReadingListReducer'
+import UserReducer from './reducers/UserReducer'
 import { reducer as websocketReducer } from './websockets'
 
 var rootReducer = combineReducers({
-    user: userReducer,
-    readingList: readingListReducer,
-    integrations: integrationReducer,
-    websockets: websocketReducer,
+    user: UserReducer,
+    readingList: ReadingListReducer,
+    integrations: IntegrationsReducer,
 })
 
 export default rootReducer

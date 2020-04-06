@@ -1,12 +1,9 @@
-export function connectToWebSocket(dispatch) {
-    return new Promise(function (resolve, reject) {
-        const progressSocket = new WebSocket("ws://" + window.location.host + "/ws/api/progress/")
+export function createWebSocket(dispatch) {
+    let progressSocket = new WebSocket("ws://" + window.location.host + "/ws/api/progress/")
 
-        progressSocket.onopen = () => resolve(progressSocket)
-        progressSocket.onerror = (err) => reject(err)
+    progressSocket.onmessage = onMessage(dispatch)
 
-        progressSocket.onmessage = onMessage(dispatch)
-    })
+    return progressSocket
 }
 
 function onMessage(dispatch) {

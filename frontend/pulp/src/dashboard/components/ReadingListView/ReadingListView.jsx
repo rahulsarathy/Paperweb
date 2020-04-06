@@ -18,7 +18,7 @@ function ReadingListView({ loading, readingList }) {
             {!loading && //TODO
             <View.Body centered={readingList.length == 0}>
                 {readingList.length > 0
-                    ? readingList.map(item => <ReadingListItem key={item.url} item={item} />)
+                    ? readingList.map(item => !item.archived && <ReadingListItem key={item.url} item={item} />)
                     : <NoItems />
                 }
             </View.Body>

@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PulpButton from '../../../components/PulpButton'
-import { removeItem, archiveItem } from './redux'
+import { removeItem, archiveItem } from '../../actions/ReadingListActions'
 
 import './ReadingListItem.scss'
 

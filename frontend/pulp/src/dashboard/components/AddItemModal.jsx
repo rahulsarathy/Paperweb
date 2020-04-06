@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Modal, Button } from 'react-bootstrap'
 import PulpButton from '../../components/PulpButton'
-import { addArticle } from './ReadingListView/redux'
+import { addArticle } from '../actions/ReadingListActions'
 
 import './AddItemModal.scss'
 

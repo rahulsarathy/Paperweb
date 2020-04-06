@@ -24,8 +24,6 @@ function Dashboard(props) {
         <Router basename="/testing">
             <Header />
 
-            {props.loaders.map((loader) => <LoadingBar key={loader.url} percent={loader.percent} />)}
-
             <Sidebar />
 
             <div className="content">
@@ -52,9 +50,7 @@ function Dashboard(props) {
 }
 
 function mapStateToProps(state, ownProps) {
-    return {
-        loaders: state.websockets.loading
-    }
+    return {}
 }
 
 Dashboard = connect(mapStateToProps)(Dashboard)
