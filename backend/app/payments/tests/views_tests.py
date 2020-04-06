@@ -4,7 +4,7 @@ from unittest import mock
 import vcr
 
 from django.contrib.auth.models import User
-from payments.views import payment_status, cancel_payment
+from payments.views import payment_status, cancel_payment, create_session
 from utils.stripe_utils import stripe_db_user_paid
 from payments.models import BillingInfo
 from django.http import JsonResponse
@@ -65,4 +65,38 @@ class PaymentsViewsTests(APITestCase):
 		billing_info = BillingInfo.objects.get(customer=paid_user)
 		self.assertIsNone(billing_info.stripe_subscription_id)
 
+	@mock.patch('utils.stripe_utils.check_payment_status')
+	@vcr.use_cassette('payments/tests/__snapshots__/test_create_session_paid.yaml')
+	def test_create_session_paid(self, mock_check_payment_status):
+		paid_user = User.objects.create(
+			email='rahul@getpulp.io', username='paid_user')
+		BillingInfo(customer=paid_user, stripe_subscription_id='sub_H2mygz39GNb5C1', stripe_customer_id='cus_H2lvIVaB5erjgo').save()
+		mock_check_payment_status.return_value = True
+
+		request = self.factory.post(self.create_session)
+		force_authenticate(request, user=paid_user)
+		response = create_session(request)
+		self.assertEquals(response.status_code, status.HTTP_403_FORBIDDEN)
+
+	# @mock.patch('utils.stripe_utils.check_payment_status')
+	# def test_create_session_customer_id(self, mock_check_payment_status):
+	# 	mock_check_payment_status.return_value = False
+	# 	unpaid_user = User.objects.create(email='cat1@cat.com', username='paid_user')
+	# 	BillingInfo(customer=unpaid_user, stripe_customer_id='cus_H1OgtZ5D2gRb32').save()
+	#
+	# 	request = self.factory.post(self.create_session)
+	# 	force_authenticate(request, user=unpaid_user)
+	# 	response = create_session(request)
+	# 	response_content = response.content.decode("utf-8")
+	# 	print(response_content)
+	# 	self.assertEquals(response.status_code, status.HTTP_200_OK)
+	# 	self.assertEquals(response_.get('client_reference_id'), unpaid_user.id)
+	# 	self.assertEquals(response_content['customer'], 'cus_H1OgtZ5D2gRb32')
+
+
+	# def test_create_session_no_billing_info(self):
+	# 	pass
+
+	# def test_create_session_no_customer_id(self):
+	# 	pass
 

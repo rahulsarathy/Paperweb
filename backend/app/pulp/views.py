@@ -40,6 +40,7 @@ def switcher(request):
     context = {
         'js_file': create_js_static_url('switcher'),
         'stripe_public_key': STRIPE_PUBLIC_KEY,
+        'debug': settings.DEBUG
     }
     return render(request, 'reading_list.html', context)
 
