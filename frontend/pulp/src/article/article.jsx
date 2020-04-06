@@ -7,6 +7,13 @@ import {} from "./components.jsx";
 import { Dropdown } from "react-bootstrap";
 import { Header } from "../components/components.jsx";
 
+import * as Sentry from "@sentry/browser";
+if (process.env.NODE_ENV == "production") {
+  Sentry.init({
+    dsn: "https://376f22cb96ba4052a0cb5f47084f452c@sentry.io/1529016",
+  });
+}
+
 // article_json is passed to the dom
 export default class Article extends React.Component {
   constructor(props) {

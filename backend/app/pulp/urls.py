@@ -35,7 +35,6 @@ urlpatterns = [
   path('profile/', views.switcher, name='profile'),
   path('archive/', views.switcher, name='archive'),
   path('payments/', views.switcher, name='payments'),
-  path('subscribe/', views.subscribe, name='subscribe'),
 
   # api endpoints
   path('api/users/', include('users.urls')),

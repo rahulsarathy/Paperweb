@@ -3,6 +3,7 @@ import math
 import json
 from datetime import datetime, timedelta
 import logging
+from dateutil.relativedelta import relativedelta
 
 from pulp.globals import STRIPE_PUBLIC_KEY
 from utils.google_maps_utils import autocomplete
@@ -11,6 +12,7 @@ from utils.stripe_utils import stripe, check_previous_customer, \
     db_user_paid, validate_subscription, check_payment_status, \
     stripe_db_user_paid
 from payments.models import BillingInfo
+from django.utils import timezone
 
 
 from django.contrib.auth.decorators import login_required
@@ -50,7 +52,9 @@ def create_session(request):
         stripe_customer_id = None
         if billing_info and billing_info.stripe_customer_id:
             stripe_customer_id = billing_info.stripe_customer_id
-        new_session = stripe_utils.create_session(current_user.id, stripe_customer_id=stripe_customer_id)
+            new_session = stripe_utils.create_session(current_user.id, stripe_customer_id=stripe_customer_id)
+        else:
+            new_session = stripe_utils.create_session(current_user.id, current_user.email)
     except Exception as e:
         new_session = stripe_utils.create_session(current_user.id, current_user.email)
 
@@ -152,12 +156,13 @@ def next_delivery_date(request):
     if not user.is_authenticated:
         return JsonResponse(data={'error': 'Invalid request.'}, status=403)
 
-    current_date = datetime.now()
-    next_date = date_finder(current_date)
+    current_date = timezone.now()
+
+    last_date_of_month = datetime(current_date.year, current_date.month, 1) + relativedelta(months=1, days=-1)
     next_delivery_date = {
-        'day': next_date.day,
-        'month': next_date.strftime("%B"),
-        'year': next_date.year,
+        'day': last_date_of_month.day,
+        'month': last_date_of_month.strftime("%B"),
+        'year': last_date_of_month.year,
     }
     return JsonResponse(next_delivery_date)
 
