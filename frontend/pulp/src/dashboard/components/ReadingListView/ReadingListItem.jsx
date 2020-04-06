@@ -1,13 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PulpButton from '../../../components/PulpButton'
+import ItemPlaceholder from './ItemPlaceholder'
 import { removeItem, archiveItem } from '../../actions/ReadingListActions'
 
 import './ReadingListItem.scss'
 
 function ReadingListItem({ item, onRemoveClick, onArchiveClick }) {
-    if (item.placeholder) {
-        return false
+    if (item.loading) {
+        return <ItemPlaceholder />
     }
 
     var itemURL;

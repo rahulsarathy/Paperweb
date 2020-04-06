@@ -8,11 +8,11 @@ export default function ReadingListReducer(state = initialState, action) {
             return Object.assign({}, state, {
                 loading: state.loading,
                 list: [
-                    ...state.list,
                     {
                         loading: true,
                         url: action.url
-                    }
+                    },
+                    ...state.list,
                 ]
             })
         case "ARTICLE_ADDED":
