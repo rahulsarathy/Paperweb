@@ -23,7 +23,7 @@ function Dashboard(props) {
     return (
         <Router basename="/testing">
             <Header />
-
+            <LoadingBar />
             <Sidebar />
 
             <div className="content">

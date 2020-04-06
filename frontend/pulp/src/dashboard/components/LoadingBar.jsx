@@ -1,11 +1,26 @@
 import React from 'react'
+import { connect } from 'react-redux'
 
 import './LoadingBar.scss'
 
-export default function LoadingBar({ percent }) {
-    let style = {
-        width: percent + "%"
+function LoadingBar({ percent }) {
+    if (percent > 0) {
+        let style = {
+            width: percent + "%"
+        }
+        
+        return <div className="loading-bar" style={style}></div>
+    } else {
+        return null
     }
-    
-    return <div className="loading-bar" style={style}></div>
 }
+
+function mapStateToProps(state) {
+    return {
+        percent: state.loading.percent
+    }
+}
+
+LoadingBar = connect(mapStateToProps)(LoadingBar)
+
+export default LoadingBar
