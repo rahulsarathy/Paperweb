@@ -1,5 +1,12 @@
 import $ from 'jquery'
 
+export function updateArticles(articles) {
+    return {
+        type: "UPDATE_ARTICLES",
+        articles: articles,
+    }
+}
+
 export function addArticle(url) {
     return function(dispatch) {
         var csrftoken = $("[name=csrfmiddlewaretoken]").val()
@@ -15,7 +22,7 @@ export function addArticle(url) {
             type: "POST",
             data: data,
         }).then(
-            (response) => dispatch({ type: "ARTICLE_ADDED", articles: response }),
+            (response) => dispatch(updateArticles(response)),
             (error) => console.log(error) // TODO
         )
     }

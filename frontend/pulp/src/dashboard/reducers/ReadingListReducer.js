@@ -15,7 +15,7 @@ export default function ReadingListReducer(state = initialState, action) {
                     ...state.list,
                 ]
             })
-        case "ARTICLE_ADDED":
+        case "UPDATE_ARTICLES":
             return Object.assign({}, state, {
                 loading: state.loading,
                 list: action.articles.map((item) => {
