@@ -14,7 +14,7 @@ import {
   AddArticle,
   Profile,
   Status,
-  Subscribe
+  Subscribe,
 } from "./components.jsx";
 import {
   BrowserRouter as Router,
@@ -22,8 +22,15 @@ import {
   Route,
   NavLink,
   useHistory,
-  withRouter
+  withRouter,
 } from "react-router-dom";
+import * as Sentry from "@sentry/browser";
+
+if (process.env.NODE_ENV == "production") {
+  Sentry.init({
+    dsn: "https://376f22cb96ba4052a0cb5f47084f452c@sentry.io/1529016",
+  });
+}
 
 function MenuItem(props) {
   return (
@@ -40,33 +47,34 @@ function MenuItem(props) {
 export default class Switcher extends React.Component {
   constructor(props) {
     super(props);
+
+    //delivery
     this.changeDeliver = this.changeDeliver.bind(this);
+
+    //reading list
     this.addArticle = this.addArticle.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.showModal = this.showModal.bind(this);
     this.removeArticle = this.removeArticle.bind(this);
     this.archiveArticle = this.archiveArticle.bind(this);
-    this.handleAddToReadingList = this.handleAddToReadingList.bind(this);
+
+    // loading bars
     this.handleInstapaperQueue = this.handleInstapaperQueue.bind(this);
     this.handlePageCount = this.handlePageCount.bind(this);
     this.handlePocketQueue = this.handlePocketQueue.bind(this);
+    this.handleAddToReadingList = this.handleAddToReadingList.bind(this);
 
+    // reading list integrations
     this.syncPocket = this.syncPocket.bind(this);
     this.syncInstapaper = this.syncInstapaper.bind(this);
-
     this.removePocket = this.removePocket.bind(this);
     this.removeInstapaper = this.removeInstapaper.bind(this);
 
     // Payments
     this.checkPaymentStatus = this.checkPaymentStatus.bind(this);
+    this.unsubscribe = this.unsubscribe.bind(this);
 
-    this.progressSocket = new WebSocket(
-      "ws://" + window.location.host + "/ws/api/progress/"
-    );
-
-    this.progressSocket.onmessage = function(e) {
-      this.handleWebSocket(e);
-    }.bind(this);
+    this.startWebsocket();
 
     this.state = {
       reading_list: [],
@@ -78,7 +86,8 @@ export default class Switcher extends React.Component {
       instapaper_total: 0,
       instapaper_completed: 0,
       pocket_total: 0,
-      pocket_completed: 0
+      pocket_completed: 0,
+      paid: true,
     };
   }
 
@@ -86,6 +95,32 @@ export default class Switcher extends React.Component {
     this.getReadingList();
     this.getServices();
     this.checkPaymentStatus();
+  }
+
+  startWebsocket() {
+    //websocket
+    let ws_url = "";
+    if (process.env.NODE_ENV == "production") {
+      // For secure connection
+      ws_url = "wss://" + window.location.host + "/ws/api/progress/";
+    } else {
+      ws_url = "ws://" + window.location.host + "/ws/api/progress/";
+    }
+    this.progressSocket = new WebSocket(ws_url);
+    this.progressSocket.onmessage = function(e) {
+      this.handleWebSocket(e);
+    }.bind(this);
+
+    console.log("connected websocket");
+    // let interval;
+    this.progressSocket.onclose = function() {
+      console.log("closing and restarting websocket");
+      // connection closed, discard old websocket and create a new one in 5s
+      this.progressSocket = null;
+      // let interval = setInterval(this.startWebsocket, 5000);
+      // setTimeout(this.startWebsocket, 2000);
+      this.startWebsocket();
+    }.bind(this);
   }
 
   checkPaymentStatus() {
@@ -98,7 +133,24 @@ export default class Switcher extends React.Component {
         } else {
           this.setState({ paid: false });
         }
-      }.bind(this)
+      }.bind(this),
+    });
+  }
+
+  unsubscribe() {
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    let data = {
+      csrfmiddlewaretoken: csrftoken,
+    };
+    $.ajax({
+      type: "POST",
+      data: data,
+      url: "../api/payments/cancel_payment/",
+      success: function(data) {
+        this.setState({
+          paid: false,
+        });
+      }.bind(this),
     });
   }
 
@@ -118,7 +170,7 @@ export default class Switcher extends React.Component {
       }
       add_to_reading_list.splice(i, 1);
       this.setState({
-        add_to_reading_list: add_to_reading_list
+        add_to_reading_list: add_to_reading_list,
       });
       return;
     }
@@ -127,11 +179,11 @@ export default class Switcher extends React.Component {
       let new_task = {
         percent: percent,
         link: link,
-        type: "add_to_reading_list"
+        type: "add_to_reading_list",
       };
       add_to_reading_list.push(new_task);
       this.setState({
-        add_to_reading_list: add_to_reading_list
+        add_to_reading_list: add_to_reading_list,
       });
       return;
     } else {
@@ -139,7 +191,7 @@ export default class Switcher extends React.Component {
         if (add_to_reading_list[i].link == link) {
           add_to_reading_list[i].percent = percent;
           this.setState({
-            add_to_reading_list: add_to_reading_list
+            add_to_reading_list: add_to_reading_list,
           });
           return;
         }
@@ -159,7 +211,7 @@ export default class Switcher extends React.Component {
     }
 
     this.setState({
-      reading_list: reading_list
+      reading_list: reading_list,
     });
   }
 
@@ -174,7 +226,7 @@ export default class Switcher extends React.Component {
       }
     }
     this.setState({
-      reading_list: reading_list
+      reading_list: reading_list,
     });
   }
 
@@ -184,7 +236,7 @@ export default class Switcher extends React.Component {
 
     this.setState({
       instapaper_total: total,
-      instapaper_completed: completed
+      instapaper_completed: completed,
     });
   }
 
@@ -222,21 +274,21 @@ export default class Switcher extends React.Component {
 
     this.setState({
       pocket_total: total,
-      pocket_completed: completed
+      pocket_completed: completed,
     });
   }
 
   handleReadingList(data) {
     let reading_list = data.reading_list;
     this.setState({
-      reading_list: reading_list
+      reading_list: reading_list,
     });
   }
 
   getReadingList() {
     var csrftoken = $("[name=csrfmiddlewaretoken]").val();
     let data = {
-      csrfmiddlewaretoken: csrftoken
+      csrfmiddlewaretoken: csrftoken,
     };
     $.ajax({
       url: "../api/reading_list/get_reading",
@@ -245,9 +297,9 @@ export default class Switcher extends React.Component {
       success: function(data) {
         this.setState({
           reading_list: data,
-          loading_list: false
+          loading_list: false,
         });
-      }.bind(this)
+      }.bind(this),
     });
   }
 
@@ -255,7 +307,7 @@ export default class Switcher extends React.Component {
     var csrftoken = $("[name=csrfmiddlewaretoken]").val();
     let data = {
       link: link,
-      csrfmiddlewaretoken: csrftoken
+      csrfmiddlewaretoken: csrftoken,
     };
     $.ajax({
       url: "../api/reading_list/remove_reading",
@@ -263,9 +315,9 @@ export default class Switcher extends React.Component {
       type: "POST",
       success: function(data) {
         this.setState({
-          reading_list: data
+          reading_list: data,
         });
-      }.bind(this)
+      }.bind(this),
     });
   }
 
@@ -273,7 +325,7 @@ export default class Switcher extends React.Component {
     var csrftoken = $("[name=csrfmiddlewaretoken]").val();
     let data = {
       link: link,
-      csrfmiddlewaretoken: csrftoken
+      csrfmiddlewaretoken: csrftoken,
     };
 
     $.ajax({
@@ -282,9 +334,9 @@ export default class Switcher extends React.Component {
       type: "POST",
       success: function(data) {
         this.setState({
-          reading_list: data
+          reading_list: data,
         });
-      }.bind(this)
+      }.bind(this),
     });
   }
 
@@ -292,13 +344,13 @@ export default class Switcher extends React.Component {
     this.closeModal();
     if (link === "") {
       this.setState({
-        error_name: "empty"
+        error_name: "empty",
       });
     }
     var csrftoken = $("[name=csrfmiddlewaretoken]").val();
     let data = {
       link: link,
-      csrfmiddlewaretoken: csrftoken
+      csrfmiddlewaretoken: csrftoken,
     };
     $.ajax({
       url: "../api/reading_list/add_reading",
@@ -307,7 +359,7 @@ export default class Switcher extends React.Component {
       success: function(data) {
         this.setState({
           reading_list: data,
-          show_add: false
+          show_add: false,
         });
       }.bind(this),
       error: function(xhr) {
@@ -315,10 +367,10 @@ export default class Switcher extends React.Component {
         if (xhr.responseText == "Invalid URL") {
           this.setState({
             error_name: "invalid_url",
-            show_add: false
+            show_add: false,
           });
         }
-      }.bind(this)
+      }.bind(this),
     });
   }
 
@@ -327,7 +379,7 @@ export default class Switcher extends React.Component {
     let data = {
       to_deliver: !to_deliver,
       permalink: permalink,
-      csrfmiddlewaretoken: csrftoken
+      csrfmiddlewaretoken: csrftoken,
     };
     $.ajax({
       url: "../api/reading_list/update_deliver",
@@ -335,22 +387,22 @@ export default class Switcher extends React.Component {
       type: "POST",
       success: function(data) {
         this.setState({
-          reading_list: data
+          reading_list: data,
         });
-      }.bind(this)
+      }.bind(this),
     });
   }
 
   showModal() {
     this.setState({
-      show_add: true
+      show_add: true,
     });
   }
 
   syncInstapaper() {
     var csrftoken = $("[name=csrfmiddlewaretoken]").val();
     let data = {
-      csrfmiddlewaretoken: csrftoken
+      csrfmiddlewaretoken: csrftoken,
     };
 
     var csrftoken = $("[name=csrfmiddlewaretoken]").val();
@@ -362,22 +414,22 @@ export default class Switcher extends React.Component {
       success: function(data) {
         instapaper.last_polled = data;
         this.setState({
-          instapaper: instapaper
+          instapaper: instapaper,
         });
       }.bind(this),
       error: function(xhr) {
         instapaper.invalid = true;
         this.setState({
-          instapaper: instapaper
+          instapaper: instapaper,
         });
-      }.bind(this)
+      }.bind(this),
     });
   }
 
   syncPocket() {
     var csrftoken = $("[name=csrfmiddlewaretoken]").val();
     let data = {
-      csrfmiddlewaretoken: csrftoken
+      csrfmiddlewaretoken: csrftoken,
     };
 
     var csrftoken = $("[name=csrfmiddlewaretoken]").val();
@@ -390,15 +442,15 @@ export default class Switcher extends React.Component {
       success: function(data) {
         pocket.last_polled = data;
         this.setState({
-          pocket: pocket
+          pocket: pocket,
         });
       }.bind(this),
       error: function(xhr) {
         pocket.invalid = true;
         this.setState({
-          pocket: pocket
+          pocket: pocket,
         });
-      }.bind(this)
+      }.bind(this),
     });
   }
 
@@ -411,15 +463,15 @@ export default class Switcher extends React.Component {
       success: function(data) {
         this.setState({
           pocket: data.pocket,
-          instapaper: data.instapaper
+          instapaper: data.instapaper,
         });
-      }.bind(this)
+      }.bind(this),
     });
   }
 
   closeModal() {
     this.setState({
-      show_add: false
+      show_add: false,
     });
   }
 
@@ -452,7 +504,7 @@ export default class Switcher extends React.Component {
   removeInstapaper(e) {
     var csrftoken = $("[name=csrfmiddlewaretoken]").val();
     let data = {
-      csrfmiddlewaretoken: csrftoken
+      csrfmiddlewaretoken: csrftoken,
     };
     $.ajax({
       type: "POST",
@@ -462,16 +514,16 @@ export default class Switcher extends React.Component {
         let instapaper = this.state.instapaper;
         instapaper.signed_in = false;
         this.setState({
-          instapaper: instapaper
+          instapaper: instapaper,
         });
-      }.bind(this)
+      }.bind(this),
     });
   }
 
   removePocket(e) {
     var csrftoken = $("[name=csrfmiddlewaretoken]").val();
     let data = {
-      csrfmiddlewaretoken: csrftoken
+      csrfmiddlewaretoken: csrftoken,
     };
     $.ajax({
       type: "POST",
@@ -481,9 +533,9 @@ export default class Switcher extends React.Component {
         let pocket = this.state.pocket;
         pocket.signed_in = false;
         this.setState({
-          pocket: pocket
+          pocket: pocket,
         });
-      }.bind(this)
+      }.bind(this),
     });
   }
 
@@ -547,6 +599,8 @@ export default class Switcher extends React.Component {
                       removePocket={this.removePocket}
                       removeInstapaper={this.removeInstapaper}
                       syncInstapaper={this.syncInstapaper}
+                      paid={this.state.paid}
+                      unsubscribe={this.unsubscribe}
                     />
                   )}
                 />

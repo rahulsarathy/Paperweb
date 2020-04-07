@@ -10,7 +10,10 @@ ENV PATH /app/pulp/node_modules/.bin:$PATH
 # Install and cache dependencies
 COPY ./pulp/package.json /app
 COPY ./pulp/package-lock.json /app
-COPY ./pulp/webpack.config.js /app
+COPY ./pulp/webpack.dev.js /app
+COPY ./pulp/webpack.common.js /app
+COPY ./pulp/webpack.prod.js /app
+
 
 RUN npm install
 

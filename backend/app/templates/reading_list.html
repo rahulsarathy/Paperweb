@@ -1,7 +1,10 @@
-{% load static %} {% csrf_token %}
-<html>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
     <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        {% if not debug %}
+            <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+        {% endif %}
         <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
         <title>Pulp</title>
         <script>
@@ -9,8 +12,10 @@
         </script>
         <script src="https://js.stripe.com/v3"></script>
     </head>
+    <body>
+        {% csrf_token %}
+        <div id="reading_list"></div>
+        <script src="{{js_file}}"></script>
+    </body>
 </html>
-<body>
-    <div id="reading_list"></div>
-    <script src="{{js_file}}"></script>
-</body>
+

@@ -34,8 +34,6 @@ label {
 }
 
 .address_pane {
-  color: red;
-
   h3 {
     font-size: 20px;
   }
@@ -104,6 +102,40 @@ label {
       background-color: #2393ff;
     }
   }
+}
+
+.highlighted {
+  color: blue;
+}
+
+#address-button {
+  background-color: gray;
+  border-color: gray;
+}
+
+#unsubscribe-modal {
+  .modal-content {
+    padding: 20px;
+  }
+}
+
+.unsubscribe-text {
+  display: inline-block;
+  font-size: 20px;
+}
+
+#final-unsubscribe {
+  background-color: #f55442;
+  border-color: #f55442;
+}
+
+#unsubscribe-button {
+  display: inline-block;
+  background-color: gray;
+  border-color: gray;
+  padding: 2px;
+  font-size: 14px;
+  margin-left: 5px;
 }
 
 #modal-change-address {

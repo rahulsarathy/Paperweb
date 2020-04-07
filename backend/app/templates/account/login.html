@@ -6,6 +6,7 @@
 	<link rel="stylesheet" href="{% static 'css/login.css' %}">
 </head>
 <body>
+ <div class="account-content">
 	<p class="back">
 		<i class="arrow left"></i><a href="{% url 'landing' %}">Back to Home</a>
 	</p>
@@ -13,7 +14,9 @@
 <form method="post">
   {% csrf_token %}
   {{ form.as_p }}
+    <a class="forgot" href="/accounts/password/reset">Forgot password?</a>
   <button type="submit">Login</button>
 </form>
+ </div>
 </body>
 </html>

@@ -36,12 +36,18 @@ def testing(request):
 
     return render(request, 'testing.html', context)
 
+def redirect_to_landing(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect('/reading_list')
+    return HttpResponseRedirect('/landing')
+
 def switcher(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect('../')
     context = {
         'js_file': create_js_static_url('switcher'),
         'stripe_public_key': STRIPE_PUBLIC_KEY,
+        'debug': settings.DEBUG
     }
     return render(request, 'reading_list.html', context)
 
@@ -63,12 +69,3 @@ def article(request):
 
     }
     return render(request, 'article.html', context)
-
-def subscribe(request):
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect('../')
-    context = {
-        'js_file': create_js_static_url('subscribe'),
-        'stripe_public_key': STRIPE_PUBLIC_KEY,
-    }
-    return render(request, 'subscribe.html', context)

@@ -1,6 +1,9 @@
 %breakpoints {
   @media (min-width: 0) {
     max-width: 550px;
+    // .landing {
+    //   flex-direction: column-reverse;
+    // }
   }
 
   @media (min-width: 600px) {
@@ -9,6 +12,10 @@
 
   @media (min-width: 900px) {
     max-width: 700px;
+
+    // .landing {
+    //   flex-direction: column-reverse;
+    // }
   }
 
   @media (min-width: 1200px) {
@@ -16,18 +23,48 @@
   }
 }
 
+@media only screen and (max-width: 1100px) {
+  .first-row {
+    flex-direction: column-reverse !important;
+  }
+}
+
 #header {
-  @extend %breakpoints;
-  margin: auto;
-
+  .inner-header {
+    @extend %breakpoints;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+  }
+  background-color: white;
   padding: 5px;
+  z-index: 6;
+  box-shadow: 0 4px 5px -5px rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
 
+.faq {
+  // @extend %breakpoints;
+}
+
+.content {
+  @extend %breakpoints;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 55px;
+}
+
+.first-row {
   display: flex;
-  justify-content: space-between;
+  flex-direction: row;
+  margin: auto;
 }
 
 #header .logo {
   height: 2.5rem;
+  float: left;
 }
 
 #header .links {
@@ -54,17 +91,27 @@
 #splash {
   @extend %breakpoints;
   margin: auto;
-
-  margin-top: 6rem;
+  padding-left: 100px;
+  padding-right: 100px;
+  margin-top: 3rem;
   text-align: left;
 }
 
 #splash .left {
   min-width: 300px;
+  // text-align: right;
+
+  h1 {
+    font-size: 47px;
+  }
 }
 
 #splash .right {
   min-width: 300px;
+
+  h4 {
+    font-size: 30px;
+  }
 }
 
 #splash .left h1 {
@@ -72,7 +119,9 @@
 }
 
 #sign-up {
+  margin-top: 12px;
   font-weight: bold;
+  font-size: 25px;
 }
 
 #steps {
@@ -99,6 +148,42 @@
 
   display: flex;
   flex-direction: column;
+}
+
+.step1-background {
+  background-color: white;
+  height: 220px;
+  width: 220px;
+  border-radius: 5px;
+  box-shadow: 0 4px 5px -4px rgba(0, 0, 0, 1);
+  position: relative;
+  border-color: #d2d2d2;
+  border-style: solid;
+  border-width: 1px;
+
+  .number {
+    position: absolute;
+    color: white;
+    background-color: #d45050;
+    height: 25px;
+    width: 25px;
+    line-height: 25px;
+    border-radius: 15px;
+    text-align: center;
+    vertical-align: middle;
+    left: -35px;
+    top: 2px;
+  }
+
+  img {
+    width: 200px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+  }
 }
 
 #steps .step-desc {

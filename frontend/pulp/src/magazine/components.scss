@@ -1,0 +1,251 @@
+.landing {
+  padding-left: 50px;
+  margin-top: 50px;
+}
+
+.blogrow {
+  padding-left: 15px;
+  width: 100%;
+  margin: auto;
+  display: flex;
+}
+
+.bloglist {
+  font-size: 20px;
+  p {
+    font-weight: bold;
+    font-size: 25px;
+  }
+
+  ul {
+    color: #2393ff;
+    font-weight: bold;
+    list-style-type: none;
+    list-style-position: inside;
+    padding: 0;
+    position: relative;
+    top: -5px;
+  }
+
+  li {
+    padding-bottom: 5px;
+  }
+}
+
+.blogcopy {
+  font-size: 25px;
+}
+
+.contentcopy {
+  font-weight: bold;
+  font-size: 30px;
+  margin-top: 30px;
+}
+
+.questioncopy {
+  font-weight: bold;
+  font-size: 40px;
+}
+
+.getstarted {
+  background-color: #2393ff;
+  color: white;
+  border-radius: 3px;
+  padding: 5px;
+  border-style: none;
+  font-size: 25px;
+  margin-bottom: 25px;
+
+  a {
+    color: white;
+    text-decoration: none;
+  }
+}
+
+.getstarted:hover {
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
+}
+
+.magazine-container {
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 420px;
+
+  .page {
+    width: 405px;
+    height: 520px;
+    position: absolute;
+    // left: 5px;
+    top: 0px;
+    border-radius: 3px;
+    box-shadow: 0px 2px 4px #000000;
+    z-index: 1;
+  }
+
+  .page2 {
+    width: 410px;
+    height: 520px;
+    position: absolute;
+    top: 0px;
+    // left: 10px;
+    border-radius: 3px;
+    box-shadow: 0px 2px 4px #000000;
+    z-index: 2;
+  }
+}
+
+.magazine {
+  width: 400px;
+  height: 520px;
+  // transform: scale(0.8);
+  border-width: 1px;
+  border-radius: 1px;
+  box-shadow: 0px 2px 4px #000000;
+  background-color: #ffffff;
+  position: relative;
+  z-index: 5;
+
+  transform-origin: left;
+  transform: rotate3d(0, 1, 0, 0deg);
+
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  transition: all 0.3s;
+
+  .hide-magazine {
+    transition: all 0.3s;
+
+    width: 400px;
+    height: 520px;
+    position: fixed;
+    background-color: white;
+    z-index: 5;
+    opacity: 0;
+  }
+
+  .logo {
+    margin-top: 20px;
+    height: 60px;
+    margin-bottom: 15px;
+  }
+
+  .binding {
+    width: 40px;
+    height: 520px;
+    position: absolute;
+    border-top-left-radius: 1px;
+    border-bottom-left-radius: 1px;
+    box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.5);
+  }
+  .content {
+    margin-left: 50px;
+    .magazine-title {
+      font-weight: bold;
+    }
+    .subtitle {
+      line-height: 10px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .date {
+      font-weight: normal;
+      color: gray;
+      font-size: 13px;
+    }
+
+    .blog-chapters {
+      margin-top: 30px;
+      .blog-chapter {
+        width: 230px;
+        font-size: 14px;
+        position: relative;
+        .blog-name {
+          font-weight: bold;
+          line-height: 0px;
+        }
+        .underline {
+          position: relative;
+          bottom: 0px;
+          top: -8px;
+          left: -50px;
+          right: 0;
+          // border-bottom: 1px solid blue;
+          border-width: 2px;
+          // width: 170px;
+        }
+        .blog-title {
+          line-height: 20px;
+        }
+        .gradient {
+          content: "";
+          position: absolute;
+          left: 280px;
+          height: 30px;
+          width: 20px;
+          opacity: 0.5;
+        }
+      }
+      .gradient2 {
+        content: "";
+        position: absolute;
+        left: 330px;
+        width: 20px;
+        opacity: 0.5;
+      }
+    }
+  }
+}
+
+.magazine-container:hover {
+  .magazine {
+    transition: all 0.3s;
+    transform: rotate3d(0, 1, 0, 180deg);
+    .hide-magazine {
+      transition: all 0.3s;
+      opacity: 0.92;
+    }
+  }
+}
+
+// .header {
+//   z-index: 4;
+//   font-size: 20px;
+//   color: black;
+//   box-shadow: 0 4px 5px -5px rgba(0, 0, 0, 0.5);
+//   position: fixed;
+//   width: 100%;
+//   padding: 5px 0;
+//   height: 45px;
+//   /*  padding-right: 100;
+// */
+//   top: 0;
+//   background-color: white;
+//   text-align: right;
+
+//   .links {
+//     margin-right: 80px;
+//   }
+
+//   p {
+//     display: inline-block;
+//     margin-left: 15px;
+//     padding: 3px;
+//   }
+
+//   p:hover {
+//     border-radius: 3px;
+//     background-color: #2393ff;
+//     transition: all 0.2s ease;
+//     a {
+//       color: white;
+//     }
+//   }
+// }

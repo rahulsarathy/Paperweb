@@ -2,23 +2,29 @@ import math
 
 import json
 from datetime import datetime, timedelta
-
+import logging
+from dateutil.relativedelta import relativedelta
 
 from pulp.globals import STRIPE_PUBLIC_KEY
 from utils.google_maps_utils import autocomplete
 from utils import stripe_utils
-from utils.stripe_utils import stripe
+from utils.stripe_utils import stripe, check_previous_customer, \
+    db_user_paid, validate_subscription, check_payment_status, \
+    stripe_db_user_paid
 from payments.models import BillingInfo
+from django.utils import timezone
 
 
+from django.contrib.auth.decorators import login_required
 from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse, HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.models import User
 from django.views.decorators.cache import cache_page
 
 # Create your views here.
 @api_view(['GET'])
+@login_required
 def address_autocomplete(request):
     address = request.GET['address']
     autocompleted = autocomplete(address)
@@ -28,20 +34,27 @@ def address_autocomplete(request):
 
 @cache_page(60 * 15)
 @api_view(['GET'])
+@login_required
 def get_stripe_public_key(request):
     return JsonResponse(STRIPE_PUBLIC_KEY, safe=False)
 
 
-
-@api_view(['GET'])
+@api_view(['POST'])
 def create_session(request):
     current_user = request.user
+    user = request.user
+    if not user.is_authenticated:
+        return JsonResponse(data={'error': 'Invalid request.'}, status=403)
+    if check_payment_status(current_user):
+        return HttpResponse(status=403)
     try:
         billing_info = BillingInfo.objects.get(customer=current_user)
         stripe_customer_id = None
         if billing_info and billing_info.stripe_customer_id:
             stripe_customer_id = billing_info.stripe_customer_id
-        new_session = stripe_utils.create_session(current_user.id, stripe_customer_id=stripe_customer_id)
+            new_session = stripe_utils.create_session(current_user.id, stripe_customer_id=stripe_customer_id)
+        else:
+            new_session = stripe_utils.create_session(current_user.id, current_user.email)
     except Exception as e:
         new_session = stripe_utils.create_session(current_user.id, current_user.email)
 
@@ -50,52 +63,47 @@ def create_session(request):
 
 @api_view(['GET'])
 def payment_status(request):
-    current_user = request.user
 
-    stripe_customer_id = None
-    try:
-        current_billing_info = BillingInfo.objects.get(customer=current_user)
-        stripe_customer_id = current_billing_info.stripe_customer_id
-    except BillingInfo.DoesNotExist:
-        # User has not paid yet
-        return HttpResponse(status=200)
+    user = request.user
+    if not user.is_authenticated:
+        return JsonResponse(data={'error': 'Invalid request.'}, status=403)
 
-    if stripe_customer_id is None:
-        # User has not paid yet
-        return HttpResponse(status=200)
-
-    stripe_customer = stripe_utils.retrieve_customer(stripe_customer_id)
-    subscriptions = stripe_customer.get('subscriptions')
-    subscriptions_data = subscriptions.get('data')
-    if len(subscriptions_data) >= 1:
-        # User has paid
+    user = request.user
+    if check_payment_status(user):
         return HttpResponse(status=208)
     else:
-        # User has paid
         return HttpResponse(status=200)
 
-@api_view(['GET'])
+
+@api_view(['POST'])
 def cancel_payment(request):
+    user = request.user
+    if not user.is_authenticated:
+        return JsonResponse(data={'error': 'Invalid request.'}, status=403)
+
     current_user = request.user
     try:
         billing_info = BillingInfo.objects.get(customer=current_user)
     except:
         return HttpResponse("User has no billing info", status=403)
 
-    stripe_customer_id = billing_info.stripe_customer_id
-    stripe_customer = stripe_utils.retrieve_customer(stripe_customer_id)
-    subscriptions = stripe_customer.get('subscriptions')
-    subscriptions_data = subscriptions.get('data')
-    if len(subscriptions_data) == 0:
-        return HttpResponse("User has no subscription", status=403)
-    for data_point in subscriptions_data:
-        sub_id = data_point.id
-        stripe_utils.delete_subscription(sub_id)
-
-    return HttpResponse(status=200)
+    try:
+        subscription_id = billing_info.stripe_subscription_id
+        stripe_utils.delete_subscription(subscription_id)
+        billing_info.stripe_subscription_id = None
+        billing_info.save()
+        return HttpResponse(status=200)
+    except Exception as e:
+        logging.warning("failed to cancel payment with {}".format(e))
+        return HttpResponse(status=500)
 
 @api_view(['GET'])
 def next_billing_date(request):
+
+    user = request.user
+    if not user.is_authenticated:
+        return JsonResponse(data={'error': 'Invalid request.'}, status=403)
+
     current_user = request.user
     try:
         user_billing_info = BillingInfo.objects.get(customer=current_user)
@@ -140,14 +148,21 @@ def date_finder(current_date):
         return fourth_occurence
     else:
         return next_month_first_occurence
+
+
 @api_view(['GET'])
 def next_delivery_date(request):
-    current_date = datetime.now()
-    next_date = date_finder(current_date)
+    user = request.user
+    if not user.is_authenticated:
+        return JsonResponse(data={'error': 'Invalid request.'}, status=403)
+
+    current_date = timezone.now()
+
+    last_date_of_month = datetime(current_date.year, current_date.month, 1) + relativedelta(months=1, days=-1)
     next_delivery_date = {
-        'day': next_date.day,
-        'month': next_date.strftime("%B"),
-        'year': next_date.year,
+        'day': last_date_of_month.day,
+        'month': last_date_of_month.strftime("%B"),
+        'year': last_date_of_month.year,
     }
     return JsonResponse(next_delivery_date)
 
@@ -180,6 +195,7 @@ def handle_checkout_complete(event):
 
     client_reference_id = stripe_response.get('client_reference_id')
     stripe_customer_id = stripe_response.get('customer')
+    subscription_id = stripe_response.get('subscription')
 
     try:
         current_user = User.objects.get(id=client_reference_id)
@@ -192,5 +208,6 @@ def handle_checkout_complete(event):
         customer_billing_info = BillingInfo(customer=current_user)
 
     customer_billing_info.stripe_customer_id = stripe_customer_id
+    customer_billing_info.stripe_subscription_id = subscription_id
     customer_billing_info.save()
     return HttpResponse(status=200)

@@ -1,6 +1,8 @@
 h2 {
 	font-weight: bold;
 	font-size: 50px;
+	margin-bottom: 0px;
+	margin-top: 0px;
 }
 
 button {
@@ -37,6 +39,26 @@ a {
 	font-size: 18px;
 	text-decoration: none;
 	cursor: pointer;
+}
+
+.account-content {
+	width: 300px;
+	margin: auto;
+
+	border-style: solid;
+	border-color: #d2d2d2;
+	border-width: 1px;
+	border-radius: 3px;
+	padding: 15px;
+	box-shadow: 0 4px 5px -5px rgba(0, 0, 0, 0.5);
+
+}
+
+.forgot {
+	font-weight: normal;
+	display: block;
+	margin-bottom: 10px;
+	font-size: 15px;
 }
 
 .right {

@@ -6,7 +6,7 @@ export default class Footer extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			next_date: {}
+			next_date: {},
 		};
 	}
 
@@ -20,9 +20,9 @@ export default class Footer extends Component {
 			type: "GET",
 			success: function(data) {
 				this.setState({
-					next_date: data
+					next_date: data,
 				});
-			}.bind(this)
+			}.bind(this),
 		});
 	}
 

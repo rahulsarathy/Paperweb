@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django_celery_beat',
     'encrypted_model_fields',
     'django_nose',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -157,7 +158,7 @@ ACCOUNT_SIGNUP_FORM_CLASS = 'users.forms.AllauthSignupForm'
 ACCOUNT_USER_MODEL_USERNAME_FIELD = 'username'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = True
-ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = True
 ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_UNIQUE_EMAIL = True
@@ -215,10 +216,12 @@ LOGGING = {
 }
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
-
 CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default=False, cast=bool)
 SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=False, cast=bool)
 SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default=False, cast=bool)
+SECURE_REDIRECT_EXEMPT = ('ready/',)
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 PUPPETEER_HOST = os.environ.get('PUPPETEER_HOST')
 PARSER_HOST = os.environ.get('PARSER_HOST')
 FRONTEND_HOST = os.environ.get('FRONTEND_HOST', '')
