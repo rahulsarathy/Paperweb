@@ -16,12 +16,16 @@ const app = express();
 app.use(bodyParser.json()); // to support JSON-encoded bodies
 app.use(
   express.urlencoded({
-    extended: true
+    extended: true,
   })
 ); // to support URL-encoded bodies
 
 app.get("/", (req, res) => {
   res.send("Hello from printer\n");
+});
+
+app.post("/api/screenshot", function(req, res) {
+  res.send("Hello from screenshot\n");
 });
 
 app.post("/api/print", function(req, res) {
@@ -57,24 +61,24 @@ app.post("/api/print", function(req, res) {
         countPages.promise.then(function(doc) {
           page_count = doc.numPages;
 
-          fs.unlink(pdfFileName, err => {
+          fs.unlink(pdfFileName, (err) => {
             if (err) throw err;
           });
 
-          fs.unlink(htmlFileName, err => {
+          fs.unlink(htmlFileName, (err) => {
             if (err) throw err;
           });
 
           // Jsonize Result
           let result = {
             pages: page_count,
-            html_id: html_id
+            html_id: html_id,
           };
           res.send(result);
         });
       });
     })
-    .catch(error => res.status(400).send(error.message));
+    .catch((error) => res.status(400).send(error.message));
 });
 
 app.post("/api/print_magazine", function(req, res) {
@@ -100,24 +104,24 @@ app.post("/api/print_magazine", function(req, res) {
         countPages.promise.then(function(doc) {
           page_count = doc.numPages;
 
-          fs.unlink(pdfFileName, err => {
+          fs.unlink(pdfFileName, (err) => {
             if (err) throw err;
           });
 
-          fs.unlink(htmlFileName, err => {
+          fs.unlink(htmlFileName, (err) => {
             if (err) throw err;
           });
 
           // Jsonize Result
           let result = {
             pages: page_count,
-            html_id: html_id
+            html_id: html_id,
           };
           res.send(result);
         });
       });
     })
-    .catch(error => res.status(400).send(error.message));
+    .catch((error) => res.status(400).send(error.message));
 });
 
 app.listen(PORT, HOST);

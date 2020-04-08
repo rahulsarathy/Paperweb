@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import "bootstrap/dist/css/bootstrap.css";
 import $ from "jquery";
 import shortid from "shortid";
-import {} from "./components.jsx";
+import { useWindowDimensions, MiniMap } from "./components.jsx";
 import { Dropdown } from "react-bootstrap";
 import { Header } from "../components/components.jsx";
 
@@ -19,11 +19,15 @@ export default class Article extends React.Component {
   constructor(props) {
     document.title = article_json.title;
     super(props);
+
+    this.state = {};
   }
 
   createMarkup() {
     return { __html: article_json.content };
   }
+
+  componentDidMount() {}
 
   render() {
     let author_text;
@@ -39,10 +43,30 @@ export default class Article extends React.Component {
             className="content"
             dangerouslySetInnerHTML={this.createMarkup()}
           ></div>
+          <MiniMap
+            total_height={this.props.total_height}
+            height={this.props.height}
+            offset={this.props.offset}
+          />
         </div>
       </div>
     );
   }
 }
 
-ReactDOM.render(<Article />, document.getElementById("article"));
+const ArticleWrapper = () => {
+  document.title = article_json.title;
+
+  const { height, width, offset, total } = useWindowDimensions();
+
+  return (
+    <Article
+      width={width}
+      height={height}
+      offset={pageYOffset}
+      total_height={total}
+    />
+  );
+};
+
+ReactDOM.render(<ArticleWrapper />, document.getElementById("article"));

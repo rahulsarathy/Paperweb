@@ -1,3 +1,5 @@
 import "./components.scss";
+import useWindowDimensions from "./useWindowDimensions";
+import MiniMap from "./minimap.jsx";
 
-export {};
+export { useWindowDimensions, MiniMap };
