@@ -8,27 +8,46 @@ import './PocketModal.scss'
 
 const image_url = "/static/images/"
 
-function PocketModal({ integrated, integrateWithPocket, removePocketIntegration }) {
+function PocketModal({ text, integrated, integrateWithPocket, removePocketIntegration }) {
     const [show, setShow] = React.useState(false)
 
-    const handleHide = () => setShow(false)
-    const handleShow = () => setShow(true)
+    const handleHide = (e) => {
+        if (e) { e.preventDefault() }
+        setShow(false)
+    }
+    const handleShow = (e) => {
+        if (e) { e.preventDefault() }
+        setShow(true)
+    }
 
-    function handleRemovePocket() {
+    function handleRemovePocket(e) {
+        if (e) { e.preventDefault() }
         removePocketIntegration()
         handleHide()
     }
 
-    function handleIntegratePocket() {
+    function handleIntegratePocket(e) {
+        if (e) { e.preventDefault() }
         integrateWithPocket()
         handleHide()
     }
 
-    return (
-        <React.Fragment>
+    var activator;
+    if (!text) {
+        activator = (
             <PulpButton className="pocket-button" onClick={handleShow}>
                 <img className="pocket-logo" src={image_url + "pocket_logo.svg"} />
             </PulpButton>
+        )
+    } else {
+        activator = (
+            <a href="" onClick={handleShow}>{text}</a>
+        )
+    }
+
+    return (
+        <React.Fragment>
+            {activator}
 
             <Modal show={show} onHide={handleHide}>
                 <Modal.Header>

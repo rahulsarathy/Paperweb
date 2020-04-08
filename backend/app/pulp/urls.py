@@ -51,7 +51,7 @@ urlpatterns = [
   # Testing routes for switcher refactor
   path('testing/reading_list/', views.testing, name='testing'),
   path('testing/delivery/', views.testing, name='testing'),
-  path('testing/profile/', views.testing, name='testing'),
+  path('testing/settings/', views.testing, name='testing'),
   path('testing/archive/', views.testing, name='testing'),
   path('testing/payments/', views.testing, name='testing'),
   path('testing/subscribe/', views.testing, name='testing'),

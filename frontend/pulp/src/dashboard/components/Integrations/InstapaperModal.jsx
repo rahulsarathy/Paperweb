@@ -8,19 +8,26 @@ import './InstapaperModal.scss'
 
 const image_url = "/static/images/"
 
-function PocketModal({ integrationStatus, integrateWithInstapaper, removeInstapaperIntegration }) {
+function PocketModal({ text, integrationStatus, integrateWithInstapaper, removeInstapaperIntegration }) {
     const [show, setShow] = React.useState(false)
 
-    const handleHide = () => setShow(false)
-    const handleShow = () => setShow(true)
+    const handleHide = (e) => {
+        if (e) { e.preventDefault() }
+        setShow(false)
+    }
+    const handleShow = (e) => {
+        if (e) { e.preventDefault() }
+        setShow(true)
+    }
 
-    function handleRemoveInstapaper() {
+    function handleRemoveInstapaper(e) {
+        if (e) { e.preventDefault() }
         removeInstapaperIntegration()
         handleHide()
     }
 
     function handleIntegrateInstapaper(e) {
-        e.preventDefault()
+        if (e) { e.preventDefault() }
         integrateWithInstapaper()
         handleHide()
     }
@@ -66,12 +73,22 @@ function PocketModal({ integrationStatus, integrateWithInstapaper, removeInstapa
         )
     }
 
-    return (
-        <React.Fragment>
+    var activator;
+    if (!text) {
+        activator = (
             <PulpButton className="instapaper-button" onClick={handleShow}>
                 <img className="instapaper-logo" src={image_url + "instapaper_logo.png"} />
             </PulpButton>
+        )
+    } else {
+        activator = (
+            <a href="" onClick={handleShow}>{text}</a>
+        )
+    }
 
+    return (
+        <React.Fragment>
+            {activator}
             {modal}
         </React.Fragment>
     )

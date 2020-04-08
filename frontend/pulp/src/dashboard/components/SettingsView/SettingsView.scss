@@ -1,0 +1,29 @@
+.settings-section {
+    .settings-section-header {
+        font-weight: bold;
+        border-bottom: 1px solid #4c8fff;
+    }
+
+    .settings-section-content {
+        .settings-item {
+            display: flex;
+
+            .settings-item-name {
+                flex: 0 1 0;
+                min-width: 20%;
+                font-weight: bold;
+            }
+
+            .settings-item-content {
+                flex: 1 1 0;
+            }
+
+            .settings-item-edit {
+                flex: 0 1 0;
+                min-width: 20%;
+
+                text-align: center;
+            }
+        }
+    }
+}
