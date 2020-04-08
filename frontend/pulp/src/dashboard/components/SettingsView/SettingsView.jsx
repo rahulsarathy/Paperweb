@@ -1,9 +1,21 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import View from '../View'
+import SettingsItem from './SettingsItem'
+import ShippingAdressForm from './ShippingAddressForm'
 import { PocketModal, InstapaperModal } from '../Integrations'
 
 import './SettingsView.scss'
+
+function addressToString(address) {
+    return (
+        <ul>
+            <li>{address.name}</li>
+            <li>{address.line_1} {address.line_2}</li>
+            <li>{address.city},{address.state} {address.zip}</li>
+        </ul>
+    )
+}
 
 function Section({ name, children }) {
     return (
@@ -16,24 +28,7 @@ function Section({ name, children }) {
     )
 }
 
-function Item({ name, editComponent, editHref, editText = "Edit", children }) {
-    return (
-        <li className="settings-item">
-            <div className="settings-item-name">{name}</div>
-            <div className="settings-item-content">
-                {children}
-            </div>
-            <div className="settings-item-edit">
-                {editComponent
-                    ? editComponent
-                    : <a href={editHref}>{editText}</a>
-                }
-            </div>
-        </li>
-    )
-}
-
-function SettingsView({ user, integrations }) {
+function SettingsView({ user, settings, integrations }) {
     return (
         <View>
             <View.Header>
@@ -41,42 +36,49 @@ function SettingsView({ user, integrations }) {
             </View.Header>
             <View.Body>
                 <Section name="Account Information">
-                    <Item name="Email">{user.email}</Item>
-                    <Item name="Password" editHref="/accounts/password/change">•••••••••</Item>
-                    <Item name="Subscription Status">
+                    <SettingsItem name="Email">{user.email}</SettingsItem>
+                    <SettingsItem name="Password" editHref="/accounts/password/change">•••••••••</SettingsItem>
+                    <SettingsItem name="Subscription Status" editHref="/payments">
                         {user.subscribed
                             ? "Currently subscribed"
                             : "Not subscribed"
                         }
-                    </Item>
-                    <Item name="Shipping Address">
-                        {user.address 
-                            ? user.address.text
+                    </SettingsItem>
+                    <SettingsItem name="Shipping Address" editForm={<ShippingAdressForm />}>
+                        {settings.address 
+                            ? addressToString(settings.address)
                             : "No shipping address set"
                         }
-                    </Item>
+                    </SettingsItem>
                 </Section>
                 <Section name="Integration Settings">
-                    <Item name="Instapaper" editComponent={<InstapaperModal text="Edit" />}>
+                    <SettingsItem name="Instapaper" editComponent={<InstapaperModal text="Edit" />}>
                         {integrations.instapaper.integrated
                             ? "Instapaper is integrated with Pulp"
-                            : "Integrate Pulp with Instapaper"
+                            : "Pulp is not integrated with Instapaper"
                         }
-                    </Item>
-                    <Item name="Pocket" editComponent={<PocketModal text="Edit" />}>
+                    </SettingsItem>
+                    <SettingsItem name="Pocket" editComponent={<PocketModal text="Edit" />}>
                         {integrations.pocket.integrated
                             ? "Pocket is integrated with Pulp"
-                            : "Integrate Pulp with Pocket"
+                            : "Pulp is not integrated with Pocket"
                         }
-                    </Item>
+                    </SettingsItem>
                 </Section>
                 <Section name="Delivery Settings">
-                    <Item name="Archive Delivered Articles">
-                        Yes {/* TODO */}
-                    </Item>
-                    <Item name="Delivery Order">
-                        Oldest First {/* TODO */}
-                    </Item>
+                    {/* TODO fix pop in of the settings!!! */}
+                    <SettingsItem name="Archive Delivered Articles">
+                        {settings.archive_links
+                            ? "Yes, archive articles after they're delivered"
+                            : "No, don't archive articles after they're delivered"
+                        }
+                    </SettingsItem>
+                    <SettingsItem name="Delivery Order">
+                        {settings.deliver_oldest
+                            ? "Oldest first, deliver the oldest articles in my reading list first"
+                            : "Newest first, deliver the newest articles in my reading list first"
+                        }
+                    </SettingsItem>
                 </Section>
             </View.Body>
         </View>

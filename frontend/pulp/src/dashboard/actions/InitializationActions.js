@@ -1,5 +1,6 @@
 import $ from 'jquery'
 import { createWebSocket } from '../websockets'
+import { loadSettings, setAddress } from './SettingsActions'
 
 function connectToWebSocket(dispatch) {
     return new Promise(function (resolve, reject) {
@@ -34,8 +35,32 @@ function populateSubscription(dispatch) {
     )
 }
 
+function populateSettings(dispatch) {
+    // TODO this request doesnt use the csrf token
+    return $.ajax({
+        url: "/api/users/get_settings",
+        type: "GET",
+    }).then(
+        (response) => dispatch(loadSettings(response)),
+        (error) => console.log(error) // TODO
+    )
+}
+
+function populateAddress(dispatch) {
+    // TODO this request doesnt use the csrf token
+    return $.ajax({
+        type: "GET",
+        url: "/api/users/get_address/",
+    }).then(
+        (response) => dispatch(setAddress(response)),
+        (error) => console.log(error)
+    )
+}
+
 function populateUserState(dispatch) {
     return Promise.all([
+        populateSettings(dispatch),
+        populateAddress(dispatch),
         populateEmail(dispatch),
         populateSubscription(dispatch)
     ])
@@ -75,6 +100,7 @@ export function populateInitialState() {
         return Promise.all([
             connectToWebSocket(dispatch),
             populateUserState(dispatch),
+            populateSettings(dispatch),
             populateReadingList(dispatch),
             populateIntegrations(dispatch),
         ])
