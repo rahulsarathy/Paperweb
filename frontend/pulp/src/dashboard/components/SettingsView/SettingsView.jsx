@@ -42,7 +42,7 @@ function SettingsView({ user, integrations }) {
             <View.Body>
                 <Section name="Account Information">
                     <Item name="Email">{user.email}</Item>
-                    <Item name="Password" editText="Change" editHref="/accounts/password/change">•••••••••</Item>
+                    <Item name="Password" editHref="/accounts/password/change">•••••••••</Item>
                     <Item name="Subscription Status">
                         {user.subscribed
                             ? "Currently subscribed"
@@ -86,6 +86,7 @@ function SettingsView({ user, integrations }) {
 function mapStateToProps(state, ownProps) {
     return {
         user: state.user,
+        settings: state.settings,
         integrations: state.integrations,
     }
 }
