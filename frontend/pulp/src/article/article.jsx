@@ -3,7 +3,11 @@ import ReactDOM from "react-dom";
 import "bootstrap/dist/css/bootstrap.css";
 import $ from "jquery";
 import shortid from "shortid";
-import { useWindowDimensions, MiniMap } from "./components.jsx";
+import {
+  useWindowDimensions,
+  MiniMap,
+  useMousePosition,
+} from "./components.jsx";
 import { Dropdown } from "react-bootstrap";
 import { Header } from "../components/components.jsx";
 
@@ -19,6 +23,7 @@ export default class Article extends React.Component {
   constructor(props) {
     document.title = article_json.title;
     super(props);
+    this.createArticle = this.createArticle.bind(this);
 
     this.state = {};
   }
@@ -29,26 +34,39 @@ export default class Article extends React.Component {
 
   componentDidMount() {}
 
-  render() {
+  createArticle(margin = 0) {
     let author_text;
     article_json.author === null || article_json.author === ""
       ? (author_text = "")
       : (author_text = "By " + article_json.author);
+    let style = {
+      margin: margin,
+    };
+    return (
+      <div style={style} className="article">
+        <h1>{article_json.title}</h1>
+        <p className="author">{author_text}</p>
+        <div
+          className="content"
+          dangerouslySetInnerHTML={this.createMarkup()}
+        ></div>
+      </div>
+    );
+  }
+
+  render() {
     return (
       <div>
-        <div className="article">
-          <h1>{article_json.title}</h1>
-          <p className="author">{author_text}</p>
-          <div
-            className="content"
-            dangerouslySetInnerHTML={this.createMarkup()}
-          ></div>
-          <MiniMap
-            total_height={this.props.total_height}
-            height={this.props.height}
-            offset={this.props.offset}
-          />
-        </div>
+        <div className="article-wrapper">{this.createArticle("auto")}</div>
+        <MiniMap
+          total_height={this.props.total_height}
+          height={this.props.height}
+          offset={this.props.offset}
+          changeScroll={this.props.changeScroll}
+          innerHTML={this.createMarkup()}
+          width={this.props.width}
+          createArticle={this.createArticle}
+        ></MiniMap>
       </div>
     );
   }
@@ -59,12 +77,21 @@ const ArticleWrapper = () => {
 
   const { height, width, offset, total } = useWindowDimensions();
 
+  // const { mouseX, mouseY } = useMousePosition();
+
+  function changeScroll(offset) {
+    let percent = offset / height;
+    let scaled = percent * total;
+    document.documentElement.scrollTop = document.body.scrollTop = scaled;
+  }
+
   return (
     <Article
       width={width}
       height={height}
       offset={pageYOffset}
       total_height={total}
+      changeScroll={changeScroll}
     />
   );
 };

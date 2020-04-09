@@ -45,8 +45,8 @@ def switcher(request):
     return render(request, 'reading_list.html', context)
 
 def article(request):
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect('../')
+    # if not request.user.is_authenticated:
+    #     return HttpResponseRedirect('../')
     url = request.GET.get('url')
     try:
         article_response = get_parsed(url)

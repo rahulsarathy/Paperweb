@@ -7,7 +7,16 @@ function getWindowDimensions() {
     pageYOffset: offset,
   } = window;
 
-  let total = window.document.body.offsetHeight;
+  var body = document.body,
+    html = document.documentElement;
+
+  var total = Math.max(
+    body.scrollHeight,
+    body.offsetHeight,
+    html.clientHeight,
+    html.scrollHeight,
+    html.offsetHeight
+  );
 
   return {
     width,
