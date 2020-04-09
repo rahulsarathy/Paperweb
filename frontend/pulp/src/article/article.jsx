@@ -24,8 +24,9 @@ export default class Article extends React.Component {
     document.title = article_json.title;
     super(props);
     this.createArticle = this.createArticle.bind(this);
+    this.magnifier = this.magnifier.bind(this);
 
-    this.state = {};
+    this.state = { hover: false, offset: 0 };
   }
 
   createMarkup() {
@@ -33,6 +34,13 @@ export default class Article extends React.Component {
   }
 
   componentDidMount() {}
+
+  magnifier(hover, yPos = 0) {
+    this.setState({
+      hover: hover,
+      offset: yPos,
+    });
+  }
 
   createArticle(margin = 0) {
     let author_text;
@@ -66,7 +74,20 @@ export default class Article extends React.Component {
           innerHTML={this.createMarkup()}
           width={this.props.width}
           createArticle={this.createArticle}
+          magnifier={this.magnifier}
         ></MiniMap>
+        {this.state.hover ? (
+          <div className="magnifier">
+            <div
+              className="magnifier-article"
+              style={{ marginTop: this.state.offset * -1 }}
+            >
+              {this.createArticle()}
+            </div>
+          </div>
+        ) : (
+          <div></div>
+        )}
       </div>
     );
   }

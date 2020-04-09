@@ -53,7 +53,6 @@ export default class MiniMap extends Component {
 			minimap_scroll =
 				(offset * total_distance_to_scroll) / (total_height - height);
 		}
-
 		// console.log("---------------------------");
 		// console.log("scale is " + scale);
 		// console.log("viewport is " + pixels);
@@ -78,26 +77,18 @@ export default class MiniMap extends Component {
 	handleMove(e) {
 		if (this.state.down) {
 			this.changeScroll(e);
+		} else {
+			this.magnifier(true, e.clientY);
 		}
+
 		this.setState({
 			y: e.clientY,
 		});
 	}
 
-	changeScroll2(e) {
-		let { height, total_height, offset } = this.props;
-
-		// calculate scale factor
-		let percent = height / total_height;
-
-		// how large should the minimap highlight be
-		// let pixels = percent * height;
-		let offsetted = e.clientY - pixels / 2;
-
-		let percent2 = offsetted / height;
-		let scaled = percent2 * total_height;
-
-		this.props.changeScroll(scaled);
+	magnifier(hover, yPos) {
+		let adjusted_y = this.scaleYPosForArticle(yPos + pixels / 2);
+		this.props.magnifier(hover, adjusted_y);
 	}
 
 	changeScroll(e) {
@@ -121,16 +112,19 @@ export default class MiniMap extends Component {
 		return offset;
 	}
 
-	handleLeave() {
-		// console.log("leave");
+	handleLeave(e) {
+		this.magnifier(false, e.clientY);
 
 		this.setState({
 			show: false,
 		});
 	}
 
-	handleEnter() {
-		console.log("show");
+	handleEnter(e) {
+		if (!this.state.down) {
+			this.magnifier(true, e.clientY);
+		}
+
 		this.setState({
 			show: true,
 		});
@@ -145,7 +139,6 @@ export default class MiniMap extends Component {
 	}
 
 	handleMouseDown(e) {
-		console.log("mouse down");
 		this.setState({
 			down: true,
 		});
