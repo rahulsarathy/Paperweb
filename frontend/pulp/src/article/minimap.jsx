@@ -22,13 +22,14 @@ export default class MiniMap extends Component {
 			show: false,
 			y: 0,
 			scale: 0,
+			down: false,
 		};
 	}
 
 	calculateMiniMap() {
 		let { offset, height, total_height, width } = this.props;
 
-		scale = 100 / 800;
+		scale = 50 / 500;
 
 		// calculate scale factor
 		let percent = height / total_height;
@@ -53,19 +54,19 @@ export default class MiniMap extends Component {
 				(offset * total_distance_to_scroll) / (total_height - height);
 		}
 
-		console.log("---------------------------");
-		console.log("scale is " + scale);
-		console.log("viewport is " + pixels);
-		console.log("total height is " + total_height);
-		console.log("height is " + height);
-		console.log("width is " + width);
+		// console.log("---------------------------");
+		// console.log("scale is " + scale);
+		// console.log("viewport is " + pixels);
+		// console.log("total height is " + total_height);
+		// console.log("height is " + height);
+		// console.log("width is " + width);
 
-		console.log("total_distance_to_scroll is " + total_distance_to_scroll);
-		console.log("minimap_scroll is " + minimap_scroll);
-		console.log("top is " + top);
-		console.log("desired top is " + desired_top);
-		console.log("offset is " + offset);
-		console.log("minimap height is " + minimap_height);
+		// console.log("total_distance_to_scroll is " + total_distance_to_scroll);
+		// console.log("minimap_scroll is " + minimap_scroll);
+		// console.log("top is " + top);
+		// console.log("desired top is " + desired_top);
+		// console.log("offset is " + offset);
+		// console.log("minimap height is " + minimap_height);
 		return {
 			top: top,
 			pixels: pixels,
@@ -170,6 +171,13 @@ export default class MiniMap extends Component {
 			top: top + "px",
 		};
 
+		let preview_top = this.state.y - pixels / 2;
+
+		let preview_style = {
+			top: preview_top,
+			height: pixels,
+		};
+
 		return (
 			<div
 				onMouseEnter={this.handleEnter}
@@ -188,15 +196,15 @@ export default class MiniMap extends Component {
 					onMouseDown={this.handleMouseDown}
 					onMouseUp={this.handleMouseUp}
 				></div>
-				{/*this.state.show ? (
+				{this.state.show && !this.state.down ? (
 					<div style={preview_style} className="hover-viewport">
-						<div className="magnification">
+						{/*<div className="magnification">
 							<img src="/static/images/stratechery1.png" />
-						</div>
+						</div>*/}
 					</div>
 				) : (
 					<div></div>
-				)*/}
+				)}
 				<div
 					className="zoom"
 					style={{

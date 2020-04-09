@@ -1,4 +1,4 @@
-$article-width: 800px;
+$article-width: 600px;
 
 h1 {
   font-family: helvetica;
@@ -7,7 +7,7 @@ h1 {
 
 body {
   font-family: "Times New Roman";
-  font-size: 22px;
+  font-size: 18px;
 }
 
 .author {
@@ -62,13 +62,14 @@ blockquote {
   transform-origin: top right;
   top: 0;
   right: 0;
-  margin-right: 10px;
+  margin-right: 5px;
+  pointer-events: none;
+  user-select: none;
 
   z-index: 1;
 
   .article {
     .content {
-      pointer-events: none;
       user-select: none;
     }
   }
@@ -86,15 +87,16 @@ blockquote {
     background-color: #6e6e58;
   }
 
-  width: 120px;
+  width: 70px;
   // background-size: contain;
   height: 100%;
   .hover-viewport {
     position: absolute;
-    background: rgba(1, 1, 1, 0.5);
+    background: rgba(255, 255, 255, 0.5);
     width: 100px;
-    z-index: 1;
+    z-index: 2;
     user-select: none;
+    cursor: pointer;
     .magnification {
       position: absolute;
       right: 50px;
@@ -115,7 +117,11 @@ blockquote {
     opacity: 0.5;
     background-color: gray;
     width: 100%;
-    z-index: 2;
+    z-index: 3;
+    user-select: none;
+    cursor: pointer;
+
+    // pointer-events: none;
     // height: 200px;
   }
 }
