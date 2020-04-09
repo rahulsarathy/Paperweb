@@ -62,6 +62,7 @@ blockquote {
   transform-origin: top right;
   top: 0;
   right: 0;
+  margin-right: 10px;
 
   z-index: 1;
 
@@ -78,14 +79,20 @@ blockquote {
   right: 0px;
   top: 0;
   // max-width: 100px;
+  background-color: #babaa7;
+  color: white;
 
-  width: 100px;
+  blockquote {
+    background-color: #6e6e58;
+  }
+
+  width: 120px;
   // background-size: contain;
   height: 100%;
   .hover-viewport {
     position: absolute;
-    background: rgba(0, 0, 0, 0.5);
-    width: 100%;
+    background: rgba(1, 1, 1, 0.5);
+    width: 100px;
     z-index: 1;
     user-select: none;
     .magnification {
@@ -111,16 +118,8 @@ blockquote {
     z-index: 2;
     // height: 200px;
   }
+}
 
-  .strip {
-    max-width: 100%;
-    max-height: 100%;
-
-    -khtml-user-select: none;
-    -o-user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    user-select: none;
-    // height: 100%;
-  }
+.minimap > {
+  background-color: #babaa7 !important;
 }

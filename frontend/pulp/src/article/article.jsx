@@ -80,9 +80,21 @@ const ArticleWrapper = () => {
   // const { mouseX, mouseY } = useMousePosition();
 
   function changeScroll(offset) {
-    let percent = offset / height;
-    let scaled = percent * total;
-    document.documentElement.scrollTop = document.body.scrollTop = scaled;
+    // let percent = offset / height;
+    // let scaled = percent * total;
+    document.documentElement.scrollTop = document.body.scrollTop = offset;
+
+    // var time = 10;
+    // var distance = offset;
+
+    // $("body,html,document")
+    //   // .stop()
+    //   .animate(
+    //     {
+    //       scrollTop: distance * 1,
+    //     },
+    //     time
+    //   );
   }
 
   return (
