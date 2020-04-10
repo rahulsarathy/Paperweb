@@ -53,8 +53,22 @@ blockquote {
   border-radius: 3px;
 }
 
+.zoom-wrapper {
+  position: relative;
+}
+
+.subheaders {
+  position: fixed;
+  color: black;
+  right: 75px;
+  text-align: right;
+  width: 150px;
+  font-size: 12px;
+}
+
 .zoom {
   position: fixed;
+
   // left: 70%;
   // bottom: 4300px;
   // top: 0;

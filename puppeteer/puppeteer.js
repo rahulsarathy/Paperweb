@@ -26,6 +26,7 @@ app.get("/", (req, res) => {
 
 app.post("/api/screenshot", function(req, res) {
   res.send("Hello from screenshot\n");
+  let url = req.param("url");
 });
 
 app.post("/api/print", function(req, res) {

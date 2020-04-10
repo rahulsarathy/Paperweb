@@ -1,4 +1,10 @@
 import React, { Component } from "react";
+import {
+	Progress,
+	Viewport,
+	HoverViewport,
+	MiniMapContent,
+} from "./components.jsx";
 import $ from "jquery";
 
 // these variables are used by render and are sourced by props
@@ -14,7 +20,6 @@ export default class MiniMap extends Component {
 		this.handleLeave = this.handleLeave.bind(this);
 		this.handleMove = this.handleMove.bind(this);
 		this.changeScroll = this.changeScroll.bind(this);
-		this.handleDrag = this.handleDrag.bind(this);
 		this.handleMouseDown = this.handleMouseDown.bind(this);
 		this.handleMouseUp = this.handleMouseUp.bind(this);
 
@@ -25,6 +30,8 @@ export default class MiniMap extends Component {
 			down: false,
 		};
 	}
+
+	componentDidMount() {}
 
 	calculateMiniMap() {
 		let { offset, height, total_height, width } = this.props;
@@ -87,16 +94,15 @@ export default class MiniMap extends Component {
 	}
 
 	magnifier(hover, yPos) {
-		let adjusted_y = this.scaleYPosForArticle(yPos + pixels / 2);
+		let adjusted_y = this.scaleYPosForArticle(
+			// yPos + minimap_scroll - pixels / 2
+			yPos
+		);
 		this.props.magnifier(hover, adjusted_y);
 	}
 
 	changeScroll(e) {
-		let scrollTo = 0;
-
-		let position_on_minimap = e.clientY + minimap_scroll;
-
-		let scaledPos = this.scaleYPosForArticle(position_on_minimap);
+		let scaledPos = this.scaleYPosForArticle(e.clientY);
 
 		this.props.changeScroll(scaledPos);
 	}
@@ -106,7 +112,7 @@ export default class MiniMap extends Component {
 
 		let minimap_height = scale * total_height;
 
-		let progress = yPos / minimap_height;
+		let progress = (yPos + minimap_scroll) / minimap_height;
 
 		let offset = progress * total_height - height / 2;
 		return offset;
@@ -127,14 +133,6 @@ export default class MiniMap extends Component {
 
 		this.setState({
 			show: true,
-		});
-	}
-
-	handleDrag(e) {
-		console.log("onDragOver");
-		this.props.changeScroll(e.clientY);
-		this.setState({
-			show: false,
 		});
 	}
 
@@ -178,35 +176,28 @@ export default class MiniMap extends Component {
 				onMouseLeave={this.handleLeave}
 				className="minimap"
 				onClick={this.changeScroll}
+				id="minimap"
 			>
-				<div
-					onClick={this.props.changeScroll}
+				<Viewport
+					changeScroll={this.props.changeScroll}
 					style={style}
-					className="viewport"
-					onMouseEnter={this.handleLeave}
-					onMouseLeave={this.handleEnter}
-					onDragOver={this.handleDrag}
-					onMouseDown={this.handleMouseDown}
-					onMouseUp={this.handleMouseUp}
-				></div>
-				{this.state.show && !this.state.down ? (
-					<div style={preview_style} className="hover-viewport">
-						{/*<div className="magnification">
-							<img src="/static/images/stratechery1.png" />
-						</div>*/}
-					</div>
-				) : (
-					<div></div>
-				)}
-				<div
-					className="zoom"
-					style={{
-						transform: "scale(" + scale + ")",
-						top: "-" + minimap_scroll + "px",
-					}}
-				>
-					{this.props.createArticle()}
-				</div>
+					handleLeave={this.handleLeave}
+					handleEnter={this.handleEnter}
+					handleMouseDown={this.handleMouseDown}
+					handleMouseUp={this.handleMouseUp}
+				/>
+
+				<HoverViewport
+					show={this.state.show}
+					down={this.state.down}
+					style={preview_style}
+				/>
+
+				<MiniMapContent
+					scale={scale}
+					createArticle={this.props.createArticle}
+					minimap_scroll={minimap_scroll}
+				/>
 			</div>
 		);
 	}

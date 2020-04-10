@@ -76,7 +76,7 @@ export default class Article extends React.Component {
           createArticle={this.createArticle}
           magnifier={this.magnifier}
         ></MiniMap>
-        {this.state.hover ? (
+        {/*this.state.hover ? (
           <div className="magnifier">
             <div
               className="magnifier-article"
@@ -87,7 +87,7 @@ export default class Article extends React.Component {
           </div>
         ) : (
           <div></div>
-        )}
+        )*/}
       </div>
     );
   }
