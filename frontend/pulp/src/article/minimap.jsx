@@ -61,9 +61,9 @@ export default class MiniMap extends Component {
 				(offset * total_distance_to_scroll) / (total_height - height);
 		}
 		// console.log("---------------------------");
-		// console.log("scale is " + scale);
+		console.log("scale is " + scale);
 		// console.log("viewport is " + pixels);
-		// console.log("total height is " + total_height);
+		console.log("total height is " + total_height);
 		// console.log("height is " + height);
 		// console.log("width is " + width);
 
@@ -72,7 +72,13 @@ export default class MiniMap extends Component {
 		// console.log("top is " + top);
 		// console.log("desired top is " + desired_top);
 		// console.log("offset is " + offset);
-		// console.log("minimap height is " + minimap_height);
+		console.log("minimap height is " + minimap_height);
+		console.log(
+			"minimap height is " +
+				minimap_height / total_height +
+				" of total height"
+		);
+
 		return {
 			top: top,
 			pixels: pixels,
@@ -186,13 +192,11 @@ export default class MiniMap extends Component {
 					handleMouseDown={this.handleMouseDown}
 					handleMouseUp={this.handleMouseUp}
 				/>
-
 				<HoverViewport
 					show={this.state.show}
 					down={this.state.down}
 					style={preview_style}
 				/>
-
 				<MiniMapContent
 					scale={scale}
 					createArticle={this.props.createArticle}
