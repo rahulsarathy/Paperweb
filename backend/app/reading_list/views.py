@@ -13,6 +13,8 @@ from rest_framework.decorators import api_view
 from rest_framework.exceptions import NotFound
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse
+import traceback
+
 
 
 @api_view(['GET'])
@@ -37,7 +39,8 @@ def handle_add_to_reading_list(request):
         return JsonResponse(data={'error': 'Invalid URL.'}, status=400)
     except json.decoder.JSONDecodeError:
         return JsonResponse(data={'error': 'Invalid URL.'}, status=400)
-    except Exception as e:
+    except Exception:
+        traceback.print_exc()
         update_add_to_reading_list_status(user, link, 100)
         return JsonResponse(data={'error': 'Error while adding to reading list. Try again or contact support.'}, status=400)
 

@@ -16,6 +16,7 @@ from progress.types import update_add_to_reading_list_status, update_reading_lis
 
 
 import requests
+from urllib.parse import urlparse, urljoin
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse
@@ -155,7 +156,16 @@ def get_parsed(url):
 
     try:
         response_string = response.content.decode("utf-8")
-        json_response = json.loads(response_string)
+
+        # mercury response is naive because contains some errors such as broken links and bootstrap classnames
+        naive_response = json.loads(response_string)
+
+        # call fix_mercury to fix these naive errors
+        domain = urlparse(url).netloc
+        json_response = fix_mercury(naive_response, domain)
+
+        new_response_string = json.dumps(json_response)
+
     except json.decoder.JSONDecodeError:
         logging.warning("JSON decode error from {}".format(url))
         logging.warning("response_string is {}".format(response_string))
@@ -165,9 +175,45 @@ def get_parsed(url):
         raise
 
     if not json_response.get('error', False):
-        cache.set(url, response_string)
+        cache.set(url, new_response_string)
 
     return json_response
+
+def is_absolute(url):
+	return bool(urlparse(url).netloc)
+
+def fix_mercury(mercury_response, domain):
+
+    soup = BeautifulSoup(mercury_response.get('content', None), 'html.parser')
+
+    prefix = 'http://' + domain
+    links = soup.find_all('a')
+    for link in links:
+        href = link.get('href', ' ')
+        if not is_absolute(href):
+            link['href'] = urljoin(prefix, href)
+
+    images = soup.find_all('img')
+    for image in images:
+        src = image.get('src', ' ')
+        if not is_absolute(src):
+            image['src'] = urljoin(prefix, src)
+
+    # remove class attributes
+    REMOVE_ATTRIBUTES = ['class']
+    for tag in soup.recursiveChildGenerator():
+        # print("tag is ", tag)
+        try:
+            key_list = list(tag.attrs.keys())
+            # print("key list is ", key_list)
+            for key in key_list:
+                if key in REMOVE_ATTRIBUTES:
+                    del tag.attrs[key]
+        except AttributeError:
+            pass
+
+    mercury_response['content'] = str(soup)
+    return mercury_response
 
 
 # Create HTML file for article 3 column format and store in AWS S3

@@ -1,10 +1,5 @@
 import React, { Component } from "react";
-import {
-	Progress,
-	Viewport,
-	HoverViewport,
-	MiniMapContent,
-} from "./components.jsx";
+import { Viewport, HoverViewport, MiniMapContent } from "./components.jsx";
 import $ from "jquery";
 
 // these variables are used by render and are sourced by props
@@ -18,16 +13,11 @@ export default class MiniMap extends Component {
 		super(props);
 		this.handleEnter = this.handleEnter.bind(this);
 		this.handleLeave = this.handleLeave.bind(this);
-		this.handleMove = this.handleMove.bind(this);
 		this.changeScroll = this.changeScroll.bind(this);
-		this.handleMouseDown = this.handleMouseDown.bind(this);
-		this.handleMouseUp = this.handleMouseUp.bind(this);
 
 		this.state = {
 			show: false,
-			y: 0,
 			scale: 0,
-			down: false,
 		};
 	}
 
@@ -36,7 +26,7 @@ export default class MiniMap extends Component {
 	calculateMiniMap() {
 		let { offset, height, total_height, width } = this.props;
 
-		scale = 50 / 500;
+		scale = 30 / 500;
 
 		// calculate scale factor
 		let percent = height / total_height;
@@ -61,9 +51,9 @@ export default class MiniMap extends Component {
 				(offset * total_distance_to_scroll) / (total_height - height);
 		}
 		// console.log("---------------------------");
-		console.log("scale is " + scale);
+		// console.log("scale is " + scale);
 		// console.log("viewport is " + pixels);
-		console.log("total height is " + total_height);
+		// console.log("total height is " + total_height);
 		// console.log("height is " + height);
 		// console.log("width is " + width);
 
@@ -72,12 +62,7 @@ export default class MiniMap extends Component {
 		// console.log("top is " + top);
 		// console.log("desired top is " + desired_top);
 		// console.log("offset is " + offset);
-		console.log("minimap height is " + minimap_height);
-		console.log(
-			"minimap height is " +
-				minimap_height / total_height +
-				" of total height"
-		);
+		// console.log("minimap height is " + minimap_height);
 
 		return {
 			top: top,
@@ -85,18 +70,6 @@ export default class MiniMap extends Component {
 			scale: scale,
 			minimap_scroll: minimap_scroll,
 		};
-	}
-
-	handleMove(e) {
-		if (this.state.down) {
-			this.changeScroll(e);
-		} else {
-			this.magnifier(true, e.clientY);
-		}
-
-		this.setState({
-			y: e.clientY,
-		});
 	}
 
 	magnifier(hover, yPos) {
@@ -108,9 +81,10 @@ export default class MiniMap extends Component {
 	}
 
 	changeScroll(e) {
+		console.log("inner change scroll called");
 		let scaledPos = this.scaleYPosForArticle(e.clientY);
 
-		this.props.changeScroll(scaledPos);
+		this.props.changeScroll(scaledPos, true);
 	}
 
 	scaleYPosForArticle(yPos) {
@@ -125,7 +99,7 @@ export default class MiniMap extends Component {
 	}
 
 	handleLeave(e) {
-		this.magnifier(false, e.clientY);
+		// this.magnifier(false, e.clientY);
 
 		this.setState({
 			show: false,
@@ -133,24 +107,12 @@ export default class MiniMap extends Component {
 	}
 
 	handleEnter(e) {
-		if (!this.state.down) {
-			this.magnifier(true, e.clientY);
+		if (!this.props.down) {
+			// this.magnifier(true, e.clientY);
 		}
 
 		this.setState({
 			show: true,
-		});
-	}
-
-	handleMouseDown(e) {
-		this.setState({
-			down: true,
-		});
-	}
-
-	handleMouseUp(e) {
-		this.setState({
-			down: false,
 		});
 	}
 
@@ -168,7 +130,7 @@ export default class MiniMap extends Component {
 			top: top + "px",
 		};
 
-		let preview_top = this.state.y - pixels / 2;
+		let preview_top = this.props.y - pixels / 2;
 
 		let preview_style = {
 			top: preview_top,
@@ -176,26 +138,18 @@ export default class MiniMap extends Component {
 		};
 
 		return (
-			<div
-				onMouseEnter={this.handleEnter}
-				onMouseMove={this.handleMove}
-				onMouseLeave={this.handleLeave}
-				className="minimap"
-				onClick={this.changeScroll}
-				id="minimap"
-			>
+			<div className="minimap" id="minimap">
 				<Viewport
 					changeScroll={this.props.changeScroll}
 					style={style}
 					handleLeave={this.handleLeave}
 					handleEnter={this.handleEnter}
-					handleMouseDown={this.handleMouseDown}
-					handleMouseUp={this.handleMouseUp}
 				/>
 				<HoverViewport
 					show={this.state.show}
-					down={this.state.down}
+					down={this.props.down}
 					style={preview_style}
+					onClick={this.changeScroll}
 				/>
 				<MiniMapContent
 					scale={scale}

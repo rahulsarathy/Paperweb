@@ -1,4 +1,4 @@
-$article-width: 600px;
+$article-width: 500px;
 
 h1 {
   font-family: helvetica;
@@ -12,7 +12,8 @@ body {
 
 .author {
   font-family: helvetica;
-  line-height: 25px;
+  line-height: 1;
+  margin-bottom: 0 !important;
 }
 
 .article {
@@ -21,6 +22,15 @@ body {
   // margin: auto;
   // margin-top: 55px;
   max-width: $article-width;
+  p {
+    font-size: 17px;
+    margin-bottom: 2em;
+  }
+
+  h1 {
+    font-size: 35px;
+    margin-bottom: 0em;
+  }
 }
 
 .article-wrapper {
@@ -57,15 +67,6 @@ blockquote {
   position: relative;
 }
 
-.subheaders {
-  position: fixed;
-  color: black;
-  right: 75px;
-  text-align: right;
-  width: 150px;
-  font-size: 12px;
-}
-
 .zoom {
   position: fixed;
 
@@ -75,8 +76,13 @@ blockquote {
   -webkit-transform-origin: top right;
   transform-origin: top right;
   top: 0;
-  right: 0;
-  margin-right: 5px;
+  //right: 0;
+
+  // attribute that needs to be adjusted when minimap width changes
+  right: 20px;
+  // margin-right: 2.5px;
+  // margin-right: 10px;
+  // margin-left: 10px;
   pointer-events: none;
   user-select: none;
 
@@ -91,7 +97,7 @@ blockquote {
 
 .minimap {
   position: fixed;
-  right: 0px;
+  right: 10px;
   top: 0;
   // max-width: 100px;
   background-color: #babaa7;
@@ -101,7 +107,7 @@ blockquote {
     background-color: #6e6e58;
   }
 
-  width: 70px;
+  width: 50px;
   // background-size: contain;
   height: 100%;
   .hover-viewport {
@@ -138,6 +144,30 @@ blockquote {
     // pointer-events: none;
     // height: 200px;
   }
+
+  .subheader {
+    line-height: 1;
+    position: fixed;
+    right: 70px;
+    font-family: helvetica;
+    font-weight: bold;
+    text-align: right;
+    width: 120px;
+    color: black;
+    font-size: 10px;
+    cursor: pointer;
+  }
+
+  .subheader:hover {
+    color: #007bff;
+  }
+}
+
+.article-progress {
+  position: fixed;
+  background-color: #babaa7;
+  width: 7px;
+  top: 0;
 }
 
 .magnifier {

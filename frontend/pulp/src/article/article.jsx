@@ -7,8 +7,9 @@ import {
   useWindowDimensions,
   MiniMap,
   useMousePosition,
+  Progress,
 } from "./components.jsx";
-import { Dropdown } from "react-bootstrap";
+// import { Dropdown } from "react-bootstrap";
 import { Header } from "../components/components.jsx";
 
 import * as Sentry from "@sentry/browser";
@@ -24,9 +25,70 @@ export default class Article extends React.Component {
     document.title = article_json.title;
     super(props);
     this.createArticle = this.createArticle.bind(this);
-    this.magnifier = this.magnifier.bind(this);
+    // this.magnifier = this.magnifier.bind(this);
 
-    this.state = { hover: false, offset: 0 };
+    this.handleMouseDown = this.handleMouseDown.bind(this);
+    this.handleMouseUp = this.handleMouseUp.bind(this);
+    this.changeScroll = this.changeScroll.bind(this);
+
+    this.handleMove = this.handleMove.bind(this);
+
+    this.state = {
+      hover: false,
+      offset: 0,
+
+      down: false,
+      y: 0,
+    };
+  }
+
+  handleMouseDown(e) {
+    console.log("setting mouse down on " + e.target.id);
+
+    if (e.target.id == "minimap") {
+      this.setState({
+        down: true,
+      });
+    }
+  }
+
+  handleMouseUp(e) {
+    this.setState({
+      down: false,
+    });
+  }
+
+  changeScroll(e) {
+    // console.log("wrapper change scroll called");
+    let scaledPos = this.scaleYPosForArticle(e.clientY);
+    this.props.changeScroll(scaledPos, true);
+  }
+
+  scaleYPosForArticle(yPos) {
+    let scale = 30 / 500;
+
+    let { height, total_height } = this.props;
+
+    let minimap_height = scale * total_height;
+
+    let progress = (yPos + minimap_scroll) / minimap_height;
+
+    let offset = progress * total_height - height / 2;
+    return offset;
+  }
+
+  handleMove(e) {
+    if (this.state.down) {
+      console.log("calling change scroll");
+      this.changeScroll(e);
+    }
+    // else {
+    //   this.magnifier(true, e.clientY);
+    // }
+
+    this.setState({
+      y: e.clientY,
+    });
   }
 
   createMarkup() {
@@ -64,8 +126,19 @@ export default class Article extends React.Component {
 
   render() {
     return (
-      <div>
-        <div className="article-wrapper">{this.createArticle("auto")}</div>
+      <div
+        onMouseDown={this.handleMouseDown}
+        onMouseUp={this.handleMouseUp}
+        onMouseMove={this.handleMove}
+      >
+        <div id="article-wrapper" className="article-wrapper">
+          {this.createArticle("auto")}
+        </div>
+        <Progress
+          offset={this.props.offset}
+          total_height={this.props.total_height}
+          height={this.props.height}
+        />
         <MiniMap
           total_height={this.props.total_height}
           height={this.props.height}
@@ -74,7 +147,8 @@ export default class Article extends React.Component {
           innerHTML={this.createMarkup()}
           width={this.props.width}
           createArticle={this.createArticle}
-          magnifier={this.magnifier}
+          down={this.state.down}
+          y={this.state.y}
         ></MiniMap>
         {/*this.state.hover ? (
           <div className="magnifier">
@@ -100,22 +174,36 @@ const ArticleWrapper = () => {
 
   // const { mouseX, mouseY } = useMousePosition();
 
-  function changeScroll(offset) {
-    // let percent = offset / height;
-    // let scaled = percent * total;
+  // function changeScroll(offset) {
+  //   // let percent = offset / height;
+  //   // let scaled = percent * total;
+  //   // document.documentElement.scrollTop = document.body.scrollTop = offset;
+  //   window.scrollTo({ top: offset, behavior: "smooth" });
+  //   // var time = 10;
+  //   // var distance = offset;
+
+  //   // $("body,html,document")
+  //   //   // .stop()
+  //   //   .animate(
+  //   //     {
+  //   //       scrollTop: distance * 1,
+  //   //     },
+  //   //     time
+  //   //   );
+  // }
+
+  function changeScroll(offset, animate = false) {
+    // if (animate) {
+    //   console.log("change scroll fired with animation: " + animate);
+
+    //   $("html, body").animate({ scrollTop: offset }, "50");
+    // } else {
+    //   console.log("change scroll fired with animation: " + animate);
+
+    //   document.documentElement.scrollTop = document.body.scrollTop = offset;
+    // }
+
     document.documentElement.scrollTop = document.body.scrollTop = offset;
-
-    // var time = 10;
-    // var distance = offset;
-
-    // $("body,html,document")
-    //   // .stop()
-    //   .animate(
-    //     {
-    //       scrollTop: distance * 1,
-    //     },
-    //     time
-    //   );
   }
 
   return (

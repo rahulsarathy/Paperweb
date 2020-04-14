@@ -27,9 +27,10 @@ export default class SubHeaders extends Component {
 			subheaders.push(...tags);
 		});
 
-		console.log(subheaders);
+		let new_subheaders = this.spacesubheaders(subheaders);
+
 		this.setState({
-			subheaders: subheaders,
+			subheaders: new_subheaders,
 		});
 	}
 
@@ -47,7 +48,33 @@ export default class SubHeaders extends Component {
 		);
 	}
 
-	rendersubheaders() {}
+	spacesubheaders(subheaders) {
+		let { scale } = this.props;
+		let new_subheaders = subheaders;
+
+		for (let i = 0; i < new_subheaders.length; i++) {
+			new_subheaders[i].yPos =
+				(new_subheaders[i].offsetTop + new_subheaders[i].offsetHeight) *
+				scale;
+			new_subheaders[i].scaled_height =
+				new_subheaders[i].offsetHeight * scale;
+		}
+
+		console.log(new_subheaders);
+
+		for (let i = 1; i < new_subheaders.length; i++) {
+			if (20 + new_subheaders[i - 1].yPos > new_subheaders[i].yPos) {
+				let overshot =
+					new_subheaders[i - 1].scaled_height +
+					new_subheaders[i - 1].yPos;
+				let amount_overshot = overshot - new_subheaders[i].yPos;
+				let padding = 50;
+				new_subheaders[i].yPos =
+					amount_overshot + new_subheaders[i].yPos + padding;
+			}
+		}
+		return new_subheaders;
+	}
 
 	render() {
 		let { subheaders } = this.state;
