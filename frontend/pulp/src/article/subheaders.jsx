@@ -24,20 +24,23 @@ export default class SubHeaders extends Component {
 
 		highlighted_tags.forEach((tag) => {
 			let tags = minimap.getElementsByTagName(tag);
-			subheaders.push(...tags);
+
+			for (let i = 0; i < tags.length; i++) {
+				if (tags[i].offsetLeft === 0) {
+					subheaders.push(tags[i]);
+				}
+			}
 		});
 
-		let new_subheaders = this.spacesubheaders(subheaders);
-
 		this.setState({
-			subheaders: new_subheaders,
+			subheaders: subheaders,
 		});
 	}
 
 	rendersubheader(subheader, index) {
 		let { minimap_scroll } = this.props;
 
-		let offset = subheader.offsetTop + minimap_scroll;
+		let offset = subheader.offsetTop + minimap_scroll + 41;
 		let style = {
 			top: "-" + offset + "px",
 		};

@@ -10,7 +10,8 @@ import {
   Progress,
 } from "./components.jsx";
 // import { Dropdown } from "react-bootstrap";
-import { Header } from "../components/components.jsx";
+// import { Header } from "../components/components.jsx";
+import { TableOfContents, Header } from "./components.jsx";
 
 import * as Sentry from "@sentry/browser";
 if (process.env.NODE_ENV == "production") {
@@ -19,36 +20,42 @@ if (process.env.NODE_ENV == "production") {
   });
 }
 
+document.title = article_json.title;
+
 // article_json is passed to the dom
 export default class Article extends React.Component {
   constructor(props) {
-    document.title = article_json.title;
     super(props);
     this.createArticle = this.createArticle.bind(this);
     // this.magnifier = this.magnifier.bind(this);
 
     this.handleMouseDown = this.handleMouseDown.bind(this);
     this.handleMouseUp = this.handleMouseUp.bind(this);
-    this.changeScroll = this.changeScroll.bind(this);
 
     this.handleMove = this.handleMove.bind(this);
 
     this.state = {
       hover: false,
-      offset: 0,
+      // offset: 0,
 
       down: false,
-      y: 0,
+      yPos: 0, // where mouse is
     };
   }
 
   handleMouseDown(e) {
-    console.log("setting mouse down on " + e.target.id);
+    if (e.target.id == "minimap" || e.target.id == "viewport") {
+      // e.persist();
+      // console.log(e.target);
+      // console.log("setting mouse down on " + e.target.id);
 
-    if (e.target.id == "minimap") {
       this.setState({
         down: true,
       });
+    } else {
+      // e.persist();
+      // console.log(e.target);
+      // console.log("rejecting mouse down from " + e.target.id);
     }
   }
 
@@ -58,36 +65,17 @@ export default class Article extends React.Component {
     });
   }
 
-  changeScroll(e) {
-    // console.log("wrapper change scroll called");
-    let scaledPos = this.scaleYPosForArticle(e.clientY);
-    this.props.changeScroll(scaledPos, true);
-  }
-
-  scaleYPosForArticle(yPos) {
-    let scale = 30 / 500;
-
-    let { height, total_height } = this.props;
-
-    let minimap_height = scale * total_height;
-
-    let progress = (yPos + minimap_scroll) / minimap_height;
-
-    let offset = progress * total_height - height / 2;
-    return offset;
-  }
-
   handleMove(e) {
     if (this.state.down) {
-      console.log("calling change scroll");
-      this.changeScroll(e);
+      // console.log("move minimap");
+      return;
     }
     // else {
     //   this.magnifier(true, e.clientY);
     // }
-
+    // console.log("updating yPos from " + e.target.id);
     this.setState({
-      y: e.clientY,
+      yPos: e.clientY,
     });
   }
 
@@ -97,12 +85,12 @@ export default class Article extends React.Component {
 
   componentDidMount() {}
 
-  magnifier(hover, yPos = 0) {
-    this.setState({
-      hover: hover,
-      offset: yPos,
-    });
-  }
+  // magnifier(hover, yPos = 0) {
+  //   this.setState({
+  //     hover: hover,
+  //     offset: yPos,
+  //   });
+  // }
 
   createArticle(margin = 0) {
     let author_text;
@@ -127,10 +115,12 @@ export default class Article extends React.Component {
   render() {
     return (
       <div
+        id="big-wrapper"
         onMouseDown={this.handleMouseDown}
         onMouseUp={this.handleMouseUp}
         onMouseMove={this.handleMove}
       >
+        <Header offset={this.props.offset} />
         <div id="article-wrapper" className="article-wrapper">
           {this.createArticle("auto")}
         </div>
@@ -148,7 +138,7 @@ export default class Article extends React.Component {
           width={this.props.width}
           createArticle={this.createArticle}
           down={this.state.down}
-          y={this.state.y}
+          yPos={this.state.yPos}
         ></MiniMap>
         {/*this.state.hover ? (
           <div className="magnifier">
@@ -170,7 +160,7 @@ export default class Article extends React.Component {
 const ArticleWrapper = () => {
   document.title = article_json.title;
 
-  const { height, width, offset, total } = useWindowDimensions();
+  let { height, width, offset, total } = useWindowDimensions();
 
   // const { mouseX, mouseY } = useMousePosition();
 
@@ -206,11 +196,13 @@ const ArticleWrapper = () => {
     document.documentElement.scrollTop = document.body.scrollTop = offset;
   }
 
+  offset = offset;
+
   return (
     <Article
       width={width}
       height={height}
-      offset={pageYOffset}
+      offset={offset}
       total_height={total}
       changeScroll={changeScroll}
     />

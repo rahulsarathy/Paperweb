@@ -9,7 +9,6 @@ function getWindowDimensions() {
 
   var body = document.body,
     html = document.documentElement;
-
   var total = Math.max(
     body.scrollHeight,
     body.offsetHeight,

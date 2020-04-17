@@ -35,7 +35,8 @@ body {
 
 .article-wrapper {
   // width: 50%;
-  margin: auto;
+  margin-top: 70px;
+  // margin: auto;
   // margin-top: 55px;
 }
 
@@ -54,6 +55,10 @@ img {
   max-width: $article-width;
 }
 
+iframe {
+  max-width: $article-width;
+}
+
 blockquote {
   margin-left: 0px;
   border-left: 3px solid #989898;
@@ -65,21 +70,54 @@ blockquote {
 
 .zoom-wrapper {
   position: relative;
+  width: 80%;
+  margin: 0px auto 0;
+}
+
+.article-header {
+  width: 100%;
+  position: fixed;
+  top: 0px;
+  z-index: 5;
+
+  .inner-article-header {
+    width: 80%;
+    margin-top: 10px;
+    // background-color: white;
+    margin: auto;
+    border-bottom-style: solid;
+    border-bottom-color: black;
+    border-bottom-width: 1px;
+    img {
+      height: 30px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+  }
+}
+
+.table-of-contents {
+  position: relative;
+  left: 10%;
+  top: 20px;
+  font-size: 14px;
+  font-family: sans-serif;
+  width: 200px;
 }
 
 .zoom {
-  position: fixed;
-
+  position: absolute;
+  // width: 100%;
+  width: 500px;
   // left: 70%;
   // bottom: 4300px;
-  // top: 0;
-  -webkit-transform-origin: top right;
-  transform-origin: top right;
-  top: 0;
+  -webkit-transform-origin: top left;
+  transform-origin: top left;
   //right: 0;
 
   // attribute that needs to be adjusted when minimap width changes
-  right: 20px;
+  // right: calc(12.5px + 10%);
+  // right: 10%;
   // margin-right: 2.5px;
   // margin-right: 10px;
   // margin-left: 10px;
@@ -87,6 +125,7 @@ blockquote {
   user-select: none;
 
   z-index: 1;
+  // top: 0px;
 
   .article {
     .content {
@@ -97,8 +136,10 @@ blockquote {
 
 .minimap {
   position: fixed;
-  right: 10px;
-  top: 0;
+  // right: 15px;
+  right: 10%;
+
+  top: 0px;
   // max-width: 100px;
   background-color: #babaa7;
   color: white;
@@ -145,10 +186,13 @@ blockquote {
     // height: 200px;
   }
 
+  .subheaders {
+  }
+
   .subheader {
     line-height: 1;
     position: fixed;
-    right: 70px;
+    right: calc(10% + 70px);
     font-family: helvetica;
     font-weight: bold;
     text-align: right;

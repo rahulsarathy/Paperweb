@@ -10,12 +10,13 @@ export default class MiniMapContent extends Component {
 	render() {
 		let { scale, minimap_scroll, createArticle } = this.props;
 		return (
-			<div className="zoom-wrapper">
+			<div id="zoom-wrapper" className="zoom-wrapper">
 				<Zoom
 					createArticle={createArticle}
 					scale={scale}
 					minimap_scroll={minimap_scroll}
 				/>
+				{/*<SubHeaders minimap_scroll={minimap_scroll} scale={scale} />*/}
 				<SubHeaders minimap_scroll={minimap_scroll} scale={scale} />
 			</div>
 		);
