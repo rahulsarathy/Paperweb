@@ -127,21 +127,40 @@ export default class MiniMap extends Component {
 		let scroll_offset =
 			margin_top + (margin_top + title_offset - margin_top) * scale;
 
+		let minimap_height = (total_height - title_offset) * scale;
+		let viewport_percent = height / total_height;
+		let viewport_size = viewport_percent * minimap_height;
+
 		let viewport_pos_initial = margin_top;
 		let viewport_pos_end = (total_height - height) * scale + margin_top;
+
+		// let available = height - margin_top;
+		let available = height - scroll_offset;
+
+		if (minimap_height > available) {
+			viewport_pos_end = height - height * scale;
+		}
+
 		let viewport_travel = viewport_pos_end - viewport_pos_initial;
 		let progress = offset / (total_height - height);
 
 		let viewport_pos = progress * viewport_travel + margin_top;
 
-		let minimap_height = total_height * scale;
-		let viewport_percent = height / total_height;
-		let viewport_size = viewport_percent * minimap_height;
-
 		let minimap_scroll = -1 * scroll_offset;
+
 		let total_distance_to_scroll = 0;
 
+		if (minimap_height > available) {
+			total_distance_to_scroll =
+				minimap_height - (height - scroll_offset);
+			minimap_scroll =
+				progress * total_distance_to_scroll - scroll_offset;
+		}
+
 		console.log("---------------------------");
+		console.log("progress is ", progress);
+		console.log("viewport travel is", viewport_travel);
+
 		console.log("scale is " + scale);
 		console.log("viewport is " + pixels);
 		console.log("total height is " + total_height);
