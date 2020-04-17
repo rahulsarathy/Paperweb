@@ -8,7 +8,8 @@ import HoverViewport from "./hover_viewport.jsx";
 import MiniMapContent from "./minimap_content.jsx";
 import SubHeaders from "./subheaders.jsx";
 import SubHeader from "./subheader.jsx";
-
+import TableOfContents from "./table_of_contents.jsx";
+import Header from "./header.jsx";
 import Zoom from "./zoom.jsx";
 
 export {
@@ -22,4 +23,6 @@ export {
 	SubHeaders,
 	Zoom,
 	SubHeader,
+	TableOfContents,
+	Header,
 };
