@@ -3,6 +3,7 @@ $article-width: 500px;
 h1 {
   font-family: helvetica;
   font-weight: bold;
+  font-family: "Times New Roman";
 }
 
 body {
@@ -13,7 +14,19 @@ body {
 .author {
   font-family: helvetica;
   line-height: 1;
-  margin-bottom: 0 !important;
+  margin-bottom: 10px !important;
+}
+
+.summary {
+  width: 300px;
+  height: 300px;
+  background-color: white;
+  position: absolute;
+  font-size: 14px;
+  box-shadow: 0 4px 5px -3px rgba(0, 0, 0, 1);
+  border-radius: 3px;
+  padding: 10px;
+  overflow-y: scroll;
 }
 
 .article {
@@ -36,6 +49,7 @@ body {
 .article-wrapper {
   // width: 50%;
   margin-top: 70px;
+  z-index: 1;
   // margin: auto;
   // margin-top: 55px;
 }
@@ -78,16 +92,18 @@ blockquote {
   width: 100%;
   position: fixed;
   top: 0px;
-  z-index: 5;
+  z-index: 2;
 
   .inner-article-header {
     width: 80%;
     margin-top: 10px;
-    // background-color: white;
+    background-color: white;
     margin: auto;
     border-bottom-style: solid;
     border-bottom-color: black;
-    border-bottom-width: 1px;
+    border-bottom-width: 0px;
+    box-shadow: 0 4px 5px -5px rgba(0, 0, 0, 1);
+
     img {
       height: 30px;
       margin-top: 10px;
@@ -97,12 +113,13 @@ blockquote {
 }
 
 .table-of-contents {
-  position: relative;
+  // z-index: 0 !important;
+  position: absolute;
   left: 10%;
   top: 20px;
   font-size: 14px;
   font-family: sans-serif;
-  width: 200px;
+  width: 150px;
 }
 
 .zoom {
@@ -143,6 +160,8 @@ blockquote {
   // max-width: 100px;
   background-color: #babaa7;
   color: white;
+
+  box-shadow: inset 0px 0px 15px #0000005c;
 
   blockquote {
     background-color: #6e6e58;
@@ -210,8 +229,9 @@ blockquote {
 .article-progress {
   position: fixed;
   background-color: #babaa7;
-  width: 7px;
-  top: 0;
+  width: 4px;
+  top: 0px;
+  right: calc(10% - 15px);
 }
 
 .magnifier {

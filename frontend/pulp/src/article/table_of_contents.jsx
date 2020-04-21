@@ -36,6 +36,13 @@ export default class TableOfContents extends Component {
 		});
 	}
 
+	spaceSubHeaders(subheaders) {
+		let height = this.props.height;
+		for (let i = 1; i < subheaders.length; i++) {
+			subheaders[i] - height;
+		}
+	}
+
 	render() {
 		let { subheaders } = this.state;
 

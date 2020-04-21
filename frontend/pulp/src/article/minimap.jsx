@@ -11,12 +11,6 @@ let minimap_scroll = 0;
 export default class MiniMap extends Component {
 	constructor(props) {
 		super(props);
-		this.handleEnterHover = this.handleEnterHover.bind(this);
-		this.handleLeaveHover = this.handleLeaveHover.bind(this);
-
-		this.handleEnterView = this.handleEnterView.bind(this);
-		this.handleLeaveView = this.handleLeaveView.bind(this);
-		this.changeScroll = this.changeScroll.bind(this);
 
 		this.state = {
 			show_hover: false,
@@ -44,135 +38,70 @@ export default class MiniMap extends Component {
 
 	calculateMiniMap() {
 		let { offset, height, total_height, width } = this.props;
-		total_height = total_height;
+
+		// this width is set in css under $article-width
 		let article_width = 500;
+		// this percent is set in css in .zoom-container width
 		let percent_of_minimap = 40;
+		// margin_top is defined by how large the header is
 		let margin_top = 51;
-		// let title_offset = document.getElementById("article-wrapper").offsetTop;
-		let title_offset = 70;
-
-		// offset = offset + 41;
-		scale = percent_of_minimap / article_width;
-
-		let scroll_offset =
-			margin_top + (margin_top + title_offset - margin_top) * scale;
-
-		// calculate scale factor
-		let percent = height / total_height;
-
-		let minimap_height = scale * total_height;
-
-		// how large should the minimap highlight be
-		pixels = percent * minimap_height;
-
-		// let desired_top = height - pixels;
-		// let desired_top = Math.min(height, minimap_height) - pixels;
-		let desired_top = Math.min(height - margin_top, minimap_height);
-		// let desired_top = -1175;
-
-		// let scroll_offset = title_offset;
-		// let scroll_offset = margin_top + (title_offset - margin_top);
-
-		// top = (offset * desired_top) / (total_height - height) + margin_top;
-
-		// top =
-		// 	(offset * (desired_top - margin_top)) /
-		// 		(total_height - height - margin_top) +
-		// 	margin_top -
-		// 	scale * (title_offset - margin_top);
-
-		let top = margin_top + (offset / (total_height - height)) * desired_top;
-
-		let total_distance_to_scroll = height;
-
-		let minimap_scroll = -1 * scroll_offset;
-
-		if (minimap_height > height) {
-			total_distance_to_scroll = minimap_height - height + scroll_offset;
-			minimap_scroll =
-				(offset * total_distance_to_scroll) / (total_height - height) -
-				scroll_offset;
-		}
-		console.log("---------------------------");
-		console.log("scale is " + scale);
-		console.log("viewport is " + pixels);
-		console.log("total height is " + total_height);
-		console.log("height is " + height);
-		console.log("width is " + width);
-
-		console.log("total_distance_to_scroll is " + total_distance_to_scroll);
-		console.log("minimap_scroll is " + minimap_scroll);
-		console.log("top is " + top);
-		console.log("desired top is " + desired_top);
-		console.log("offset is " + offset);
-		console.log("minimap height is " + minimap_height);
-
-		return {
-			top: top,
-			pixels: pixels,
-			scale: scale,
-			minimap_scroll: minimap_scroll,
-		};
-	}
-
-	calculateMiniMap2() {
-		let { offset, height, total_height, width } = this.props;
-
-		let article_width = 500;
-		let percent_of_minimap = 40;
-		let margin_top = 51;
+		// title_offset is defined by how far down the title is from the top of the page
 		let title_offset = 70;
 		let scale = percent_of_minimap / article_width;
-
-		let scroll_offset =
-			margin_top + (margin_top + title_offset - margin_top) * scale;
-
-		let minimap_height = (total_height - title_offset) * scale;
-		let viewport_percent = height / total_height;
-		let viewport_size = viewport_percent * minimap_height;
-
-		let viewport_pos_initial = margin_top;
-		let viewport_pos_end = (total_height - height) * scale + margin_top;
-
-		// let available = height - margin_top;
-		let available = height - scroll_offset;
-
-		if (minimap_height > available) {
-			viewport_pos_end = height - height * scale;
-		}
-
-		let viewport_travel = viewport_pos_end - viewport_pos_initial;
+		// how much of the article is completed
 		let progress = offset / (total_height - height);
+		// size of header unscaled + distance from article top to header bottom scaled
+		let scroll_offset = margin_top + title_offset * scale;
+		// how much space does the minimap have in one viewport
+		let available = height - scroll_offset;
+		// how large is .zoom
+		let minimap_height = (total_height - title_offset) * scale;
+		// viewport start position
+		let viewport_pos_initial = margin_top;
+		// viewport end position
 
-		let viewport_pos = progress * viewport_travel + margin_top;
+		// calculate minimap viewport height
+		let viewport_percent = height / total_height;
+		let viewport_size = viewport_percent * (total_height * scale);
 
+		let viewport_pos_end = (total_height - height) * scale + margin_top;
+		// viewport_pos_end = total_height - viewport_size;
+
+		// values for if minimap fits in one viewport
+		let total_distance_to_scroll = 0;
 		let minimap_scroll = -1 * scroll_offset;
 
-		let total_distance_to_scroll = 0;
-
+		// if viewport does not fit in one viewport
 		if (minimap_height > available) {
+			viewport_pos_end = height - viewport_size;
+
 			total_distance_to_scroll =
 				minimap_height - (height - scroll_offset);
+
 			minimap_scroll =
 				progress * total_distance_to_scroll - scroll_offset;
 		}
 
-		console.log("---------------------------");
-		console.log("progress is ", progress);
-		console.log("viewport travel is", viewport_travel);
+		// calculate viewport position
+		let viewport_travel = viewport_pos_end - viewport_pos_initial;
+		let viewport_pos = progress * viewport_travel + margin_top;
 
-		console.log("scale is " + scale);
-		console.log("viewport is " + pixels);
-		console.log("total height is " + total_height);
-		console.log("height is " + height);
-		console.log("width is " + width);
+		// console.log("---------------------------");
+		// console.log("progress is ", progress);
+		// console.log("viewport travel is", viewport_travel);
 
-		console.log("total_distance_to_scroll is " + total_distance_to_scroll);
-		console.log("minimap_scroll is " + minimap_scroll);
-		console.log("viewport_pos is " + viewport_pos);
-		// console.log("desired top is " + desired_top);
-		console.log("offset is " + offset);
-		console.log("minimap height is " + minimap_height);
+		// console.log("scale is " + scale);
+		// console.log("viewport is " + pixels);
+		// console.log("total height is " + total_height);
+		// console.log("height is " + height);
+		// console.log("available is " + available);
+		// console.log("width is " + width);
+
+		// console.log("total_distance_to_scroll is " + total_distance_to_scroll);
+		// console.log("minimap_scroll is " + minimap_scroll);
+		// console.log("viewport_pos is " + viewport_pos);
+		// console.log("offset is " + offset);
+		// console.log("minimap height is " + minimap_height);
 
 		return {
 			viewport_pos: viewport_pos,
@@ -182,82 +111,13 @@ export default class MiniMap extends Component {
 		};
 	}
 
-	// magnifier(hover, yPos) {
-	// 	let adjusted_y = this.scaleYPosForArticle(
-	// 		// yPos + minimap_scroll - pixels / 2
-	// 		yPos
-	// 	);
-	// 	this.props.magnifier(hover, adjusted_y);
-	// }
-
-	handleMove(e) {
-		this.setState({});
-	}
-
-	changeScroll(e) {
-		// console.log(e);
-		// console.log("change scroll called");
-		let scaledPos = this.scaleYPosForArticle(e.clientY);
-
-		this.props.changeScroll(scaledPos, true);
-	}
-
-	changeScroll2(y) {
-		// console.log(e);
-		// console.log("changescroll2 called");
-		let scaledPos = this.scaleYPosForArticle(y);
-
-		this.props.changeScroll(scaledPos, true);
-	}
-
-	scaleYPosForArticle(yPos) {
-		let { height, total_height } = this.props;
-
-		let minimap_height = scale * total_height;
-
-		let progress = (yPos + minimap_scroll) / minimap_height;
-
-		let offset = progress * total_height - height / 2;
-		return offset;
-	}
-
-	handleLeaveHover(e) {
-		// this.magnifier(false, e.clientY);
-		this.setState({
-			show_hover: false,
-		});
-	}
-
-	handleEnterView(e) {
-		// console.log("enter view called");
-		this.setState({
-			show_hover: false,
-		});
-	}
-
-	handleLeaveView(e) {
-		this.setState({
-			show_hover: true,
-		});
-	}
-
-	handleEnterHover(e) {
-		if (!this.props.down) {
-			// this.magnifier(true, e.clientY);
-		}
-
-		this.setState({
-			show_hover: true,
-		});
-	}
-
 	render() {
 		let {
 			scale,
 			minimap_scroll,
 			viewport_size,
 			viewport_pos,
-		} = this.calculateMiniMap2();
+		} = this.calculateMiniMap();
 
 		let author_text;
 		article_json.author === null || article_json.author === ""

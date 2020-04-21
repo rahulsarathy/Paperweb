@@ -11,6 +11,7 @@ import SubHeader from "./subheader.jsx";
 import TableOfContents from "./table_of_contents.jsx";
 import Header from "./header.jsx";
 import Zoom from "./zoom.jsx";
+import Summary from "./summary.jsx";
 
 export {
 	useWindowDimensions,
@@ -25,4 +26,5 @@ export {
 	SubHeader,
 	TableOfContents,
 	Header,
+	Summary,
 };

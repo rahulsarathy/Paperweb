@@ -25,16 +25,19 @@ export default class Header extends Component {
 	}
 
 	render() {
-		// if (this.state.hide) {
-		// 	return <div></div>;
-		// }
+		if (this.state.hide) {
+			return <div></div>;
+		}
 
 		return (
 			<div className="article-header">
 				<div className="inner-article-header">
 					<img src="../static/images/pulp_black_logo.svg"></img>
 				</div>
-				<TableOfContents offset={this.props.offset} />
+				<TableOfContents
+					offset={this.props.offset}
+					height={this.props.height}
+				/>
 			</div>
 		);
 	}

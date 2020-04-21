@@ -8,12 +8,14 @@ from pocket.serializers import PocketCredentialsSerializer
 from instapaper.models import InstapaperCredentials
 from pocket.models import PocketCredentials
 from progress.types import update_add_to_reading_list_status
+from newspaper import Article as Art
 
 from rest_framework.decorators import api_view
 from rest_framework.exceptions import NotFound
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse
 import traceback
+from django.views.decorators.cache import cache_page
 
 
 
@@ -120,6 +122,22 @@ def remove_from_reading_list(request):
         # nothing to remove
         pass
     return JsonResponse(get_reading_list(user), safe=False)
+
+# @cache_page(60 * 15)
+@api_view(['GET'])
+def get_summary(request):
+    url = request.GET['url']
+    newspaper_article = Art(url)
+    newspaper_article.download()
+    newspaper_article.parse()
+    newspaper_article.nlp()
+    summary = newspaper_article.summary
+    title = newspaper_article.title
+    result = {
+        'summary': summary,
+        'title': title
+    }
+    return JsonResponse(result, safe=True)
 
 
 @api_view(['POST'])

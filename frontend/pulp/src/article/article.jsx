@@ -8,6 +8,7 @@ import {
   MiniMap,
   useMousePosition,
   Progress,
+  Summary,
 } from "./components.jsx";
 // import { Dropdown } from "react-bootstrap";
 // import { Header } from "../components/components.jsx";
@@ -22,68 +23,33 @@ if (process.env.NODE_ENV == "production") {
 
 document.title = article_json.title;
 
+let coords = [];
+
 // article_json is passed to the dom
 export default class Article extends React.Component {
   constructor(props) {
     super(props);
     this.createArticle = this.createArticle.bind(this);
-    // this.magnifier = this.magnifier.bind(this);
-
-    this.handleMouseDown = this.handleMouseDown.bind(this);
-    this.handleMouseUp = this.handleMouseUp.bind(this);
-
     this.handleMove = this.handleMove.bind(this);
+
+    this.handleHover = this.handleHover.bind(this);
+    this.handleLeave = this.handleLeave.bind(this);
 
     this.state = {
       hover: false,
-      // offset: 0,
-
-      down: false,
-      yPos: 0, // where mouse is
+      a_tag: {},
+      show_summary:
     };
-  }
-
-  handleMouseDown(e) {
-    if (e.target.id == "minimap" || e.target.id == "viewport") {
-      // e.persist();
-      // console.log(e.target);
-      // console.log("setting mouse down on " + e.target.id);
-
-      this.setState({
-        down: true,
-      });
-    } else {
-      // e.persist();
-      // console.log(e.target);
-      // console.log("rejecting mouse down from " + e.target.id);
-    }
-  }
-
-  handleMouseUp(e) {
-    this.setState({
-      down: false,
-    });
-  }
-
-  handleMove(e) {
-    if (this.state.down) {
-      // console.log("move minimap");
-      return;
-    }
-    // else {
-    //   this.magnifier(true, e.clientY);
-    // }
-    // console.log("updating yPos from " + e.target.id);
-    this.setState({
-      yPos: e.clientY,
-    });
   }
 
   createMarkup() {
     return { __html: article_json.content };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    // this.getSummary();
+    this.findLinks();
+  }
 
   // magnifier(hover, yPos = 0) {
   //   this.setState({
@@ -91,6 +57,135 @@ export default class Article extends React.Component {
   //     offset: yPos,
   //   });
   // }
+
+  handleHover(a_tag) {
+    this.setState({
+      hover: true,
+      a_tag: a_tag,
+    });
+  }
+
+  handleLeave(e) {
+    this.setState({
+      hover: false,
+    });
+  }
+
+  findLinks() {
+    let a_tags = document
+      .getElementById("article-wrapper")
+      .getElementsByTagName("a");
+    coords = [];
+    for (let i = 0; i < a_tags.length; i++) {
+      // a_tags[i].onmouseover = this.handleHover;
+
+      a_tags[i].onmouseover = function() {
+        this.handleHover(a_tags[i]);
+      }.bind(this);
+
+      a_tags[i].onmouseleave = this.handleLeave;
+      a_tags[i].id = "link" + i;
+      // console.log(a_tags[i].text);
+      // console.log(a_tags[i].getBoundingClientRect());
+      let rect = a_tags[i].getBoundingClientRect();
+      // console.log(rect);
+      coords.push({
+        left: parseInt(rect.x) + window.scrollX,
+        width: parseInt(rect.width),
+        height: parseInt(rect.height),
+        // top: parseInt(rect.y) + window.pageYOffset,
+        top: a_tags[i].offsetTop,
+        bottom: rect.bottom + window.pageYOffset,
+        text: a_tags[i].text,
+      });
+    }
+
+    return coords;
+  }
+
+  handleMove(e) {
+    // let offset = this.props.offset;
+    // console.log(e.clientX + ", " + final_y);=
+    // console.log(e);
+    // if (this.checkForLink(e)) {
+    //   console.log("hover");
+    // }
+    // this.checkForLink(e);
+    // e.persist();
+  }
+
+  checkForLink(e) {
+    for (let i = 0; i < coords.length; i++) {
+      // console.log("checking ", coords[i].text);
+
+      if (this.checkRectangle(coords[i], e)) {
+        console.log("hover on ", coords[i].text);
+        return true;
+      }
+    }
+    // console.log(coords[0].top);
+    // let result = this.checkRectangle(coords[1], e);
+    // console.log(result);
+    // return result;
+    return false;
+  }
+
+  checkRectangle(coords, e) {
+    // coords = this.findLinks();
+    this.findLinks();
+    // console.log(coords);
+    let top_left = coords.left;
+    // console.log("left is " + top_left);
+    // console.log("x coord is", e.clientX);
+    let top_right = coords.left + coords.width;
+    // console.log("right is " + top_right);
+    // console.log(
+    //   "in between x is ",
+    //   e.clientX >= top_left && e.clientX <= top_right
+    // );
+    let offset = this.props.offset;
+    let height = this.props.height;
+    let total_height = this.props.total_height;
+    let topY = coords.top;
+    let bottomY = coords.top + coords.height;
+    let final_y = e.clientY + offset;
+
+    // console.log("top is ", topY);
+    // console.log("coords top is ", coords.top);
+    // console.log("clientY is ", e.clientY);
+    // console.log("offset is ", offset);
+    // console.log("bottom is ", bottomY);
+    let scrollTop = window.pageYOffset;
+
+    // console.log(e);
+    // console.log("top Y is ", topY);
+    // console.log("bottom Y is ", bottomY);
+    // console.log("pageY is ", e.pageY);
+    // let adjusted_y = e.target.offsetTop;
+    // console.log("adjusted y is ", adjusted_y);
+    // console.log("clientY is ", e.clientY);
+    // console.log("scrollY is", window.scrollY);
+    // console.log("offset is ", offset);
+    // console.log("height is ", height);
+    // console.log("total_height is ", total_height);
+    // console.log("scrollTop is ", scrollTop);
+    // console.log("actual pos is ", e.pageY - e.clientY);
+    // console.log(window.scrollY + (height - e.clientY));
+
+    // e.persist();
+    // console.log(e.target);
+    // console.log(e.pageEvent);
+
+    if (
+      e.pageX >= top_left &&
+      e.pageX <= top_right &&
+      e.pageY >= topY &&
+      e.pageY <= bottomY
+    ) {
+      return true;
+    }
+    return false;
+  }
 
   createArticle(margin = 0) {
     let author_text;
@@ -105,6 +200,7 @@ export default class Article extends React.Component {
         <h1>{article_json.title}</h1>
         <p className="author">{author_text}</p>
         <div
+          onMouseMove={this.handleMove}
           className="content"
           dangerouslySetInnerHTML={this.createMarkup()}
         ></div>
@@ -113,32 +209,31 @@ export default class Article extends React.Component {
   }
 
   render() {
+    let { offset, height, total_height, width } = this.props;
+
     return (
-      <div
-        id="big-wrapper"
-        onMouseDown={this.handleMouseDown}
-        onMouseUp={this.handleMouseUp}
-        onMouseMove={this.handleMove}
-      >
-        <Header offset={this.props.offset} />
+      <div id="big-wrapper">
+        <Header height={height} offset={this.props.offset} />
         <div id="article-wrapper" className="article-wrapper">
           {this.createArticle("auto")}
         </div>
+        <Summary
+          show_summary={this.state.show_summary}
+          a_tag={this.state.a_tag}
+        />
         <Progress
-          offset={this.props.offset}
+          offset={offset}
           total_height={this.props.total_height}
-          height={this.props.height}
+          height={height}
         />
         <MiniMap
-          total_height={this.props.total_height}
-          height={this.props.height}
-          offset={this.props.offset}
+          total_height={total_height}
+          height={height}
+          offset={offset}
           changeScroll={this.props.changeScroll}
           innerHTML={this.createMarkup()}
-          width={this.props.width}
+          width={width}
           createArticle={this.createArticle}
-          down={this.state.down}
-          yPos={this.state.yPos}
         ></MiniMap>
         {/*this.state.hover ? (
           <div className="magnifier">

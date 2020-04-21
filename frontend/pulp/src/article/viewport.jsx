@@ -11,7 +11,6 @@ export default class Viewport extends Component {
 				onMouseLeave={this.props.handleEnter}
 				onMouseDown={this.props.handleMouseDown}
 				onMouseUp={this.props.handleMouseUp}
-				onMouseMove={this.props.changeScroll}
 			></div>
 		);
 	}
