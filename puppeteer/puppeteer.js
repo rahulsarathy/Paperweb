@@ -6,6 +6,7 @@ var bodyParser = require("body-parser");
 var fs = require("fs");
 const pdfjsLib = require("pdfjs-dist");
 const path = require("path");
+const puppeteer = require("puppeteer");
 
 // Constants
 const PORT = 4000;

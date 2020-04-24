@@ -30,25 +30,20 @@ export default class Article extends React.Component {
   constructor(props) {
     super(props);
     this.createArticle = this.createArticle.bind(this);
-    this.handleMove = this.handleMove.bind(this);
 
-    this.handleHover = this.handleHover.bind(this);
-    this.handleLeave = this.handleLeave.bind(this);
+    this.state = {};
+  }
 
-    this.state = {
-      hover: false,
-      a_tag: {},
-      show_summary:
-    };
+  componentDidUpdate(prevProps, prevState) {
+    // if (this.props.offset != prevProps.offset) {
+    //   this.setState({
+    //     show_summary: false,
+    //   });
+    // }
   }
 
   createMarkup() {
     return { __html: article_json.content };
-  }
-
-  componentDidMount() {
-    // this.getSummary();
-    this.findLinks();
   }
 
   // magnifier(hover, yPos = 0) {
@@ -57,135 +52,6 @@ export default class Article extends React.Component {
   //     offset: yPos,
   //   });
   // }
-
-  handleHover(a_tag) {
-    this.setState({
-      hover: true,
-      a_tag: a_tag,
-    });
-  }
-
-  handleLeave(e) {
-    this.setState({
-      hover: false,
-    });
-  }
-
-  findLinks() {
-    let a_tags = document
-      .getElementById("article-wrapper")
-      .getElementsByTagName("a");
-    coords = [];
-    for (let i = 0; i < a_tags.length; i++) {
-      // a_tags[i].onmouseover = this.handleHover;
-
-      a_tags[i].onmouseover = function() {
-        this.handleHover(a_tags[i]);
-      }.bind(this);
-
-      a_tags[i].onmouseleave = this.handleLeave;
-      a_tags[i].id = "link" + i;
-      // console.log(a_tags[i].text);
-      // console.log(a_tags[i].getBoundingClientRect());
-      let rect = a_tags[i].getBoundingClientRect();
-      // console.log(rect);
-      coords.push({
-        left: parseInt(rect.x) + window.scrollX,
-        width: parseInt(rect.width),
-        height: parseInt(rect.height),
-        // top: parseInt(rect.y) + window.pageYOffset,
-        top: a_tags[i].offsetTop,
-        bottom: rect.bottom + window.pageYOffset,
-        text: a_tags[i].text,
-      });
-    }
-
-    return coords;
-  }
-
-  handleMove(e) {
-    // let offset = this.props.offset;
-    // console.log(e.clientX + ", " + final_y);=
-    // console.log(e);
-    // if (this.checkForLink(e)) {
-    //   console.log("hover");
-    // }
-    // this.checkForLink(e);
-    // e.persist();
-  }
-
-  checkForLink(e) {
-    for (let i = 0; i < coords.length; i++) {
-      // console.log("checking ", coords[i].text);
-
-      if (this.checkRectangle(coords[i], e)) {
-        console.log("hover on ", coords[i].text);
-        return true;
-      }
-    }
-    // console.log(coords[0].top);
-    // let result = this.checkRectangle(coords[1], e);
-    // console.log(result);
-    // return result;
-    return false;
-  }
-
-  checkRectangle(coords, e) {
-    // coords = this.findLinks();
-    this.findLinks();
-    // console.log(coords);
-    let top_left = coords.left;
-    // console.log("left is " + top_left);
-    // console.log("x coord is", e.clientX);
-    let top_right = coords.left + coords.width;
-    // console.log("right is " + top_right);
-    // console.log(
-    //   "in between x is ",
-    //   e.clientX >= top_left && e.clientX <= top_right
-    // );
-    let offset = this.props.offset;
-    let height = this.props.height;
-    let total_height = this.props.total_height;
-    let topY = coords.top;
-    let bottomY = coords.top + coords.height;
-    let final_y = e.clientY + offset;
-
-    // console.log("top is ", topY);
-    // console.log("coords top is ", coords.top);
-    // console.log("clientY is ", e.clientY);
-    // console.log("offset is ", offset);
-    // console.log("bottom is ", bottomY);
-    let scrollTop = window.pageYOffset;
-
-    // console.log(e);
-    // console.log("top Y is ", topY);
-    // console.log("bottom Y is ", bottomY);
-    // console.log("pageY is ", e.pageY);
-    // let adjusted_y = e.target.offsetTop;
-    // console.log("adjusted y is ", adjusted_y);
-    // console.log("clientY is ", e.clientY);
-    // console.log("scrollY is", window.scrollY);
-    // console.log("offset is ", offset);
-    // console.log("height is ", height);
-    // console.log("total_height is ", total_height);
-    // console.log("scrollTop is ", scrollTop);
-    // console.log("actual pos is ", e.pageY - e.clientY);
-    // console.log(window.scrollY + (height - e.clientY));
-
-    // e.persist();
-    // console.log(e.target);
-    // console.log(e.pageEvent);
-
-    if (
-      e.pageX >= top_left &&
-      e.pageX <= top_right &&
-      e.pageY >= topY &&
-      e.pageY <= bottomY
-    ) {
-      return true;
-    }
-    return false;
-  }
 
   createArticle(margin = 0) {
     let author_text;
@@ -200,7 +66,6 @@ export default class Article extends React.Component {
         <h1>{article_json.title}</h1>
         <p className="author">{author_text}</p>
         <div
-          onMouseMove={this.handleMove}
           className="content"
           dangerouslySetInnerHTML={this.createMarkup()}
         ></div>
@@ -220,6 +85,7 @@ export default class Article extends React.Component {
         <Summary
           show_summary={this.state.show_summary}
           a_tag={this.state.a_tag}
+          closeSummary={this.closeSummary}
         />
         <Progress
           offset={offset}
@@ -234,6 +100,7 @@ export default class Article extends React.Component {
           innerHTML={this.createMarkup()}
           width={width}
           createArticle={this.createArticle}
+          show_summary={this.state.show_summary}
         ></MiniMap>
         {/*this.state.hover ? (
           <div className="magnifier">

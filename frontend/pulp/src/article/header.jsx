@@ -11,6 +11,7 @@ export default class Header extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
+		// hide or show depending on scroll up/down
 		if (prevProps.offset > this.props.offset) {
 			this.setState({
 				hide: false,
@@ -34,10 +35,11 @@ export default class Header extends Component {
 				<div className="inner-article-header">
 					<img src="../static/images/pulp_black_logo.svg"></img>
 				</div>
+				{/*
 				<TableOfContents
 					offset={this.props.offset}
 					height={this.props.height}
-				/>
+				/>*/}
 			</div>
 		);
 	}

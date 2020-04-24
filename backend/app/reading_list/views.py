@@ -13,7 +13,7 @@ from newspaper import Article as Art
 from rest_framework.decorators import api_view
 from rest_framework.exceptions import NotFound
 from django.core.exceptions import ValidationError
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 import traceback
 from django.views.decorators.cache import cache_page
 
@@ -123,12 +123,15 @@ def remove_from_reading_list(request):
         pass
     return JsonResponse(get_reading_list(user), safe=False)
 
-# @cache_page(60 * 15)
+@cache_page(60 * 15)
 @api_view(['GET'])
 def get_summary(request):
     url = request.GET['url']
     newspaper_article = Art(url)
-    newspaper_article.download()
+    try:
+        newspaper_article.download()
+    except Art.ArticleException:
+        return HttpResponse(status=403)
     newspaper_article.parse()
     newspaper_article.nlp()
     summary = newspaper_article.summary

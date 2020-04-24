@@ -42,7 +42,10 @@ urlpatterns = [
   path('api/payments/', include('payments.urls')),
   path('api/instapaper/', include('instapaper.urls')),
   path('api/pocket/', include('pocket.urls')),
+  path('api/twitter/', include('twitter.urls')),
+
   path('articles/', views.article),
+  path('twitter/', views.twitter),
 
   # django 3rd party
   path('accounts/', include('allauth.urls')),

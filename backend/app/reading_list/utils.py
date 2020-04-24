@@ -3,6 +3,7 @@ import os
 from datetime import datetime
 import json
 import time
+import re
 
 from utils.s3_utils import put_object, check_file, get_article_id
 from reading_list.models import ReadingListItem, Article
@@ -36,6 +37,19 @@ def get_archive_list(user):
     json_response = serializer.data
     return JsonResponse(json_response, safe=False)
 
+def add_article(link):
+    validate = URLValidator()
+    try:
+        validate(link)
+    except ValidationError:
+        raise
+
+
+    article, article_created = fill_article_fields(link)
+
+    if delegate_task(article, article_created):
+        from reading_list.tasks import handle_pages_task
+        handle_pages_task.delay(link)
 
 # 1. Validate URL
 # 2. Get Parsed Article JSON
@@ -184,7 +198,7 @@ def is_absolute(url):
 
 def fix_mercury(mercury_response, domain):
 
-    soup = BeautifulSoup(mercury_response.get('content', None), 'html.parser')
+    soup = BeautifulSoup(mercury_response.get('content', '<div></div>'), 'html.parser')
 
     prefix = 'http://' + domain
     links = soup.find_all('a')

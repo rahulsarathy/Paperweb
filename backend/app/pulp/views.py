@@ -34,6 +34,13 @@ def redirect_to_landing(request):
         return HttpResponseRedirect('/reading_list')
     return HttpResponseRedirect('/landing')
 
+def twitter(request):
+    context = {
+        'js_file': create_js_static_url('twitter')
+    }
+
+    return render(request, 'twitter.html', context)
+
 def switcher(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect('../')

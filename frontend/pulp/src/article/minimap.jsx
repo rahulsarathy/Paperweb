@@ -112,6 +112,10 @@ export default class MiniMap extends Component {
 	}
 
 	render() {
+		if (this.props.show_summary) {
+			return <div></div>;
+		}
+
 		let {
 			scale,
 			minimap_scroll,

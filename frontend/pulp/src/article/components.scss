@@ -18,15 +18,78 @@ body {
 }
 
 .summary {
-  width: 300px;
+  width: 225px;
   height: 300px;
   background-color: white;
   position: absolute;
+  // position: relative;
+  // right: calc(10% - 20px);
   font-size: 14px;
   box-shadow: 0 4px 5px -3px rgba(0, 0, 0, 1);
   border-radius: 3px;
   padding: 10px;
   overflow-y: scroll;
+  // transform: translateX(0);
+
+  .close-summary {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-style: bold;
+    border-style: none;
+    font-family: sans-serif;
+    background-color: gray;
+    color: white;
+    border-radius: 50px;
+    line-height: X;
+    text-align: center;
+    height: 25px;
+    line-height: 25px;
+    width: 25px;
+    box-shadow: 0 5px 6px -3px rgb(16, 16, 16);
+  }
+
+  h3 {
+    font-size: 25px;
+  }
+}
+
+.summary-hover {
+  height: 25px;
+  background-color: black;
+  color: white;
+  border-radius: 3px;
+  position: absolute;
+  text-align: center;
+  // vertical-align: center;
+  line-height: 25px;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: sans-serif;
+  box-shadow: 0 4px 5px -3px black;
+  transform-origin: center;
+  width: 60px;
+
+  .hover-box {
+    position: absolute;
+    width: 100px;
+    right: -20px;
+    top: -10px;
+    height: 70px;
+    border-style: solid;
+    border-color: black;
+  }
+
+  .arrow-down {
+    position: relative;
+    left: 24px;
+    width: 0;
+    height: 0;
+    transform-origin: center;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #000;
+  }
 }
 
 .article {
@@ -211,10 +274,10 @@ blockquote {
   .subheader {
     line-height: 1;
     position: fixed;
-    right: calc(10% + 70px);
+    right: calc(10% - 125px);
     font-family: helvetica;
-    font-weight: bold;
-    text-align: right;
+    /* font-weight: bold; */
+    text-align: left;
     width: 120px;
     color: black;
     font-size: 10px;
