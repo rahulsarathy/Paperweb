@@ -175,11 +175,9 @@ export default class Summary extends Component {
 					onClick={this.showSummary}
 					style={style}
 					className="summary-hover"
+					onMouseLeave={this.handleLeave}
 				>
-					<div
-						onMouseLeave={this.handleLeave}
-						className="hover-box"
-					></div>
+					<div className="hover-box"></div>
 					Preview
 					<div className="arrow-down"></div>
 				</div>
