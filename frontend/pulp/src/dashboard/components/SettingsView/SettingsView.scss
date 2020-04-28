@@ -36,7 +36,11 @@ ul {
         }
 
         .settings-item.editing {
-            .settings-item-content{
+            background-color: #fafafa;
+            .settings-item-content {
+                .settings-item-description {
+                    display: none;
+                }
                 .settings-item-form {
                     display: block;
                 }

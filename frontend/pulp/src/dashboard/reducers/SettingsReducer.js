@@ -1,5 +1,8 @@
 var initialState = {
     loading: true,
+    address: {
+        loading: true,
+    }
 }
 
 export default function SettingsReducer(state = initialState, action) {

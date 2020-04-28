@@ -12,7 +12,7 @@ function addressToString(address) {
         <ul>
             <li>{address.name}</li>
             <li>{address.line_1} {address.line_2}</li>
-            <li>{address.city},{address.state} {address.zip}</li>
+            <li>{address.city}, {address.state} {address.zip}</li>
         </ul>
     )
 }
