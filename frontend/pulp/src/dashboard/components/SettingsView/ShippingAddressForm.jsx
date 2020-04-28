@@ -3,12 +3,12 @@ import { connect } from 'react-redux'
 import { Form, Col } from 'react-bootstrap'
 import { setAddress } from '../../actions/SettingsActions'
 
-function ShippingAddressForm({ address, setAddress }) {
+function ShippingAddressForm({ loading, address, setAddress, close }) {
     // We don't want to initialize the react state with empty data
     // so we check if the data is loading first and then initialize the state
     
-    // TODO This will not render the form if the address is never loaded!!!!
-    if (!address.loading) {
+    // TODO This will not render the form if the data is never loaded!!!!
+    if (!loading) {
         const [state, setState] = React.useState({
             name: address.name || "",
             line_1: address.line_1 || "",
@@ -31,7 +31,7 @@ function ShippingAddressForm({ address, setAddress }) {
 
         function formSubmitted(e) {
             e.preventDefault()
-            console.log("Submit Pressed")
+            close()
             setAddress(state)
         }
         
@@ -92,6 +92,7 @@ function ShippingAddressForm({ address, setAddress }) {
 
 function mapStateToProps(state) {
     return {
+        loading: state.settings.address.loading,
         address: state.settings.address || {}
     }
 }

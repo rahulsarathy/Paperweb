@@ -1,6 +1,6 @@
 import $ from 'jquery'
 import { createWebSocket } from '../websockets'
-import { loadSettings, setAddress } from './SettingsActions'
+import { loadSettings, loadAddress } from './SettingsActions'
 
 function connectToWebSocket(dispatch) {
     return new Promise(function (resolve, reject) {
@@ -52,7 +52,7 @@ function populateAddress(dispatch) {
         type: "GET",
         url: "/api/users/get_address/",
     }).then(
-        (response) => dispatch(setAddress(response)),
+        (response) => dispatch(loadAddress(response)),
         (error) => console.log(error)
     )
 }

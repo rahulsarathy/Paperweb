@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import View from '../View'
 import SettingsItem from './SettingsItem'
 import ShippingAdressForm from './ShippingAddressForm'
+import ArchiveLinksForm from './ArchiveLinksForm'
+import DeliveryOrderForm from './DeliveryOrderForm'
 import { PocketModal, InstapaperModal } from '../Integrations'
 
 import './SettingsView.scss'
@@ -44,7 +46,7 @@ function SettingsView({ user, settings, integrations }) {
                             : "Not subscribed"
                         }
                     </SettingsItem>
-                    <SettingsItem name="Shipping Address" editForm={<ShippingAdressForm />}>
+                    <SettingsItem name="Shipping Address" EditForm={ShippingAdressForm}>
                         {settings.address 
                             ? addressToString(settings.address)
                             : "No shipping address set"
@@ -67,13 +69,13 @@ function SettingsView({ user, settings, integrations }) {
                 </Section>
                 <Section name="Delivery Settings">
                     {/* TODO fix pop in of the settings!!! */}
-                    <SettingsItem name="Archive Delivered Articles">
+                    <SettingsItem name="Archive Delivered Articles TODO" EditForm={ArchiveLinksForm}>
                         {settings.archive_links
                             ? "Yes, archive articles after they're delivered"
                             : "No, don't archive articles after they're delivered"
                         }
                     </SettingsItem>
-                    <SettingsItem name="Delivery Order">
+                    <SettingsItem name="Delivery Order TODO" EditForm={DeliveryOrderForm}>
                         {settings.deliver_oldest
                             ? "Oldest first, deliver the oldest articles in my reading list first"
                             : "Newest first, deliver the newest articles in my reading list first"

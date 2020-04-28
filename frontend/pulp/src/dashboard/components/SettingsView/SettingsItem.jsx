@@ -1,15 +1,15 @@
 import React from 'react'
 
-export default function Item({ name, editComponent, editHref, editForm, editText = "Edit", cancelText="Cancel", children }) {
+export default function Item({ name, editComponent, editHref, EditForm, editText = "Edit", cancelText="Cancel", children }) {
     const [editing, setEditing] = React.useState(false)
 
     function showEdit(e) {
-        e.preventDefault()
+        if (e) e.preventDefault()
         setEditing(true)
     }
 
     function hideEdit(e) {
-        e.preventDefault()
+        if (e) e.preventDefault()
         setEditing(false)
     }
 
@@ -22,9 +22,9 @@ export default function Item({ name, editComponent, editHref, editForm, editText
                         {children}
                     </div>
 
-                    {editForm &&
+                    {EditForm &&
                         <div className="settings-item-form">
-                            {editForm}
+                            <EditForm close={hideEdit} />
                         </div>
                     }
                 </div>

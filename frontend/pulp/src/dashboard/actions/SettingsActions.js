@@ -8,10 +8,18 @@ export function loadSettings(settings) {
 }
 
 export function changeSetting(setting, updatedValue) {
+    // TODO this doesn't actually update anything serverside yet...
     return {
         type: "CHANGE_SETTING",
         key: setting,
         value: updatedValue,
+    }
+}
+
+export function loadAddress(address) {
+    return {
+        type: "LOADED_ADDRESS",
+        address: address,
     }
 }
 
