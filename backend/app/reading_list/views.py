@@ -8,11 +8,15 @@ from pocket.serializers import PocketCredentialsSerializer
 from instapaper.models import InstapaperCredentials
 from pocket.models import PocketCredentials
 from progress.types import update_add_to_reading_list_status
+from newspaper import Article as Art
 
 from rest_framework.decorators import api_view
 from rest_framework.exceptions import NotFound
 from django.core.exceptions import ValidationError
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
+import traceback
+from django.views.decorators.cache import cache_page
+
 
 
 @api_view(['GET'])
@@ -37,7 +41,8 @@ def handle_add_to_reading_list(request):
         return JsonResponse(data={'error': 'Invalid URL.'}, status=400)
     except json.decoder.JSONDecodeError:
         return JsonResponse(data={'error': 'Invalid URL.'}, status=400)
-    except Exception as e:
+    except Exception:
+        traceback.print_exc()
         update_add_to_reading_list_status(user, link, 100)
         return JsonResponse(data={'error': 'Error while adding to reading list. Try again or contact support.'}, status=400)
 
@@ -117,6 +122,25 @@ def remove_from_reading_list(request):
         # nothing to remove
         pass
     return JsonResponse(get_reading_list(user), safe=False)
+
+@cache_page(60 * 15)
+@api_view(['GET'])
+def get_summary(request):
+    url = request.GET['url']
+    newspaper_article = Art(url)
+    try:
+        newspaper_article.download()
+    except Art.ArticleException:
+        return HttpResponse(status=403)
+    newspaper_article.parse()
+    newspaper_article.nlp()
+    summary = newspaper_article.summary
+    title = newspaper_article.title
+    result = {
+        'summary': summary,
+        'title': title
+    }
+    return JsonResponse(result, safe=True)
 
 
 @api_view(['POST'])

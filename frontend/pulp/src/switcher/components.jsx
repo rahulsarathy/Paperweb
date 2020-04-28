@@ -8,6 +8,7 @@ import AddArticle from "./add_article.jsx";
 import Profile from "../profile/profile.jsx";
 import Status from "./status.jsx";
 import Subscribe from "../subscribe/subscribe.jsx";
+import Blogs from "../blogs/blogs.jsx";
 
 export {
 	Header,
@@ -18,5 +19,6 @@ export {
 	AddArticle,
 	Profile,
 	Status,
-	Subscribe
+	Subscribe,
+	Blogs,
 };

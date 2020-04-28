@@ -4,6 +4,9 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 from django.contrib.postgres.fields import JSONField
 
+
+from blogs.models import Blog
+
 from django.contrib.auth.models import User
 
 
@@ -13,7 +16,8 @@ class Article(models.Model):
     page_count = models.IntegerField(_('Number of Words'), default=None, null=True)
     mercury_response = JSONField()
     preview_text = models.CharField(_('Preview Text'), null=True, max_length=350)
-
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, null=True, default=None)
+    custom_id = models.CharField(max_length=20, null=True, default=None)
 
 class Magazine(models.Model):
     reader = models.ForeignKey(User, on_delete=models.CASCADE)

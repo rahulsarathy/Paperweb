@@ -2,6 +2,9 @@
 backend/app/htmlcov
 backend/app/.coverage
 
+# Local Frontend Dev
+frontend_dev
+
 # Cached files
 backend/app/dump
 *.pyc

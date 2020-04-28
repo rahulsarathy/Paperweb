@@ -1,22 +1,22 @@
-const puppeteer = require('puppeteer');
+const puppeteer = require("puppeteer");
 
 const printFile = (file_id, callback) => {
   (async () => {
     const browser = await puppeteer.launch({
-      args: ['--disable-dev-shm-usage'],
-      executablePath: '/usr/bin/google-chrome'
+      args: ["--disable-dev-shm-usage"],
+      executablePath: "/usr/bin/google-chrome",
     });
     const page = await browser.newPage();
     await page.setViewport({
       width: 1440,
       height: 900,
-      deviceScaleFactor: 2
+      deviceScaleFactor: 2,
     });
-    let file_string = 'file:///usr/src/app/dump/' + file_id + '.html';
+    let file_string = "file:///usr/src/app/dump/" + file_id + ".html";
     await page.goto(file_string, {
-      waitUntil: "networkidle2"
+      waitUntil: "networkidle2",
     });
-    let path = 'dump/' + file_id + '.pdf';
+    let path = "dump/" + file_id + ".pdf";
     await page.pdf({
       path: path,
       // pageRanges: "1",
@@ -39,8 +39,21 @@ const printFile = (file_id, callback) => {
     await browser.close();
     callback();
   })();
-}
+};
+
+const screenshot = (url, html_id) => {
+  async () => {
+    let browser = await puppeteer.launch({ headless: true });
+    let page = await browser.newPage();
+    await page.setViewport({ width: 600, height: 1080 });
+    await page.goto("url");
+    await page.screenshot({ path: html_id + ".png", fullPage: true });
+    await page.close();
+    await browser.close();
+  };
+};
 
 module.exports = {
-  printFile
+  printFile,
+  screenshot,
 };

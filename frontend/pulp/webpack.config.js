@@ -6,26 +6,33 @@ module.exports = {
     landing: path.join(__dirname, "src", "landing", "landing_switcher.jsx"),
     switcher: path.join(__dirname, "src", "switcher", "switcher.jsx"),
     article: path.join(__dirname, "src", "article", "article.jsx"),
-    login: path.join(__dirname, "src", "landing", "login.jsx")
+    article_landing: path.join(
+      __dirname,
+      "src",
+      "article",
+      "article_landing.jsx"
+    ),
+    login: path.join(__dirname, "src", "landing", "login.jsx"),
+    twitter: path.join(__dirname, "src", "twitter", "twitter.jsx"),
   },
   output: {
     path: path.join(__dirname, "build"),
-    filename: "[name].js"
+    filename: "[name].js",
   },
   module: {
     rules: [
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        use: "babel-loader"
+        use: "babel-loader",
       },
       {
         test: /\.css$/,
-        use: ["style-loader", "css-loader"]
+        use: ["style-loader", "css-loader"],
       },
       {
         test: /\.scss$/,
-        use: ["style-loader", "css-loader", "sass-loader"]
+        use: ["style-loader", "css-loader", "sass-loader"],
       },
       {
         test: /\.(jpe?g|png|gif)$/,
@@ -33,21 +40,21 @@ module.exports = {
           {
             loader: "url-loader",
             options: {
-              limit: 10000
-            }
-          }
-        ]
+              limit: 10000,
+            },
+          },
+        ],
       },
       {
         test: /\.(eot|svg|ttf|woff2?|otf)$/,
-        use: "file-loader"
-      }
-    ]
+        use: "file-loader",
+      },
+    ],
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: path.join(__dirname, "public", "index.html"),
-      favicon: path.join(__dirname, "public", "favicon.ico")
-    })
-  ]
+      favicon: path.join(__dirname, "public", "favicon.ico"),
+    }),
+  ],
 };

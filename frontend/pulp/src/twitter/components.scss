@@ -1,0 +1,36 @@
+body {
+	font-family: sans-serif;
+}
+
+button {
+	margin: 5px;
+}
+
+.twitter {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	.elements {
+		.twitter-button {
+			font-weight: bold;
+			height: 40px;
+			border-radius: 4px;
+			background-color: #1da1f2;
+			color: white;
+			font-size: 16px;
+			border-style: none;
+			box-shadow: 0px 6px 5px -3px rgba(0, 0, 0, 0.5);
+		}
+		.timeline-button {
+			height: 40px;
+			border-radius: 4px;
+			box-shadow: 0px 6px 5px -3px rgba(0, 0, 0, 0.5);
+			// border-style: none;
+			display: block;
+			font-weight: bold;
+			color: black;
+			background-color: white;
+			font-size: 16px;
+		}
+	}
+}
