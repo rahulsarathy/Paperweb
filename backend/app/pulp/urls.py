@@ -35,6 +35,8 @@ urlpatterns = [
   path('profile/', views.switcher, name='profile'),
   path('archive/', views.switcher, name='archive'),
   path('payments/', views.switcher, name='payments'),
+  path('blogs/', views.switcher, name='blogs'),
+  path('articles/', include('articles.urls')),
 
   # api endpoints
   path('api/users/', include('users.urls')),
@@ -42,7 +44,10 @@ urlpatterns = [
   path('api/payments/', include('payments.urls')),
   path('api/instapaper/', include('instapaper.urls')),
   path('api/pocket/', include('pocket.urls')),
-  path('articles/', views.article),
+  path('api/twitter/', include('twitter.urls')),
+  path('api/blogs/', include('blogs.urls')),
+
+  path('twitter/', views.twitter),
 
   # django 3rd party
   path('accounts/', include('allauth.urls')),

@@ -3,6 +3,7 @@ import os
 from datetime import datetime
 import json
 import time
+import re
 
 from utils.s3_utils import put_object, check_file, get_article_id
 from reading_list.models import ReadingListItem, Article
@@ -16,6 +17,7 @@ from progress.types import update_add_to_reading_list_status, update_reading_lis
 
 
 import requests
+from urllib.parse import urlparse, urljoin
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse
@@ -35,6 +37,19 @@ def get_archive_list(user):
     json_response = serializer.data
     return JsonResponse(json_response, safe=False)
 
+def add_article(link):
+    validate = URLValidator()
+    try:
+        validate(link)
+    except ValidationError:
+        raise
+
+
+    article, article_created = fill_article_fields(link)
+
+    if delegate_task(article, article_created):
+        from reading_list.tasks import handle_pages_task
+        handle_pages_task.delay(link)
 
 # 1. Validate URL
 # 2. Get Parsed Article JSON
@@ -114,8 +129,9 @@ def fill_article_fields(link):
     article_text = soup.getText()
     article_json['parsed_text'] = article_text
     preview_text = article_text[:347] + '...'
+    custom_id = get_article_id(link)
     article, article_created = Article.objects.get_or_create(
-        title=title, permalink=link, mercury_response=article_json, preview_text=preview_text
+        title=title, permalink=link, mercury_response=article_json, preview_text=preview_text, custom_id=custom_id
     )
     return article, article_created
 
@@ -155,7 +171,16 @@ def get_parsed(url):
 
     try:
         response_string = response.content.decode("utf-8")
-        json_response = json.loads(response_string)
+
+        # mercury response is naive because contains some errors such as broken links and bootstrap classnames
+        naive_response = json.loads(response_string)
+
+        # call fix_mercury to fix these naive errors
+        domain = urlparse(url).netloc
+        json_response = fix_mercury(naive_response, domain)
+
+        new_response_string = json.dumps(json_response)
+
     except json.decoder.JSONDecodeError:
         logging.warning("JSON decode error from {}".format(url))
         logging.warning("response_string is {}".format(response_string))
@@ -165,9 +190,45 @@ def get_parsed(url):
         raise
 
     if not json_response.get('error', False):
-        cache.set(url, response_string)
+        cache.set(url, new_response_string)
 
     return json_response
+
+def is_absolute(url):
+	return bool(urlparse(url).netloc)
+
+def fix_mercury(mercury_response, domain):
+
+    soup = BeautifulSoup(mercury_response.get('content', '<div></div>'), 'html.parser')
+
+    prefix = 'http://' + domain
+    links = soup.find_all('a')
+    for link in links:
+        href = link.get('href', ' ')
+        if not is_absolute(href):
+            link['href'] = urljoin(prefix, href)
+
+    images = soup.find_all('img')
+    for image in images:
+        src = image.get('src', ' ')
+        if not is_absolute(src):
+            image['src'] = urljoin(prefix, src)
+
+    # remove class attributes
+    REMOVE_ATTRIBUTES = ['class']
+    for tag in soup.recursiveChildGenerator():
+        # print("tag is ", tag)
+        try:
+            key_list = list(tag.attrs.keys())
+            # print("key list is ", key_list)
+            for key in key_list:
+                if key in REMOVE_ATTRIBUTES:
+                    del tag.attrs[key]
+        except AttributeError:
+            pass
+
+    mercury_response['content'] = str(soup)
+    return mercury_response
 
 
 # Create HTML file for article 3 column format and store in AWS S3
@@ -289,8 +350,9 @@ def get_selected_pages(user, permalink):
             else:
                 total_pages = total_pages + item.article.page_count
 
+    custom_id = get_article_id(permalink)
     article, created = Article.objects.get_or_create(
-        permalink=permalink
+        permalink=permalink, custom_id=custom_id
     )
 
     reading_list_item, created = ReadingListItem.objects.get_or_create(

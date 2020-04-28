@@ -1,25 +1,118 @@
-$article-width: 800px;
+$article-width: 500px;
 
 h1 {
   font-family: helvetica;
   font-weight: bold;
+  font-family: "Times New Roman";
 }
 
 body {
   font-family: "Times New Roman";
-  font-size: 22px;
+  font-size: 18px;
 }
 
 .author {
   font-family: helvetica;
+  line-height: 1;
+  margin-bottom: 10px !important;
+}
+
+.summary {
+  width: 225px;
+  height: 300px;
+  background-color: white;
+  position: absolute;
+  // position: relative;
+  // right: calc(10% - 20px);
+  font-size: 14px;
+  box-shadow: 0 4px 5px -3px rgba(0, 0, 0, 1);
+  border-radius: 3px;
+  padding: 10px;
+  overflow-y: scroll;
+  // transform: translateX(0);
+
+  .close-summary {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-style: bold;
+    border-style: none;
+    font-family: sans-serif;
+    background-color: gray;
+    color: white;
+    border-radius: 50px;
+    line-height: X;
+    text-align: center;
+    height: 25px;
+    line-height: 25px;
+    width: 25px;
+    box-shadow: 0 5px 6px -3px rgb(16, 16, 16);
+  }
+
+  h3 {
+    font-size: 18px;
+  }
+}
+
+.summary-hover {
+  height: 25px;
+  background-color: black;
+  color: white;
+  border-radius: 3px;
+  position: absolute;
+  text-align: center;
+  // vertical-align: center;
   line-height: 25px;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: sans-serif;
+  box-shadow: 0 4px 5px -3px black;
+  transform-origin: center;
+  width: 60px;
+
+  .hover-box {
+    position: absolute;
+    width: 100px;
+    right: -20px;
+    top: -10px;
+    height: 70px;
+  }
+
+  .arrow-down {
+    position: relative;
+    left: 24px;
+    width: 0;
+    height: 0;
+    transform-origin: center;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #000;
+  }
 }
 
 .article {
   // width: 50%;
+  // max-width: $article-width;
+  // margin: auto;
+  // margin-top: 55px;
   max-width: $article-width;
-  margin: auto;
-  margin-top: 55px;
+  p {
+    font-size: 17px;
+    margin-bottom: 2em;
+  }
+
+  h1 {
+    font-size: 35px;
+    margin-bottom: 0em;
+  }
+}
+
+.article-wrapper {
+  // width: 50%;
+  margin-top: 70px;
+  z-index: 1;
+  // margin: auto;
+  // margin-top: 55px;
 }
 
 figure {
@@ -37,11 +130,190 @@ img {
   max-width: $article-width;
 }
 
+iframe {
+  max-width: $article-width;
+}
+
 blockquote {
   margin-left: 0px;
   border-left: 3px solid #989898;
   padding-left: 10px;
   background-color: #f7f7f7;
   padding: 5px;
+  border-radius: 3px;
+}
+
+.zoom-wrapper {
+  position: relative;
+  width: 80%;
+  margin: 0px auto 0;
+}
+
+.article-header {
+  width: 100%;
+  position: fixed;
+  top: 0px;
+  z-index: 2;
+
+  .inner-article-header {
+    width: 80%;
+    margin-top: 10px;
+    background-color: white;
+    margin: auto;
+    border-bottom-style: solid;
+    border-bottom-color: black;
+    border-bottom-width: 0px;
+    box-shadow: 0 4px 5px -5px rgba(0, 0, 0, 1);
+
+    img {
+      height: 30px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+  }
+}
+
+.table-of-contents {
+  // z-index: 0 !important;
+  position: absolute;
+  left: 10%;
+  top: 20px;
+  font-size: 14px;
+  font-family: sans-serif;
+  width: 150px;
+}
+
+.zoom {
+  position: absolute;
+  // width: 100%;
+  width: 500px;
+  // left: 70%;
+  // bottom: 4300px;
+  -webkit-transform-origin: top left;
+  transform-origin: top left;
+  //right: 0;
+
+  // attribute that needs to be adjusted when minimap width changes
+  // right: calc(12.5px + 10%);
+  // right: 10%;
+  // margin-right: 2.5px;
+  // margin-right: 10px;
+  // margin-left: 10px;
+  pointer-events: none;
+  user-select: none;
+
+  z-index: 1;
+  // top: 0px;
+
+  .article {
+    .content {
+      user-select: none;
+    }
+  }
+}
+
+.minimap {
+  position: fixed;
+  // right: 15px;
+  right: 10%;
+
+  top: 0px;
+  // max-width: 100px;
+  background-color: #babaa7;
+  color: white;
+
+  box-shadow: inset 0px 0px 15px #0000005c;
+
+  blockquote {
+    background-color: #6e6e58;
+  }
+
+  width: 50px;
+  // background-size: contain;
+  height: 100%;
+  .hover-viewport {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.5);
+    width: 100px;
+    z-index: 2;
+    user-select: none;
+    cursor: pointer;
+    .magnification {
+      position: absolute;
+      right: 50px;
+      top: -200px;
+      opacity: 1 !important;
+      z-index: 4;
+
+      img {
+        width: 300px;
+        height: 400px;
+        object-fit: cover;
+      }
+    }
+  }
+
+  .viewport {
+    position: absolute;
+    opacity: 0.5;
+    background-color: gray;
+    width: 100%;
+    z-index: 3;
+    user-select: none;
+    cursor: pointer;
+
+    // pointer-events: none;
+    // height: 200px;
+  }
+
+  .subheaders {
+  }
+
+  .subheader {
+    line-height: 1;
+    position: fixed;
+    right: calc(10% - 125px);
+    font-family: helvetica;
+    /* font-weight: bold; */
+    text-align: left;
+    width: 120px;
+    color: black;
+    font-size: 10px;
+    cursor: pointer;
+  }
+
+  .subheader:hover {
+    color: #007bff;
+  }
+}
+
+.article-progress {
+  position: fixed;
+  background-color: #babaa7;
+  width: 4px;
+  top: 0px;
+  right: calc(10% - 15px);
+}
+
+.magnifier {
+  position: fixed;
+  width: $article-width;
+  height: 50%;
+
+  z-index: 6;
+  background-color: white;
+
+  overflow: hidden;
+
+  position: fixed;
+  box-shadow: 0 4px 5px -4px rgba(0, 0, 0, 1);
+
+  // width: 500px;
+  // height: 200px;
+  top: 50%;
+  left: 50%;
+  margin-top: -12.5%; /* Negative half of height. */
+  margin-left: calc($article-width / 2); /* Negative half of width. */
+  padding: 10px;
   border-radius: 3px;
 }

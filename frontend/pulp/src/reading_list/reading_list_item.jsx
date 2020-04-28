@@ -6,7 +6,7 @@ import {
   Extras,
   ReadingListTitle,
   HoverSection,
-  ReadingListImage
+  ReadingListImage,
 } from "./components.jsx";
 
 export default class ReadingListItem extends React.Component {
@@ -16,7 +16,7 @@ export default class ReadingListItem extends React.Component {
     this.handleUnhover = this.handleUnhover.bind(this);
 
     this.state = {
-      hovered: false
+      hovered: false,
     };
   }
 
@@ -35,7 +35,7 @@ export default class ReadingListItem extends React.Component {
   }
 
   render() {
-    const { article, added, index, author } = this.props;
+    const { article, added, index, author, article_id } = this.props;
     return (
       <div
         onMouseEnter={this.handleHover}
@@ -52,6 +52,7 @@ export default class ReadingListItem extends React.Component {
           <ReadingListTitle
             permalink={article.permalink}
             title={article.title}
+            article_id={article_id}
           />
           <Extras author={article.author} permalink={article.permalink} />
           <FadedContent parsed_text={article.preview_text} />

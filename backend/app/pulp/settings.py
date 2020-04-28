@@ -38,8 +38,11 @@ INSTALLED_APPS = [
     'reading_list.apps.ReadingListConfig',
     'payments.apps.PaymentsConfig',
     'users.apps.UsersConfig',
+    'blogs.apps.BlogsConfig',
     'instapaper.apps.InstapaperConfig',
+    'twitter.apps.TwitterConfig',
     'pocket.apps.PocketConfig',
+    'articles.apps.ArticlesConfig',
     'coverage',
     'django_celery_beat',
     'encrypted_model_fields',
@@ -110,6 +113,11 @@ CELERY_BEAT_SCHEDULE = {
     'sync_pocket': {
         'task': 'sync_pocket',
         'schedule': crontab(minute=0, hour=0),
+    },
+    # run every 5 minutes
+    'update_timelines': {
+        'task': 'update_timelines',
+        'schedule': crontab(minute='*/5')
     }
 }
 

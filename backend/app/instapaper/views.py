@@ -29,7 +29,6 @@ def sync_instapaper(request):
         return HttpResponse(status=401)
     parse_instapaper_bookmarks.delay(user.email)
     now = timezone.now()
-    print("now is {}".format(now))
     return JsonResponse(now, safe=False)
 
 @api_view(['POST'])

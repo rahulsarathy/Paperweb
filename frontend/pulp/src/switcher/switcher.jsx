@@ -15,6 +15,7 @@ import {
   Profile,
   Status,
   Subscribe,
+  Blogs,
 } from "./components.jsx";
 import {
   BrowserRouter as Router,
