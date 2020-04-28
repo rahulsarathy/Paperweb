@@ -17,13 +17,12 @@ RUN apk --update \
     openssl-dev \
     fortify-headers \
     libxml2-dev \
-    libxslt-dev \
     jpeg-dev \
     zlib \
     zlib-dev \
     libpng-dev \
-    libjpeg \
-    libjpeg-turbo-dev
+    libxslt-dev
+
 
 # instead of installing, create a wheel
 RUN pip install --upgrade pip
@@ -33,7 +32,7 @@ RUN pip wheel --wheel-dir=/root/wheels cryptography
 RUN pip wheel --wheel-dir=/root/wheels psutil
 RUN pip wheel --wheel-dir=/root/wheels twisted
 RUN pip wheel --wheel-dir=/root/wheels hiredis
-#RUN pip wheel --wheel-dir=/root/wheels Pillow
+RUN pip wheel --wheel-dir=/root/wheels Pillow
 RUN pip wheel --wheel-dir=/root/wheels newspaper3k
 
 ###
@@ -63,17 +62,12 @@ ENV PYTHONUNBUFFERED 1
 # Get alpine updates
 RUN apk --update \
     add --no-cache --virtual .build-deps \
-    gcc \
-    linux-headers \
     postgresql-client \
-    libc-dev \
-    jpeg-dev \
-    zlib-dev \
-    musl-dev \
+    libjpeg \
+    libjpeg-turbo-dev \
     libxslt-dev
 
 ENV LIBRARY_PATH=/lib:/usr/lib
-RUN pip install Pillow
 
 # for django-encrypted-model-fields
 #RUN apk add gcc musl-dev libffi-dev openssl-dev python3-dev && pip install django-encrypted-model-fields
@@ -113,10 +107,10 @@ RUN pip install \
       --find-links=/root/wheels \
       hiredis
 
-#RUN pip install \
-#      --no-index \
-#      --find-links=/root/wheels \
-#      Pillow
+RUN pip install \
+      --no-index \
+      --find-links=/root/wheels \
+      Pillow
 
 RUN pip install \
       --no-index \
