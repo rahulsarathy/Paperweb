@@ -7,10 +7,10 @@ done
 
 >&2 echo "Postgres is up now - continuing"
 
-echo "Running migrations"
-python manage.py makemigrations
-python manage.py migrate
-echo "Finished running migrations!"
+#echo "Running migrations"
+#python manage.py makemigrations
+#python manage.py migrate
+#echo "Finished running migrations!"
 
 echo "Running collectstatic"
 python manage.py collectstatic --noinput
