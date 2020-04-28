@@ -6,6 +6,12 @@ module.exports = {
     landing: path.join(__dirname, "src", "landing", "landing_switcher.jsx"),
     switcher: path.join(__dirname, "src", "switcher", "switcher.jsx"),
     article: path.join(__dirname, "src", "article", "article.jsx"),
+    article_landing: path.join(
+      __dirname,
+      "src",
+      "article",
+      "article_landing.jsx"
+    ),
     login: path.join(__dirname, "src", "landing", "login.jsx"),
     twitter: path.join(__dirname, "src", "twitter", "twitter.jsx"),
   },

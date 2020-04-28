@@ -12,6 +12,7 @@ import TableOfContents from "./table_of_contents.jsx";
 import Header from "./header.jsx";
 import Zoom from "./zoom.jsx";
 import Summary from "./summary.jsx";
+import LandingHeader from "./landing_header.jsx";
 
 export {
 	useWindowDimensions,
@@ -27,4 +28,5 @@ export {
 	TableOfContents,
 	Header,
 	Summary,
+	LandingHeader,
 };

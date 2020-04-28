@@ -2,19 +2,30 @@ import React, { Component } from "react";
 import { Viewport, HoverViewport, MiniMapContent } from "./components.jsx";
 import $ from "jquery";
 
-// these variables are used by render and are sourced by props
-let top = 0;
-let pixels = 0;
-let scale = 0;
-let minimap_scroll = 0;
+// margin_top is defined by how large the header is
+const margin_top = 51;
+
+// this width is set in css under $article-width
+const article_width = 500;
+
+// this percent is set in css in .zoom-container width
+const percent_of_minimap = 40;
+
+// title_offset is defined by how far down the title is from the top of the page
+const title_offset = 70;
+
+const scale = percent_of_minimap / article_width;
 
 export default class MiniMap extends Component {
 	constructor(props) {
 		super(props);
 
+		this.handleMove = this.handleMove.bind(this);
+		this.handleClick = this.handleClick.bind(this);
+
 		this.state = {
-			show_hover: false,
 			scale: 40 / 500,
+			yPos: 0,
 		};
 	}
 
@@ -39,15 +50,6 @@ export default class MiniMap extends Component {
 	calculateMiniMap() {
 		let { offset, height, total_height, width } = this.props;
 
-		// this width is set in css under $article-width
-		let article_width = 500;
-		// this percent is set in css in .zoom-container width
-		let percent_of_minimap = 40;
-		// margin_top is defined by how large the header is
-		let margin_top = 51;
-		// title_offset is defined by how far down the title is from the top of the page
-		let title_offset = 70;
-		let scale = percent_of_minimap / article_width;
 		// how much of the article is completed
 		let progress = offset / (total_height - height);
 		// size of header unscaled + distance from article top to header bottom scaled
@@ -111,6 +113,35 @@ export default class MiniMap extends Component {
 		};
 	}
 
+	handleMove(e) {
+		if (this.props.show_hover) {
+			this.setState({
+				yPos: e.clientY,
+			});
+		}
+	}
+
+	handleClick(e) {
+		console.log("clicked");
+
+		let { height, total_height } = this.props;
+		let { yPos } = this.state;
+
+		let scale = percent_of_minimap / article_width;
+
+		let minimap_height = (total_height - title_offset) * scale;
+
+		// minimap has no scroll
+
+		let pos_on_minimap = yPos + margin_top;
+
+		let percent = pos_on_minimap / minimap_height;
+
+		let final_offset = percent * total_height;
+
+		document.documentElement.scrollTop = document.body.scrollTop = final_offset;
+	}
+
 	render() {
 		if (this.props.show_summary) {
 			return <div></div>;
@@ -123,22 +154,10 @@ export default class MiniMap extends Component {
 			viewport_pos,
 		} = this.calculateMiniMap();
 
-		let author_text;
-		article_json.author === null || article_json.author === ""
-			? (author_text = "")
-			: (author_text = "By " + article_json.author);
-
 		// style for minimap highlight
 		let style = {
 			height: viewport_size + "px",
 			top: viewport_pos + "px",
-		};
-
-		let preview_top = this.props.yPos - viewport_size / 2;
-
-		let preview_style = {
-			top: preview_top,
-			height: viewport_size,
 		};
 
 		return (
@@ -147,6 +166,8 @@ export default class MiniMap extends Component {
 				onMouseLeave={this.handleLeaveHover}
 				className="minimap"
 				id="minimap"
+				onMouseMove={this.handleMove}
+				onClick={this.handleClick}
 			>
 				<Viewport
 					changeScroll={this.props.changeScroll}
@@ -155,10 +176,11 @@ export default class MiniMap extends Component {
 					handleEnter={this.handleEnterView}
 				/>
 				<HoverViewport
-					show_hover={this.state.show_hover}
+					show_hover={this.props.show_hover}
 					down={this.props.down}
-					style={preview_style}
 					onClick={this.changeScroll}
+					viewport_size={viewport_size}
+					yPos={this.state.yPos}
 				/>
 				<MiniMapContent
 					scale={scale}

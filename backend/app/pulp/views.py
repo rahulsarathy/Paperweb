@@ -50,22 +50,3 @@ def switcher(request):
         'debug': settings.DEBUG
     }
     return render(request, 'reading_list.html', context)
-
-def article(request):
-    # if not request.user.is_authenticated:
-    #     return HttpResponseRedirect('../')
-    url = request.GET.get('url')
-    try:
-        article_response = get_parsed(url)
-    except ValidationError:
-        return HttpResponseNotFound
-    except requests.exceptions.RequestException:
-        return HttpResponseNotFound
-
-    json_response = json.dumps(article_response)
-    context = {
-        'article_response': json_response,
-        'js_file': create_js_static_url('article')
-
-    }
-    return render(request, 'article.html', context)

@@ -7,7 +7,7 @@ class ArticleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Article
-        fields = ['title', 'permalink', 'page_count', 'preview_text', 'image_url', 'author']
+        fields = ['title', 'permalink', 'page_count', 'preview_text', 'image_url', 'author', 'custom_id']
 
     image_url = serializers.SerializerMethodField()
     author = serializers.SerializerMethodField()

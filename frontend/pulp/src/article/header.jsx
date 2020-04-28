@@ -33,7 +33,7 @@ export default class Header extends Component {
 		return (
 			<div className="article-header">
 				<div className="inner-article-header">
-					<img src="../static/images/pulp_black_logo.svg"></img>
+					<img src="../../static/images/pulp_black_logo.svg"></img>
 				</div>
 				{/*
 				<TableOfContents

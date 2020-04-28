@@ -14,6 +14,11 @@ import {
 // import { Header } from "../components/components.jsx";
 import { TableOfContents, Header } from "./components.jsx";
 
+import axios from "axios";
+
+axios.defaults.xsrfCookieName = "csrftoken";
+axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
+
 import * as Sentry from "@sentry/browser";
 if (process.env.NODE_ENV == "production") {
   Sentry.init({
@@ -21,17 +26,19 @@ if (process.env.NODE_ENV == "production") {
   });
 }
 
-document.title = article_json.title;
-
 let coords = [];
 
-// article_json is passed to the dom
 export default class Article extends React.Component {
   constructor(props) {
     super(props);
     this.createArticle = this.createArticle.bind(this);
 
-    this.state = {};
+    this.handleMove = this.handleMove.bind(this);
+
+    this.state = {
+      show_hover: false,
+      article_json: {},
+    };
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -42,9 +49,67 @@ export default class Article extends React.Component {
     // }
   }
 
-  createMarkup() {
-    return { __html: article_json.content };
+  componentDidMount() {
+    this.getArticle();
   }
+
+  getArticle() {
+    axios
+      .get(`../api/get_article/`, {
+        params: {
+          article_id: article_id,
+        },
+      })
+      .then((res) => {
+        let data = res.data;
+        // console.log(data);
+        this.setState({
+          article_json: data,
+        });
+      });
+  }
+
+  createMarkup() {
+    return { __html: this.state.article_json.content };
+  }
+
+  // handleMove(e) {
+  //   // console.log(e);
+  //   if (e.target.id === "hover-viewport") {
+  //     console.log("hover viewport");
+  //     console.log(e);
+
+  //     this.setState({
+  //       yPos: e.clientY,
+  //       show_hover: true,
+  //     });
+  //   }
+
+  //   if (e.target.id === "no-hover") {
+  //     console.log("no-hover hover");
+  //     console.log(e);
+  //     this.setState({
+  //       show_hover: false,
+  //     });
+  //   }
+
+  //   if (e.target.id === "minimap") {
+  //     console.log("minimap hover");
+  //     console.log(e);
+
+  //     this.setState({
+  //       yPos: e.clientY,
+  //       show_hover: true,
+  //     });
+  //   } else {
+  //     console.log("show hover false");
+  //     console.log(e);
+  //     this.setState({
+  //       show_hover: false,
+  //     });
+  //   }
+  //   e.persist();
+  // }
 
   // magnifier(hover, yPos = 0) {
   //   this.setState({
@@ -53,8 +118,24 @@ export default class Article extends React.Component {
   //   });
   // }
 
+  handleMove(e) {
+    // console.log(e);
+    if (e.target.id === "minimap") {
+      this.setState({
+        show_hover: true,
+      });
+    }
+    if (e.target.id === "article-wrapper") {
+      this.setState({
+        show_hover: false,
+      });
+    }
+    // e.persist();
+  }
+
   createArticle(margin = 0) {
     let author_text;
+    let article_json = this.state.article_json;
     article_json.author === null || article_json.author === ""
       ? (author_text = "")
       : (author_text = "By " + article_json.author);
@@ -76,17 +157,18 @@ export default class Article extends React.Component {
   render() {
     let { offset, height, total_height, width } = this.props;
 
+    let { yPos } = this.state;
     return (
-      <div id="big-wrapper">
+      <div id="big-wrapper" onMouseMove={this.handleMove}>
         <Header height={height} offset={this.props.offset} />
         <div id="article-wrapper" className="article-wrapper">
           {this.createArticle("auto")}
         </div>
-        <Summary
+        {/*<Summary
           show_summary={this.state.show_summary}
           a_tag={this.state.a_tag}
           closeSummary={this.closeSummary}
-        />
+        />*/}
         <Progress
           offset={offset}
           total_height={this.props.total_height}
@@ -99,8 +181,10 @@ export default class Article extends React.Component {
           changeScroll={this.props.changeScroll}
           innerHTML={this.createMarkup()}
           width={width}
+          yPos={yPos}
           createArticle={this.createArticle}
           show_summary={this.state.show_summary}
+          show_hover={this.state.show_hover}
         ></MiniMap>
         {/*this.state.hover ? (
           <div className="magnifier">
@@ -120,8 +204,6 @@ export default class Article extends React.Component {
 }
 
 const ArticleWrapper = () => {
-  document.title = article_json.title;
-
   let { height, width, offset, total } = useWindowDimensions();
 
   // const { mouseX, mouseY } = useMousePosition();

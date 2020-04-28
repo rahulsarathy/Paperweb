@@ -129,8 +129,9 @@ def fill_article_fields(link):
     article_text = soup.getText()
     article_json['parsed_text'] = article_text
     preview_text = article_text[:347] + '...'
+    custom_id = get_article_id(link)
     article, article_created = Article.objects.get_or_create(
-        title=title, permalink=link, mercury_response=article_json, preview_text=preview_text
+        title=title, permalink=link, mercury_response=article_json, preview_text=preview_text, custom_id=custom_id
     )
     return article, article_created
 
@@ -349,8 +350,9 @@ def get_selected_pages(user, permalink):
             else:
                 total_pages = total_pages + item.article.page_count
 
+    custom_id = get_article_id(permalink)
     article, created = Article.objects.get_or_create(
-        permalink=permalink
+        permalink=permalink, custom_id=custom_id
     )
 
     reading_list_item, created = ReadingListItem.objects.get_or_create(

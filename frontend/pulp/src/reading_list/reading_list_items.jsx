@@ -15,7 +15,7 @@ class ReadingListItems extends React.Component {
     let reading_list = this.props.reading_list;
     return (
       <div className="reading-list-items">
-        {reading_list.map(reading_list_item => (
+        {reading_list.map((reading_list_item) => (
           <ReadingListItem
             key={reading_list_item.article.permalink}
             added={reading_list_item.date_added}
@@ -24,6 +24,7 @@ class ReadingListItems extends React.Component {
             article={reading_list_item.article}
             image_url={reading_list.image_url}
             to_deliver={reading_list.to_deliver}
+            article_id={reading_list_item.article.custom_id}
           />
         ))}
       </div>

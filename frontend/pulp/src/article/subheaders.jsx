@@ -40,7 +40,7 @@ export default class SubHeaders extends Component {
 	rendersubheader(subheader, index) {
 		let { minimap_scroll } = this.props;
 
-		let offset = subheader.offsetTop + minimap_scroll + 41;
+		let offset = subheader.offsetTop + minimap_scroll;
 		let style = {
 			top: "-" + offset + "px",
 		};
