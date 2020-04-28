@@ -59,7 +59,7 @@ function populateAddress(dispatch) {
 
 function populateUserState(dispatch) {
     return Promise.all([
-        populateSettings(dispatch),
+        populateSettings(dispatch), // TODO merge all of these things into a single api call...
         populateAddress(dispatch),
         populateEmail(dispatch),
         populateSubscription(dispatch)

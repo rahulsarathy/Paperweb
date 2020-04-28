@@ -19,6 +19,7 @@ export function setAddress(address) {
     return function(dispatch) {
         var csrftoken = $("[name=csrfmiddlewaretoken]").val();
         var address_json = {
+            // TODO include recipient name in this data...
             line_1: address.line_1,
             line_2: address.line_2,
             city: address.city,
