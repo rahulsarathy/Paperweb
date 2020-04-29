@@ -3,6 +3,15 @@ import { connect } from 'react-redux'
 import { Form, Col } from 'react-bootstrap'
 import { setAddress } from '../../actions/SettingsActions'
 
+/**
+ * A simple form the set the users address.
+ * 
+ * @param {Object} props
+ * @param {boolean} props.loading Indicates whether the address has loaded in
+ *     yet.
+ * @param {function} setAddress A redux dispatch function to set the address
+ * @param {function} close A callback to close the form
+ */
 function ShippingAddressForm({ loading, address, setAddress, close }) {
     // We don't want to initialize the react state with empty data
     // so we check if the data is loading first and then initialize the state

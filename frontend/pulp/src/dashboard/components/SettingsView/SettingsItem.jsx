@@ -1,6 +1,39 @@
 import React from 'react'
 
-export default function Item({ name, editComponent, editHref, EditForm, editText = "Edit", cancelText="Cancel", children }) {
+/**
+* A single setting in the settings view. Has many options to make it one size
+* fits all. (TODO Maybe this component could be slimmed down a bit)
+*
+* The one size fits all model helps maintain visual consistency throughout the
+* settings page. There is no validation for the inputs to this component and
+* unfortunately it's expected that anyone who uses it will look into how it
+* works. (I know, bad design...)
+*
+* @param {Object} props
+* @param {string} props.name The name of the setting.
+* @param {React.Component} [props.editComponent] A component that can take the 
+*     place of the edit link.
+* @param {string} [props.editHref] An alternate href for the edit link.
+* @param {React.Component} [props.EditForm] A component that will be shown when 
+*     the user clicks the edit link. (Assuming there is no editcomonent provided
+*     or alternate edithref)
+* @param {string} [props.editText=Edit] Alternate text to display for the edit 
+*     link.
+* @param {string} [props.cancelText=Cancel] Alternate text to display for the
+*     cancel link.
+* @param {} props.children - The children of this component should be the
+*     description of the current state of the setting. This will be displayed in
+*     the body of the settings item.
+*/
+export default function Item({
+    name,
+    editComponent,
+    editHref,
+    EditForm,
+    editText = "Edit",
+    cancelText="Cancel",
+    children
+}) {
     const [editing, setEditing] = React.useState(false)
 
     function showEdit(e) {

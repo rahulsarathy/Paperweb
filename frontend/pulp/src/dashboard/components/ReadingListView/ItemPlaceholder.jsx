@@ -1,7 +1,10 @@
 import React from 'react'
 import './ItemPlaceholder.scss'
 
-
+/*
+* A placeholder component for a reading list item. Has some fancy loading
+* animations defined in `ItemPlaceholder.scss`.
+*/
 export default function ItemPlaceholder() {
     return (
         <div className="list-item-placeholder">

@@ -6,8 +6,26 @@ import { integrateInstapaper, removeInstapaper } from '../../actions/InstapaperA
 
 import './InstapaperModal.scss'
 
-const image_url = "/static/images/"
+const image_url = "/static/images/instapaper_logo.png"
 
+/**
+* The instapaper integration button and associeted popup displayed when the
+* button is pressed. Collects instapaper credentials from the user.
+*
+* Optionally the button can be exchanged for a link if the `text` parameter is
+* passed.
+*
+* @param {Object} props
+* @param {string} props.text Text for the link to be shown in place of the
+*     button. The link is shown only if this parameter is defined.
+* @param {boolean} props.integrated A boolean from redux that indicates whether
+*     the current user has integrated Pulp with Instpaper or not. True => Integrated,
+*     False => Not.
+* @param {function} integrateWithPocket A redux dispatch function to integrate
+*     the current users Instapaper account with Pulp.
+* @param {function} removePocketIntegration A redux dispatch function to remove
+*     the current users Instapaper integration.
+*/
 function PocketModal({ text, integrationStatus, integrateWithInstapaper, removeInstapaperIntegration }) {
     const [show, setShow] = React.useState(false)
 
@@ -32,6 +50,7 @@ function PocketModal({ text, integrationStatus, integrateWithInstapaper, removeI
         handleHide()
     }
 
+    // Render the modal differently depending on the users integration status.
     var modal;
     if (integrationStatus.integrated) {
         modal = (
@@ -56,6 +75,7 @@ function PocketModal({ text, integrationStatus, integrateWithInstapaper, removeI
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+                    {/* TODO The actual integration doesn't work yet */}
                     <form onSubmit={handleIntegrateInstapaper}>
                         <label htmlFor="username">Instapaper Username:</label>
                         <input type="text" name="username" />
@@ -73,11 +93,12 @@ function PocketModal({ text, integrationStatus, integrateWithInstapaper, removeI
         )
     }
 
+    // Render a button or a link depending on the text parameter
     var activator;
-    if (!text) {
+    if (text === undefined) {
         activator = (
             <PulpButton className="instapaper-button" onClick={handleShow}>
-                <img className="instapaper-logo" src={image_url + "instapaper_logo.png"} />
+                <img className="instapaper-logo" src={image_url} />
             </PulpButton>
         )
     } else {

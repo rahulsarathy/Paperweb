@@ -6,8 +6,26 @@ import { integratePocket, removePocket } from '../../actions/PocketActions'
 
 import './PocketModal.scss'
 
-const image_url = "/static/images/"
+const image_url = "/static/images/pocket_logo.svg"
 
+/**
+* The pocket integration button and associeted popup displayed when the button
+* is pressed. Collects pocket integration confirmation from the user.
+*
+* Optionally the button can be exchanged for a link if the `text` parameter is
+* passed.
+*
+* @param {Object} props
+* @param {string} props.text Text for the link to be shown in place of the button. The
+*     link is shown only if this parameter is defined.
+* @param {boolean} props.integrated A boolean from redux that indicates whether the
+*     current user has integrated Pulp with Pocket or not. True => Integrated,
+*     False => Not.
+* @param {function} props.integrateWithPocket A redux dispatch function to integrate
+*     the current users pocket account with Pulp.
+* @param {function} props.removePocketIntegration A redux dispatch function to remove
+*     the current users pocket integration.
+*/
 function PocketModal({ text, integrated, integrateWithPocket, removePocketIntegration }) {
     const [show, setShow] = React.useState(false)
 
@@ -15,6 +33,7 @@ function PocketModal({ text, integrated, integrateWithPocket, removePocketIntegr
         if (e) { e.preventDefault() }
         setShow(false)
     }
+
     const handleShow = (e) => {
         if (e) { e.preventDefault() }
         setShow(true)
@@ -32,11 +51,13 @@ function PocketModal({ text, integrated, integrateWithPocket, removePocketIntegr
         handleHide()
     }
 
+    // Decide whether to render the thing that opens up the pop up as a button
+    // or as a link.
     var activator;
-    if (!text) {
+    if (text === undefined) {
         activator = (
             <PulpButton className="pocket-button" onClick={handleShow}>
-                <img className="pocket-logo" src={image_url + "pocket_logo.svg"} />
+                <img className="pocket-logo" src={image_url} />
             </PulpButton>
         )
     } else {
@@ -59,6 +80,7 @@ function PocketModal({ text, integrated, integrateWithPocket, removePocketIntegr
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Footer>
+                    {/* TODO The actual integration doesn't work yet */}
                     <Button variant="secondary" onClick={handleHide}>Close</Button>
                     {integrated
                         ? <Button variant="primary" onClick={handleRemovePocket}>Remove Pocket integration</Button>

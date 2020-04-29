@@ -9,6 +9,7 @@ import { PocketModal, InstapaperModal } from '../Integrations'
 
 import './SettingsView.scss'
 
+// Just converts an address object to a nicely formatted component.
 function addressToString(address) {
     return (
         <ul>
@@ -19,6 +20,7 @@ function addressToString(address) {
     )
 }
 
+// A simple component meant to represent a group of settings
 function Section({ name, children }) {
     return (
         <div className="settings-section">
@@ -30,6 +32,18 @@ function Section({ name, children }) {
     )
 }
 
+/**
+* The main component for the settings page. Displays all the settings and offers
+* the user the opportunity to edit them.
+* 
+* @param {Object} props
+* @param {Object} props.user An object from redux containing information about the 
+*     current user.
+* @param {Object} props.settings An object from redux containing all the users 
+*     settings.
+* @param {Object} props.integrations An object from redux containing all the users 
+*     integration information.
+*/
 function SettingsView({ user, settings, integrations }) {
     return (
         <View>
@@ -39,8 +53,10 @@ function SettingsView({ user, settings, integrations }) {
             <View.Body>
                 <Section name="Account Information">
                     <SettingsItem name="Email">{user.email}</SettingsItem>
-                    <SettingsItem name="Password" editHref="/accounts/password/change">•••••••••</SettingsItem>
+                    <SettingsItem name="Password" editHref="/accounts/password/change">••••••••••••</SettingsItem>
                     <SettingsItem name="Subscription Status" editHref="/payments">
+                        {/* TODO add an indicator of how much longer there is in
+                            their subscription */}
                         {user.subscribed
                             ? "Currently subscribed"
                             : "Not subscribed"
@@ -87,7 +103,7 @@ function SettingsView({ user, settings, integrations }) {
     )
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
     return {
         user: state.user,
         settings: state.settings,
