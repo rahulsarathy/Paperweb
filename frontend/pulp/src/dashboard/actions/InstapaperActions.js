@@ -1,5 +1,6 @@
 import $ from 'jquery'
 
+// Integrates the current users instapaper account using the given credentials
 export function integrateInstapaper(username, password) {
     return function(dispatch) {
         var csrftoken = $("[name=csrfmiddlewaretoken]").val();
@@ -20,6 +21,7 @@ export function integrateInstapaper(username, password) {
     }
 }
 
+// Removes the users instapaper integration
 export function removeInstapaper() {
     return function(dispatch) {
         var csrftoken = $("[name=csrfmiddlewaretoken]").val();

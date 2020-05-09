@@ -1,5 +1,6 @@
 import $ from 'jquery'
 
+// Integrates the users pocket account
 export function integratePocket() {
     return function(dispatch) {
         var csrftoken = $("[name=csrfmiddlewaretoken]").val();
@@ -18,6 +19,7 @@ export function integratePocket() {
     }
 }
 
+// Removes the users pocket integration
 export function removePocket() {
     return function(dispatch) {
         var csrftoken = $("[name=csrfmiddlewaretoken]").val();

@@ -1,7 +1,10 @@
+/* TODO move everything in this file into a single query to the server to 
+   speed things up */
 import $ from 'jquery'
 import { createWebSocket } from '../websockets'
 import { loadSettings, loadAddress } from './SettingsActions'
 
+/* Connect to the websocket */
 function connectToWebSocket(dispatch) {
     return new Promise(function (resolve, reject) {
         let progressSocket = createWebSocket(dispatch)
@@ -10,6 +13,7 @@ function connectToWebSocket(dispatch) {
     })
 }
 
+/* Populate the initial state with the users email */
 function populateEmail(dispatch) {
     // TODO this doesn't use the csrf token!!!
     return $.ajax({
@@ -21,6 +25,7 @@ function populateEmail(dispatch) {
     )
 }
 
+/* Populate the initial state with the users email address */
 function populateSubscription(dispatch) {
     // TODO this doesnt use the csrf token!!!!
     return $.ajax({
@@ -35,6 +40,7 @@ function populateSubscription(dispatch) {
     )
 }
 
+/* Populate the initial state with the users settings */
 function populateSettings(dispatch) {
     // TODO this request doesnt use the csrf token
     return $.ajax({
@@ -46,6 +52,7 @@ function populateSettings(dispatch) {
     )
 }
 
+/* Populate the intial state with the users address */
 function populateAddress(dispatch) {
     // TODO this request doesnt use the csrf token
     return $.ajax({
@@ -57,6 +64,7 @@ function populateAddress(dispatch) {
     )
 }
 
+/* Run all of the user related initial state actions */
 function populateUserState(dispatch) {
     return Promise.all([
         populateSettings(dispatch), // TODO merge all of these things into a single api call...
@@ -66,6 +74,7 @@ function populateUserState(dispatch) {
     ])
 }
 
+/* Populate the initial state with the users reading list */
 function populateReadingList(dispatch) {
     var csrftoken = $("[name=csrfmiddlewaretoken]").val();
     let data = {
@@ -84,6 +93,7 @@ function populateReadingList(dispatch) {
     )
 }
 
+/* Populate the initial state with the users integration information */
 function populateIntegrations(dispatch) {
     // TODO This request doesn't use the csrf token
     $.ajax({
@@ -95,6 +105,7 @@ function populateIntegrations(dispatch) {
     )
 }
 
+/* Run all of the initial state actions */
 export function populateInitialState() {
     return function(dispatch) {
         return Promise.all([

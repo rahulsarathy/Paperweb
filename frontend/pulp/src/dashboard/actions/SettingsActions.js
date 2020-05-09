@@ -1,5 +1,6 @@
 import $ from 'jquery'
 
+/** An action to load the users settings into the redux state */
 export function loadSettings(settings) {
     return {
         type: "LOADED_SETTINGS",
@@ -7,6 +8,7 @@ export function loadSettings(settings) {
     }
 }
 
+/** An action to alter a single setting by key. */
 export function changeSetting(setting, updatedValue) {
     // TODO this doesn't actually update anything serverside yet...
     return {
@@ -16,6 +18,7 @@ export function changeSetting(setting, updatedValue) {
     }
 }
 
+/** An action to load the users address into the redux state */
 export function loadAddress(address) {
     return {
         type: "LOADED_ADDRESS",
@@ -23,6 +26,7 @@ export function loadAddress(address) {
     }
 }
 
+/** An action to change the users address server side and in the redux state. */
 export function setAddress(address) {
     return function(dispatch) {
         var csrftoken = $("[name=csrfmiddlewaretoken]").val();
