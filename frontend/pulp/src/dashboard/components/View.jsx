@@ -2,6 +2,12 @@ import React from 'react'
 
 import './View.scss'
 
+/**
+ * A wrapper component to build the pages and introduce some visual consistency. 
+ * 
+ * View is the top level and the rest get added as subcomponents. Their naming
+ * makes their function pretty self explanatory.
+ */
 function View(props) {
     return (
         <div className="view">

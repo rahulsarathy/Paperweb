@@ -19,7 +19,10 @@ import SettingsView from './SettingsView'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Dashboard.scss'
 
-function Dashboard(props) {
+/**
+ * The base component for everything in the dashboard.
+ */
+function Dashboard() {
     return (
         <Router basename="/testing">
             <Header />

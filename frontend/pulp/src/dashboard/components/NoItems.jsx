@@ -6,7 +6,15 @@ import './NoItems.scss'
 
 const image_url = "/static/images/"
 
-export default function NoItems({ showModal }) {
+/**
+ * The component shown when the user doesn't have any items in their reading
+ * list already. The view is meant to prompt them to add some things to their
+ * reading list or sync their accounts with their other reading lists.
+ * 
+ * @param {Object} props
+ * @param {function} showModal 
+ */
+export default function NoItems() {
     return (
         <React.Fragment>
             <img className="empty-img" src={image_url + "pulp_gray_logo.svg"} />

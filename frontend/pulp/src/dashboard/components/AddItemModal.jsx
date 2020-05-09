@@ -6,6 +6,16 @@ import { addArticle } from '../actions/ReadingListActions'
 
 import './AddItemModal.scss'
 
+/**
+ * A button and associated modal to allow the user to add an article to their
+ * reading list.
+ * 
+ * @param {Object} props
+ * @param {function} addArticle A redux dispatch function to add an article to
+ *     the users reading list.
+ * @param {Object} [children] The children of this component. Will be shown in
+ *     the button.
+ */
 function AddItemModal({ addArticle, children }) {
     const [show, setShow] = React.useState(false)
 
